@@ -1,0 +1,162 @@
+import groovy.json.JsonSlurper
+
+buildscript {
+
+    repositories {
+    //    mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven {
+            url 'https://artifactory.does.not.exist/artifactory/gradle-dev-local'
+        }
+    }
+
+    dependencies {
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+    }
+}
+
+def getTheVersion() {
+    def version = rootProject.file('VERSION').text.trim()
+    def versionSuffix = "Unknown"
+    def workingDir = new File("${project.projectDir}")
+    def result = 'git rev-parse --abbrev-ref HEAD'.execute(null, workingDir)
+    result.waitFor()
+    if (result.exitValue() == 0) {
+        def gitBranch = result.text.trim().replaceAll('/','_')
+        if (gitBranch == 'develop') {
+            gitBranch = 'SNAPSHOT'
+        }
+        if (gitBranch == 'master') {
+            versionSuffix = '' 
+        } else {
+            versionSuffix = '-' + gitBranch
+        }
+        
+    }
+    return version + versionSuffix
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.artifactory'
+    apply plugin: 'jacoco'
+    apply plugin: 'checkstyle'
+    apply plugin: 'idea'
+
+    group = 'uk.gov.dft.bluebadge'
+    version = getTheVersion()
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url 'https://artifactory.does.not.exist/artifactory/gradle-dev-local'
+        }
+    }
+
+    checkstyle {
+        toolVersion "8.9"
+        configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    }
+}
+
+artifactory {
+    contextUrl = "https://artifactory.does.not.exist/artifactory"
+    //The base Artifactory URL if not overridden by the publisher/resolver
+    publish {
+        repository {
+            repoKey = 'gradle-dev-local'
+            maven = true
+        }
+
+        publishArtifacts = true
+        publishPom = true
+        defaults {
+            publications('project_service')
+            publishArtifacts = true
+            publishPom = true
+        }
+    }
+
+    resolve {
+        repository {
+            repoKey = 'gradle-release'
+            maven = true
+
+        }
+    }
+
+}
+
+jacoco {
+    toolVersion = "0.8.1"
+}
+
+idea{
+    module{
+        testSourceDirs += file('src/acceptance-tests/java')
+    }
+}
+
+task generateSwagger() {
+
+    doFirst {
+        mkdir(buildDir)
+        new File("${buildDir}/generated.zip").delete()
+    }
+    doLast {
+        def linkRequest = "curl -X POST https://generator.swagger.io/api/gen/servers/spring -H  accept:application/json -H  Content-Type:application/json --data @api-config.json -k".execute()
+
+        linkRequest.waitFor()
+
+        def json = new JsonSlurper().parseText(linkRequest.text)
+
+        def fileRequest = "curl -X GET https://generator.swagger.io/api/gen/download/${json.code} -H  accept:application/octet-stream -o ${buildDir}/generated.zip -k".execute()
+        fileRequest.waitFor()
+        println fileRequest.err.text
+        println fileRequest.text
+    }
+}
+
+task unzipGenerated(type: Copy) {
+    dependsOn tasks.findByName('generateSwagger')
+    new File("${buildDir}/unpacked").delete()
+    def zipFile = file("${buildDir}/generated.zip")
+    def outputDir = file("${buildDir}/unpacked")
+
+    from zipTree(zipFile)
+    into outputDir
+}
+
+task generateModel(dependsOn: 'unzipGenerated', type: Sync){
+    group = "GenerateAPI"
+    from "${buildDir}/unpacked/spring-server/generated/src/main/java/uk/gov/dft/bluebadge/model/applicationmanagement/generated"
+    include "**/*.java"
+    exclude '**/CommonResponse.java'
+    exclude '**/ErrorErrors.java'
+    exclude '**/Error.java'
+    into "service/src/generated/java/uk/gov/dft/bluebadge/model/applicationmanagement/generated"
+}
+
+task generateService(dependsOn: 'unzipGenerated', type: Sync){
+    group = "GenerateAPI"
+    from "${buildDir}/unpacked/spring-server/generated/src/main/java/uk/gov/dft/bluebadge/service/applicationmanagement/generated"
+    exclude '**/Swagger2SpringBoot.java'
+    exclude '**/RFC3339DateFormat.java'
+    exclude '**/*ApiController.java'
+    into "service/src/generated/java/uk/gov/dft/bluebadge/service/applicationmanagement/generated"
+}
+
+task createDatabaseSchemaZip(type: Zip) {
+    def targetFilename = getTheVersion() + "_schema.zip"
+    from 'database-schema/'
+    include '*'
+    include '*/*'
+    archiveName targetFilename
+    destinationDir(file("service/build/database-schema"))
+}
+
