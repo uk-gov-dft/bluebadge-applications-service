@@ -1,4 +1,5 @@
 FROM openjdk:8-jre-stretch
 ARG JAR_FILE
+ARG SCHEMA_FILE
 ADD ${JAR_FILE} app.jar
-CMD []
+ADD ${SCHEMA_FILE} schema.zip
