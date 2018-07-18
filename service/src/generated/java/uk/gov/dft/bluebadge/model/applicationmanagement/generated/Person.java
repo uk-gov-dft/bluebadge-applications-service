@@ -24,7 +24,7 @@ public class Person {
   private String nameAtBirth = null;
 
   @JsonProperty("genderCode")
-  private String genderCode = null;
+  private GenderCodeField genderCode = null;
 
   public Person badgeHolderName(String badgeHolderName) {
     this.badgeHolderName = badgeHolderName;
@@ -106,23 +106,23 @@ public class Person {
     this.nameAtBirth = nameAtBirth;
   }
 
-  public Person genderCode(String genderCode) {
+  public Person genderCode(GenderCodeField genderCode) {
     this.genderCode = genderCode;
     return this;
   }
 
   /**
-   * Reference data code MALE or FEMALE
+   * Get genderCode
    *
    * @return genderCode
    */
-  @ApiModelProperty(example = "MALE", value = "Reference data code MALE or FEMALE")
-  @Size(max = 10)
-  public String getGenderCode() {
+  @ApiModelProperty(value = "")
+  @Valid
+  public GenderCodeField getGenderCode() {
     return genderCode;
   }
 
-  public void setGenderCode(String genderCode) {
+  public void setGenderCode(GenderCodeField genderCode) {
     this.genderCode = genderCode;
   }
 

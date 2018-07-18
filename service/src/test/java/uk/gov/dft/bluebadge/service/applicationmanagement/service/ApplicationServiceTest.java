@@ -14,7 +14,7 @@ public class ApplicationServiceTest extends ApplicationTestBase {
 
   @Before
   public void setUp() {
-    service = new ApplicationService(repository);
+    //service = new ApplicationService(repository);
   }
 
   @Test

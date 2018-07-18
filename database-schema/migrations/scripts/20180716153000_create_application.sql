@@ -2,7 +2,7 @@
 CREATE TABLE applicationmanagement.application (
 -- Application fields
   id                    UUID            NOT NULL
- ,local_authority_id    INTEGER         NOT NULL
+ ,local_authority_code  VARCHAR(10)     NOT NULL
  ,app_type_code         VARCHAR(10)     NOT NULL
  ,is_payment_taken      BOOLEAN         NOT NULL
  ,submission_datetime   TIMESTAMP       NOT NULL
@@ -48,7 +48,7 @@ CREATE TABLE applicationmanagement.application (
 
 COMMENT ON TABLE application IS 'Holds blue badge application record.';
 COMMENT ON COLUMN application.id IS 'PK, a UUID.';
-COMMENT ON COLUMN application.local_authority_id IS 'Local authority.';
+COMMENT ON COLUMN application.local_authority_code IS 'Local authority.';
 COMMENT ON COLUMN application.app_type_code IS 'NEW, CANCEL, RENEW, REPLACE';
 COMMENT ON COLUMN application.is_payment_taken IS 'true if payment received as part of online application.';
 COMMENT ON COLUMN application.submission_datetime IS 'Date and time application created.';

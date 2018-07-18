@@ -17,7 +17,7 @@ public class ApplicationEntity implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private UUID id;
-  private Integer localAuthorityId;
+  private String localAuthorityCode;
   private String appTypeCode;
   private Boolean isPaymentTaken;
   private OffsetDateTime submissionDatetime;

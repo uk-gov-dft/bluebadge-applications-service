@@ -1,4 +1,4 @@
-package uk.gov.dft.bluebadge.service.applicationmanagement.service;
+package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import uk.gov.dft.bluebadge.common.api.model.Error;
 import uk.gov.dft.bluebadge.common.api.model.ErrorErrors;
@@ -13,7 +13,11 @@ public enum ValidationKeyEnum {
   MISSING_ORG_OBJECT(
       "NotNull.application.party.organisation",
       "Organisation details must be included if party is an organisation.",
-      "organisation");
+      "organisation"),
+  MISSING_ELIGIBILITY_OBJECT(
+      "NotNull.application.eligibility",
+      "Eligibility is required if application is for a person",
+      "eligibility");
 
   private final String key;
   private final String defaultMessage;

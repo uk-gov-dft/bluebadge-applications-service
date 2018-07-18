@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class Eligibility {
   @JsonProperty("typeCode")
-  private String typeCode = null;
+  private EligibilityCodeField typeCode = null;
 
   @JsonProperty("descriptionOfConditions")
   private String descriptionOfConditions = null;
@@ -37,23 +37,24 @@ public class Eligibility {
   @JsonProperty("childUnder3")
   private ChildUnder3 childUnder3 = null;
 
-  public Eligibility typeCode(String typeCode) {
+  public Eligibility typeCode(EligibilityCodeField typeCode) {
     this.typeCode = typeCode;
     return this;
   }
 
   /**
-   * Eligibility type
+   * Get typeCode
    *
    * @return typeCode
    */
-  @ApiModelProperty(required = true, value = "Eligibility type")
+  @ApiModelProperty(required = true, value = "")
   @NotNull
-  public String getTypeCode() {
+  @Valid
+  public EligibilityCodeField getTypeCode() {
     return typeCode;
   }
 
-  public void setTypeCode(String typeCode) {
+  public void setTypeCode(EligibilityCodeField typeCode) {
     this.typeCode = typeCode;
   }
 

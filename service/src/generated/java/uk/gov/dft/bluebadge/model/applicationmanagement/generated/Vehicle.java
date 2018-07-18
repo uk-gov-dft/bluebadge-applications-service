@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
@@ -13,7 +14,7 @@ public class Vehicle {
   private String registrationNumber = null;
 
   @JsonProperty("typeCode")
-  private String typeCode = null;
+  private VehicleTypeCodeField typeCode = null;
 
   @JsonProperty("usageFrequency")
   private String usageFrequency = null;
@@ -38,7 +39,7 @@ public class Vehicle {
     this.registrationNumber = registrationNumber;
   }
 
-  public Vehicle typeCode(String typeCode) {
+  public Vehicle typeCode(VehicleTypeCodeField typeCode) {
     this.typeCode = typeCode;
     return this;
   }
@@ -48,13 +49,13 @@ public class Vehicle {
    *
    * @return typeCode
    */
-  @ApiModelProperty(example = "TBC", value = "")
-  @Size(max = 10)
-  public String getTypeCode() {
+  @ApiModelProperty(value = "")
+  @Valid
+  public VehicleTypeCodeField getTypeCode() {
     return typeCode;
   }
 
-  public void setTypeCode(String typeCode) {
+  public void setTypeCode(VehicleTypeCodeField typeCode) {
     this.typeCode = typeCode;
   }
 

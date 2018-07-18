@@ -1,8 +1,6 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -16,40 +14,11 @@ public class ApplicationSummary {
   @JsonProperty("applicationId")
   private String applicationId = null;
 
-  /** Gets or Sets partyTypeCode */
-  public enum PartyTypeCodeEnum {
-    PERSON("PERSON"),
-
-    ORG("ORG");
-
-    private String value;
-
-    PartyTypeCodeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static PartyTypeCodeEnum fromValue(String text) {
-      for (PartyTypeCodeEnum b : PartyTypeCodeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
   @JsonProperty("partyTypeCode")
-  private PartyTypeCodeEnum partyTypeCode = null;
+  private PartyTypeCodeField partyTypeCode = null;
 
   @JsonProperty("applicationTypeCode")
-  private String applicationTypeCode = null;
+  private ApplicationTypeCodeField applicationTypeCode = null;
 
   @JsonProperty("nino")
   private String nino = null;
@@ -61,7 +30,7 @@ public class ApplicationSummary {
   private OffsetDateTime submissionDate = null;
 
   @JsonProperty("eligibilityCode")
-  private String eligibilityCode = null;
+  private EligibilityCodeField eligibilityCode = null;
 
   public ApplicationSummary applicationId(String applicationId) {
     this.applicationId = applicationId;
@@ -85,7 +54,7 @@ public class ApplicationSummary {
     this.applicationId = applicationId;
   }
 
-  public ApplicationSummary partyTypeCode(PartyTypeCodeEnum partyTypeCode) {
+  public ApplicationSummary partyTypeCode(PartyTypeCodeField partyTypeCode) {
     this.partyTypeCode = partyTypeCode;
     return this;
   }
@@ -95,33 +64,33 @@ public class ApplicationSummary {
    *
    * @return partyTypeCode
    */
-  @ApiModelProperty(example = "PERSON", value = "")
-  @Size(max = 10)
-  public PartyTypeCodeEnum getPartyTypeCode() {
+  @ApiModelProperty(value = "")
+  @Valid
+  public PartyTypeCodeField getPartyTypeCode() {
     return partyTypeCode;
   }
 
-  public void setPartyTypeCode(PartyTypeCodeEnum partyTypeCode) {
+  public void setPartyTypeCode(PartyTypeCodeField partyTypeCode) {
     this.partyTypeCode = partyTypeCode;
   }
 
-  public ApplicationSummary applicationTypeCode(String applicationTypeCode) {
+  public ApplicationSummary applicationTypeCode(ApplicationTypeCodeField applicationTypeCode) {
     this.applicationTypeCode = applicationTypeCode;
     return this;
   }
 
   /**
-   * NEW, CANCEL, RENEW, REPLACE
+   * Get applicationTypeCode
    *
    * @return applicationTypeCode
    */
-  @ApiModelProperty(example = "NEW", value = "NEW, CANCEL, RENEW, REPLACE")
-  @Size(max = 10)
-  public String getApplicationTypeCode() {
+  @ApiModelProperty(value = "")
+  @Valid
+  public ApplicationTypeCodeField getApplicationTypeCode() {
     return applicationTypeCode;
   }
 
-  public void setApplicationTypeCode(String applicationTypeCode) {
+  public void setApplicationTypeCode(ApplicationTypeCodeField applicationTypeCode) {
     this.applicationTypeCode = applicationTypeCode;
   }
 
@@ -187,7 +156,7 @@ public class ApplicationSummary {
     this.submissionDate = submissionDate;
   }
 
-  public ApplicationSummary eligibilityCode(String eligibilityCode) {
+  public ApplicationSummary eligibilityCode(EligibilityCodeField eligibilityCode) {
     this.eligibilityCode = eligibilityCode;
     return this;
   }
@@ -197,13 +166,13 @@ public class ApplicationSummary {
    *
    * @return eligibilityCode
    */
-  @ApiModelProperty(example = "PIP", value = "")
-  @Size(max = 10)
-  public String getEligibilityCode() {
+  @ApiModelProperty(value = "")
+  @Valid
+  public EligibilityCodeField getEligibilityCode() {
     return eligibilityCode;
   }
 
-  public void setEligibilityCode(String eligibilityCode) {
+  public void setEligibilityCode(EligibilityCodeField eligibilityCode) {
     this.eligibilityCode = eligibilityCode;
   }
 

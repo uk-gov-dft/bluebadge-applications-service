@@ -160,7 +160,7 @@ public interface ApplicationsApi {
           @Valid
           @RequestParam(value = "to", required = false)
           Optional<LocalDate> to,
-      @ApiParam(value = "NEW, REPLACE, RENEW or CANCEL")
+      @ApiParam(value = "", allowableValues = "NEW, RENEW, CANCEL, REVOKE")
           @Valid
           @RequestParam(value = "applicationTypeCode", required = false)
           Optional<String> applicationTypeCode) {

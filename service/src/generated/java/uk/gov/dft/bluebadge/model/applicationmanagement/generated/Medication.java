@@ -31,7 +31,7 @@ public class Medication {
    *
    * @return name
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "Paracetamol", value = "")
   @Size(max = 100)
   public String getName() {
     return name;
@@ -70,7 +70,7 @@ public class Medication {
    *
    * @return frequency
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "Twice daily.", value = "")
   @Size(max = 100)
   public String getFrequency() {
     return frequency;
@@ -90,7 +90,7 @@ public class Medication {
    *
    * @return quantity
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "1 tablet, 20mg", value = "")
   @Size(max = 100)
   public String getQuantity() {
     return quantity;

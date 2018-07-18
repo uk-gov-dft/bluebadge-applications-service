@@ -45,7 +45,7 @@ public class Treatment {
    *
    * @return time
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(example = "6 months", value = "")
   @Size(max = 100)
   public String getTime() {
     return time;

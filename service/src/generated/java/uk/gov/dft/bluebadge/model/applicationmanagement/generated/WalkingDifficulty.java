@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 public class WalkingDifficulty {
   @JsonProperty("typeCodes")
   @Valid
-  private List<String> typeCodes = null;
+  private List<WalkingDifficultyTypeCodeField> typeCodes = null;
 
   @JsonProperty("otherDescription")
   private String otherDescription = null;
@@ -24,10 +24,10 @@ public class WalkingDifficulty {
   private List<WalkingAid> walkingAids = null;
 
   @JsonProperty("walkingLengthOfTimeCode")
-  private String walkingLengthOfTimeCode = null;
+  private WalkingLengthOfTimeCodeField walkingLengthOfTimeCode = null;
 
   @JsonProperty("walkingSpeedCode")
-  private String walkingSpeedCode = null;
+  private WalkingSpeedCodeField walkingSpeedCode = null;
 
   @JsonProperty("treatments")
   @Valid
@@ -37,12 +37,12 @@ public class WalkingDifficulty {
   @Valid
   private List<Medication> medications = null;
 
-  public WalkingDifficulty typeCodes(List<String> typeCodes) {
+  public WalkingDifficulty typeCodes(List<WalkingDifficultyTypeCodeField> typeCodes) {
     this.typeCodes = typeCodes;
     return this;
   }
 
-  public WalkingDifficulty addTypeCodesItem(String typeCodesItem) {
+  public WalkingDifficulty addTypeCodesItem(WalkingDifficultyTypeCodeField typeCodesItem) {
     if (this.typeCodes == null) {
       this.typeCodes = new ArrayList<>();
     }
@@ -56,11 +56,12 @@ public class WalkingDifficulty {
    * @return typeCodes
    */
   @ApiModelProperty(value = "'Short codes from the WALKDIFF group of data' ")
-  public List<String> getTypeCodes() {
+  @Valid
+  public List<WalkingDifficultyTypeCodeField> getTypeCodes() {
     return typeCodes;
   }
 
-  public void setTypeCodes(List<String> typeCodes) {
+  public void setTypeCodes(List<WalkingDifficultyTypeCodeField> typeCodes) {
     this.typeCodes = typeCodes;
   }
 
@@ -112,7 +113,8 @@ public class WalkingDifficulty {
     this.walkingAids = walkingAids;
   }
 
-  public WalkingDifficulty walkingLengthOfTimeCode(String walkingLengthOfTimeCode) {
+  public WalkingDifficulty walkingLengthOfTimeCode(
+      WalkingLengthOfTimeCodeField walkingLengthOfTimeCode) {
     this.walkingLengthOfTimeCode = walkingLengthOfTimeCode;
     return this;
   }
@@ -123,16 +125,16 @@ public class WalkingDifficulty {
    * @return walkingLengthOfTimeCode
    */
   @ApiModelProperty(value = "")
-  @Size(max = 10)
-  public String getWalkingLengthOfTimeCode() {
+  @Valid
+  public WalkingLengthOfTimeCodeField getWalkingLengthOfTimeCode() {
     return walkingLengthOfTimeCode;
   }
 
-  public void setWalkingLengthOfTimeCode(String walkingLengthOfTimeCode) {
+  public void setWalkingLengthOfTimeCode(WalkingLengthOfTimeCodeField walkingLengthOfTimeCode) {
     this.walkingLengthOfTimeCode = walkingLengthOfTimeCode;
   }
 
-  public WalkingDifficulty walkingSpeedCode(String walkingSpeedCode) {
+  public WalkingDifficulty walkingSpeedCode(WalkingSpeedCodeField walkingSpeedCode) {
     this.walkingSpeedCode = walkingSpeedCode;
     return this;
   }
@@ -143,12 +145,12 @@ public class WalkingDifficulty {
    * @return walkingSpeedCode
    */
   @ApiModelProperty(value = "")
-  @Size(max = 10)
-  public String getWalkingSpeedCode() {
+  @Valid
+  public WalkingSpeedCodeField getWalkingSpeedCode() {
     return walkingSpeedCode;
   }
 
-  public void setWalkingSpeedCode(String walkingSpeedCode) {
+  public void setWalkingSpeedCode(WalkingSpeedCodeField walkingSpeedCode) {
     this.walkingSpeedCode = walkingSpeedCode;
   }
 

@@ -110,7 +110,7 @@
             "in" : "query",
             "name" : "applicationTypeCode",
             "type" : "string",
-            "description" : "NEW, REPLACE, RENEW or CANCEL"
+            "enum" : [ "NEW", "RENEW", "CANCEL", "REVOKE" ]
           } ],
           "tags" : [ "applications" ],
           "summary" : "Find applications.",
@@ -234,16 +234,10 @@
             "example" : "12345678-1234-1234-1234-123412341234"
           },
           "partyTypeCode" : {
-            "type" : "string",
-            "enum" : [ "PERSON", "ORG" ],
-            "example" : "PERSON",
-            "maxLength" : 10
+            "$ref" : "#/definitions/PartyTypeCodeField"
           },
           "applicationTypeCode" : {
-            "type" : "string",
-            "description" : "NEW, CANCEL, RENEW, REPLACE",
-            "example" : "NEW",
-            "maxLength" : 10
+            "$ref" : "#/definitions/ApplicationTypeCodeField"
           },
           "nino" : {
             "type" : "string",
@@ -263,9 +257,7 @@
             "example" : "2018-12-25T12:30:45Z"
           },
           "eligibilityCode" : {
-            "type" : "string",
-            "example" : "PIP",
-            "maxLength" : 10
+            "$ref" : "#/definitions/EligibilityCodeField"
           }
         }
       },
@@ -278,15 +270,12 @@
             "example" : "12345678-1234-1234-1234-123456781234"
           },
           "applicationTypeCode" : {
-            "type" : "string",
-            "description" : "NEW, CANCEL, RENEW, REPLACE",
-            "maxLength" : 10,
-            "example" : "NEW"
+            "$ref" : "#/definitions/ApplicationTypeCodeField"
           },
           "localAuthorityCode" : {
-            "type" : "integer",
+            "type" : "string",
             "description" : "The code for the local authority.",
-            "example" : 211
+            "example" : "BIRM"
           },
           "isPaymentTaken" : {
             "type" : "boolean",
@@ -311,15 +300,13 @@
             "$ref" : "#/definitions/Artifacts"
           }
         },
-        "required" : [ "applicationTypeCode", "isPaymentTaken", "localAuthorityCode" ]
+        "required" : [ "applicationTypeCode", "isPaymentTaken", "localAuthorityCode", "party" ]
       },
       "Party" : {
         "type" : "object",
         "properties" : {
           "typeCode" : {
-            "type" : "string",
-            "description" : "PERSON or ORG",
-            "maxLength" : 10
+            "$ref" : "#/definitions/PartyTypeCodeField"
           },
           "contact" : {
             "$ref" : "#/definitions/Contact"
@@ -331,7 +318,7 @@
             "$ref" : "#/definitions/Organisation"
           }
         },
-        "required" : [ "typeCode" ]
+        "required" : [ "typeCode", "contact" ]
       },
       "Person" : {
         "type" : "object",
@@ -358,10 +345,7 @@
             "maxLength" : 100
           },
           "genderCode" : {
-            "type" : "string",
-            "description" : "Reference data code MALE or FEMALE",
-            "example" : "MALE",
-            "maxLength" : 10
+            "$ref" : "#/definitions/GenderCodeField"
           }
         },
         "required" : [ "badgeHolderName" ]
@@ -407,9 +391,7 @@
             "example" : "VK61VZZ"
           },
           "typeCode" : {
-            "type" : "string",
-            "maxLength" : 10,
-            "example" : "TBC"
+            "$ref" : "#/definitions/VehicleTypeCodeField"
           },
           "usageFrequency" : {
             "type" : "string",
@@ -466,8 +448,7 @@
         "type" : "object",
         "properties" : {
           "typeCode" : {
-            "type" : "string",
-            "description" : "Eligibility type"
+            "$ref" : "#/definitions/EligibilityCodeField"
           },
           "descriptionOfConditions" : {
             "type" : "string",
@@ -502,8 +483,7 @@
         "type" : "object",
         "properties" : {
           "bulkyMedicalEquipmentTypeCode" : {
-            "type" : "string",
-            "maxLength" : 10
+            "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
           }
         }
       },
@@ -513,7 +493,7 @@
           "registeredAtLaId" : {
             "type" : "string",
             "description" : "Local Authority registered blind at",
-            "example" : 7
+            "example" : "BIRM"
           }
         }
       },
@@ -570,9 +550,7 @@
             "type" : "array",
             "description" : "'Short codes from the WALKDIFF group of data'\n",
             "items" : {
-              "type" : "string",
-              "maxLength" : 10,
-              "example" : "BALANCE"
+              "$ref" : "#/definitions/WalkingDifficultyTypeCodeField"
             }
           },
           "otherDescription" : {
@@ -586,12 +564,10 @@
             }
           },
           "walkingLengthOfTimeCode" : {
-            "type" : "string",
-            "maxLength" : 10
+            "$ref" : "#/definitions/WalkingLengthOfTimeCodeField"
           },
           "walkingSpeedCode" : {
-            "type" : "string",
-            "maxLength" : 10
+            "$ref" : "#/definitions/WalkingSpeedCodeField"
           },
           "treatments" : {
             "type" : "array",
@@ -612,7 +588,8 @@
         "properties" : {
           "name" : {
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 100,
+            "example" : "Paracetamol"
           },
           "isPrescribed" : {
             "type" : "boolean",
@@ -620,11 +597,13 @@
           },
           "frequency" : {
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 100,
+            "example" : "Twice daily."
           },
           "quantity" : {
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 100,
+            "example" : "1 tablet, 20mg"
           }
         }
       },
@@ -637,7 +616,8 @@
           },
           "time" : {
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 100,
+            "example" : "6 months"
           }
         }
       },
@@ -653,8 +633,7 @@
             "maxLength" : 100
           },
           "howProvidedCode" : {
-            "type" : "string",
-            "maxLength" : 10
+            "$ref" : "#/definitions/HowProvidedCodeField"
           }
         }
       },
@@ -696,6 +675,56 @@
             "description" : "Base64 encoded. Must be between 50KB and 10MB, and of format JPG, PNG, or GIF."
           }
         }
+      },
+      "PartyTypeCodeField" : {
+        "type" : "string",
+        "enum" : [ "PERSON", "ORG" ],
+        "example" : "PERSON"
+      },
+      "ApplicationTypeCodeField" : {
+        "type" : "string",
+        "enum" : [ "NEW", "RENEW", "CANCEL", "REPLACE" ],
+        "example" : "NEW"
+      },
+      "EligibilityCodeField" : {
+        "type" : "string",
+        "enum" : [ "PIP", "DLA", "AFRFCS", "WPMS", "BLIND", "WALKD", "ARMS", "CHILDBULK", "CHILDVEHIC", "TERMILL" ],
+        "example" : "PIP"
+      },
+      "GenderCodeField" : {
+        "type" : "string",
+        "enum" : [ "FEMALE", "MALE", "UNSPECIFIE" ],
+        "example" : "FEMALE"
+      },
+      "VehicleTypeCodeField" : {
+        "type" : "string",
+        "enum" : [ "CAR", "PEOPLECAR", "MINIBUS", "OTHERVEH" ],
+        "example" : "CAR"
+      },
+      "BulkyMedicalEquipmentTypeCodeField" : {
+        "type" : "string",
+        "enum" : [ "NONE", "CAST", "OXYSAT", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
+        "example" : "CAST"
+      },
+      "WalkingDifficultyTypeCodeField" : {
+        "type" : "string",
+        "enum" : [ "PAIN", "BREATH", "BALANCE", "DANGER", "STRUGGLE", "SOMELSE" ],
+        "example" : "PAIN"
+      },
+      "WalkingLengthOfTimeCodeField" : {
+        "type" : "string",
+        "enum" : [ "CANTWALK", "LESSMIN", "FEWMIN", "MORETEN" ],
+        "example" : "CANTWALK"
+      },
+      "WalkingSpeedCodeField" : {
+        "type" : "string",
+        "enum" : [ "MSLOW", "SLOW", "SAME", "FAST" ],
+        "example" : "SLOW"
+      },
+      "HowProvidedCodeField" : {
+        "type" : "string",
+        "enum" : [ "PRESCRIBE", "PRIVATE", "SOCIAL" ],
+        "example" : "PRIVATE"
       }
     },
     "host" : "virtserver.swaggerhub.com",

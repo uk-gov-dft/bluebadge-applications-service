@@ -18,7 +18,7 @@
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
           bulky_equipment_type_code, url_proof_eligibility, url_proof_address,
-          url_proof_identity, url_badge_photo, local_authority_id
+          url_proof_identity, url_badge_photo, local_authority_code
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler},
@@ -34,7 +34,7 @@
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
           #{bulkyEquipmentTypeCode}, #{urlProofEligibility}, #{urlProofAddress},
-          #{urlProofIdentity}, #{urlBadgePhoto}, #{localAuthorityId}
+          #{urlProofIdentity}, #{urlBadgePhoto}, #{localAuthorityCode}
         )
     </insert>
     

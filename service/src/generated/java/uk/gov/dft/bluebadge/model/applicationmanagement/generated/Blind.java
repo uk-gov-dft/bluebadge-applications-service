@@ -22,7 +22,7 @@ public class Blind {
    *
    * @return registeredAtLaId
    */
-  @ApiModelProperty(example = "7", value = "Local Authority registered blind at")
+  @ApiModelProperty(example = "BIRM", value = "Local Authority registered blind at")
   public String getRegisteredAtLaId() {
     return registeredAtLaId;
   }

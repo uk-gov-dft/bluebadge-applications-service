@@ -3,20 +3,18 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.common.converter.ToEntityConverter;
-import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.DisabilityArms;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibility;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Organisation;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Person;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-import uk.gov.dft.bluebadge.service.applicationmanagement.service.ValidationKeyEnum;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ValidatedApplication;
 
 @Component
-public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application> {
+public class ApplicationConverter
+    implements ToEntityConverter<ApplicationEntity, ValidatedApplication> {
 
   private VehicleConverter vehicleConverter;
   private WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
@@ -40,30 +38,17 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
     this.healthcareProfessionalConverter = healthcareProfessionalConverter;
   }
 
-  private static boolean isPerson(Party party) {
-    return "PERSON".equals(party.getTypeCode());
-  }
-
   @Override
-  public ApplicationEntity convertToEntity(Application application) {
-
-    if (null == application.getParty()) {
-      throw new BadRequestException(ValidationKeyEnum.MISSING_PARTY_OBJECT.getFieldErrorInstance());
-    }
-
-    if (null == application.getParty().getContact()) {
-      throw new BadRequestException(
-          ValidationKeyEnum.MISSING_CONTACT_OBJECT.getFieldErrorInstance());
-    }
+  public ApplicationEntity convertToEntity(ValidatedApplication application) {
 
     Contact contact = application.getParty().getContact();
 
     // Populate general fields
     ApplicationEntity entity =
         ApplicationEntity.builder()
-            .appTypeCode(application.getApplicationTypeCode())
+            .appTypeCode(application.getApplicationTypeCode().toString())
             .id(UUID.fromString(application.getApplicationId()))
-            .localAuthorityId(application.getLocalAuthorityCode())
+            .localAuthorityCode(application.getLocalAuthorityCode())
             .isPaymentTaken(application.isIsPaymentTaken())
             .submissionDatetime(application.getSubmissionDate())
             .existingBadgeNo(application.getExistingBadgeNumber())
@@ -75,26 +60,22 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
             .contactPostcode(ConvertUtils.formatPostcodeForEntity(contact.getPostCode()))
             .primaryPhoneNo(contact.getPrimaryPhoneNumber())
             .secondaryPhoneNo(contact.getSecondaryPhoneNumber())
-            .partyCode(application.getParty().getTypeCode())
+            .partyCode(application.getParty().getTypeCode().toString())
             .build();
 
-    if (isPerson(application.getParty())) {
+    if (application.isPerson()) {
       // Person specific stuff
-      if (null == application.getParty().getPerson()) {
-        throw new BadRequestException(
-            ValidationKeyEnum.MISSING_PERSON_OBJECT.getFieldErrorInstance());
-      }
       Person person = application.getParty().getPerson();
       entity.setHolderName(person.getBadgeHolderName());
       entity.setNino(person.getNino());
       entity.setDob(person.getDob());
       entity.setHolderNameAtBirth(person.getNameAtBirth());
-      entity.setGenderCode(person.getGenderCode());
+      entity.setGenderCode(person.getGenderCode().toString());
       entity.setNoOfBadges(1);
 
       Eligibility eligibility = application.getEligibility();
       if (null != eligibility) {
-        entity.setEligibilityCode(eligibility.getTypeCode());
+        entity.setEligibilityCode(eligibility.getTypeCode().toString());
         entity.setEligibilityConditions(eligibility.getDescriptionOfConditions());
         if (null != eligibility.getBenefit()) {
           entity.setBenefitIsIndefinite(eligibility.getBenefit().isIsIndefinite());
@@ -109,8 +90,8 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
           entity.setWalkingAids(
               walkingAidConverter.convertToEntityList(
                   walkingDifficulty.getWalkingAids(), entity.getId()));
-          entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode());
-          entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode());
+          entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().toString());
+          entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().toString());
           entity.setTreatments(
               treatmentConverter.convertToEntityList(
                   walkingDifficulty.getTreatments(), entity.getId()));
@@ -132,15 +113,11 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
         }
         if (null != eligibility.getChildUnder3()) {
           entity.setBulkyEquipmentTypeCode(
-              eligibility.getChildUnder3().getBulkyMedicalEquipmentTypeCode());
+              eligibility.getChildUnder3().getBulkyMedicalEquipmentTypeCode().toString());
         }
       }
 
     } else {
-      // Organisation specific stuff
-      if (null == application.getParty().getOrganisation()) {
-        throw new BadRequestException(ValidationKeyEnum.MISSING_ORG_OBJECT.getFieldErrorInstance());
-      }
       Organisation organisation = application.getParty().getOrganisation();
       entity.setHolderName(organisation.getBadgeHolderName());
       entity.setOrgIsCharity(organisation.isIsCharity());
@@ -153,7 +130,7 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
     return entity;
   }
 
-  public ApplicationEntity convertToEntityOnCreate(Application application) {
+  public ApplicationEntity convertToEntityOnCreate(ValidatedApplication application) {
     if (null == application.getApplicationId()) {
       application.setApplicationId(UUID.randomUUID().toString());
     }

@@ -12,7 +12,7 @@ class VehicleConverter extends ApplicationToEntityCollection<VehicleEntity, Vehi
   VehicleEntity mapToEntity(Vehicle vehicle, UUID applicationId) {
     return VehicleEntity.builder()
         .registrationNumber(vehicle.getRegistrationNumber())
-        .typeCode(vehicle.getTypeCode())
+        .typeCode(vehicle.getTypeCode().toString())
         .usageFrequency(vehicle.getUsageFrequency())
         .applicationId(applicationId)
         .build();

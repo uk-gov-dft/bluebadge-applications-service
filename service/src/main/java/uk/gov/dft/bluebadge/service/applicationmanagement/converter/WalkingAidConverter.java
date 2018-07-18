@@ -12,7 +12,7 @@ class WalkingAidConverter extends ApplicationToEntityCollection<WalkingAidEntity
     return WalkingAidEntity.builder()
         .applicationId(applicationId)
         .description(model.getDescription())
-        .howProvidedCode(model.getHowProvidedCode())
+        .howProvidedCode(model.getHowProvidedCode().toString())
         .usage(model.getUsage())
         .build();
   }

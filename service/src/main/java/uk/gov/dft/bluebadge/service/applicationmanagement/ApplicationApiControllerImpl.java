@@ -11,23 +11,18 @@ import uk.gov.dft.bluebadge.common.api.model.CommonResponse;
 import uk.gov.dft.bluebadge.common.service.exception.ServiceException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
-import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.generated.controller.ApplicationsApi;
-import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.ApplicationService;
 
 @Controller
 public class ApplicationApiControllerImpl implements ApplicationsApi {
 
   private final ApplicationService service;
-  private ApplicationConverter applicationConverter;
 
   @SuppressWarnings("unused")
   @Autowired
-  public ApplicationApiControllerImpl(
-      ApplicationService service, ApplicationConverter applicationConverter) {
+  public ApplicationApiControllerImpl(ApplicationService service) {
     this.service = service;
-    this.applicationConverter = applicationConverter;
   }
 
   @SuppressWarnings("unused")
@@ -40,8 +35,7 @@ public class ApplicationApiControllerImpl implements ApplicationsApi {
   public ResponseEntity<CreateApplicationResponse> createApplication(
       @ApiParam() @Valid @RequestBody Application application) {
 
-    ApplicationEntity entity = applicationConverter.convertToEntityOnCreate(application);
-    service.createApplication(entity);
-    return ResponseEntity.ok(new CreateApplicationResponse().data(entity.getId().toString()));
+    String newId = service.createApplication(application);
+    return ResponseEntity.ok(new CreateApplicationResponse().data(newId));
   }
 }

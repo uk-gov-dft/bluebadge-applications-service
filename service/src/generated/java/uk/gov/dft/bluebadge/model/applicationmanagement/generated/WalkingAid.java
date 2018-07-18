@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,7 +17,7 @@ public class WalkingAid {
   private String usage = null;
 
   @JsonProperty("howProvidedCode")
-  private String howProvidedCode = null;
+  private HowProvidedCodeField howProvidedCode = null;
 
   public WalkingAid description(String description) {
     this.description = description;
@@ -58,7 +59,7 @@ public class WalkingAid {
     this.usage = usage;
   }
 
-  public WalkingAid howProvidedCode(String howProvidedCode) {
+  public WalkingAid howProvidedCode(HowProvidedCodeField howProvidedCode) {
     this.howProvidedCode = howProvidedCode;
     return this;
   }
@@ -69,12 +70,12 @@ public class WalkingAid {
    * @return howProvidedCode
    */
   @ApiModelProperty(value = "")
-  @Size(max = 10)
-  public String getHowProvidedCode() {
+  @Valid
+  public HowProvidedCodeField getHowProvidedCode() {
     return howProvidedCode;
   }
 
-  public void setHowProvidedCode(String howProvidedCode) {
+  public void setHowProvidedCode(HowProvidedCodeField howProvidedCode) {
     this.howProvidedCode = howProvidedCode;
   }
 

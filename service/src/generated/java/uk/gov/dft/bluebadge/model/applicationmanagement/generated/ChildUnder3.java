@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
@@ -10,9 +11,10 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class ChildUnder3 {
   @JsonProperty("bulkyMedicalEquipmentTypeCode")
-  private String bulkyMedicalEquipmentTypeCode = null;
+  private BulkyMedicalEquipmentTypeCodeField bulkyMedicalEquipmentTypeCode = null;
 
-  public ChildUnder3 bulkyMedicalEquipmentTypeCode(String bulkyMedicalEquipmentTypeCode) {
+  public ChildUnder3 bulkyMedicalEquipmentTypeCode(
+      BulkyMedicalEquipmentTypeCodeField bulkyMedicalEquipmentTypeCode) {
     this.bulkyMedicalEquipmentTypeCode = bulkyMedicalEquipmentTypeCode;
     return this;
   }
@@ -23,12 +25,13 @@ public class ChildUnder3 {
    * @return bulkyMedicalEquipmentTypeCode
    */
   @ApiModelProperty(value = "")
-  @Size(max = 10)
-  public String getBulkyMedicalEquipmentTypeCode() {
+  @Valid
+  public BulkyMedicalEquipmentTypeCodeField getBulkyMedicalEquipmentTypeCode() {
     return bulkyMedicalEquipmentTypeCode;
   }
 
-  public void setBulkyMedicalEquipmentTypeCode(String bulkyMedicalEquipmentTypeCode) {
+  public void setBulkyMedicalEquipmentTypeCode(
+      BulkyMedicalEquipmentTypeCodeField bulkyMedicalEquipmentTypeCode) {
     this.bulkyMedicalEquipmentTypeCode = bulkyMedicalEquipmentTypeCode;
   }
 

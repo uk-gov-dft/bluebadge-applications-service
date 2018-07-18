@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class Party {
   @JsonProperty("typeCode")
-  private String typeCode = null;
+  private PartyTypeCodeField typeCode = null;
 
   @JsonProperty("contact")
   private Contact contact = null;
@@ -22,24 +22,24 @@ public class Party {
   @JsonProperty("organisation")
   private Organisation organisation = null;
 
-  public Party typeCode(String typeCode) {
+  public Party typeCode(PartyTypeCodeField typeCode) {
     this.typeCode = typeCode;
     return this;
   }
 
   /**
-   * PERSON or ORG
+   * Get typeCode
    *
    * @return typeCode
    */
-  @ApiModelProperty(required = true, value = "PERSON or ORG")
+  @ApiModelProperty(required = true, value = "")
   @NotNull
-  @Size(max = 10)
-  public String getTypeCode() {
+  @Valid
+  public PartyTypeCodeField getTypeCode() {
     return typeCode;
   }
 
-  public void setTypeCode(String typeCode) {
+  public void setTypeCode(PartyTypeCodeField typeCode) {
     this.typeCode = typeCode;
   }
 
@@ -53,7 +53,8 @@ public class Party {
    *
    * @return contact
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
   @Valid
   public Contact getContact() {
     return contact;

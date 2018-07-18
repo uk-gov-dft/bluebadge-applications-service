@@ -15,10 +15,10 @@ public class Application {
   private String applicationId = null;
 
   @JsonProperty("applicationTypeCode")
-  private String applicationTypeCode = null;
+  private ApplicationTypeCodeField applicationTypeCode = null;
 
   @JsonProperty("localAuthorityCode")
-  private Integer localAuthorityCode = null;
+  private String localAuthorityCode = null;
 
   @JsonProperty("isPaymentTaken")
   private Boolean isPaymentTaken = null;
@@ -60,28 +60,28 @@ public class Application {
     this.applicationId = applicationId;
   }
 
-  public Application applicationTypeCode(String applicationTypeCode) {
+  public Application applicationTypeCode(ApplicationTypeCodeField applicationTypeCode) {
     this.applicationTypeCode = applicationTypeCode;
     return this;
   }
 
   /**
-   * NEW, CANCEL, RENEW, REPLACE
+   * Get applicationTypeCode
    *
    * @return applicationTypeCode
    */
-  @ApiModelProperty(example = "NEW", required = true, value = "NEW, CANCEL, RENEW, REPLACE")
+  @ApiModelProperty(required = true, value = "")
   @NotNull
-  @Size(max = 10)
-  public String getApplicationTypeCode() {
+  @Valid
+  public ApplicationTypeCodeField getApplicationTypeCode() {
     return applicationTypeCode;
   }
 
-  public void setApplicationTypeCode(String applicationTypeCode) {
+  public void setApplicationTypeCode(ApplicationTypeCodeField applicationTypeCode) {
     this.applicationTypeCode = applicationTypeCode;
   }
 
-  public Application localAuthorityCode(Integer localAuthorityCode) {
+  public Application localAuthorityCode(String localAuthorityCode) {
     this.localAuthorityCode = localAuthorityCode;
     return this;
   }
@@ -91,13 +91,13 @@ public class Application {
    *
    * @return localAuthorityCode
    */
-  @ApiModelProperty(example = "211", required = true, value = "The code for the local authority.")
+  @ApiModelProperty(example = "BIRM", required = true, value = "The code for the local authority.")
   @NotNull
-  public Integer getLocalAuthorityCode() {
+  public String getLocalAuthorityCode() {
     return localAuthorityCode;
   }
 
-  public void setLocalAuthorityCode(Integer localAuthorityCode) {
+  public void setLocalAuthorityCode(String localAuthorityCode) {
     this.localAuthorityCode = localAuthorityCode;
   }
 
@@ -170,7 +170,8 @@ public class Application {
    *
    * @return party
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
   @Valid
   public Party getParty() {
     return party;
