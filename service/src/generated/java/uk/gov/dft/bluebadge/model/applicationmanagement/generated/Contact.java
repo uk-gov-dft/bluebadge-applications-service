@@ -146,7 +146,7 @@ public class Contact {
    *
    * @return primaryPhoneNumber
    */
-  @ApiModelProperty(example = "1234123123", value = "")
+  @ApiModelProperty(example = "01234123123", value = "")
   public String getPrimaryPhoneNumber() {
     return primaryPhoneNumber;
   }
@@ -165,7 +165,7 @@ public class Contact {
    *
    * @return secondaryPhoneNumber
    */
-  @ApiModelProperty(example = "7.970777111E9", value = "")
+  @ApiModelProperty(example = "07970777111", value = "")
   public String getSecondaryPhoneNumber() {
     return secondaryPhoneNumber;
   }

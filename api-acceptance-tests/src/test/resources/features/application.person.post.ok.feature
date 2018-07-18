@@ -92,6 +92,10 @@ Feature: Verify Create application
       {
         name: 'Freetext',
         location: 'Freetext'
+      },
+      {
+        name: 'Doctor Bob',
+        location: 'My lovely hospital'
       }
     ],
     blind: {
@@ -118,4 +122,4 @@ Feature: Verify Create application
     And request application
     When method POST
     Then status 200
-    And match $.data[*] contains "#notnull"
+    And match $.data contains "#notnull"

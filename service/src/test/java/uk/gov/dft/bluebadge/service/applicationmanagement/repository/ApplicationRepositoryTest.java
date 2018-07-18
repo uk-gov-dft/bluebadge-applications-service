@@ -3,7 +3,6 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.Statements.CREATE;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
@@ -25,6 +24,6 @@ public class ApplicationRepositoryTest {
   @Test
   public void createApplication() {
     repository.createApplication(ApplicationEntity.builder().build());
-    verify(sqlSession).insert(eq(CREATE), any());
+    verify(sqlSession).insert(eq(ApplicationRepository.CREATE), any());
   }
 }

@@ -98,7 +98,8 @@ CREATE TABLE applicationmanagement.app_vehicle(
 ALTER TABLE applicationmanagement.app_vehicle
   ADD CONSTRAINT app_vehicle_application_id_fk
   FOREIGN KEY (application_id)
-  REFERENCES application(id);
+  REFERENCES application(id)
+  ON DELETE CASCADE;
 
 COMMENT ON TABLE app_vehicle IS 'Holds details of an organisations vehicles.';
 COMMENT ON COLUMN app_vehicle.application_id IS 'FK to application.';
@@ -114,26 +115,34 @@ CREATE TABLE applicationmanagement.app_walking_type(
 ALTER TABLE applicationmanagement.app_walking_type
   ADD CONSTRAINT app_walking_type_application_id_fk
   FOREIGN KEY (application_id)
-  REFERENCES application(id);
+  REFERENCES application(id)
+  ON DELETE CASCADE;
 
 COMMENT ON TABLE app_walking_type IS 'Holds short codes from the WALKDIFF group of data for an application.';
 COMMENT ON COLUMN app_walking_type.application_id IS 'FK to application.';
 COMMENT ON COLUMN app_walking_type.walking_type_code IS 'The key, e.g. BALANCE or PAIN.';
 
 CREATE TABLE applicationmanagement.app_walking_aid(
-  application_id      UUID        NOT NULL
- ,walking_aid_code    VARCHAR(10) NOT NULL
- ,PRIMARY KEY (application_id, walking_aid_code)
+  application_id           UUID            NOT NULL
+ ,aid_how_provided_code    VARCHAR(10)
+ ,aid_description          VARCHAR(100)
+ ,aid_usage                VARCHAR(100)
 );
+
+CREATE INDEX app_walking_aid_application_id_ix
+  ON applicationmanagement.app_walking_aid(application_id);
 
 ALTER TABLE applicationmanagement.app_walking_aid
   ADD CONSTRAINT app_walking_aid_application_id_fk
   FOREIGN KEY (application_id)
-  REFERENCES application(id);
+  REFERENCES application(id)
+  ON DELETE CASCADE;
 
 COMMENT ON TABLE app_walking_aid IS 'Holds short codes from the WALKMOB group of data for an application.';
 COMMENT ON COLUMN app_walking_aid.application_id IS 'FK to application.';
-COMMENT ON COLUMN app_walking_aid.walking_aid_code IS 'The key, e.g. PRIVATE, SOCIAL ';
+COMMENT ON COLUMN app_walking_aid.aid_how_provided_code IS 'The key, e.g. PRIVATE, SOCIAL.';
+COMMENT ON COLUMN app_walking_aid.aid_description IS 'Freetext description of the walking aid.';
+COMMENT ON COLUMN app_walking_aid.aid_usage IS 'Freetext description of the usage of the walking aid.';;
 
 CREATE TABLE applicationmanagement.app_treatment(
   application_id         UUID           NOT NULL
@@ -141,10 +150,14 @@ CREATE TABLE applicationmanagement.app_treatment(
  ,treatment_time         VARCHAR(100)
 );
 
+CREATE INDEX app_treatment_application_id_ix
+  ON applicationmanagement.app_treatment(application_id);
+
 ALTER TABLE applicationmanagement.app_treatment
   ADD CONSTRAINT app_treatment_application_id_fk
   FOREIGN KEY (application_id)
-  REFERENCES application(id);
+  REFERENCES application(id)
+  ON DELETE CASCADE;
 
 COMMENT ON TABLE app_treatment IS 'Walking difficulty treatments for an application.';
 COMMENT ON COLUMN app_treatment.application_id IS 'FK to application.';
@@ -156,29 +169,39 @@ CREATE TABLE applicationmanagement.app_medication(
  ,med_name              VARCHAR(100)
  ,med_is_prescribed     BOOLEAN
  ,med_quantity          VARCHAR(100)
+ ,med_frequency         VARCHAR(100)
 );
+
+CREATE INDEX app_medication_application_id
+  ON applicationmanagement.app_medication(application_id);
 
 ALTER TABLE applicationmanagement.app_medication
   ADD CONSTRAINT app_medication_application_id_fk
   FOREIGN KEY (application_id)
-  REFERENCES application(id);
+  REFERENCES application(id)
+  ON DELETE CASCADE;
 
 COMMENT ON TABLE app_medication IS 'Walking difficulty medications being taken.';
 COMMENT ON COLUMN app_medication.application_id IS 'FK to application.';
 COMMENT ON COLUMN app_medication.med_name IS 'Freetext name of medication.';
 COMMENT ON COLUMN app_medication.med_is_prescribed IS 'true if a prescribed medication.';
 COMMENT ON COLUMN app_medication.med_quantity IS 'Freetext description of medication quantity.';
+COMMENT ON COLUMN app_medication.med_quantity IS 'Freetext description of medication frequency.';
 
 CREATE TABLE applicationmanagement.app_healthcare_professional(
   application_id             UUID            NOT NULL
  ,prof_name                  VARCHAR(100)
- ,prof_location           VARCHAR(100)
+ ,prof_location              VARCHAR(100)
 );
+
+CREATE INDEX app_healthcare_professional_application_id_ix
+  ON applicationmanagement.app_healthcare_professional(application_id);
 
 ALTER TABLE applicationmanagement.app_healthcare_professional
   ADD CONSTRAINT app_healthcare_professional_application_id_fk
   FOREIGN KEY (application_id)
-  REFERENCES application(id);
+  REFERENCES application(id)
+  ON DELETE CASCADE;
 
 COMMENT ON TABLE app_healthcare_professional IS 'Healthcare professionals for an application.';
 COMMENT ON COLUMN app_healthcare_professional.prof_name IS 'Name of the healthcare professional.';
@@ -193,5 +216,3 @@ DROP TABLE IF EXISTS applicationmanagement.app_treatment;
 DROP TABLE IF EXISTS applicationmanagement.app_medication;
 DROP TABLE IF EXISTS applicationmanagement.app_healthcare_professional;
 DROP TABLE IF EXISTS applicationmanagement.application;
-
-

@@ -91,7 +91,7 @@ public class Application {
    *
    * @return localAuthorityCode
    */
-  @ApiModelProperty(example = "211", value = "The code for the local authority.")
+  @ApiModelProperty(example = "211", required = true, value = "The code for the local authority.")
   @NotNull
   public Integer getLocalAuthorityCode() {
     return localAuthorityCode;

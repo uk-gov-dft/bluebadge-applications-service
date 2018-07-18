@@ -20,6 +20,16 @@ public class ApplicationService {
   }
 
   public void createApplication(ApplicationEntity application) {
-    repository.createApplication(application);
+    int insertCount;
+    log.info("Creating application: {}", application.getId());
+    insertCount = repository.createApplication(application);
+    log.debug("{} applications created", insertCount);
+
+    repository.createHealthcareProfessionals(application.getHealthcareProfessionals());
+    repository.createMedications(application.getMedications());
+    repository.createTreatments(application.getTreatments());
+    repository.createVehicles(application.getVehicles());
+    repository.createWalkingAids(application.getWalkingAids());
+    repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
   }
 }

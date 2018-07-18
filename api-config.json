@@ -235,6 +235,7 @@
           },
           "partyTypeCode" : {
             "type" : "string",
+            "enum" : [ "PERSON", "ORG" ],
             "example" : "PERSON",
             "maxLength" : 10
           },
@@ -443,15 +444,15 @@
           "postCode" : {
             "type" : "string",
             "example" : "SK6 8GH",
-            "pattern" : "^[A-Za-z]{1,2}[0-9][0-9A-Za-z]?\s?[0-9][A-Za-z]{2}$"
+            "pattern" : "^[A-Za-z]{1,2}[0-9][0-9A-Za-z]?\\s?[0-9][A-Za-z]{2}$"
           },
           "primaryPhoneNumber" : {
             "type" : "string",
-            "example" : 1234123123
+            "example" : "01234123123"
           },
           "secondaryPhoneNumber" : {
             "type" : "string",
-            "example" : 7.970777111E9
+            "example" : "07970777111"
           },
           "emailAddress" : {
             "type" : "string",

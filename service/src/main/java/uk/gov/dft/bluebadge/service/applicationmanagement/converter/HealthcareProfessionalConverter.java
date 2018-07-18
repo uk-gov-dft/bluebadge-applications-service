@@ -1,10 +1,12 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import java.util.UUID;
+import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.HealthcareProfessional;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 
-public class HealthcareProfessionalConverter
+@Component
+class HealthcareProfessionalConverter
     extends ApplicationToEntityCollection<HealthcareProfessionalEntity, HealthcareProfessional> {
 
   @Override

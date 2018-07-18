@@ -1,6 +1,8 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -14,8 +16,37 @@ public class ApplicationSummary {
   @JsonProperty("applicationId")
   private String applicationId = null;
 
+  /** Gets or Sets partyTypeCode */
+  public enum PartyTypeCodeEnum {
+    PERSON("PERSON"),
+
+    ORG("ORG");
+
+    private String value;
+
+    PartyTypeCodeEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static PartyTypeCodeEnum fromValue(String text) {
+      for (PartyTypeCodeEnum b : PartyTypeCodeEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
   @JsonProperty("partyTypeCode")
-  private String partyTypeCode = null;
+  private PartyTypeCodeEnum partyTypeCode = null;
 
   @JsonProperty("applicationTypeCode")
   private String applicationTypeCode = null;
@@ -54,7 +85,7 @@ public class ApplicationSummary {
     this.applicationId = applicationId;
   }
 
-  public ApplicationSummary partyTypeCode(String partyTypeCode) {
+  public ApplicationSummary partyTypeCode(PartyTypeCodeEnum partyTypeCode) {
     this.partyTypeCode = partyTypeCode;
     return this;
   }
@@ -66,11 +97,11 @@ public class ApplicationSummary {
    */
   @ApiModelProperty(example = "PERSON", value = "")
   @Size(max = 10)
-  public String getPartyTypeCode() {
+  public PartyTypeCodeEnum getPartyTypeCode() {
     return partyTypeCode;
   }
 
-  public void setPartyTypeCode(String partyTypeCode) {
+  public void setPartyTypeCode(PartyTypeCodeEnum partyTypeCode) {
     this.partyTypeCode = partyTypeCode;
   }
 
