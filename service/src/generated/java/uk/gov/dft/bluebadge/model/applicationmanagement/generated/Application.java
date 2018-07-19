@@ -127,11 +127,14 @@ public class Application {
   }
 
   /**
-   * Submitted date and time
+   * Submitted date and time. Populated automatically on create
    *
    * @return submissionDate
    */
-  @ApiModelProperty(example = "2018-12-25T12:30:45Z", value = "Submitted date and time")
+  @ApiModelProperty(
+    example = "2018-12-25T12:30:45Z",
+    value = "Submitted date and time. Populated automatically on create"
+  )
   @Valid
   public OffsetDateTime getSubmissionDate() {
     return submissionDate;

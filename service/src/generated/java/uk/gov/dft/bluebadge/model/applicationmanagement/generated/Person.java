@@ -76,7 +76,8 @@ public class Person {
    *
    * @return dob
    */
-  @ApiModelProperty(example = "1970-05-29", value = "Date of birth YYYY-MM-DD")
+  @ApiModelProperty(example = "1970-05-29", required = true, value = "Date of birth YYYY-MM-DD")
+  @NotNull
   @Valid
   public LocalDate getDob() {
     return dob;
@@ -116,7 +117,8 @@ public class Person {
    *
    * @return genderCode
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
   @Valid
   public GenderCodeField getGenderCode() {
     return genderCode;

@@ -48,7 +48,8 @@ public class DisabilityArms {
    *
    * @return isAdaptedVehicle
    */
-  @ApiModelProperty(example = "true", value = "")
+  @ApiModelProperty(example = "true", required = true, value = "")
+  @NotNull
   public Boolean isIsAdaptedVehicle() {
     return isAdaptedVehicle;
   }

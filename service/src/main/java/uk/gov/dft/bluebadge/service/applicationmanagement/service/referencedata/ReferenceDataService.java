@@ -36,14 +36,25 @@ public class ReferenceDataService {
   private void init() {
     if (!isLoaded) {
       Map<String, Set<String>> groupLists = new HashMap<>();
+      Set<String> unexpectedGroups = new HashSet<>();
 
+      // Get list of expected ref data groups
       for (RefDataGroupEnum val : RefDataGroupEnum.values()) {
         groupLists.put(val.getGroupKey(), new HashSet<>());
       }
 
-      List<ReferenceData> referenceDataList = referenceDataApiClient.retrieveReferenceData();
+      List<ReferenceData> referenceDataList = referenceDataApiClient.retrieveReferenceData("APP");
       for (ReferenceData item : referenceDataList) {
-        groupLists.get(item.getGroupShortCode()).add(item.getShortCode());
+        Set<String> group = groupLists.get(item.getGroupShortCode());
+        if(null == group){
+          unexpectedGroups.add(item.getGroupShortCode());
+        } else {
+          groupLists.get(item.getGroupShortCode()).add(item.getShortCode());
+        }
+      }
+
+      for(String group: unexpectedGroups){
+        log.warn("Ref data contains group {} that is not used by the application.", group);
       }
 
       // Store valid authority ids.

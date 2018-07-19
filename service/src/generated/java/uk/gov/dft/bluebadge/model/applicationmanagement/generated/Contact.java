@@ -39,11 +39,11 @@ public class Contact {
   }
 
   /**
-   * Get fullName
+   * Mandatory if Organisation
    *
    * @return fullName
    */
-  @ApiModelProperty(example = "Mabel Jones", value = "")
+  @ApiModelProperty(example = "Mabel Jones", value = "Mandatory if Organisation")
   @Size(max = 100)
   public String getFullName() {
     return fullName;
@@ -146,7 +146,8 @@ public class Contact {
    *
    * @return primaryPhoneNumber
    */
-  @ApiModelProperty(example = "01234123123", value = "")
+  @ApiModelProperty(example = "01234123123", required = true, value = "")
+  @NotNull
   public String getPrimaryPhoneNumber() {
     return primaryPhoneNumber;
   }

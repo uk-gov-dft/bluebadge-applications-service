@@ -1,23 +1,37 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
+import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.common.api.model.Error;
 import uk.gov.dft.bluebadge.common.api.model.ErrorErrors;
 
 public enum ValidationKeyEnum {
-  MISSING_PARTY_OBJECT("NotNull.application.party", "Party cannot be null", "party"),
-  MISSING_CONTACT_OBJECT("NotNull.application.party.contact", "Contact cannot be null", "contact"),
   MISSING_PERSON_OBJECT(
-      "NotNull.application.party.person",
+      "NotNull.party.person",
       "Person details must be included if party is a person.",
-      "person"),
+      "party.person"),
   MISSING_ORG_OBJECT(
-      "NotNull.application.party.organisation",
+      "NotNull.party.organisation",
       "Organisation details must be included if party is an organisation.",
-      "organisation"),
+      "party.organisation"),
   MISSING_ELIGIBILITY_OBJECT(
-      "NotNull.application.eligibility",
+      "NotNull.eligibility",
       "Eligibility is required if application is for a person",
-      "eligibility");
+      "eligibility"),
+  MISSING_BENEFIT_OBJECT(
+      "NotNull.eligibility.benefit", "benefit required if PIP, DLA or WPMS", "eligibility.benefit"),
+  MISSING_WALKING_OBJECT(
+      "NotNull.eligibility.walkingDifficulty",
+      "walkingDifficulty required if eligibility is WALKD",
+      "eligibility.walkingDifficulty"),
+  MISSING_ARMS_OBJECT(
+      "NotNull.eligibility.disabilityArms",
+      "disabilityArms required if eligibility ARMS",
+      "eligibility.disabilityArms"),
+  MISSING_CHILD_OBJECT(
+      "NotNull.eligibility.childUnder3",
+      "childUnder3 required if eligibility CHILDBULK",
+      "eligibility.childUnder3"),
+  INVALID_LA("Invalid.localAuthorityCode", "Not a valid localAuthorityCode", "localAuthorityCode");
 
   private final String key;
   private final String defaultMessage;
@@ -30,18 +44,19 @@ public enum ValidationKeyEnum {
     this.field = field;
   }
 
-  public ErrorErrors getFieldErrorInstance() {
-    ErrorErrors error = new ErrorErrors();
-    error.setField(field);
-    error.setMessage(key);
-    error.setReason(defaultMessage);
-    return error;
+  public void addFieldError(Errors errors) {
+    errors.rejectValue(field, key, defaultMessage);
   }
 
-  public Error getSystemErrorInstance() {
-    Error error = new Error();
-    error.setMessage(key);
-    error.setReason(defaultMessage);
-    return error;
+  public String getKey() {
+    return key;
+  }
+
+  public String getDefaultMessage() {
+    return defaultMessage;
+  }
+
+  public String getField() {
+    return field;
   }
 }

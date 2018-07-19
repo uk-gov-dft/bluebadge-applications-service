@@ -24,7 +24,8 @@ public class ChildUnder3 {
    *
    * @return bulkyMedicalEquipmentTypeCode
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
   @Valid
   public BulkyMedicalEquipmentTypeCodeField getBulkyMedicalEquipmentTypeCode() {
     return bulkyMedicalEquipmentTypeCode;

@@ -28,7 +28,7 @@ public class ReferenceDataApiClient {
    *
    * @return List of reference data items.
    */
-  public List<ReferenceData> retrieveReferenceData() {
+  public List<ReferenceData> retrieveReferenceData(String domain) {
     log.debug("Loading reference data.");
 
     ReferenceDataResponse response =
@@ -36,7 +36,7 @@ public class ReferenceDataApiClient {
             .getInstance()
             .getForEntity(
                 messageServiceConfiguration
-                    .getUriComponentsBuilder("reference-data", "BADGE")
+                    .getUriComponentsBuilder("reference-data", domain)
                     .toUriString(),
                 ReferenceDataResponse.class)
             .getBody();

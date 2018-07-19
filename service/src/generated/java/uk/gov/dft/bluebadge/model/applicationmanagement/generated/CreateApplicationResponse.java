@@ -2,9 +2,10 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Objects;
 import org.springframework.validation.annotation.Validated;
 import uk.gov.dft.bluebadge.common.api.model.CommonResponse;
+
+import java.util.Objects;
 
 /** CreateApplicationResponse */
 @Validated

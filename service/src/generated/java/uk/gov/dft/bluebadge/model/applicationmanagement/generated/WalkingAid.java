@@ -69,7 +69,8 @@ public class WalkingAid {
    *
    * @return howProvidedCode
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
   @Valid
   public HowProvidedCodeField getHowProvidedCode() {
     return howProvidedCode;

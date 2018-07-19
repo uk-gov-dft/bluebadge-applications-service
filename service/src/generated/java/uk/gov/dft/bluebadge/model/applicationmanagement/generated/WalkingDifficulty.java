@@ -51,11 +51,11 @@ public class WalkingDifficulty {
   }
 
   /**
-   * 'Short codes from the WALKDIFF group of data'
+   * 'Short codes from the WALKDIFF group of data. At least 1 required.'
    *
    * @return typeCodes
    */
-  @ApiModelProperty(value = "'Short codes from the WALKDIFF group of data' ")
+  @ApiModelProperty(value = "'Short codes from the WALKDIFF group of data.  At least 1 required.' ")
   @Valid
   public List<WalkingDifficultyTypeCodeField> getTypeCodes() {
     return typeCodes;
@@ -71,11 +71,13 @@ public class WalkingDifficulty {
   }
 
   /**
-   * Get otherDescription
+   * Only entered if something else type selected and even then not required.
    *
    * @return otherDescription
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(
+    value = "Only entered if something else type selected and even then not required."
+  )
   @Size(max = 100)
   public String getOtherDescription() {
     return otherDescription;
@@ -124,7 +126,8 @@ public class WalkingDifficulty {
    *
    * @return walkingLengthOfTimeCode
    */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
   @Valid
   public WalkingLengthOfTimeCodeField getWalkingLengthOfTimeCode() {
     return walkingLengthOfTimeCode;

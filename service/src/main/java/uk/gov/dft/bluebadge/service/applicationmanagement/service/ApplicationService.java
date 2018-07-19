@@ -8,7 +8,6 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ValidatedApplication;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
 
 @Slf4j
@@ -31,9 +30,7 @@ public class ApplicationService {
   }
 
   public String createApplication(Application applicationModel) {
-
-    ValidatedApplication validatedApplication = validator.validateForCreate(applicationModel);
-    ApplicationEntity application = converter.convertToEntityOnCreate(validatedApplication);
+    ApplicationEntity application = converter.convertToEntityOnCreate(applicationModel);
     int insertCount;
     log.info("Creating application: {}", application.getId());
     insertCount = repository.createApplication(application);

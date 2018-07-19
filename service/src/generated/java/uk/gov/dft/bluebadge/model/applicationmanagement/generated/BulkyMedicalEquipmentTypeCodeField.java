@@ -12,6 +12,8 @@ public enum BulkyMedicalEquipmentTypeCodeField {
 
   OXYSAT("OXYSAT"),
 
+  OXYADMIN("OXYADMIN"),
+
   SYRINGE("SYRINGE"),
 
   PARENT("PARENT"),

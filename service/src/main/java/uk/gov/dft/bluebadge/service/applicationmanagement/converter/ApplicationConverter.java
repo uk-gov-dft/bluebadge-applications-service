@@ -1,20 +1,21 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import java.util.UUID;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.common.converter.ToEntityConverter;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.DisabilityArms;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibility;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Organisation;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Person;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ValidatedApplication;
+
+import java.util.UUID;
 
 @Component
-public class ApplicationConverter
-    implements ToEntityConverter<ApplicationEntity, ValidatedApplication> {
+public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application> {
 
   private VehicleConverter vehicleConverter;
   private WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
@@ -39,7 +40,7 @@ public class ApplicationConverter
   }
 
   @Override
-  public ApplicationEntity convertToEntity(ValidatedApplication application) {
+  public ApplicationEntity convertToEntity(Application application) {
 
     Contact contact = application.getParty().getContact();
 
@@ -63,7 +64,7 @@ public class ApplicationConverter
             .partyCode(application.getParty().getTypeCode().toString())
             .build();
 
-    if (application.isPerson()) {
+    if (application.getParty().getTypeCode().equals(PartyTypeCodeField.PERSON)) {
       // Person specific stuff
       Person person = application.getParty().getPerson();
       entity.setHolderName(person.getBadgeHolderName());
@@ -130,7 +131,7 @@ public class ApplicationConverter
     return entity;
   }
 
-  public ApplicationEntity convertToEntityOnCreate(ValidatedApplication application) {
+  public ApplicationEntity convertToEntityOnCreate(Application application) {
     if (null == application.getApplicationId()) {
       application.setApplicationId(UUID.randomUUID().toString());
     }

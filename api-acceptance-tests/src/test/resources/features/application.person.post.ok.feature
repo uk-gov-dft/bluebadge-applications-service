@@ -10,7 +10,7 @@ Feature: Verify Create application
     {
   applicationId: '',
   applicationTypeCode: 'NEW',
-  localAuthorityCode: 211,
+  localAuthorityCode: 'BIRM',
   isPaymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
   existingBadgeNumber: 'string',
@@ -48,7 +48,7 @@ Feature: Verify Create application
     }
   },
   eligibility: {
-    typeCode: 'string',
+    typeCode: 'ARMS',
     descriptionOfConditions: 'Freetext',
     benefit: {
       isIndefinite: true,
@@ -63,11 +63,11 @@ Feature: Verify Create application
         {
           description: 'string',
           usage: 'string',
-          howProvidedCode: 'string'
+          howProvidedCode: 'PRIVATE'
         }
       ],
-      walkingLengthOfTimeCode: 'string',
-      walkingSpeedCode: 'string',
+      walkingLengthOfTimeCode: 'LESSMIN',
+      walkingSpeedCode: 'SLOW',
       treatments: [
         {
           description: 'string',
@@ -102,7 +102,7 @@ Feature: Verify Create application
       registeredAtLaId: 7
     },
     childUnder3: {
-      bulkyMedicalEquipmentTypeCode: 'string'
+      bulkyMedicalEquipmentTypeCode: 'SYRINGE'
     }
   },
   artifacts: {

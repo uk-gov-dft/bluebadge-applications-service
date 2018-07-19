@@ -284,7 +284,7 @@
           "submissionDate" : {
             "type" : "string",
             "format" : "date-time",
-            "description" : "Submitted date and time",
+            "description" : "Submitted date and time. Populated automatically on create",
             "example" : "2018-12-25T12:30:45Z"
           },
           "existingBadgeNumber" : {
@@ -348,7 +348,7 @@
             "$ref" : "#/definitions/GenderCodeField"
           }
         },
-        "required" : [ "badgeHolderName" ]
+        "required" : [ "badgeHolderName", "dob", "genderCode" ]
       },
       "Organisation" : {
         "type" : "object",
@@ -406,7 +406,8 @@
           "fullName" : {
             "type" : "string",
             "maxLength" : 100,
-            "example" : "Mabel Jones"
+            "example" : "Mabel Jones",
+            "description" : "Mandatory if Organisation"
           },
           "buildingStreet" : {
             "type" : "string",
@@ -442,7 +443,7 @@
             "example" : "nobody@blancmange.com"
           }
         },
-        "required" : [ "buildingStreet", "townCity", "postCode" ]
+        "required" : [ "buildingStreet", "townCity", "postCode", "primaryPhoneNumber" ]
       },
       "Eligibility" : {
         "type" : "object",
@@ -485,7 +486,8 @@
           "bulkyMedicalEquipmentTypeCode" : {
             "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
           }
-        }
+        },
+        "required" : [ "bulkyMedicalEquipmentTypeCode" ]
       },
       "Blind" : {
         "type" : "object",
@@ -509,7 +511,8 @@
             "format" : "date",
             "example" : "2022-03-30"
           }
-        }
+        },
+        "required" : [ "isIndefinite" ]
       },
       "HealthcareProfessional" : {
         "type" : "object",
@@ -541,19 +544,21 @@
             "type" : "string",
             "maxLength" : 100
           }
-        }
+        },
+        "required" : [ "isAdaptedVehicle" ]
       },
       "WalkingDifficulty" : {
         "type" : "object",
         "properties" : {
           "typeCodes" : {
             "type" : "array",
-            "description" : "'Short codes from the WALKDIFF group of data'\n",
+            "description" : "'Short codes from the WALKDIFF group of data.  At least 1 required.'\n",
             "items" : {
               "$ref" : "#/definitions/WalkingDifficultyTypeCodeField"
             }
           },
           "otherDescription" : {
+            "description" : "Only entered if something else type selected and even then not required.",
             "type" : "string",
             "maxLength" : 100
           },
@@ -581,7 +586,8 @@
               "$ref" : "#/definitions/Medication"
             }
           }
-        }
+        },
+        "required" : [ "walkingLengthOfTimeCode" ]
       },
       "Medication" : {
         "type" : "object",
@@ -635,7 +641,8 @@
           "howProvidedCode" : {
             "$ref" : "#/definitions/HowProvidedCodeField"
           }
-        }
+        },
+        "required" : [ "howProvidedCode" ]
       },
       "Artifacts" : {
         "description" : "Provided files/evidence",
@@ -703,7 +710,7 @@
       },
       "BulkyMedicalEquipmentTypeCodeField" : {
         "type" : "string",
-        "enum" : [ "NONE", "CAST", "OXYSAT", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
+        "enum" : [ "NONE", "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
         "example" : "CAST"
       },
       "WalkingDifficultyTypeCodeField" : {
@@ -717,6 +724,7 @@
         "example" : "CANTWALK"
       },
       "WalkingSpeedCodeField" : {
+        "description" : "Required if able to walk, i.e. Walking length of time not cannot walk.",
         "type" : "string",
         "enum" : [ "MSLOW", "SLOW", "SAME", "FAST" ],
         "example" : "SLOW"

@@ -27,7 +27,8 @@ public class Benefit {
    *
    * @return isIndefinite
    */
-  @ApiModelProperty(example = "true", value = "")
+  @ApiModelProperty(example = "true", required = true, value = "")
+  @NotNull
   public Boolean isIsIndefinite() {
     return isIndefinite;
   }
