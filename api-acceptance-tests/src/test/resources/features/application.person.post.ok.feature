@@ -10,12 +10,12 @@ Feature: Verify Create application
     {
   applicationId: '',
   applicationTypeCode: 'NEW',
-  localAuthorityCode: 'BIRM',
-  isPaymentTaken: true,
+  localAuthorityCode: '',
+  isPaymentTaken: ,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'string',
+  existingBadgeNumber: '123456789123456789',
   party: {
-    typeCode: 'PERSON',
+    typeCode: 'PERSON2',
     contact: {
       fullName: 'Mabel Jones',
       buildingStreet: '65 Basil Chambers',
@@ -66,7 +66,7 @@ Feature: Verify Create application
           howProvidedCode: 'PRIVATE'
         }
       ],
-      walkingLengthOfTimeCode: 'LESSMIN',
+      walkingLengthOfTimeCode: 'LESSMIN2',
       walkingSpeedCode: 'SLOW',
       treatments: [
         {

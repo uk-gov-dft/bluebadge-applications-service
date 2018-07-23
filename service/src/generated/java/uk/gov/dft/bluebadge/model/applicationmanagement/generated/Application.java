@@ -155,6 +155,7 @@ public class Application {
    * @return existingBadgeNumber
    */
   @ApiModelProperty(value = "")
+  @Pattern(regexp = "^[0-9A-HJK]{6}$")
   public String getExistingBadgeNumber() {
     return existingBadgeNumber;
   }

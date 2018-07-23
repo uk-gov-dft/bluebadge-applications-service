@@ -1,6 +1,5 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.validation.constraints.*;
 
@@ -24,7 +23,7 @@ public enum GenderCodeField {
     return String.valueOf(value);
   }
 
-  @JsonCreator
+  //  @JsonCreator
   public static GenderCodeField fromValue(String text) {
     for (GenderCodeField b : GenderCodeField.values()) {
       if (String.valueOf(b.value).equals(text)) {

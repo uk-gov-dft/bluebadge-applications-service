@@ -1,5 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.common.converter.ToEntityConverter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
@@ -11,8 +12,6 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeF
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Person;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import java.util.UUID;
 
 @Component
 public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application> {

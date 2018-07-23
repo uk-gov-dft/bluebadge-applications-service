@@ -1,6 +1,5 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.validation.constraints.*;
 
@@ -30,7 +29,7 @@ public enum WalkingDifficultyTypeCodeField {
     return String.valueOf(value);
   }
 
-  @JsonCreator
+  // @JsonCreator
   public static WalkingDifficultyTypeCodeField fromValue(String text) {
     for (WalkingDifficultyTypeCodeField b : WalkingDifficultyTypeCodeField.values()) {
       if (String.valueOf(b.value).equals(text)) {

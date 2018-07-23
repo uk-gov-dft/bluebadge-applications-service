@@ -26,7 +26,7 @@ public class ReferenceDataService {
 
   public boolean isAuthorityCodeValid(String code) {
     if (!isLoaded) init();
-    return authorityKeys.contains(code);
+    return code != null && authorityKeys.contains(code);
   }
 
   /**
@@ -46,14 +46,14 @@ public class ReferenceDataService {
       List<ReferenceData> referenceDataList = referenceDataApiClient.retrieveReferenceData("APP");
       for (ReferenceData item : referenceDataList) {
         Set<String> group = groupLists.get(item.getGroupShortCode());
-        if(null == group){
+        if (null == group) {
           unexpectedGroups.add(item.getGroupShortCode());
         } else {
           groupLists.get(item.getGroupShortCode()).add(item.getShortCode());
         }
       }
 
-      for(String group: unexpectedGroups){
+      for (String group : unexpectedGroups) {
         log.warn("Ref data contains group {} that is not used by the application.", group);
       }
 

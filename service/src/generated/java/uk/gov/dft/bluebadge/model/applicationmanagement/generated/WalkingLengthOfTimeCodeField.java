@@ -1,6 +1,5 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.validation.constraints.*;
 
@@ -26,7 +25,7 @@ public enum WalkingLengthOfTimeCodeField {
     return String.valueOf(value);
   }
 
-  @JsonCreator
+  // @JsonCreator
   public static WalkingLengthOfTimeCodeField fromValue(String text) {
     for (WalkingLengthOfTimeCodeField b : WalkingLengthOfTimeCodeField.values()) {
       if (String.valueOf(b.value).equals(text)) {

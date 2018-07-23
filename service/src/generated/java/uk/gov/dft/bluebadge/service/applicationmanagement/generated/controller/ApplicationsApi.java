@@ -10,6 +10,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -24,12 +29,6 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummaryResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Optional;
 
 @Api(value = "Applications", description = "the Applications API")
 public interface ApplicationsApi {

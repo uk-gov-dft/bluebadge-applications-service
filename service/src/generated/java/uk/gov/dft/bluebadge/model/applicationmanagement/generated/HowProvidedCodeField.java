@@ -1,6 +1,5 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.validation.constraints.*;
 
@@ -24,7 +23,7 @@ public enum HowProvidedCodeField {
     return String.valueOf(value);
   }
 
-  @JsonCreator
+  // @JsonCreator
   public static HowProvidedCodeField fromValue(String text) {
     for (HowProvidedCodeField b : HowProvidedCodeField.values()) {
       if (String.valueOf(b.value).equals(text)) {
