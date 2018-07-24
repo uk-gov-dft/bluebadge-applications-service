@@ -7,10 +7,10 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Heal
 
 @Component
 class HealthcareProfessionalConverter
-    extends ApplicationToEntityCollection<HealthcareProfessionalEntity, HealthcareProfessional> {
+    implements ApplicationToEntityCollection<HealthcareProfessionalEntity, HealthcareProfessional> {
 
   @Override
-  HealthcareProfessionalEntity mapToEntity(
+  public HealthcareProfessionalEntity mapToEntity(
       HealthcareProfessional healthcareProfessional, UUID applicationId) {
     return HealthcareProfessionalEntity.builder()
         .profLocation(healthcareProfessional.getLocation())

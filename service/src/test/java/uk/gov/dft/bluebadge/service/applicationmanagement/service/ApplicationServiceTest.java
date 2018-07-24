@@ -15,7 +15,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationTestBase;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
 
 public class ApplicationServiceTest extends ApplicationTestBase {
 

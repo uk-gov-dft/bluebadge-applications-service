@@ -72,7 +72,6 @@ public class ReferenceDataService {
 
   private void validateModelToRefData(
       Class<? extends Enum<?>> model, Set<String> refValues, String context) {
-    int errors = 0;
 
     if (null == model) {
       log.debug("LoadRefData: Not validating {}", context);
@@ -93,7 +92,6 @@ public class ReferenceDataService {
     for (String e : enumNames) {
       if (!refValues.contains(e)) {
         log.error("{}: Enum value {}, not in ref data.", context, e);
-        errors++;
       }
     }
 
@@ -101,9 +99,7 @@ public class ReferenceDataService {
     for (String e : refValues) {
       if (!enumNames.contains(e)) {
         log.error("{}: Ref data value {}, not in enum.", context, e);
-        errors++;
       }
     }
-
   }
 }

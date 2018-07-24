@@ -6,9 +6,9 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingAid;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
 
 @Component
-class WalkingAidConverter extends ApplicationToEntityCollection<WalkingAidEntity, WalkingAid> {
+class WalkingAidConverter implements ApplicationToEntityCollection<WalkingAidEntity, WalkingAid> {
   @Override
-  WalkingAidEntity mapToEntity(WalkingAid model, UUID applicationId) {
+  public WalkingAidEntity mapToEntity(WalkingAid model, UUID applicationId) {
     return WalkingAidEntity.builder()
         .applicationId(applicationId)
         .description(model.getDescription())

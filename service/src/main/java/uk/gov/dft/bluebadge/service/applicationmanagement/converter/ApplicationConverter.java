@@ -38,6 +38,60 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
     this.healthcareProfessionalConverter = healthcareProfessionalConverter;
   }
 
+  private void convertPerson(Application application, ApplicationEntity entity) {
+    Person person = application.getParty().getPerson();
+    entity.setHolderName(person.getBadgeHolderName());
+    entity.setNino(person.getNino());
+    entity.setDob(person.getDob());
+    entity.setHolderNameAtBirth(person.getNameAtBirth());
+    entity.setGenderCode(person.getGenderCode().toString());
+    entity.setNoOfBadges(1);
+
+    Eligibility eligibility = application.getEligibility();
+    if (null != eligibility) {
+      entity.setEligibilityCode(eligibility.getTypeCode().toString());
+      entity.setEligibilityConditions(eligibility.getDescriptionOfConditions());
+      if (null != eligibility.getBenefit()) {
+        entity.setBenefitIsIndefinite(eligibility.getBenefit().isIsIndefinite());
+        entity.setBenefitExpiryDate(eligibility.getBenefit().getExpiryDate());
+      }
+      if (null != eligibility.getWalkingDifficulty()) {
+        WalkingDifficulty walkingDifficulty = eligibility.getWalkingDifficulty();
+        entity.setWalkingDifficultyTypes(
+            walkingDifficultyTypeConverter.convertToEntityList(
+                walkingDifficulty.getTypeCodes(), entity.getId()));
+        entity.setWalkOtherDesc(walkingDifficulty.getOtherDescription());
+        entity.setWalkingAids(
+            walkingAidConverter.convertToEntityList(
+                walkingDifficulty.getWalkingAids(), entity.getId()));
+        entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().toString());
+        entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().toString());
+        entity.setTreatments(
+            treatmentConverter.convertToEntityList(
+                walkingDifficulty.getTreatments(), entity.getId()));
+        entity.setMedications(
+            medicationConverter.convertToEntityList(
+                walkingDifficulty.getMedications(), entity.getId()));
+      }
+      if (null != eligibility.getDisabilityArms()) {
+        DisabilityArms disabilityArms = eligibility.getDisabilityArms();
+        entity.setArmsAdaptedVehDesc(disabilityArms.getAdaptedVehicleDescription());
+        entity.setArmsDrivingFreq(disabilityArms.getDrivingFrequency());
+        entity.setArmsIsAdaptedVehicle(disabilityArms.isIsAdaptedVehicle());
+      }
+      entity.setHealthcareProfessionals(
+          healthcareProfessionalConverter.convertToEntityList(
+              eligibility.getHealthcareProfessionals(), entity.getId()));
+      if (null != eligibility.getBlind()) {
+        entity.setBlindRegisteredAtLaCode(eligibility.getBlind().getRegisteredAtLaId());
+      }
+      if (null != eligibility.getChildUnder3()) {
+        entity.setBulkyEquipmentTypeCode(
+            eligibility.getChildUnder3().getBulkyMedicalEquipmentTypeCode().toString());
+      }
+    }
+  }
+
   @Override
   public ApplicationEntity convertToEntity(Application application) {
 
@@ -64,70 +118,22 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
             .build();
 
     if (application.getParty().getTypeCode().equals(PartyTypeCodeField.PERSON)) {
-      // Person specific stuff
-      Person person = application.getParty().getPerson();
-      entity.setHolderName(person.getBadgeHolderName());
-      entity.setNino(person.getNino());
-      entity.setDob(person.getDob());
-      entity.setHolderNameAtBirth(person.getNameAtBirth());
-      entity.setGenderCode(person.getGenderCode().toString());
-      entity.setNoOfBadges(1);
-
-      Eligibility eligibility = application.getEligibility();
-      if (null != eligibility) {
-        entity.setEligibilityCode(eligibility.getTypeCode().toString());
-        entity.setEligibilityConditions(eligibility.getDescriptionOfConditions());
-        if (null != eligibility.getBenefit()) {
-          entity.setBenefitIsIndefinite(eligibility.getBenefit().isIsIndefinite());
-          entity.setBenefitExpiryDate(eligibility.getBenefit().getExpiryDate());
-        }
-        if (null != eligibility.getWalkingDifficulty()) {
-          WalkingDifficulty walkingDifficulty = eligibility.getWalkingDifficulty();
-          entity.setWalkingDifficultyTypes(
-              walkingDifficultyTypeConverter.convertToEntityList(
-                  walkingDifficulty.getTypeCodes(), entity.getId()));
-          entity.setWalkOtherDesc(walkingDifficulty.getOtherDescription());
-          entity.setWalkingAids(
-              walkingAidConverter.convertToEntityList(
-                  walkingDifficulty.getWalkingAids(), entity.getId()));
-          entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().toString());
-          entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().toString());
-          entity.setTreatments(
-              treatmentConverter.convertToEntityList(
-                  walkingDifficulty.getTreatments(), entity.getId()));
-          entity.setMedications(
-              medicationConverter.convertToEntityList(
-                  walkingDifficulty.getMedications(), entity.getId()));
-        }
-        if (null != eligibility.getDisabilityArms()) {
-          DisabilityArms disabilityArms = eligibility.getDisabilityArms();
-          entity.setArmsAdaptedVehDesc(disabilityArms.getAdaptedVehicleDescription());
-          entity.setArmsDrivingFreq(disabilityArms.getDrivingFrequency());
-          entity.setArmsIsAdaptedVehicle(disabilityArms.isIsAdaptedVehicle());
-        }
-        entity.setHealthcareProfessionals(
-            healthcareProfessionalConverter.convertToEntityList(
-                eligibility.getHealthcareProfessionals(), entity.getId()));
-        if (null != eligibility.getBlind()) {
-          entity.setBlindRegisteredAtLaCode(eligibility.getBlind().getRegisteredAtLaId());
-        }
-        if (null != eligibility.getChildUnder3()) {
-          entity.setBulkyEquipmentTypeCode(
-              eligibility.getChildUnder3().getBulkyMedicalEquipmentTypeCode().toString());
-        }
-      }
-
+      convertPerson(application, entity);
     } else {
-      Organisation organisation = application.getParty().getOrganisation();
-      entity.setHolderName(organisation.getBadgeHolderName());
-      entity.setOrgIsCharity(organisation.isIsCharity());
-      entity.setOrgCharityNo(organisation.getCharityNumber());
-      entity.setNoOfBadges(organisation.getNumberOfBadges());
-      entity.setVehicles(
-          vehicleConverter.convertToEntityList(organisation.getVehicles(), entity.getId()));
+      convertOrg(application, entity);
     }
 
     return entity;
+  }
+
+  private void convertOrg(Application application, ApplicationEntity entity) {
+    Organisation organisation = application.getParty().getOrganisation();
+    entity.setHolderName(organisation.getBadgeHolderName());
+    entity.setOrgIsCharity(organisation.isIsCharity());
+    entity.setOrgCharityNo(organisation.getCharityNumber());
+    entity.setNoOfBadges(organisation.getNumberOfBadges());
+    entity.setVehicles(
+        vehicleConverter.convertToEntityList(organisation.getVehicles(), entity.getId()));
   }
 
   public ApplicationEntity convertToEntityOnCreate(Application application) {

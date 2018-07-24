@@ -12,7 +12,6 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifacts;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingSpeedCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationTestBase;
 
 public class ApplicationValidatorTest extends ApplicationTestBase {
@@ -33,7 +32,7 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
 
     // Given party type, party, and contact are ok, then ok to validate.
     assertTrue(validator.checkRequiredObjectsExistToContinueValidation(errors, application));
-    assertEquals(errors.getErrorCount(), 0);
+    assertEquals(0, errors.getErrorCount());
   }
 
   @Test
@@ -45,12 +44,12 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
     // Given party missing then can't validate further
     application.setParty(null);
     assertFalse(validator.checkRequiredObjectsExistToContinueValidation(errors, application));
-    assertEquals(errors.getErrorCount(), 0);
+    assertEquals(0, errors.getErrorCount());
 
     // Given the check failed ensure main validate method does nothing
     // And particularly has no null pointers.
     validator.validate(application, errors);
-    assertEquals(errors.getErrorCount(), 0);
+    assertEquals(0, errors.getErrorCount());
   }
 
   @Test
@@ -70,7 +69,7 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
     errors.rejectValue(ApplicationValidator.FieldKeys.PARTY_TYPE, "Invalid");
     application.getParty().setTypeCode(PartyTypeCodeField.PERSON);
     assertFalse(validator.checkRequiredObjectsExistToContinueValidation(errors, application));
-    assertEquals(errors.getErrorCount(), 1);
+    assertEquals(1, errors.getErrorCount());
   }
 
   @Test
@@ -502,12 +501,6 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
     assertEquals(0, errors.getErrorCount());
 
     // Walking speed only present if can walk, from walking length of time.
-    app.getEligibility().getWalkingDifficulty().setWalkingLengthOfTimeCode(null);
-    app.getEligibility().getWalkingDifficulty().setWalkingSpeedCode(WalkingSpeedCodeField.FAST);
-    resetErrors(app);
-    validator.validateWalking(app, errors);
-    assertEquals(1, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount(ApplicationValidator.FieldKeys.WALKING_SPEED));
     // And invalid, but not null
     app.getEligibility()
         .getWalkingDifficulty()

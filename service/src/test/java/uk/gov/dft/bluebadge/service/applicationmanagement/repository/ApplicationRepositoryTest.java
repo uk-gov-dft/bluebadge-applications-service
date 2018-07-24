@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.Statements;
 
 public class ApplicationRepositoryTest {
 
@@ -24,6 +25,6 @@ public class ApplicationRepositoryTest {
   @Test
   public void createApplication() {
     repository.createApplication(ApplicationEntity.builder().build());
-    verify(sqlSession).insert(eq(ApplicationRepository.CREATE), any());
+    verify(sqlSession).insert(eq(Statements.CREATE.getName()), any());
   }
 }

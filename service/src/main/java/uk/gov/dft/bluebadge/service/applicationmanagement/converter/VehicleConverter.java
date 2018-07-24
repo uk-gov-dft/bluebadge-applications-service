@@ -6,10 +6,10 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Vehicle;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 
 @Component
-class VehicleConverter extends ApplicationToEntityCollection<VehicleEntity, Vehicle> {
+class VehicleConverter implements ApplicationToEntityCollection<VehicleEntity, Vehicle> {
 
   @Override
-  VehicleEntity mapToEntity(Vehicle vehicle, UUID applicationId) {
+  public VehicleEntity mapToEntity(Vehicle vehicle, UUID applicationId) {
     return VehicleEntity.builder()
         .registrationNumber(vehicle.getRegistrationNumber())
         .typeCode(vehicle.getTypeCode().toString())

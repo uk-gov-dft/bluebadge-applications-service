@@ -12,6 +12,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Vehi
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingDifficultyTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.ApplicationMapper;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.Statements;
 
 /** Provides CRUD operations on ApplicationEntity entity. */
 @Component
@@ -30,13 +31,14 @@ public class ApplicationRepository implements ApplicationMapper {
 
   @Override
   public int createApplication(ApplicationEntity applicationEntity) {
-    return sqlSession.insert(CREATE, applicationEntity);
+    return sqlSession.insert(Statements.CREATE.getName(), applicationEntity);
   }
 
   @Override
   public void createHealthcareProfessionals(List<HealthcareProfessionalEntity> professionals) {
     if (createRequired(professionals)) {
-      int insertCount = sqlSession.insert(CREATE_HEALTHCARE_PROFESSIONALS, professionals);
+      int insertCount =
+          sqlSession.insert(Statements.CREATE_HEALTHCARE_PROFESSIONALS.getName(), professionals);
       log.debug("{} healthcare professionals created.", insertCount);
     }
   }
@@ -44,7 +46,7 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public void createMedications(List<MedicationEntity> medications) {
     if (createRequired(medications)) {
-      int insertCount = sqlSession.insert(CREATE_MEDICATIONS, medications);
+      int insertCount = sqlSession.insert(Statements.CREATE_MEDICATIONS.getName(), medications);
       log.debug("{} medications created.", insertCount);
     }
   }
@@ -52,7 +54,7 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public void createTreatments(List<TreatmentEntity> treatments) {
     if (createRequired(treatments)) {
-      int insertCount = sqlSession.insert(CREATE_TREATMENTS, treatments);
+      int insertCount = sqlSession.insert(Statements.CREATE_TREATMENTS.getName(), treatments);
       log.debug("{} treatments created.", insertCount);
     }
   }
@@ -60,7 +62,7 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public void createVehicles(List<VehicleEntity> vehicles) {
     if (createRequired(vehicles)) {
-      int insertCount = sqlSession.insert(CREATE_VEHICLES, vehicles);
+      int insertCount = sqlSession.insert(Statements.CREATE_VEHICLES.getName(), vehicles);
       log.debug("{} vehicles created.", insertCount);
     }
   }
@@ -68,7 +70,7 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public void createWalkingAids(List<WalkingAidEntity> walkingAids) {
     if (createRequired(walkingAids)) {
-      int insertCount = sqlSession.insert(CREATE_WALKING_AIDS, walkingAids);
+      int insertCount = sqlSession.insert(Statements.CREATE_WALKING_AIDS.getName(), walkingAids);
       log.debug("{} walking aids created.", insertCount);
     }
   }
@@ -77,7 +79,9 @@ public class ApplicationRepository implements ApplicationMapper {
   public void createWalkingDifficultyTypes(
       List<WalkingDifficultyTypeEntity> walkingDifficultyTypes) {
     if (createRequired(walkingDifficultyTypes)) {
-      int insertCount = sqlSession.insert(CREATE_WALKING_DIFFICULTY_TYPES, walkingDifficultyTypes);
+      int insertCount =
+          sqlSession.insert(
+              Statements.CREATE_WALKING_DIFFICULTY_TYPES.getName(), walkingDifficultyTypes);
       log.debug("{} walking difficulties created.", insertCount);
     }
   }

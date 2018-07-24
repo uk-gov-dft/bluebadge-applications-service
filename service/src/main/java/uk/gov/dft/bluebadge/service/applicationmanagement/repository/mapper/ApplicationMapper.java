@@ -12,13 +12,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Walk
 
 @Mapper
 public interface ApplicationMapper {
-  String CREATE = "createApplication";
-  String CREATE_HEALTHCARE_PROFESSIONALS = "createHealthcareProfessionals";
-  String CREATE_MEDICATIONS = "createMedications";
-  String CREATE_TREATMENTS = "createTreatments";
-  String CREATE_VEHICLES = "createVehicles";
-  String CREATE_WALKING_AIDS = "createWalkingAids";
-  String CREATE_WALKING_DIFFICULTY_TYPES = "createWalkingDifficultyTypes";
 
   /**
    * Create an application.

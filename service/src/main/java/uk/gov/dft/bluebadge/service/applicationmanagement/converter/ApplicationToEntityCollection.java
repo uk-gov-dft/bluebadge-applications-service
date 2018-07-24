@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-abstract class ApplicationToEntityCollection<E, M> {
-  abstract E mapToEntity(M model, UUID applicationId);
+interface ApplicationToEntityCollection<E, M> {
+  E mapToEntity(M model, UUID applicationId);
 
-  public List<E> convertToEntityList(List<M> modelList, UUID applicationId) {
-    if (null == modelList || modelList.isEmpty()) return null;
+  default List<E> convertToEntityList(List<M> modelList, UUID applicationId) {
     List<E> entities = new ArrayList<>();
-    for (M modelItem : modelList) {
-      entities.add(mapToEntity(modelItem, applicationId));
+    if (null != modelList && !modelList.isEmpty()) {
+      for (M modelItem : modelList) {
+        entities.add(mapToEntity(modelItem, applicationId));
+      }
     }
     return entities;
   }

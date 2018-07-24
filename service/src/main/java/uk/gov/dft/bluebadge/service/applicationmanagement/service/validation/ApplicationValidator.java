@@ -22,33 +22,36 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.
 public class ApplicationValidator implements Validator {
 
   private final ReferenceDataService referenceDataService;
+  private static final String INVALID = "Invalid";
 
-  interface FieldKeys {
-    String PARTY_TYPE = "party.typeCode";
-    String ELIGIBILITY = "eligibility";
-    String ELIGIBILITY_TYPE = "eligibility.typeCode";
-    String BENEFIT_EXPIRY_DATE = "eligibility.benefit.expiryDate";
-    String LA = "localAuthorityCode";
-    String ORGANISATION = "party.organisation";
-    String CHARITY_NO = "party.organisation.charityNumber";
-    String PERSON = "party.person";
-    String DOB = "party.person.dob";
-    String BENEFIT = "eligibility.benefit";
-    String ARMS = "eligibility.disabilityArms";
-    String ARMS_VEHICLE_ADAPTION = "eligibility.disabilityArms.adaptedVehicleDescription";
-    String WALKING = "eligibility.walkingDifficulty";
-    String WALKING_TYPE_CODES = "eligibility.walkingDifficulty.typeCodes";
-    String WALKING_OTHER_DESCRIPTION = "eligibility.walkingDifficulty.otherDescription";
-    String WALKING_SPEED = "eligibility.walkingDifficulty.walkingSpeedCode";
-    String CHILD = "eligibility.childUnder3";
-    String HEALTHCARE_PROS = "eligibility.healthcareProfessionals";
-    String CONDITIONS_DESCRIPTION = "eligibility.descriptionOfConditions";
-    String ARTIFACTS = "artifacts";
-    String BLIND_REGISTERED_AT = "eligibility.blind.registeredAtLaId";
+  class FieldKeys {
+    public static final String PARTY_TYPE = "party.typeCode";
+    public static final String ELIGIBILITY = "eligibility";
+    static final String ELIGIBILITY_TYPE = "eligibility.typeCode";
+    public static final String BENEFIT_EXPIRY_DATE = "eligibility.benefit.expiryDate";
+    public static final String LA = "localAuthorityCode";
+    public static final String ORGANISATION = "party.organisation";
+    public static final String CHARITY_NO = "party.organisation.charityNumber";
+    public static final String PERSON = "party.person";
+    public static final String DOB = "party.person.dob";
+    public static final String BENEFIT = "eligibility.benefit";
+    public static final String ARMS = "eligibility.disabilityArms";
+    public static final String ARMS_VEHICLE_ADAPTION =
+        "eligibility.disabilityArms.adaptedVehicleDescription";
+    public static final String WALKING = "eligibility.walkingDifficulty";
+    public static final String WALKING_TYPE_CODES = "eligibility.walkingDifficulty.typeCodes";
+    public static final String WALKING_OTHER_DESCRIPTION =
+        "eligibility.walkingDifficulty.otherDescription";
+    public static final String WALKING_SPEED = "eligibility.walkingDifficulty.walkingSpeedCode";
+    public static final String CHILD = "eligibility.childUnder3";
+    public static final String HEALTHCARE_PROS = "eligibility.healthcareProfessionals";
+    public static final String CONDITIONS_DESCRIPTION = "eligibility.descriptionOfConditions";
+    public static final String ARTIFACTS = "artifacts";
+    public static final String BLIND_REGISTERED_AT = "eligibility.blind.registeredAtLaId";
   }
 
   @Autowired
-  public ApplicationValidator(ReferenceDataService referenceDataService) {
+  ApplicationValidator(ReferenceDataService referenceDataService) {
     this.referenceDataService = referenceDataService;
   }
 
@@ -77,7 +80,7 @@ public class ApplicationValidator implements Validator {
 
   void validateLocalAuthority(Application app, Errors errors) {
     if (!referenceDataService.isAuthorityCodeValid(app.getLocalAuthorityCode())) {
-      rejectValue(errors, LA, "Invalid", "Invalid local authority code.");
+      errors.rejectValue(LA, INVALID, "Invalid local authority code.");
     }
   }
 
@@ -86,28 +89,25 @@ public class ApplicationValidator implements Validator {
     // Require Person and eligibility objects
     rejectIfEmptyOrWhitespace(errors, PERSON, messagePrefix);
     rejectIfEmptyOrWhitespace(errors, ELIGIBILITY, messagePrefix);
-    rejectIfExists(errors, ORGANISATION, messagePrefix);
+    rejectIfExists(errors, ORGANISATION, app.getParty().getOrganisation(), messagePrefix);
     if (null != app.getParty().getPerson()
         && null != app.getParty().getPerson().getDob()
         && app.getParty().getPerson().getDob().isAfter(LocalDate.now())) {
-      rejectValue(errors, DOB, "Invalid", "Date of birth cannot be in future.");
+      errors.rejectValue(DOB, INVALID, "Date of birth cannot be in future.");
     }
   }
 
   void validateOrganisation(Application app, Errors errors) {
     String messagePrefix = "When party is ORG";
     rejectIfEmptyOrWhitespace(errors, ORGANISATION, messagePrefix);
-    rejectIfExists(errors, PERSON, messagePrefix);
-    rejectIfExists(errors, ELIGIBILITY, messagePrefix);
-    rejectIfExists(errors, ARTIFACTS, messagePrefix);
+    rejectIfExists(errors, PERSON, app.getParty().getPerson(), messagePrefix);
+    rejectIfExists(errors, ELIGIBILITY, app.getEligibility(), messagePrefix);
+    rejectIfExists(errors, ARTIFACTS, app.getArtifacts(), messagePrefix);
     if (null != app.getParty().getOrganisation()
         && !Boolean.TRUE.equals(app.getParty().getOrganisation().isIsCharity())
         && null != app.getParty().getOrganisation().getCharityNumber()) {
-      rejectValue(
-          errors,
-          CHARITY_NO,
-          "Invalid",
-          "Charity number can only be present if organisation is a charity.");
+      errors.rejectValue(
+          CHARITY_NO, INVALID, "Charity number can only be present if organisation is a charity.");
     }
   }
 
@@ -148,43 +148,42 @@ public class ApplicationValidator implements Validator {
         messagePrefix = "When eligibility PIP, DLA or WPMS";
         rejectIfEmptyOrWhitespace(errors, BENEFIT, messagePrefix);
         validateBenefit(app, errors);
-        rejectIfExists(errors, ARMS, messagePrefix);
-        rejectIfExists(errors, WALKING, messagePrefix);
-        rejectIfExists(errors, CHILD, messagePrefix);
+        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
+        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
+        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
         break;
       case ARMS:
         messagePrefix = "When eligibility is ARMS";
-        rejectIfExists(errors, BENEFIT, messagePrefix);
+        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
         rejectIfEmptyOrWhitespace(errors, ARMS, messagePrefix);
-        rejectIfExists(errors, WALKING, messagePrefix);
-        rejectIfExists(errors, CHILD, messagePrefix);
+        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
+        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
         validateArms(app, errors);
         break;
       case WALKD:
         messagePrefix = "When eligibility is WALKD";
-        rejectIfExists(errors, BENEFIT, messagePrefix);
-        rejectIfExists(errors, ARMS, messagePrefix);
+        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
+        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
         rejectIfEmptyOrWhitespace(errors, WALKING, messagePrefix);
-        rejectIfExists(errors, CHILD, messagePrefix);
+        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
         validateWalking(app, errors);
         break;
       case CHILDBULK:
         messagePrefix = "When eligibility is CHILDBULK";
-        rejectIfExists(errors, BENEFIT, messagePrefix);
-        rejectIfExists(errors, ARMS, messagePrefix);
-        rejectIfExists(errors, WALKING, messagePrefix);
+        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
+        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
+        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
         rejectIfEmptyOrWhitespace(errors, CHILD, messagePrefix);
         break;
       case BLIND:
-        validateBlind(app, errors);
       case AFRFCS:
       case TERMILL:
       case CHILDVEHIC:
         messagePrefix = "When eligibility is BLIND, AFRFCS, TERMILL or CHILDVEH";
-        rejectIfExists(errors, BENEFIT, messagePrefix);
-        rejectIfExists(errors, ARMS, messagePrefix);
-        rejectIfExists(errors, WALKING, messagePrefix);
-        rejectIfExists(errors, CHILD, messagePrefix);
+        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
+        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
+        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
+        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
         break;
     }
   }
@@ -193,10 +192,10 @@ public class ApplicationValidator implements Validator {
     if (errors.getFieldErrorCount(ARMS) == 0
         && Boolean.TRUE != app.getEligibility().getDisabilityArms().isIsAdaptedVehicle()
         && null != app.getEligibility().getDisabilityArms().getAdaptedVehicleDescription()) {
-      rejectValue(
-          errors,
+
+      errors.rejectValue(
           ARMS_VEHICLE_ADAPTION,
-          "Invalid",
+          INVALID,
           ARMS_VEHICLE_ADAPTION + " cannot be entered if is adapted vehicle not true.");
     }
   }
@@ -207,10 +206,9 @@ public class ApplicationValidator implements Validator {
 
     if (null != app.getEligibility().getDescriptionOfConditions()
         && !isDiscretionaryEligibility(eligibilityType)) {
-      rejectValue(
-          errors,
+      errors.rejectValue(
           CONDITIONS_DESCRIPTION,
-          "Invalid",
+          INVALID,
           CONDITIONS_DESCRIPTION + " is only valid for discretionary eligibility types.");
     }
 
@@ -218,12 +216,15 @@ public class ApplicationValidator implements Validator {
         && EligibilityCodeField.CHILDBULK != eligibilityType
         && EligibilityCodeField.CHILDVEHIC != eligibilityType
         && null != app.getEligibility().getHealthcareProfessionals()) {
-      rejectValue(
-          errors,
+      errors.rejectValue(
           HEALTHCARE_PROS,
-          "Invalid",
+          INVALID,
           HEALTHCARE_PROS
               + " can only be entered if eligibility in WALKD, CHILDBULK or CHILDVEHIC.");
+    }
+
+    if (EligibilityCodeField.BLIND == eligibilityType) {
+      validateBlind(app, errors);
     }
   }
 
@@ -231,10 +232,9 @@ public class ApplicationValidator implements Validator {
     if (null != app.getEligibility().getBlind()
         && null != app.getEligibility().getBlind().getRegisteredAtLaId()
         && EligibilityCodeField.BLIND != app.getEligibility().getTypeCode()) {
-      rejectValue(
-          errors,
+      errors.rejectValue(
           FieldKeys.BLIND_REGISTERED_AT,
-          "Invalid",
+          INVALID,
           "Registered at LA only allowed if eligibility is BLIND.");
     }
   }
@@ -244,10 +244,9 @@ public class ApplicationValidator implements Validator {
       // If exists then validate values.
       if (null == app.getEligibility().getWalkingDifficulty().getTypeCodes()
           || app.getEligibility().getWalkingDifficulty().getTypeCodes().isEmpty()) {
-        rejectValue(
-            errors,
+        errors.rejectValue(
             WALKING_TYPE_CODES,
-            "Invalid",
+            INVALID,
             "Must have at least 1 walking type code if eligibility is WALKDIFF.");
       } else if (!app.getEligibility()
               .getWalkingDifficulty()
@@ -256,21 +255,22 @@ public class ApplicationValidator implements Validator {
           && null != app.getEligibility().getWalkingDifficulty().getOtherDescription()) {
         // If walking difficulty does not have something else selected cant have other
         // description.
-        rejectValue(
-            errors,
+        errors.rejectValue(
             WALKING_OTHER_DESCRIPTION,
-            "Invalid",
+            INVALID,
             WALKING_OTHER_DESCRIPTION + " can only be present if SOMELSE selected as a type.");
       }
       // Walking speed only present if can walk, from walking length of time.
-      if ((null == app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode()
-              || WalkingLengthOfTimeCodeField.CANTWALK
-                  == app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode())
+      // Walking time code is mandatory for walking
+      Assert.notNull(
+          app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode(),
+          "If WALKD then time code should be not null");
+      if (WalkingLengthOfTimeCodeField.CANTWALK
+              == app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode()
           && null != app.getEligibility().getWalkingDifficulty().getWalkingSpeedCode()) {
-        rejectValue(
-            errors,
+        errors.rejectValue(
             WALKING_SPEED,
-            "Invalid",
+            INVALID,
             WALKING_SPEED + " can only be present if walking length of time is not can't walk.");
       }
     }
@@ -280,15 +280,14 @@ public class ApplicationValidator implements Validator {
     if (null != app.getEligibility().getBenefit()
         && null != app.getEligibility().getBenefit().getExpiryDate()) {
       if (LocalDate.now().isAfter(app.getEligibility().getBenefit().getExpiryDate())) {
-        rejectValue(
-            errors, BENEFIT_EXPIRY_DATE, "Invalid", "Benefit expiry date cannot be in the past.");
+        errors.rejectValue(
+            BENEFIT_EXPIRY_DATE, INVALID, "Benefit expiry date cannot be in the past.");
       }
-      if (null != app.getEligibility().getBenefit().isIsIndefinite()
-          && app.getEligibility().getBenefit().isIsIndefinite() == Boolean.TRUE) {
-        rejectValue(
-            errors,
+
+      if (Boolean.TRUE.equals(app.getEligibility().getBenefit().isIsIndefinite())) {
+        errors.rejectValue(
             BENEFIT_EXPIRY_DATE,
-            "Invalid",
+            INVALID,
             "Benefit expiry date cannot be entered if benefit is indefinite.");
       }
     }
@@ -302,19 +301,16 @@ public class ApplicationValidator implements Validator {
       case CHILDBULK:
       case TERMILL:
         return true;
+      default:
+        return false;
     }
-    return false;
   }
 
-  private static void rejectValue(Errors errors, String field, String reason, String message) {
-    errors.rejectValue(field, reason, message);
-  }
+  private static void rejectIfExists(
+      Errors errors, String field, Object value, String messagePrefix) {
 
-  private static void rejectIfExists(Errors errors, String field, String messagePrefix) {
-    Object object = errors.getFieldValue(field);
-
-    if (null != object) {
-      rejectValue(errors, field, "NotValid", messagePrefix + ": " + field + " should be null ");
+    if (null != value) {
+      errors.rejectValue(field, "NotValid", messagePrefix + ": " + field + " should be null ");
     }
   }
 
