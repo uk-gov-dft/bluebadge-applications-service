@@ -1,21 +1,21 @@
-@badge-post
-Feature: Verify Create application
+@application-person-walkd-post-ok
+Feature: Verify Create application for person with walking difficulty
 
   Background:
     * url baseUrl
 
-  Scenario: Verify valid create
+  Scenario: Verify valid create application for person with walking difficulty
     * def application =
     """
     {
   applicationId: '',
   applicationTypeCode: 'NEW',
-  localAuthorityCode: '',
-  isPaymentTaken: ,
+  localAuthorityCode: 'BIRM',
+  isPaymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: '123456789123456789',
+  existingBadgeNumber: ,
   party: {
-    typeCode: 'PERSON2',
+    typeCode: 'PERSON',
     contact: {
       fullName: 'Mabel Jones',
       buildingStreet: '65 Basil Chambers',
@@ -32,78 +32,50 @@ Feature: Verify Create application
       dob: '1970-05-29',
       nameAtBirth: 'John Smith',
       genderCode: 'MALE'
-    },
-    organisation: {
-      badgeHolderName: 'Trotters Independant Traders',
-      isCharity: false,
-      charityNumber: '12345',
-      vehicles: [
-        {
-          registrationNumber: 'VK61VZZ',
-          typeCode: 'TBC',
-          usageFrequency: 'Daily'
-        }
-      ],
-      numberOfBadges: 1
     }
   },
   eligibility: {
-    typeCode: 'ARMS',
+    typeCode: 'WALKD',
     descriptionOfConditions: 'Freetext',
-    benefit: {
-      isIndefinite: true,
-      expiryDate: '2022-03-30'
-    },
     walkingDifficulty: {
       typeCodes: [
-        'BALANCE'
+        'BALANCE', 'SOMELSE'
       ],
-      otherDescription: 'string',
+      otherDescription: 'other description',
       walkingAids: [
         {
-          description: 'string',
-          usage: 'string',
+          description: 'walk aid description',
+          usage: 'walk aid usage',
           howProvidedCode: 'PRIVATE'
         }
       ],
-      walkingLengthOfTimeCode: 'LESSMIN2',
+      walkingLengthOfTimeCode: 'LESSMIN',
       walkingSpeedCode: 'SLOW',
       treatments: [
         {
-          description: 'string',
-          time: 'string'
+          description: 'treatment desc',
+          time: 'treatment time'
         }
       ],
       medications: [
         {
-          name: 'string',
+          name: 'medication name',
           isPrescribed: true,
-          frequency: 'string',
-          quantity: 'string'
+          frequency: 'medication frequency',
+          quantity: 'medication quantity'
         }
       ]
     },
-    disabilityArms: {
-      drivingFrequency: 'string',
-      isAdaptedVehicle: true,
-      adaptedVehicleDescription: 'string'
-    },
     healthcareProfessionals: [
       {
-        name: 'Freetext',
-        location: 'Freetext'
+        name: 'pro name',
+        location: 'pro location'
       },
       {
         name: 'Doctor Bob',
         location: 'My lovely hospital'
       }
-    ],
-    blind: {
-      registeredAtLaId: 7
-    },
-    childUnder3: {
-      bulkyMedicalEquipmentTypeCode: 'SYRINGE'
-    }
+    ]
   },
   artifacts: {
     proofOfEligibilityUrl: 'string',

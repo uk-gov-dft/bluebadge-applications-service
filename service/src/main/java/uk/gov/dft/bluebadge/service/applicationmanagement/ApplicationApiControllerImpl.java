@@ -24,7 +24,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.App
 public class ApplicationApiControllerImpl implements ApplicationsApi {
 
   private final ApplicationService service;
-  private ApplicationValidator validator;
+  private final ApplicationValidator validator;
 
   @SuppressWarnings("unused")
   @Autowired

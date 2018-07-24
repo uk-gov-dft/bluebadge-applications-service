@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class ApplicationToEntityCollection<E, M> {
+abstract class ApplicationToEntityCollection<E, M> {
   abstract E mapToEntity(M model, UUID applicationId);
 
   public List<E> convertToEntityList(List<M> modelList, UUID applicationId) {

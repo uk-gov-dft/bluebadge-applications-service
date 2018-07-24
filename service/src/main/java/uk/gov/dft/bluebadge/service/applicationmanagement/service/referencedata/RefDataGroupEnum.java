@@ -34,7 +34,7 @@ public enum RefDataGroupEnum {
   }
 
   private final String groupKey;
-  private Class<? extends Enum<?>> enumClass;
+  private final Class<? extends Enum<?>> enumClass;
 
   RefDataGroupEnum(String groupKey, Class<? extends Enum<?>> enumClass) {
 

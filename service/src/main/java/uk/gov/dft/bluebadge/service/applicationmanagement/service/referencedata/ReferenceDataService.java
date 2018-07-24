@@ -70,18 +70,18 @@ public class ReferenceDataService {
     }
   }
 
-  private int validateModelToRefData(
+  private void validateModelToRefData(
       Class<? extends Enum<?>> model, Set<String> refValues, String context) {
     int errors = 0;
 
     if (null == model) {
       log.debug("LoadRefData: Not validating {}", context);
-      return 0;
+      return;
     }
 
     if (null == refValues) {
       log.error("No reference data loaded for group: {}", context);
-      return 1;
+      return;
     }
 
     Set<String> enumNames = new HashSet<>();
@@ -105,6 +105,5 @@ public class ReferenceDataService {
       }
     }
 
-    return errors;
   }
 }

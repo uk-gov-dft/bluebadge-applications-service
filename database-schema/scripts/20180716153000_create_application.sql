@@ -34,9 +34,9 @@ CREATE TABLE applicationmanagement.application (
  ,walk_other_desc       VARCHAR(100)
  ,walk_length_code      VARCHAR(10)
  ,walk_speed_code       VARCHAR(10)
- ,arms_driving_freq     VARCHAR(10)
+ ,arms_driving_freq     VARCHAR(100)
  ,arms_is_adapted_vehicle BOOLEAN
- ,arms_adapted_veh_desc VARCHAR(10)
+ ,arms_adapted_veh_desc VARCHAR(100)
  ,blind_registered_at_la_code VARCHAR(10)
  ,bulky_equipment_type_code VARCHAR(10)
  ,url_proof_eligibility VARCHAR(255)

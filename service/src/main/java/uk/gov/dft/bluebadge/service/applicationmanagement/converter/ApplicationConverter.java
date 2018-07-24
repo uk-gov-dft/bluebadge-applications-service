@@ -16,12 +16,12 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 @Component
 public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application> {
 
-  private VehicleConverter vehicleConverter;
-  private WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
-  private WalkingAidConverter walkingAidConverter;
-  private TreatmentConverter treatmentConverter;
-  private MedicationConverter medicationConverter;
-  private HealthcareProfessionalConverter healthcareProfessionalConverter;
+  private final VehicleConverter vehicleConverter;
+  private final WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
+  private final WalkingAidConverter walkingAidConverter;
+  private final TreatmentConverter treatmentConverter;
+  private final MedicationConverter medicationConverter;
+  private final HealthcareProfessionalConverter healthcareProfessionalConverter;
 
   public ApplicationConverter(
       VehicleConverter vehicleConverter,
