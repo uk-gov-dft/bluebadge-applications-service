@@ -36,20 +36,17 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
   }
 
   @Test
-  public void checkRequiredObjectsExistToContinueValidation_missing_party_or_contact() {
+  public void checkRequiredObjectsExistToContinueValidation_missing_party() {
     Application application =
         getApplicationBuilder().addBaseApplication().setOrganisation().build();
     resetErrors(application);
 
-    // Given party missing then can't validate further
-    application.setParty(null);
-    assertFalse(validator.checkRequiredObjectsExistToContinueValidation(errors, application));
-    assertEquals(0, errors.getErrorCount());
+    errors.rejectValue(ApplicationValidator.FieldKeys.PARTY,"");
 
     // Given the check failed ensure main validate method does nothing
     // And particularly has no null pointers.
     validator.validate(application, errors);
-    assertEquals(0, errors.getErrorCount());
+    assertEquals(1, errors.getErrorCount());
   }
 
   @Test
@@ -57,13 +54,6 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
     Application application =
         getApplicationBuilder().addBaseApplication().setOrganisation().build();
     resetErrors(application);
-
-    // Given partyType null Then can't validate further.
-    application.getParty().setTypeCode(null);
-    assertFalse(validator.checkRequiredObjectsExistToContinueValidation(errors, application));
-
-    // Reset
-    application.getParty().setTypeCode(PartyTypeCodeField.ORG);
 
     // Given party type failed bean validation can't validate further
     errors.rejectValue(ApplicationValidator.FieldKeys.PARTY_TYPE, "Invalid");

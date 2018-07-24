@@ -2,7 +2,6 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator.FieldKeys.*;
 
-import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +16,8 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficu
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
+import java.time.LocalDate;
+
 @Component
 @Slf4j
 public class ApplicationValidator implements Validator {
@@ -25,6 +26,10 @@ public class ApplicationValidator implements Validator {
   private static final String INVALID = "Invalid";
 
   class FieldKeys {
+
+    private FieldKeys() {}
+
+    public static final String PARTY = "party";
     public static final String PARTY_TYPE = "party.typeCode";
     public static final String ELIGIBILITY = "eligibility";
     static final String ELIGIBILITY_TYPE = "eligibility.typeCode";
@@ -68,14 +73,9 @@ public class ApplicationValidator implements Validator {
    * @return true if can continue validation.
    */
   boolean checkRequiredObjectsExistToContinueValidation(Errors errors, Application app) {
-    // Don't bother if root objects missing. These are picked up by jcr303 validation.
-    if (null == app.getParty()) {
-      return false;
-    }
-
     // If party validation failed then skip rest of validation - don't know which path to take.
     // This should only be possible if party was null, if invalid would have failed to deserialize
-    return errors.getFieldErrorCount(PARTY_TYPE) == 0 && null != app.getParty().getTypeCode();
+    return errors.getFieldErrorCount(PARTY_TYPE) == 0 && errors.getFieldErrorCount(PARTY) == 0;
   }
 
   void validateLocalAuthority(Application app, Errors errors) {
@@ -91,7 +91,7 @@ public class ApplicationValidator implements Validator {
     rejectIfEmptyOrWhitespace(errors, ELIGIBILITY, messagePrefix);
     rejectIfExists(errors, ORGANISATION, app.getParty().getOrganisation(), messagePrefix);
     if (null != app.getParty().getPerson()
-        && null != app.getParty().getPerson().getDob()
+        && 0 == errors.getFieldErrorCount(DOB)
         && app.getParty().getPerson().getDob().isAfter(LocalDate.now())) {
       errors.rejectValue(DOB, INVALID, "Date of birth cannot be in future.");
     }
