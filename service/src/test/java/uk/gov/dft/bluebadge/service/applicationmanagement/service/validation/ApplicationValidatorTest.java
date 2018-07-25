@@ -12,9 +12,9 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifacts;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
-import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationTestBase;
+import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
-public class ApplicationValidatorTest extends ApplicationTestBase {
+public class ApplicationValidatorTest extends ApplicationFixture {
 
   ApplicationValidator validator;
   BeanPropertyBindingResult errors;
@@ -31,7 +31,7 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
     resetErrors(application);
 
     // Given party type, party, and contact are ok, then ok to validate.
-    assertTrue(validator.checkRequiredObjectsExistToContinueValidation(errors, application));
+    assertTrue(validator.hasParty(errors, application));
     assertEquals(0, errors.getErrorCount());
   }
 
@@ -58,7 +58,7 @@ public class ApplicationValidatorTest extends ApplicationTestBase {
     // Given party type failed bean validation can't validate further
     errors.rejectValue(ApplicationValidator.FieldKeys.PARTY_TYPE, "Invalid");
     application.getParty().setTypeCode(PartyTypeCodeField.PERSON);
-    assertFalse(validator.checkRequiredObjectsExistToContinueValidation(errors, application));
+    assertFalse(validator.hasParty(errors, application));
     assertEquals(1, errors.getErrorCount());
   }
 

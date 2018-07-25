@@ -8,6 +8,7 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 
@@ -20,7 +21,7 @@ public class ReferenceDataService {
   private boolean isLoaded = false;
 
   @Autowired
-  public ReferenceDataService(ReferenceDataApiClient referenceDataApiClient) {
+  public ReferenceDataService(@Validated ReferenceDataApiClient referenceDataApiClient) {
     this.referenceDataApiClient = referenceDataApiClient;
   }
 

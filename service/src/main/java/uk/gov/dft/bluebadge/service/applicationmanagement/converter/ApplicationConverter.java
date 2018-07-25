@@ -136,10 +136,4 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
         vehicleConverter.convertToEntityList(organisation.getVehicles(), entity.getId()));
   }
 
-  public ApplicationEntity convertToEntityOnCreate(Application application) {
-    if (null == application.getApplicationId()) {
-      application.setApplicationId(UUID.randomUUID().toString());
-    }
-    return convertToEntity(application);
-  }
 }

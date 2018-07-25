@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
@@ -36,7 +38,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedatase
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.RefDataGroupEnum;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
-public class ApplicationTestBase {
+public class ApplicationFixture {
 
   protected interface ValidValues {
     String LA_CODE = "BIRM";
@@ -67,7 +69,7 @@ public class ApplicationTestBase {
 
   protected ReferenceDataService referenceDataService;
 
-  public ApplicationTestBase() {
+  public ApplicationFixture() {
     MockitoAnnotations.initMocks(this);
     initValidRefData();
   }
@@ -233,6 +235,7 @@ public class ApplicationTestBase {
       application.setParty(party);
       application.setLocalAuthorityCode(ValidValues.LA_CODE);
       application.setApplicationTypeCode(ApplicationTypeCodeField.NEW);
+      application.setApplicationId(UUID.randomUUID().toString());
       return this;
     }
 
@@ -249,17 +252,17 @@ public class ApplicationTestBase {
     }
 
     public ApplicationBuilder setEligibilityPip() {
-      ApplicationTestBase.setEligibilityPip(application);
+      ApplicationFixture.setEligibilityPip(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityDla() {
-      ApplicationTestBase.setEligibilityDla(application);
+      ApplicationFixture.setEligibilityDla(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityWpms() {
-      ApplicationTestBase.setEligibilityWpms(application);
+      ApplicationFixture.setEligibilityWpms(application);
       return this;
     }
 
@@ -268,37 +271,37 @@ public class ApplicationTestBase {
     }
 
     public ApplicationBuilder setEligibilityArms() {
-      ApplicationTestBase.setEligibilityArms(application);
+      ApplicationFixture.setEligibilityArms(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityWalking() {
-      ApplicationTestBase.setEligibilityWalking(application);
+      ApplicationFixture.setEligibilityWalking(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityChildBulk() {
-      ApplicationTestBase.setEligibilityChildBulk(application);
+      ApplicationFixture.setEligibilityChildBulk(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityBlind() {
-      ApplicationTestBase.setEligibilityBlind(application);
+      ApplicationFixture.setEligibilityBlind(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityChildVehicle() {
-      ApplicationTestBase.setEligibilityChildVehic(application);
+      ApplicationFixture.setEligibilityChildVehic(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityTermIll() {
-      ApplicationTestBase.setEligibilityTermill(application);
+      ApplicationFixture.setEligibilityTermill(application);
       return this;
     }
 
     public ApplicationBuilder setEligibilityAfrfcs() {
-      ApplicationTestBase.setEligibilityAfrfcs(application);
+      ApplicationFixture.setEligibilityAfrfcs(application);
       return this;
     }
 

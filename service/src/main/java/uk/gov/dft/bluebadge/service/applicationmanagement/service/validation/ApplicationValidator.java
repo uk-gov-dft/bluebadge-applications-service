@@ -18,6 +18,9 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.
 
 import java.time.LocalDate;
 
+/**
+ * Validates an application assuming the bean validation has previously been performed.
+ */
 @Component
 @Slf4j
 public class ApplicationValidator implements Validator {
@@ -72,7 +75,7 @@ public class ApplicationValidator implements Validator {
    * @param app The Application to validate.
    * @return true if can continue validation.
    */
-  boolean checkRequiredObjectsExistToContinueValidation(Errors errors, Application app) {
+  boolean hasParty(Errors errors, Application app) {
     // If party validation failed then skip rest of validation - don't know which path to take.
     // This should only be possible if party was null, if invalid would have failed to deserialize
     return errors.getFieldErrorCount(PARTY_TYPE) == 0 && errors.getFieldErrorCount(PARTY) == 0;
@@ -103,6 +106,7 @@ public class ApplicationValidator implements Validator {
     rejectIfExists(errors, PERSON, app.getParty().getPerson(), messagePrefix);
     rejectIfExists(errors, ELIGIBILITY, app.getEligibility(), messagePrefix);
     rejectIfExists(errors, ARTIFACTS, app.getArtifacts(), messagePrefix);
+    // TODO: If ORG is null then barf
     if (null != app.getParty().getOrganisation()
         && !Boolean.TRUE.equals(app.getParty().getOrganisation().isIsCharity())
         && null != app.getParty().getOrganisation().getCharityNumber()) {
@@ -118,7 +122,9 @@ public class ApplicationValidator implements Validator {
     validateLocalAuthority(app, errors);
 
     // Don't continue if basic objects previously invalid due to bean validation.
-    if (!checkRequiredObjectsExistToContinueValidation(errors, app)) return;
+    if (!hasParty(errors, app)) {
+      return;
+    }
 
     boolean isPerson = PartyTypeCodeField.PERSON.equals(app.getParty().getTypeCode());
     if (isPerson) {
@@ -131,6 +137,7 @@ public class ApplicationValidator implements Validator {
 
   void validateEligibility(Application app, Errors errors) {
     // Validate if eligibility present and type ok.
+    // TODO: Readability
     if (errors.getFieldErrorCount(FieldKeys.ELIGIBILITY) == 0
         && errors.getFieldErrorCount(FieldKeys.ELIGIBILITY_TYPE) == 0) {
       validateEligibilityByType(app, errors);
@@ -189,7 +196,7 @@ public class ApplicationValidator implements Validator {
   }
 
   void validateArms(Application app, Errors errors) {
-    if (errors.getFieldErrorCount(ARMS) == 0
+    if (hasNoFieldErrors(errors,ARMS)
         && Boolean.TRUE != app.getEligibility().getDisabilityArms().isIsAdaptedVehicle()
         && null != app.getEligibility().getDisabilityArms().getAdaptedVehicleDescription()) {
 
@@ -212,6 +219,7 @@ public class ApplicationValidator implements Validator {
           CONDITIONS_DESCRIPTION + " is only valid for discretionary eligibility types.");
     }
 
+    // TODO: SQL IN ()..
     if (EligibilityCodeField.WALKD != eligibilityType
         && EligibilityCodeField.CHILDBULK != eligibilityType
         && EligibilityCodeField.CHILDVEHIC != eligibilityType
@@ -223,6 +231,7 @@ public class ApplicationValidator implements Validator {
               + " can only be entered if eligibility in WALKD, CHILDBULK or CHILDVEHIC.");
     }
 
+    // TODO: Check if this should live here..
     if (EligibilityCodeField.BLIND == eligibilityType) {
       validateBlind(app, errors);
     }
@@ -320,4 +329,9 @@ public class ApplicationValidator implements Validator {
     ValidationUtils.rejectIfEmptyOrWhitespace(
         errors, field, "NotNull", messagePrefix + ":" + field + " cannot be null.");
   }
+
+  private boolean hasNoFieldErrors(Errors errors, String field) {
+    return errors.getFieldErrorCount(field) == 0;
+  }
+
 }

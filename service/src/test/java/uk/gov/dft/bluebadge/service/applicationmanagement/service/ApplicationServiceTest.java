@@ -11,12 +11,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
-import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationTestBase;
+import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
-public class ApplicationServiceTest extends ApplicationTestBase {
+public class ApplicationServiceTest extends ApplicationFixture {
 
   @Mock private ApplicationRepository repository;
   @Mock private ApplicationConverter converter;
@@ -34,11 +34,11 @@ public class ApplicationServiceTest extends ApplicationTestBase {
         getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
     ApplicationEntity entity = ApplicationEntity.builder().build();
     entity.setId(UUID.randomUUID());
-    when(converter.convertToEntityOnCreate(application)).thenReturn(entity);
+    when(converter.convertToEntity(application)).thenReturn(entity);
 
-    String result = service.createApplication(application);
+    UUID result = service.createApplication(application);
 
-    verify(converter, times(1)).convertToEntityOnCreate(application);
+    verify(converter, times(1)).convertToEntity(application);
     verify(repository, times(1)).createApplication(entity);
     verify(repository, times(1)).createWalkingDifficultyTypes(any());
     Assert.notNull(result, "Should get id back");

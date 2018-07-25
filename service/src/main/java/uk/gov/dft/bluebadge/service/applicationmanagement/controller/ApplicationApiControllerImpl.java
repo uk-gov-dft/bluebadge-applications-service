@@ -1,4 +1,4 @@
-package uk.gov.dft.bluebadge.service.applicationmanagement;
+package uk.gov.dft.bluebadge.service.applicationmanagement.controller;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.swagger.annotations.ApiParam;
@@ -20,6 +20,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.generated.controller.A
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.ApplicationService;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
 
+import java.util.UUID;
+
 @Controller
 public class ApplicationApiControllerImpl implements ApplicationsApi {
 
@@ -38,12 +40,14 @@ public class ApplicationApiControllerImpl implements ApplicationsApi {
     binder.addValidators(validator);
   }
 
+  // TODO: Add this into an AbstactController OR @ControllerAdvice in the common repo
   @SuppressWarnings("unused")
   @ExceptionHandler({ServiceException.class})
   public ResponseEntity<CommonResponse> handleServiceException(ServiceException e) {
     return e.getResponse();
   }
 
+  // TODO: Add this into an AbstactController OR @ControllerAdvice in the common repo
   @SuppressWarnings("unused")
   @ExceptionHandler({InvalidFormatException.class})
   public ResponseEntity<CommonResponse> handleInvalidFormatException(InvalidFormatException e) {
@@ -58,7 +62,7 @@ public class ApplicationApiControllerImpl implements ApplicationsApi {
   public ResponseEntity<CreateApplicationResponse> createApplication(
       @ApiParam() @Valid @RequestBody Application application) {
 
-    String newId = service.createApplication(application);
-    return ResponseEntity.ok(new CreateApplicationResponse().data(newId));
+    UUID newId = service.createApplication(application);
+    return ResponseEntity.ok(new CreateApplicationResponse().data(newId.toString()));
   }
 }

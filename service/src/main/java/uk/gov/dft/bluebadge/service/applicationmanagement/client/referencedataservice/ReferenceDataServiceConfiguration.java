@@ -4,15 +4,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.constraints.NotNull;
+
 @Configuration
 public class ReferenceDataServiceConfiguration {
 
+  @NotNull
   @Value("${referencedataservice.servicehost.scheme}")
   private String scheme;
 
+  @NotNull
   @Value("${referencedataservice.servicehost.host}")
   private String host;
 
+  @NotNull
   @Value("${referencedataservice.servicehost.port}")
   private Integer port;
 
@@ -22,6 +27,7 @@ public class ReferenceDataServiceConfiguration {
   @Value("${referencedataservice.servicehost.requesttimeout}")
   private Integer requestTimeout;
 
+  @NotNull
   @Value("${referencedataservice.servicehost.contextpath}")
   private String contextPath;
 
