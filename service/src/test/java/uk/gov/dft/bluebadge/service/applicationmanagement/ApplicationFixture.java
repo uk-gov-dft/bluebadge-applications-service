@@ -9,13 +9,14 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.validation.BeanPropertyBindingResult;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Benefit;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Blind;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BulkyMedicalEquipmentTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ChildUnder3;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.DisabilityArms;
@@ -62,12 +63,24 @@ public class ApplicationFixture {
         WalkingLengthOfTimeCodeField.FEWMIN;
     WalkingSpeedCodeField WALKING_SPEED_CODE_FIELD = WalkingSpeedCodeField.FAST;
     String ARMS_DRIVE_FREQ = "drive freq";
-    Boolean ARMS_IS_ADAPTED = Boolean.FALSE;
+    Boolean ARMS_IS_ADAPTED = Boolean.TRUE;
+    String PHONE_NO = "123456";
+    String CONTACT_BUILDING = "29 A Street";
+    String CONTACT_EMAIL = "a@b.c";
+    String CONTACT_NAME = "Mr Contact";
+    String LINE2 = "Town Area";
+    String POSTCODE = "WV16 4AW";
+    String TOWN = "Arlington";
+    ApplicationTypeCodeField APP_TYPE_CODE = ApplicationTypeCodeField.NEW;
+    String ARMS_ADAPTED_DESC = "Vehicle description";
+    BulkyMedicalEquipmentTypeCodeField CHILD_BULK_EQUIP = BulkyMedicalEquipmentTypeCodeField.CAST;
   }
 
   @Mock private ReferenceDataApiClient referenceDataApiClient;
 
   protected ReferenceDataService referenceDataService;
+  protected BeanPropertyBindingResult errors;
+  protected Application app;
 
   public ApplicationFixture() {
     MockitoAnnotations.initMocks(this);
@@ -138,6 +151,7 @@ public class ApplicationFixture {
 
   protected static void addChild(Application application) {
     ChildUnder3 child = new ChildUnder3();
+    child.setBulkyMedicalEquipmentTypeCode(ValidValues.CHILD_BULK_EQUIP);
     application.getEligibility().setChildUnder3(child);
   }
 
@@ -145,6 +159,7 @@ public class ApplicationFixture {
     DisabilityArms arms = new DisabilityArms();
     arms.setDrivingFrequency(ValidValues.ARMS_DRIVE_FREQ);
     arms.setIsAdaptedVehicle(ValidValues.ARMS_IS_ADAPTED);
+    arms.setAdaptedVehicleDescription(ValidValues.ARMS_ADAPTED_DESC);
     application.getEligibility().disabilityArms(arms);
   }
 
@@ -220,6 +235,10 @@ public class ApplicationFixture {
     application.getEligibility().setTypeCode(EligibilityCodeField.CHILDVEHIC);
   }
 
+  protected void resetErrors(Application application) {
+    errors = new BeanPropertyBindingResult(application, "application");
+  }
+
   protected class ApplicationBuilder {
 
     Application application;
@@ -231,10 +250,18 @@ public class ApplicationFixture {
     public ApplicationBuilder addBaseApplication() {
       Party party = new Party();
       Contact contact = new Contact();
+      contact.secondaryPhoneNumber(ValidValues.PHONE_NO);
+      contact.setBuildingStreet(ValidValues.CONTACT_BUILDING);
+      contact.setEmailAddress(ValidValues.CONTACT_EMAIL);
+      contact.setFullName(ValidValues.CONTACT_NAME);
+      contact.setLine2(ValidValues.LINE2);
+      contact.setPostCode(ValidValues.POSTCODE);
+      contact.setPrimaryPhoneNumber(ValidValues.PHONE_NO);
+      contact.setTownCity(ValidValues.TOWN);
       party.setContact(contact);
       application.setParty(party);
       application.setLocalAuthorityCode(ValidValues.LA_CODE);
-      application.setApplicationTypeCode(ApplicationTypeCodeField.NEW);
+      application.setApplicationTypeCode(ValidValues.APP_TYPE_CODE);
       application.setApplicationId(UUID.randomUUID().toString());
       return this;
     }

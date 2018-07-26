@@ -1,8 +1,3 @@
--- TODO remove next deletes once they have had time to percolate through environments
-DELETE FROM users WHERE name LIKE '%Sampath%';
-DELETE FROM users WHERE name = 'nobody';
--- TODO end.
-
 DELETE FROM users WHERE email_address = 'createuservalid@dft.gov.uk';
 DELETE FROM users WHERE id < 0;
 INSERT INTO users (id, name, email_address, local_authority_id, role_id)

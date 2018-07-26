@@ -1,4 +1,4 @@
-package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
+package uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection;
 
 import static org.junit.Assert.*;
 

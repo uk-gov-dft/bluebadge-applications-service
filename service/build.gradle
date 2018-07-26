@@ -25,7 +25,7 @@ apply plugin: 'pmd'
 apply plugin: 'maven'
 
 repositories {
-   // mavenLocal()
+    mavenLocal()
     mavenCentral()
     jcenter()
 }

@@ -1,5 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,8 +9,6 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -27,6 +26,7 @@ public class ApplicationService {
 
   /**
    * Creates an Application given a VALIDATED Application.
+   *
    * @param applicationModel A validated application.
    * @return A UUID for the newly created Application.
    */

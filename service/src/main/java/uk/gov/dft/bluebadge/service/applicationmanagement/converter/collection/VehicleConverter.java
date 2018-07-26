@@ -1,4 +1,4 @@
-package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
+package uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection;
 
 import java.util.UUID;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Vehicle;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 
 @Component
-class VehicleConverter implements ApplicationToEntityCollection<VehicleEntity, Vehicle> {
+public class VehicleConverter implements ApplicationToEntityCollection<VehicleEntity, Vehicle> {
 
   @Override
   public VehicleEntity mapToEntity(Vehicle vehicle, UUID applicationId) {

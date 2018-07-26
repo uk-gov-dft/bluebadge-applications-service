@@ -1,10 +1,9 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice;
 
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.validation.constraints.NotNull;
 
 @Configuration
 public class ReferenceDataServiceConfiguration {

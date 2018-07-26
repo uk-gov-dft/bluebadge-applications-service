@@ -2,8 +2,15 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.client.ExpectedCount.once;
 
 import org.junit.Test;
+import org.mockito.Mock;
+import uk.gov.dft.bluebadge.common.converter.ToEntityFormatter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
@@ -13,65 +20,32 @@ public class ApplicationConverterTest extends ApplicationFixture {
   ApplicationConverter converter;
   Application app;
 
+  @Mock
+  private PersonConverter personConverter;
+  @Mock
+  private OrganisationConverter organisationConverter;
+  @Mock
+  private EligibilityConverter eligibilityConverter;
+
   public ApplicationConverterTest() {
     super();
     converter =
-        new ApplicationConverter(
-            new VehicleConverter(),
-            new WalkingDifficultyTypeConverter(),
-            new WalkingAidConverter(),
-            new TreatmentConverter(),
-            new MedicationConverter(),
-            new HealthcareProfessionalConverter());
+        new ApplicationConverter(eligibilityConverter, organisationConverter, personConverter);
   }
 
   @Test
-  public void convertToEntityOnCreate_org() {
-    // Check an org with vehicle.
-    app = getApplicationBuilder().addBaseApplication().setOrganisation().addVehicle().build();
+  public void convertToEntity() {
+    app = getApplicationBuilder().addBaseApplication().setPerson().build();
 
     ApplicationEntity entity = converter.convertToEntity(app);
-    assertEquals(1, entity.getVehicles().size());
-    assertNotNull(entity.getId());
-  }
 
-  @Test
-  public void convertToEntityOnCreate_person_with_benefit() {
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    // Check some values
+    assertEquals(ToEntityFormatter.postcode(ValidValues.POSTCODE), entity.getContactPostcode());
+    assertEquals(ValidValues.APP_TYPE_CODE.toString(), entity.getAppTypeCode());
 
-    ApplicationEntity entity = converter.convertToEntity(app);
-    assertEquals(entity.getBenefitExpiryDate(), ValidValues.BENEFIT_EXPIRY);
-    assertEquals(entity.getBenefitIsIndefinite(), ValidValues.BENEFIT_IS_INDEFINITE);
-  }
-
-  @Test
-  public void convertToEntityOnCreate_person_with_walking_diff() {
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
-
-    ApplicationEntity entity = converter.convertToEntity(app);
-    assertEquals(
-        ValidValues.WALKING_LENGTH_OF_TIME_CODE_FIELD.toString(), entity.getWalkLengthCode());
-    assertEquals(
-        ValidValues.WALKING_DIFFICULTY_TYPE_CODES.get(0).name(),
-        entity.getWalkingDifficultyTypes().get(0).getTypeCode());
-  }
-
-  @Test
-  public void convertToEntityOnCreate_person_arms_and_professional_and_blind() {
-    app =
-        getApplicationBuilder()
-            .addBaseApplication()
-            .setPerson()
-            .setEligibilityArms()
-            .addHealthcarePro()
-            .build();
-    // Although invalid, ok for converter.  Would fail validation
-    addBlind(app);
-
-    ApplicationEntity entity = converter.convertToEntity(app);
-    assertEquals(1, entity.getHealthcareProfessionals().size());
-    assertEquals(ValidValues.ARMS_DRIVE_FREQ, entity.getArmsDrivingFreq());
-    assertEquals(ValidValues.ARMS_IS_ADAPTED, entity.getArmsIsAdaptedVehicle());
-    assertEquals(ValidValues.LA_CODE, entity.getBlindRegisteredAtLaCode());
+    // Check child objects dealt with
+    verify(personConverter, times(1)).convertToEntity(eq(app), any());
+    verify(organisationConverter, times(1)).convertToEntity(eq(app), any());
+    verify(eligibilityConverter, times(1)).convertToEntity(eq(app), any());
   }
 }

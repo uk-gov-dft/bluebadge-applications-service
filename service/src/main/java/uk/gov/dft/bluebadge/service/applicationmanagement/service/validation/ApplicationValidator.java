@@ -1,118 +1,46 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator.FieldKeys.*;
+import static java.lang.Boolean.TRUE;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ARTIFACTS;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELIGIBILITY;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_LA;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ORGANISATION;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ORG_CHARITY_NO;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PARTY;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PARTY_TYPE;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PERSON;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PERSON_DOB;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
 import java.time.LocalDate;
 
-/**
- * Validates an application assuming the bean validation has previously been performed.
- */
+/** Validates an application assuming the bean validation has previously been performed. */
 @Component
 @Slf4j
-public class ApplicationValidator implements Validator {
+public class ApplicationValidator extends ValidationBase implements Validator {
 
   private final ReferenceDataService referenceDataService;
-  private static final String INVALID = "Invalid";
-
-  class FieldKeys {
-
-    private FieldKeys() {}
-
-    public static final String PARTY = "party";
-    public static final String PARTY_TYPE = "party.typeCode";
-    public static final String ELIGIBILITY = "eligibility";
-    static final String ELIGIBILITY_TYPE = "eligibility.typeCode";
-    public static final String BENEFIT_EXPIRY_DATE = "eligibility.benefit.expiryDate";
-    public static final String LA = "localAuthorityCode";
-    public static final String ORGANISATION = "party.organisation";
-    public static final String CHARITY_NO = "party.organisation.charityNumber";
-    public static final String PERSON = "party.person";
-    public static final String DOB = "party.person.dob";
-    public static final String BENEFIT = "eligibility.benefit";
-    public static final String ARMS = "eligibility.disabilityArms";
-    public static final String ARMS_VEHICLE_ADAPTION =
-        "eligibility.disabilityArms.adaptedVehicleDescription";
-    public static final String WALKING = "eligibility.walkingDifficulty";
-    public static final String WALKING_TYPE_CODES = "eligibility.walkingDifficulty.typeCodes";
-    public static final String WALKING_OTHER_DESCRIPTION =
-        "eligibility.walkingDifficulty.otherDescription";
-    public static final String WALKING_SPEED = "eligibility.walkingDifficulty.walkingSpeedCode";
-    public static final String CHILD = "eligibility.childUnder3";
-    public static final String HEALTHCARE_PROS = "eligibility.healthcareProfessionals";
-    public static final String CONDITIONS_DESCRIPTION = "eligibility.descriptionOfConditions";
-    public static final String ARTIFACTS = "artifacts";
-    public static final String BLIND_REGISTERED_AT = "eligibility.blind.registeredAtLaId";
-  }
+  private EligibilityValidator eligibilityValidator;
 
   @Autowired
-  ApplicationValidator(ReferenceDataService referenceDataService) {
+  ApplicationValidator(
+      ReferenceDataService referenceDataService, EligibilityValidator eligibilityValidator) {
     this.referenceDataService = referenceDataService;
+    this.eligibilityValidator = eligibilityValidator;
   }
 
   @Override
   public boolean supports(Class<?> clazz) {
     return Application.class.equals(clazz);
-  }
-
-  /**
-   * Check we have the minimum set of valid data to make further validation worthwhile.
-   *
-   * @param errors Spring Errors.
-   * @param app The Application to validate.
-   * @return true if can continue validation.
-   */
-  boolean hasParty(Errors errors, Application app) {
-    // If party validation failed then skip rest of validation - don't know which path to take.
-    // This should only be possible if party was null, if invalid would have failed to deserialize
-    return errors.getFieldErrorCount(PARTY_TYPE) == 0 && errors.getFieldErrorCount(PARTY) == 0;
-  }
-
-  void validateLocalAuthority(Application app, Errors errors) {
-    if (!referenceDataService.isAuthorityCodeValid(app.getLocalAuthorityCode())) {
-      errors.rejectValue(LA, INVALID, "Invalid local authority code.");
-    }
-  }
-
-  void validatePerson(Application app, Errors errors) {
-    String messagePrefix = "When party is PERSON";
-    // Require Person and eligibility objects
-    rejectIfEmptyOrWhitespace(errors, PERSON, messagePrefix);
-    rejectIfEmptyOrWhitespace(errors, ELIGIBILITY, messagePrefix);
-    rejectIfExists(errors, ORGANISATION, app.getParty().getOrganisation(), messagePrefix);
-    if (null != app.getParty().getPerson()
-        && 0 == errors.getFieldErrorCount(DOB)
-        && app.getParty().getPerson().getDob().isAfter(LocalDate.now())) {
-      errors.rejectValue(DOB, INVALID, "Date of birth cannot be in future.");
-    }
-  }
-
-  void validateOrganisation(Application app, Errors errors) {
-    String messagePrefix = "When party is ORG";
-    rejectIfEmptyOrWhitespace(errors, ORGANISATION, messagePrefix);
-    rejectIfExists(errors, PERSON, app.getParty().getPerson(), messagePrefix);
-    rejectIfExists(errors, ELIGIBILITY, app.getEligibility(), messagePrefix);
-    rejectIfExists(errors, ARTIFACTS, app.getArtifacts(), messagePrefix);
-    // TODO: If ORG is null then barf
-    if (null != app.getParty().getOrganisation()
-        && !Boolean.TRUE.equals(app.getParty().getOrganisation().isIsCharity())
-        && null != app.getParty().getOrganisation().getCharityNumber()) {
-      errors.rejectValue(
-          CHARITY_NO, INVALID, "Charity number can only be present if organisation is a charity.");
-    }
   }
 
   @Override
@@ -122,216 +50,67 @@ public class ApplicationValidator implements Validator {
     validateLocalAuthority(app, errors);
 
     // Don't continue if basic objects previously invalid due to bean validation.
-    if (!hasParty(errors, app)) {
+    if (!hasParty(app, errors)) {
       return;
     }
 
     boolean isPerson = PartyTypeCodeField.PERSON.equals(app.getParty().getTypeCode());
     if (isPerson) {
       validatePerson(app, errors);
-      validateEligibility(app, errors);
+      eligibilityValidator.validate(app, errors);
     } else {
       validateOrganisation(app, errors);
     }
   }
 
-  void validateEligibility(Application app, Errors errors) {
-    // Validate if eligibility present and type ok.
-    // TODO: Readability
-    if (errors.getFieldErrorCount(FieldKeys.ELIGIBILITY) == 0
-        && errors.getFieldErrorCount(FieldKeys.ELIGIBILITY_TYPE) == 0) {
-      validateEligibilityByType(app, errors);
-      validateEligibilityCommon(app, errors);
+  /**
+   * Check we have the minimum set of valid data to make further validation worthwhile.
+   *
+   * @param errors Spring Errors.
+   * @param app The Application to validate.
+   * @return true if can continue validation.
+   */
+  boolean hasParty(Application app, Errors errors) {
+    // If party validation failed then skip rest of validation - don't know which path to take.
+    // This should only be possible if party was null, if invalid would have failed to deserialize
+    return hasNoFieldErrors(errors, KEY_PARTY_TYPE) && hasNoFieldErrors(errors, KEY_PARTY);
+  }
+
+  void validateLocalAuthority(Application app, Errors errors) {
+    if (!referenceDataService.isAuthorityCodeValid(app.getLocalAuthorityCode())) {
+      errors.rejectValue(KEY_LA, NOT_VALID, "Invalid local authority code.");
     }
   }
 
-  void validateEligibilityByType(Application app, Errors errors) {
+  void validatePerson(Application app, Errors errors) {
 
-    String messagePrefix;
-    switch (app.getEligibility().getTypeCode()) {
-      case PIP:
-      case DLA:
-      case WPMS:
-        messagePrefix = "When eligibility PIP, DLA or WPMS";
-        rejectIfEmptyOrWhitespace(errors, BENEFIT, messagePrefix);
-        validateBenefit(app, errors);
-        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
-        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
-        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
-        break;
-      case ARMS:
-        messagePrefix = "When eligibility is ARMS";
-        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
-        rejectIfEmptyOrWhitespace(errors, ARMS, messagePrefix);
-        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
-        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
-        validateArms(app, errors);
-        break;
-      case WALKD:
-        messagePrefix = "When eligibility is WALKD";
-        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
-        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
-        rejectIfEmptyOrWhitespace(errors, WALKING, messagePrefix);
-        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
-        validateWalking(app, errors);
-        break;
-      case CHILDBULK:
-        messagePrefix = "When eligibility is CHILDBULK";
-        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
-        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
-        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
-        rejectIfEmptyOrWhitespace(errors, CHILD, messagePrefix);
-        break;
-      case BLIND:
-      case AFRFCS:
-      case TERMILL:
-      case CHILDVEHIC:
-        messagePrefix = "When eligibility is BLIND, AFRFCS, TERMILL or CHILDVEH";
-        rejectIfExists(errors, BENEFIT, app.getEligibility().getBenefit(), messagePrefix);
-        rejectIfExists(errors, ARMS, app.getEligibility().getDisabilityArms(), messagePrefix);
-        rejectIfExists(errors, WALKING, app.getEligibility().getWalkingDifficulty(), messagePrefix);
-        rejectIfExists(errors, CHILD, app.getEligibility().getChildUnder3(), messagePrefix);
-        break;
+    String messagePrefix = "When party is KEY_PERSON";
+
+    // Require Person and eligibility objects
+    rejectIfEmptyOrWhitespace(errors, KEY_PERSON, messagePrefix);
+    rejectIfEmptyOrWhitespace(errors, KEY_ELIGIBILITY, messagePrefix);
+    rejectIfExists(errors, KEY_ORGANISATION, messagePrefix);
+    if (hasNoFieldErrors(errors, KEY_PERSON)
+        && hasNoFieldErrors(errors, KEY_PERSON_DOB)
+        && app.getParty().getPerson().getDob().isAfter(LocalDate.now())) {
+      errors.rejectValue(KEY_PERSON_DOB, NOT_VALID, "Date of birth cannot be in future.");
     }
   }
 
-  void validateArms(Application app, Errors errors) {
-    if (hasNoFieldErrors(errors,ARMS)
-        && Boolean.TRUE != app.getEligibility().getDisabilityArms().isIsAdaptedVehicle()
-        && null != app.getEligibility().getDisabilityArms().getAdaptedVehicleDescription()) {
-
+  void validateOrganisation(Application app, Errors errors) {
+    String messagePrefix = "When party is ORG";
+    rejectIfEmptyOrWhitespace(errors, KEY_ORGANISATION, messagePrefix);
+    rejectIfExists(errors, KEY_PERSON, messagePrefix);
+    rejectIfExists(errors, KEY_ELIGIBILITY, messagePrefix);
+    rejectIfExists(errors, KEY_ARTIFACTS, messagePrefix);
+    // TODO: If ORG is null then barf
+    if (hasNoFieldErrors(errors, KEY_ORGANISATION)
+        && !TRUE.equals(app.getParty().getOrganisation().isIsCharity())
+        && exists(errors, KEY_ORG_CHARITY_NO)) {
       errors.rejectValue(
-          ARMS_VEHICLE_ADAPTION,
-          INVALID,
-          ARMS_VEHICLE_ADAPTION + " cannot be entered if is adapted vehicle not true.");
+          KEY_ORG_CHARITY_NO,
+          NOT_VALID,
+          "Charity number can only be present if organisation is a charity.");
     }
   }
-
-  void validateEligibilityCommon(Application app, Errors errors) {
-
-    EligibilityCodeField eligibilityType = app.getEligibility().getTypeCode();
-
-    if (null != app.getEligibility().getDescriptionOfConditions()
-        && !isDiscretionaryEligibility(eligibilityType)) {
-      errors.rejectValue(
-          CONDITIONS_DESCRIPTION,
-          INVALID,
-          CONDITIONS_DESCRIPTION + " is only valid for discretionary eligibility types.");
-    }
-
-    // TODO: SQL IN ()..
-    if (EligibilityCodeField.WALKD != eligibilityType
-        && EligibilityCodeField.CHILDBULK != eligibilityType
-        && EligibilityCodeField.CHILDVEHIC != eligibilityType
-        && null != app.getEligibility().getHealthcareProfessionals()) {
-      errors.rejectValue(
-          HEALTHCARE_PROS,
-          INVALID,
-          HEALTHCARE_PROS
-              + " can only be entered if eligibility in WALKD, CHILDBULK or CHILDVEHIC.");
-    }
-
-    // TODO: Check if this should live here..
-    if (EligibilityCodeField.BLIND == eligibilityType) {
-      validateBlind(app, errors);
-    }
-  }
-
-  void validateBlind(Application app, Errors errors) {
-    if (null != app.getEligibility().getBlind()
-        && null != app.getEligibility().getBlind().getRegisteredAtLaId()
-        && EligibilityCodeField.BLIND != app.getEligibility().getTypeCode()) {
-      errors.rejectValue(
-          FieldKeys.BLIND_REGISTERED_AT,
-          INVALID,
-          "Registered at LA only allowed if eligibility is BLIND.");
-    }
-  }
-
-  void validateWalking(Application app, Errors errors) {
-    if (errors.getFieldErrorCount(WALKING) == 0) {
-      // If exists then validate values.
-      if (null == app.getEligibility().getWalkingDifficulty().getTypeCodes()
-          || app.getEligibility().getWalkingDifficulty().getTypeCodes().isEmpty()) {
-        errors.rejectValue(
-            WALKING_TYPE_CODES,
-            INVALID,
-            "Must have at least 1 walking type code if eligibility is WALKDIFF.");
-      } else if (!app.getEligibility()
-              .getWalkingDifficulty()
-              .getTypeCodes()
-              .contains(WalkingDifficultyTypeCodeField.SOMELSE)
-          && null != app.getEligibility().getWalkingDifficulty().getOtherDescription()) {
-        // If walking difficulty does not have something else selected cant have other
-        // description.
-        errors.rejectValue(
-            WALKING_OTHER_DESCRIPTION,
-            INVALID,
-            WALKING_OTHER_DESCRIPTION + " can only be present if SOMELSE selected as a type.");
-      }
-      // Walking speed only present if can walk, from walking length of time.
-      // Walking time code is mandatory for walking
-      Assert.notNull(
-          app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode(),
-          "If WALKD then time code should be not null");
-      if (WalkingLengthOfTimeCodeField.CANTWALK
-              == app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode()
-          && null != app.getEligibility().getWalkingDifficulty().getWalkingSpeedCode()) {
-        errors.rejectValue(
-            WALKING_SPEED,
-            INVALID,
-            WALKING_SPEED + " can only be present if walking length of time is not can't walk.");
-      }
-    }
-  }
-
-  void validateBenefit(Application app, Errors errors) {
-    if (null != app.getEligibility().getBenefit()
-        && null != app.getEligibility().getBenefit().getExpiryDate()) {
-      if (LocalDate.now().isAfter(app.getEligibility().getBenefit().getExpiryDate())) {
-        errors.rejectValue(
-            BENEFIT_EXPIRY_DATE, INVALID, "Benefit expiry date cannot be in the past.");
-      }
-
-      if (Boolean.TRUE.equals(app.getEligibility().getBenefit().isIsIndefinite())) {
-        errors.rejectValue(
-            BENEFIT_EXPIRY_DATE,
-            INVALID,
-            "Benefit expiry date cannot be entered if benefit is indefinite.");
-      }
-    }
-  }
-
-  private boolean isDiscretionaryEligibility(EligibilityCodeField type) {
-    switch (type) {
-      case WALKD:
-      case ARMS:
-      case CHILDVEHIC:
-      case CHILDBULK:
-      case TERMILL:
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  private static void rejectIfExists(
-      Errors errors, String field, Object value, String messagePrefix) {
-
-    if (null != value) {
-      errors.rejectValue(field, "NotValid", messagePrefix + ": " + field + " should be null ");
-    }
-  }
-
-  private static void rejectIfEmptyOrWhitespace(Errors errors, String field, String messagePrefix) {
-    Assert.notNull(messagePrefix, "messagePrefis must be provided");
-    Assert.notNull(field, "field must be provided");
-    ValidationUtils.rejectIfEmptyOrWhitespace(
-        errors, field, "NotNull", messagePrefix + ":" + field + " cannot be null.");
-  }
-
-  private boolean hasNoFieldErrors(Errors errors, String field) {
-    return errors.getFieldErrorCount(field) == 0;
-  }
-
 }

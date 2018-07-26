@@ -1,103 +1,48 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.common.converter.ToEntityConverter;
+import uk.gov.dft.bluebadge.common.converter.ToEntityFormatter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.DisabilityArms;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibility;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Organisation;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Person;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
+import java.util.UUID;
+
+/**
+ * Converts an ALREADY validated entity to/from model.
+ */
 @Component
 public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application> {
 
-  private final VehicleConverter vehicleConverter;
-  private final WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
-  private final WalkingAidConverter walkingAidConverter;
-  private final TreatmentConverter treatmentConverter;
-  private final MedicationConverter medicationConverter;
-  private final HealthcareProfessionalConverter healthcareProfessionalConverter;
+  private final EligibilityConverter eligibilityConverter;
+  private final OrganisationConverter organisationConverter;
+  private final PersonConverter personConverter;
 
-  public ApplicationConverter(
-      VehicleConverter vehicleConverter,
-      WalkingDifficultyTypeConverter walkingDifficultyTypeConverter,
-      WalkingAidConverter walkingAidConverter,
-      TreatmentConverter treatmentConverter,
-      MedicationConverter medicationConverter,
-      HealthcareProfessionalConverter healthcareProfessionalConverter) {
-    this.vehicleConverter = vehicleConverter;
-    this.walkingDifficultyTypeConverter = walkingDifficultyTypeConverter;
-    this.walkingAidConverter = walkingAidConverter;
-    this.treatmentConverter = treatmentConverter;
-    this.medicationConverter = medicationConverter;
-    this.healthcareProfessionalConverter = healthcareProfessionalConverter;
-  }
-
-  private void convertPerson(Application application, ApplicationEntity entity) {
-    Person person = application.getParty().getPerson();
-    entity.setHolderName(person.getBadgeHolderName());
-    entity.setNino(person.getNino());
-    entity.setDob(person.getDob());
-    entity.setHolderNameAtBirth(person.getNameAtBirth());
-    entity.setGenderCode(person.getGenderCode().toString());
-    entity.setNoOfBadges(1);
-
-    Eligibility eligibility = application.getEligibility();
-    if (null != eligibility) {
-      entity.setEligibilityCode(eligibility.getTypeCode().toString());
-      entity.setEligibilityConditions(eligibility.getDescriptionOfConditions());
-      if (null != eligibility.getBenefit()) {
-        entity.setBenefitIsIndefinite(eligibility.getBenefit().isIsIndefinite());
-        entity.setBenefitExpiryDate(eligibility.getBenefit().getExpiryDate());
-      }
-      if (null != eligibility.getWalkingDifficulty()) {
-        WalkingDifficulty walkingDifficulty = eligibility.getWalkingDifficulty();
-        entity.setWalkingDifficultyTypes(
-            walkingDifficultyTypeConverter.convertToEntityList(
-                walkingDifficulty.getTypeCodes(), entity.getId()));
-        entity.setWalkOtherDesc(walkingDifficulty.getOtherDescription());
-        entity.setWalkingAids(
-            walkingAidConverter.convertToEntityList(
-                walkingDifficulty.getWalkingAids(), entity.getId()));
-        entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().toString());
-        entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().toString());
-        entity.setTreatments(
-            treatmentConverter.convertToEntityList(
-                walkingDifficulty.getTreatments(), entity.getId()));
-        entity.setMedications(
-            medicationConverter.convertToEntityList(
-                walkingDifficulty.getMedications(), entity.getId()));
-      }
-      if (null != eligibility.getDisabilityArms()) {
-        DisabilityArms disabilityArms = eligibility.getDisabilityArms();
-        entity.setArmsAdaptedVehDesc(disabilityArms.getAdaptedVehicleDescription());
-        entity.setArmsDrivingFreq(disabilityArms.getDrivingFrequency());
-        entity.setArmsIsAdaptedVehicle(disabilityArms.isIsAdaptedVehicle());
-      }
-      entity.setHealthcareProfessionals(
-          healthcareProfessionalConverter.convertToEntityList(
-              eligibility.getHealthcareProfessionals(), entity.getId()));
-      if (null != eligibility.getBlind()) {
-        entity.setBlindRegisteredAtLaCode(eligibility.getBlind().getRegisteredAtLaId());
-      }
-      if (null != eligibility.getChildUnder3()) {
-        entity.setBulkyEquipmentTypeCode(
-            eligibility.getChildUnder3().getBulkyMedicalEquipmentTypeCode().toString());
-      }
-    }
+  @Autowired
+  ApplicationConverter(
+      EligibilityConverter eligibilityConverter,
+      OrganisationConverter organisationConverter,
+      PersonConverter personConverter) {
+    this.eligibilityConverter = eligibilityConverter;
+    this.organisationConverter = organisationConverter;
+    this.personConverter = personConverter;
   }
 
   @Override
   public ApplicationEntity convertToEntity(Application application) {
+    // If creating an application pre populate the id.
+    Assert.notNull(application.getApplicationId(), "Before converting Application, must set applicationId.");
+    // The following are NotNull annotated in beans and validation should have been done.
+    Assert.notNull(application.getParty(), "Before converting Application validation should have failed for null party.");
+    Assert.notNull(application.getParty().getContact(), "Before converting Application validation should have failed for null contact.");
+    Assert.notNull(application.getApplicationTypeCode(), "Before converting Application validation should have failed if typeCode is null.");
 
     Contact contact = application.getParty().getContact();
 
-    // Populate general fields
+    // Populate application root fields
     ApplicationEntity entity =
         ApplicationEntity.builder()
             .appTypeCode(application.getApplicationTypeCode().toString())
@@ -111,29 +56,16 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
             .contactLine2(contact.getLine2())
             .contactTownCity(contact.getTownCity())
             .contactEmailAddress(contact.getEmailAddress())
-            .contactPostcode(ConvertUtils.formatPostcodeForEntity(contact.getPostCode()))
+            .contactPostcode(ToEntityFormatter.postcode(contact.getPostCode()))
             .primaryPhoneNo(contact.getPrimaryPhoneNumber())
             .secondaryPhoneNo(contact.getSecondaryPhoneNumber())
             .partyCode(application.getParty().getTypeCode().toString())
             .build();
 
-    if (application.getParty().getTypeCode().equals(PartyTypeCodeField.PERSON)) {
-      convertPerson(application, entity);
-    } else {
-      convertOrg(application, entity);
-    }
+    personConverter.convertToEntity(application, entity);
+    eligibilityConverter.convertToEntity(application, entity);
+    organisationConverter.convertToEntity(application, entity);
 
     return entity;
   }
-
-  private void convertOrg(Application application, ApplicationEntity entity) {
-    Organisation organisation = application.getParty().getOrganisation();
-    entity.setHolderName(organisation.getBadgeHolderName());
-    entity.setOrgIsCharity(organisation.isIsCharity());
-    entity.setOrgCharityNo(organisation.getCharityNumber());
-    entity.setNoOfBadges(organisation.getNumberOfBadges());
-    entity.setVehicles(
-        vehicleConverter.convertToEntityList(organisation.getVehicles(), entity.getId()));
-  }
-
 }

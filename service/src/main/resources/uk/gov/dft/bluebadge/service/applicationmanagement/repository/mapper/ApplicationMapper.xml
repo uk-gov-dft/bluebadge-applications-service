@@ -21,7 +21,7 @@
           url_proof_identity, url_badge_photo, local_authority_code
         )
         VALUES
-        ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler},
+        ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
           #{appTypeCode}, #{isPaymentTaken},
           #{submissionDatetime}, #{existingBadgeNo}, #{partyCode},
           #{contactName}, #{contactBuildingStreet}, #{contactLine2},
@@ -45,7 +45,7 @@
         )
         VALUES
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
-          #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler}
+          #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
           , #{element.profName}, #{element.profLocation}
         </foreach>
     </insert>
@@ -58,7 +58,7 @@
         )
         VALUES
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
-            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler}
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
             , #{element.name}, #{element.isPrescribed}, #{element.quantity}
             , #{element.frequency}
         </foreach>
@@ -71,7 +71,7 @@
         )
         VALUES
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
-            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler}
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
             , #{element.description}, #{element.time}
         </foreach>
     </insert>
@@ -83,7 +83,7 @@
         )
         VALUES
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
-            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler}
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
             , #{element.registrationNumber}, #{element.typeCode}, #{element.usageFrequency}
         </foreach>
     </insert>
@@ -95,7 +95,7 @@
         )
         VALUES
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
-            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler}
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
             , #{element.howProvidedCode}, #{element.description}, #{element.usage}
         </foreach>
     </insert>
@@ -107,7 +107,7 @@
         )
         VALUES
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
-            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.service.applicationmanagement.repository.UuidTypeHandler}
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
             , #{element.typeCode}
         </foreach>
     </insert>

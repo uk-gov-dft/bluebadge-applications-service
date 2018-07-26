@@ -1,4 +1,4 @@
-package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
+package uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection;
 
 import java.util.ArrayList;
 import java.util.List;
