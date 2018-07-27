@@ -160,3 +160,11 @@ task createDatabaseSchemaZip(type: Zip) {
     destinationDir(file("service/build/database-schema"))
 }
 
+task outputComputedVersion {
+    def computedVersion = new File('VERSION-computed')
+    computedVersion.delete()
+    computedVersion.write(getTheVersion())
+}
+
+build.finalizedBy(outputComputedVersion)
+
