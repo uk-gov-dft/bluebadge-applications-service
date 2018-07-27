@@ -10,6 +10,7 @@ import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibi
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.TERMILL;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WALKD;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WPMS;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELIGIBILITY;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_ARMS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BENEFIT;
@@ -18,7 +19,6 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CONDITIONS_DESC;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_HEALTH_PROS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 
 @Component
-public class EligibilityValidator extends ValidationBase {
+public class EligibilityValidator extends AbstractValidator {
 
   private BenefitValidator benefitValidator;
   private ArmsValidator armsValidator;
@@ -51,7 +51,7 @@ public class EligibilityValidator extends ValidationBase {
       // Most are type specific
       validateEligibilityByType(app, errors);
       // And can't have objects relating to other types
-      validateNoNotRequiredObjects(app, errors);
+      failUnneededObjects(app, errors);
       // A couple of rules are outside common type groupings
       validateHealthcareProfessionals(app, errors);
       validateConditionsDescription(app, errors);
@@ -99,7 +99,7 @@ public class EligibilityValidator extends ValidationBase {
     }
   }
 
-  void validateNoNotRequiredObjects(Application app, Errors errors) {
+  void failUnneededObjects(Application app, Errors errors) {
     EligibilityCodeField type = app.getEligibility().getTypeCode();
     String messagePrefix = "For eligibility type " + type;
     // Blind
@@ -148,7 +148,7 @@ public class EligibilityValidator extends ValidationBase {
   }
 
   void validateHealthcareProfessionals(Application app, Errors errors) {
-    if (!enumValues(CHILDBULK, CHILDVEHIC, WALKD).contains(app.getEligibility().getTypeCode())
+    if (enumValues(CHILDBULK, CHILDVEHIC, WALKD).doesNotContain(app.getEligibility().getTypeCode())
         && collection(app.getEligibility().getHealthcareProfessionals()).isNotEmpty()) {
       errors.rejectValue(
           KEY_ELI_HEALTH_PROS,

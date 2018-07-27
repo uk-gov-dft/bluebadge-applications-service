@@ -106,11 +106,11 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   }
 
   @Test
-  public void validateNoNotRequiredObjects() {
+  public void failUnneededObjects() {
     // TERMILL should have no child objects
     reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityTermIll().build());
 
-    eligibilityValidator.validateNoNotRequiredObjects(app, errors);
+    eligibilityValidator.failUnneededObjects(app, errors);
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
     assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
@@ -125,7 +125,7 @@ public class EligibilityValidatorTest extends ApplicationFixture {
     addChild(app);
     addWalking(app);
 
-    eligibilityValidator.validateNoNotRequiredObjects(app, errors);
+    eligibilityValidator.failUnneededObjects(app, errors);
     assertEquals(5, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));

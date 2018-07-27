@@ -49,9 +49,6 @@ public class EligibilityConverterTest extends ApplicationFixture {
   }
 
   @Test
-  public void convertToEntity() {}
-
-  @Test
   public void convertToEntity_NullEligibility() {
 
     // Given no eligibility

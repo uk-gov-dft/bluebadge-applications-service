@@ -18,7 +18,7 @@ public enum RefDataGroupEnum {
   BULKY_EQUIPMENT("BULKEQUIP", BulkyMedicalEquipmentTypeCodeField.class),
   GENDER("GENDER", GenderCodeField.class),
   HOW_PROVIDED("WALKMOB", HowProvidedCodeField.class),
-  PARTY_TYPE("KEY_PARTY", PartyTypeCodeField.class),
+  PARTY_TYPE("PARTY", PartyTypeCodeField.class),
   VEHICLE_TYPE("VEHICLETYP", VehicleTypeCodeField.class),
   WALK_DIFF_TYPE("WALKDIFF", WalkingDifficultyTypeCodeField.class),
   WALK_LENGTH("WALKLEN", WalkingLengthOfTimeCodeField.class),

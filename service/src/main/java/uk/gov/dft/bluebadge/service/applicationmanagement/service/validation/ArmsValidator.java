@@ -1,16 +1,16 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static java.lang.Boolean.TRUE;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_ARMS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_ARMS_VEH_ADAPTION;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 
 @Component
-class ArmsValidator extends ValidationBase {
+class ArmsValidator extends AbstractValidator {
   void validate(Application app, Errors errors) {
     // Have enough data to validate without null pointers?
     if (notExists(errors, KEY_ELI_ARMS)) {

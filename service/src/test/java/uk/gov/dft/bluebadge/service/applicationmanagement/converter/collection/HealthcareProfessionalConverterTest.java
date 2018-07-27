@@ -1,6 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.UUID;
 import org.junit.Test;

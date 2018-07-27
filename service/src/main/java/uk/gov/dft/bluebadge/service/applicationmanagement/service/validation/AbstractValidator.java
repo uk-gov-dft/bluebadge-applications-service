@@ -1,14 +1,14 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_NULL;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.SHOULD_NOT_EXIST;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_NULL;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.SHOULD_NOT_EXIST;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 
-public class ValidationBase {
+public abstract class AbstractValidator {
 
   class ErrorTypes {
     private ErrorTypes() {}

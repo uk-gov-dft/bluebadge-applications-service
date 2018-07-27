@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
-public class ValidationBaseTest extends ApplicationFixture {
+public class AbstractValidatorTest extends ApplicationFixture {
 
   @Test
   public void rejectIfExistsTest() {

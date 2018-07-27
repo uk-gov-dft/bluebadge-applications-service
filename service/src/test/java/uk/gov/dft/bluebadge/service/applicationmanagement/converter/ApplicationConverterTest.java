@@ -21,7 +21,6 @@ public class ApplicationConverterTest extends ApplicationFixture {
   @Mock private EligibilityConverter eligibilityConverter;
 
   public ApplicationConverterTest() {
-    super();
     converter =
         new ApplicationConverter(eligibilityConverter, organisationConverter, personConverter);
   }

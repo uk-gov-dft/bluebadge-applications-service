@@ -1,6 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static java.lang.Boolean.TRUE;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ARTIFACTS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELIGIBILITY;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_LA;
@@ -10,7 +11,6 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PARTY_TYPE;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PERSON;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PERSON_DOB;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
 
 import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.
 /** Validates an application assuming the bean validation has previously been performed. */
 @Component
 @Slf4j
-public class ApplicationValidator extends ValidationBase implements Validator {
+public class ApplicationValidator extends AbstractValidator implements Validator {
 
   private final ReferenceDataService referenceDataService;
   private EligibilityValidator eligibilityValidator;

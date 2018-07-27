@@ -1,9 +1,9 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static java.lang.Boolean.TRUE;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BENEFIT;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BENE_EXPIRY_DT;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
 
 import java.time.LocalDate;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 
 @Component
-class BenefitValidator extends ValidationBase {
+class BenefitValidator extends AbstractValidator {
 
   void validate(Application app, Errors errors) {
     if (exists(errors, KEY_ELI_BENEFIT) && exists(errors, KEY_ELI_BENE_EXPIRY_DT)) {

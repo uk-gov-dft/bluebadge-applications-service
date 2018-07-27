@@ -38,9 +38,9 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedatase
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.RefDataGroupEnum;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
-import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator;
 
-public class ApplicationFixture extends ValidationBase {
+public class ApplicationFixture extends AbstractValidator {
 
   protected interface ValidValues {
     String LA_CODE = "BIRM";

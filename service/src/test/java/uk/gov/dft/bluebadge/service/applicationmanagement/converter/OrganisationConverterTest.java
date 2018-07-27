@@ -25,7 +25,6 @@ public class OrganisationConverterTest extends ApplicationFixture {
   private OrganisationConverter organisationConverter;
 
   public OrganisationConverterTest() {
-    super();
     organisationConverter = new OrganisationConverter(vehicleConverter);
   }
 

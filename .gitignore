@@ -15,3 +15,5 @@ database-schema/migrations/drivers
 build
 out
 /env.mk
+api-acceptance-tests/target/
+VERSION-computed
