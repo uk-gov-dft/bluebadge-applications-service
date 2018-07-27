@@ -1,0 +1,115 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.ApplicationMapper">
+
+    <insert id="createApplication" parameterType="ApplicationEntity">
+        INSERT INTO application
+        ( id, 
+          app_type_code, is_payment_taken,
+          submission_datetime, existing_badge_no, party_code,
+          contact_name, contact_building_street, contact_line2,
+          contact_town_city, contact_postcode, primary_phone_no,
+          secondary_phone_no, contact_email_address, holder_name,
+          org_is_charity, org_charity_no, no_of_badges,
+          nino, dob, gender_code,
+          holder_name_at_birth, eligibility_code, eligibility_conditions,
+          benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
+          walk_length_code, walk_speed_code, arms_driving_freq,
+          arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
+          bulky_equipment_type_code, url_proof_eligibility, url_proof_address,
+          url_proof_identity, url_badge_photo, local_authority_code
+        )
+        VALUES
+        ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
+          #{appTypeCode}, #{isPaymentTaken},
+          #{submissionDatetime}, #{existingBadgeNo}, #{partyCode},
+          #{contactName}, #{contactBuildingStreet}, #{contactLine2},
+          #{contactTownCity}, #{contactPostcode}, #{primaryPhoneNo},
+          #{secondaryPhoneNo}, #{contactEmailAddress}, #{holderName},
+          #{orgIsCharity}, #{orgCharityNo}, #{noOfBadges},
+          #{nino}, #{dob}, #{genderCode},
+          #{holderNameAtBirth}, #{eligibilityCode}, #{eligibilityConditions},
+          #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
+          #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
+          #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
+          #{bulkyEquipmentTypeCode}, #{urlProofEligibility}, #{urlProofAddress},
+          #{urlProofIdentity}, #{urlBadgePhoto}, #{localAuthorityCode}
+        )
+    </insert>
+    
+    <insert id="createHealthcareProfessionals" parameterType="java.util.List">
+      INSERT INTO app_healthcare_professional
+        ( application_id
+          , prof_name, prof_location
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+          #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+          , #{element.profName}, #{element.profLocation}
+        </foreach>
+    </insert>
+
+    <insert id="createMedications" parameterType="java.util.List">
+        INSERT INTO app_medication
+        ( application_id
+        , med_name, med_is_prescribed, med_quantity
+        , med_frequency
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.name}, #{element.isPrescribed}, #{element.quantity}
+            , #{element.frequency}
+        </foreach>
+    </insert>
+
+    <insert id="createTreatments" parameterType="java.util.List">
+        INSERT INTO app_treatment
+        ( application_id
+        , treatment_description, treatment_time
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.description}, #{element.time}
+        </foreach>
+    </insert>
+
+    <insert id="createVehicles" parameterType="java.util.List">
+        INSERT INTO app_vehicle
+        ( application_id
+        , registration_no, type_code, usage_frequency
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.registrationNumber}, #{element.typeCode}, #{element.usageFrequency}
+        </foreach>
+    </insert>
+
+    <insert id="createWalkingAids" parameterType="java.util.List">
+        INSERT INTO app_walking_aid
+        ( application_id
+        , aid_how_provided_code, aid_description, aid_usage
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.howProvidedCode}, #{element.description}, #{element.usage}
+        </foreach>
+    </insert>
+
+    <insert id="createWalkingDifficultyTypes" parameterType="java.util.List">
+        INSERT INTO app_walking_type
+        ( application_id
+        , walking_type_code
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.typeCode}
+        </foreach>
+    </insert>
+
+</mapper>
