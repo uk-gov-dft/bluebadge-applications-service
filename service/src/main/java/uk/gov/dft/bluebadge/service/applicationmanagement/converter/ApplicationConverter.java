@@ -1,5 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -9,11 +10,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
-import java.util.UUID;
-
-/**
- * Converts an ALREADY validated entity to/from model.
- */
+/** Converts an ALREADY validated entity to/from model. */
 @Component
 public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application> {
 
@@ -34,11 +31,18 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
   @Override
   public ApplicationEntity convertToEntity(Application application) {
     // If creating an application pre populate the id.
-    Assert.notNull(application.getApplicationId(), "Before converting Application, must set applicationId.");
+    Assert.notNull(
+        application.getApplicationId(), "Before converting Application, must set applicationId.");
     // The following are NotNull annotated in beans and validation should have been done.
-    Assert.notNull(application.getParty(), "Before converting Application validation should have failed for null party.");
-    Assert.notNull(application.getParty().getContact(), "Before converting Application validation should have failed for null contact.");
-    Assert.notNull(application.getApplicationTypeCode(), "Before converting Application validation should have failed if typeCode is null.");
+    Assert.notNull(
+        application.getParty(),
+        "Before converting Application validation should have failed for null party.");
+    Assert.notNull(
+        application.getParty().getContact(),
+        "Before converting Application validation should have failed for null contact.");
+    Assert.notNull(
+        application.getApplicationTypeCode(),
+        "Before converting Application validation should have failed if typeCode is null.");
 
     Contact contact = application.getParty().getContact();
 

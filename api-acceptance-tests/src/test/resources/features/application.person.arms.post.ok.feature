@@ -41,9 +41,6 @@ Feature: Verify Create application Person with arms problems
       drivingFrequency: 'driving frequency',
       isAdaptedVehicle: true,
       adaptedVehicleDescription: 'adapted vehicle description'
-    },
-    blind: {
-      registeredAtLaId: 7
     }
   },
   artifacts: {

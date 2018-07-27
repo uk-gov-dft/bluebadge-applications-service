@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Configuration
-public class ReferenceDataServiceConfiguration {
+class ReferenceDataServiceConfiguration {
 
   @NotNull
   @Value("${referencedataservice.servicehost.scheme}")

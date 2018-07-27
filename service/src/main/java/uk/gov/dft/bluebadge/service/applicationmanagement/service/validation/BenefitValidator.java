@@ -4,16 +4,14 @@ import static java.lang.Boolean.TRUE;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BENEFIT;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BENE_EXPIRY_DT;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.exists;
 
+import java.time.LocalDate;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 
-import java.time.LocalDate;
-
 @Component
-public class BenefitValidator extends ValidationBase {
+class BenefitValidator extends ValidationBase {
 
   void validate(Application app, Errors errors) {
     if (exists(errors, KEY_ELI_BENEFIT) && exists(errors, KEY_ELI_BENE_EXPIRY_DT)) {

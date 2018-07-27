@@ -12,6 +12,7 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_PERSON_DOB;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
 
+import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,6 @@ import org.springframework.validation.Validator;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
-
-import java.time.LocalDate;
 
 /** Validates an application assuming the bean validation has previously been performed. */
 @Component
@@ -50,7 +49,7 @@ public class ApplicationValidator extends ValidationBase implements Validator {
     validateLocalAuthority(app, errors);
 
     // Don't continue if basic objects previously invalid due to bean validation.
-    if (!hasParty(app, errors)) {
+    if (!hasParty(errors)) {
       return;
     }
 
@@ -67,10 +66,9 @@ public class ApplicationValidator extends ValidationBase implements Validator {
    * Check we have the minimum set of valid data to make further validation worthwhile.
    *
    * @param errors Spring Errors.
-   * @param app The Application to validate.
    * @return true if can continue validation.
    */
-  boolean hasParty(Application app, Errors errors) {
+  boolean hasParty(Errors errors) {
     // If party validation failed then skip rest of validation - don't know which path to take.
     // This should only be possible if party was null, if invalid would have failed to deserialize
     return hasNoFieldErrors(errors, KEY_PARTY_TYPE) && hasNoFieldErrors(errors, KEY_PARTY);
@@ -90,6 +88,10 @@ public class ApplicationValidator extends ValidationBase implements Validator {
     rejectIfEmptyOrWhitespace(errors, KEY_PERSON, messagePrefix);
     rejectIfEmptyOrWhitespace(errors, KEY_ELIGIBILITY, messagePrefix);
     rejectIfExists(errors, KEY_ORGANISATION, messagePrefix);
+    validateDob(app, errors);
+  }
+
+  void validateDob(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_PERSON)
         && hasNoFieldErrors(errors, KEY_PERSON_DOB)
         && app.getParty().getPerson().getDob().isAfter(LocalDate.now())) {
@@ -103,7 +105,10 @@ public class ApplicationValidator extends ValidationBase implements Validator {
     rejectIfExists(errors, KEY_PERSON, messagePrefix);
     rejectIfExists(errors, KEY_ELIGIBILITY, messagePrefix);
     rejectIfExists(errors, KEY_ARTIFACTS, messagePrefix);
-    // TODO: If ORG is null then barf
+    validateCharity(app, errors);
+  }
+
+  void validateCharity(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_ORGANISATION)
         && !TRUE.equals(app.getParty().getOrganisation().isIsCharity())
         && exists(errors, KEY_ORG_CHARITY_NO)) {

@@ -1,31 +1,24 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.client.ExpectedCount.once;
 
 import org.junit.Test;
 import org.mockito.Mock;
 import uk.gov.dft.bluebadge.common.converter.ToEntityFormatter;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
 public class ApplicationConverterTest extends ApplicationFixture {
 
-  ApplicationConverter converter;
-  Application app;
+  private ApplicationConverter converter;
 
-  @Mock
-  private PersonConverter personConverter;
-  @Mock
-  private OrganisationConverter organisationConverter;
-  @Mock
-  private EligibilityConverter eligibilityConverter;
+  @Mock private PersonConverter personConverter;
+  @Mock private OrganisationConverter organisationConverter;
+  @Mock private EligibilityConverter eligibilityConverter;
 
   public ApplicationConverterTest() {
     super();

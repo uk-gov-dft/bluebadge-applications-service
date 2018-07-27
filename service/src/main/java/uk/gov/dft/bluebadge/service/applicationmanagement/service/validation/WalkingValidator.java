@@ -1,5 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
+import static uk.gov.dft.bluebadge.common.util.Matchers.collection;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField.CANTWALK;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_OTHER_DESC;
@@ -14,15 +15,14 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
 
 @Component
-public class WalkingValidator extends ValidationBase{
+class WalkingValidator extends ValidationBase {
 
   void validate(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_ELI_WALKING)) {
       // If exists then validate values.
 
       // Must have at least 1 type code to continue
-      if (Matchers.collection(app.getEligibility().getWalkingDifficulty().getTypeCodes())
-          .isNullOrEmpty()) {
+      if (collection(app.getEligibility().getWalkingDifficulty().getTypeCodes()).isNullOrEmpty()) {
         errors.rejectValue(
             KEY_ELI_WALK_TYPES,
             NOT_VALID,
@@ -64,9 +64,9 @@ public class WalkingValidator extends ValidationBase{
    */
   void validateWalkingOtherDescription(Application app, Errors errors) {
     if (!app.getEligibility()
-        .getWalkingDifficulty()
-        .getTypeCodes()
-        .contains(WalkingDifficultyTypeCodeField.SOMELSE)
+            .getWalkingDifficulty()
+            .getTypeCodes()
+            .contains(WalkingDifficultyTypeCodeField.SOMELSE)
         && hasText(errors, KEY_ELI_WALK_OTHER_DESC)) {
       // If walking difficulty does not have something else selected cant have other
       // description.

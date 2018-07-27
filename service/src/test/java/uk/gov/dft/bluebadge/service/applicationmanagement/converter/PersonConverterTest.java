@@ -1,16 +1,14 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.then;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import java.util.UUID;
 
 public class PersonConverterTest extends ApplicationFixture {
 

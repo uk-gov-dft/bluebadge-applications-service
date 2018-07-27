@@ -18,15 +18,14 @@ public class ValidationBase {
     static final String NOT_NULL = "NotNull";
   }
 
-  protected static void rejectIfExists(Errors errors, String fieldKey, String messagePrefix) {
+  protected void rejectIfExists(Errors errors, String fieldKey, String messagePrefix) {
     if (exists(errors, fieldKey)) {
       errors.rejectValue(
           fieldKey, SHOULD_NOT_EXIST, messagePrefix + ": " + fieldKey + " should be null ");
     }
   }
 
-  protected static void rejectIfEmptyOrWhitespace(
-      Errors errors, String fieldKey, String messagePrefix) {
+  protected void rejectIfEmptyOrWhitespace(Errors errors, String fieldKey, String messagePrefix) {
     Assert.notNull(messagePrefix, "messagePrefix must be provided");
     Assert.notNull(fieldKey, "fieldKey must be provided");
 
@@ -34,24 +33,24 @@ public class ValidationBase {
         errors, fieldKey, NOT_NULL, messagePrefix + ":" + fieldKey + " cannot be null.");
   }
 
-  protected static boolean hasNoFieldErrors(Errors errors, String fieldKey) {
+  protected boolean hasNoFieldErrors(Errors errors, String fieldKey) {
     return errors.getFieldErrorCount(fieldKey) == 0;
   }
 
-  protected static boolean hasFieldErrors(Errors errors, String fieldKey) {
+  protected boolean hasFieldErrors(Errors errors, String fieldKey) {
     return !hasNoFieldErrors(errors, fieldKey);
   }
 
-  protected static boolean exists(Errors errors, String fieldKey) {
+  protected boolean exists(Errors errors, String fieldKey) {
     Object value = errors.getFieldValue(fieldKey);
     return null != value;
   }
 
-  protected static boolean notExists(Errors errors, String fieldKey) {
+  protected boolean notExists(Errors errors, String fieldKey) {
     return !exists(errors, fieldKey);
   }
 
-  protected static boolean hasText(Errors errors, String fieldKey) {
+  protected boolean hasText(Errors errors, String fieldKey) {
     return !notExists(errors, fieldKey)
         && StringUtils.isNotEmpty(errors.getFieldValue(fieldKey).toString());
   }

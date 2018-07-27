@@ -5,10 +5,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibility;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
@@ -19,8 +19,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.T
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.WalkingAidConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.WalkingDifficultyTypeConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import java.util.UUID;
 
 public class EligibilityConverterTest extends ApplicationFixture {
 
@@ -78,7 +76,6 @@ public class EligibilityConverterTest extends ApplicationFixture {
     // No null pointers
     assertEquals(application.getEligibility().getTypeCode().name(), entity.getEligibilityCode());
   }
-
 
   @Test
   public void convertRootObjects() {

@@ -8,7 +8,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Walk
 @Component
 public class WalkingDifficultyTypeConverter
     implements ApplicationToEntityCollection<
-            WalkingDifficultyTypeEntity, WalkingDifficultyTypeCodeField> {
+        WalkingDifficultyTypeEntity, WalkingDifficultyTypeCodeField> {
   @Override
   public WalkingDifficultyTypeEntity mapToEntity(
       WalkingDifficultyTypeCodeField model, UUID applicationId) {

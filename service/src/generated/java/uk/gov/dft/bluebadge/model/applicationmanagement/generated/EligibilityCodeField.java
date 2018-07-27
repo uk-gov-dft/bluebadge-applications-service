@@ -17,7 +17,7 @@ public enum EligibilityCodeField {
 
   WALKD("WALKD"),
 
-  ARMS("DISABILITY_ARMS"),
+  ARMS("ARMS"),
 
   CHILDBULK("CHILDBULK"),
 

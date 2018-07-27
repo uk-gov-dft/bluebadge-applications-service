@@ -1,12 +1,12 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,15 +16,13 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.VehicleConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
-import java.util.UUID;
-
 public class OrganisationConverterTest extends ApplicationFixture {
 
-  @Mock VehicleConverter vehicleConverter;
+  @Mock private VehicleConverter vehicleConverter;
 
-  Application application;
-  ApplicationEntity entity = ApplicationEntity.builder().id(UUID.randomUUID()).build();
-  OrganisationConverter organisationConverter;
+  private Application application;
+  private ApplicationEntity entity = ApplicationEntity.builder().id(UUID.randomUUID()).build();
+  private OrganisationConverter organisationConverter;
 
   public OrganisationConverterTest() {
     super();

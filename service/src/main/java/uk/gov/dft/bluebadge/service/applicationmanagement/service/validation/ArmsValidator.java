@@ -10,7 +10,7 @@ import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 
 @Component
-public class ArmsValidator extends ValidationBase{
+class ArmsValidator extends ValidationBase {
   void validate(Application app, Errors errors) {
     // Have enough data to validate without null pointers?
     if (notExists(errors, KEY_ELI_ARMS)) {

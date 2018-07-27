@@ -13,9 +13,9 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.Stat
 
 public class ApplicationRepositoryTest {
 
-  @Mock SqlSession sqlSession;
+  @Mock private SqlSession sqlSession;
 
-  ApplicationRepository repository;
+  private ApplicationRepository repository;
 
   public ApplicationRepositoryTest() {
     MockitoAnnotations.initMocks(this);

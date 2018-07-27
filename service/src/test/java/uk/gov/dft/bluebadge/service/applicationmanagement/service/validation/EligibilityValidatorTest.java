@@ -1,20 +1,22 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.mockito.Mock;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
 public class EligibilityValidatorTest extends ApplicationFixture {
 
-  @Mock WalkingValidator walkingValidator;
-  @Mock ArmsValidator armsValidator;
-  @Mock BenefitValidator benefitValidator;
+  @Mock private WalkingValidator walkingValidator;
+  @Mock private ArmsValidator armsValidator;
+  @Mock private BenefitValidator benefitValidator;
 
   private final EligibilityValidator eligibilityValidator;
-  private Application app;
 
   public EligibilityValidatorTest() {
     super();
@@ -23,197 +25,113 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   }
 
   @Test
-  public void validateEligibilityByType_PIP_DLA_WPMS() {
-    // PIP
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
-    resetErrors(app);
-    expectBenefitOnly(app);
+  public void validateEligibilityByType_benefit() {
+    // Given valid app
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build());
 
-    // DLA
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityDla().build();
-    resetErrors(app);
-    expectBenefitOnly(app);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_BENEFIT);
 
-    // Wpms
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWpms().build();
-    resetErrors(app);
-    expectBenefitOnly(app);
-  }
+    // specific eligibility validated
+    verify(benefitValidator, times(1)).validate(app, errors);
 
-  private void expectBenefitOnly(Application app) {
-    // Should have benefit. and not walking, arms or child
-    addBenefit(app);
-    app.getEligibility().setWalkingDifficulty(null);
-    app.getEligibility().setChildUnder3(null);
-    app.getEligibility().setDisabilityArms(null);
-    eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(0, errors.getErrorCount());
-
-    // Must have benefit
+    // Given required object was missing
     app.getEligibility().setBenefit(null);
-    resetErrors(app);
-    eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BENEFIT));
-
-    // Reset
-    addBenefit(app);
-
-    // Cannot have arms, walking, or child
-    addArms(app);
-    addWalking(app);
-    addChild(app);
-    resetErrors(app);
-    eligibilityValidator.validateNoUnexpectedEligibilityTypeObjects(app.getEligibility().getTypeCode(), errors);
-    assertEquals(3, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_ARMS));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
+    reset();
+    // Get error
+    validateEligibilityType(1, FieldKeys.KEY_ELI_BENEFIT);
+    // specific eligibility validated
+    verify(benefitValidator, times(1)).validate(app, errors);
   }
 
   @Test
-  public void validateEligibilityByType_ARMS() {
+  public void validateEligibilityType_Arms() {
+    // Given valid app
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build());
 
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
-    resetErrors(app);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_ARMS);
 
-    // Should have arms. and not benefit, walking or child
-    app.getEligibility().setWalkingDifficulty(null);
-    app.getEligibility().setChildUnder3(null);
-    app.getEligibility().setBenefit(null);
-    eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(0, errors.getErrorCount());
+    // specific eligibility validated
+    verify(armsValidator, times(1)).validate(app, errors);
 
-    // Must have arms
+    // Given required object was missing
     app.getEligibility().setDisabilityArms(null);
-    resetErrors(app);
-    eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_ARMS));
-
-    // Reset
-    addArms(app);
-
-    // Cannot have arms, walking, or child
-    addBenefit(app);
-    addWalking(app);
-    addChild(app);
-    resetErrors(app);
-    eligibilityValidator.validateNoUnexpectedEligibilityTypeObjects(app.getEligibility().getTypeCode(), errors);
-    assertEquals(3, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BENEFIT));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
+    reset();
+    // Get error
+    validateEligibilityType(1, FieldKeys.KEY_ELI_ARMS);
+    // specific eligibility validated
+    verify(armsValidator, times(1)).validate(app, errors);
   }
 
   @Test
-  public void validateEligibilityByType_WALKD() {
+  public void validateEligibilityType_Walk() {
+    // Given valid app
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build());
 
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
-    resetErrors(app);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_WALKING);
 
-    // Should have walking. and not benefit, arms or child
-    app.getEligibility().setDisabilityArms(null);
-    app.getEligibility().setChildUnder3(null);
-    app.getEligibility().setBenefit(null);
-    eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(0, errors.getErrorCount());
+    // specific eligibility validated
+    verify(walkingValidator, times(1)).validate(app, errors);
 
-    // Must have walk
+    // Given required object was missing
     app.getEligibility().setWalkingDifficulty(null);
-    resetErrors(app);
-    eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
-
-    // Reset
-    addWalking(app);
-
-    // Cannot have arms, benefit, or child
-    addBenefit(app);
-    addArms(app);
-    addChild(app);
-    resetErrors(app);
-    eligibilityValidator.validateNoUnexpectedEligibilityTypeObjects(app.getEligibility().getTypeCode(), errors);
-    assertEquals(3, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BENEFIT));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_ARMS));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
+    reset();
+    // Get error
+    validateEligibilityType(1, FieldKeys.KEY_ELI_WALKING);
+    // specific eligibility validated
+    verify(walkingValidator, times(1)).validate(app, errors);
   }
 
   @Test
-  public void validateEligibilityByType_CHILDBULK() {
+  public void validateEligibilityType_ChildBulk() {
+    // Given valid app
+    reset(
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build());
 
-    app =
-        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build();
-    resetErrors(app);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_CHILD3);
 
-    // Should have child. and not benefit, arms or walking
-    app.getEligibility().setDisabilityArms(null);
-    app.getEligibility().setWalkingDifficulty(null);
-    app.getEligibility().setBenefit(null);
-    eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(0, errors.getErrorCount());
-
-    // Must have child
+    // Given required object was missing
     app.getEligibility().setChildUnder3(null);
-    resetErrors(app);
+    reset();
+    // Get error
+    validateEligibilityType(1, FieldKeys.KEY_ELI_CHILD3);
+  }
+
+  private void validateEligibilityType(int expectedErrors, String field) {
+    // When validated
     eligibilityValidator.validateEligibilityByType(app, errors);
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
 
-    // Reset
-    addChild(app);
-
-    // Cannot have arms, walking, or benefit
-    addBenefit(app);
-    addArms(app);
-    addWalking(app);
-    resetErrors(app);
-    eligibilityValidator.validateNoUnexpectedEligibilityTypeObjects(app.getEligibility().getTypeCode(), errors);
-    assertEquals(3, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BENEFIT));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_ARMS));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
+    // Error counts match
+    assertEquals(expectedErrors, errors.getErrorCount());
+    assertEquals(expectedErrors, errors.getFieldErrorCount(field));
   }
 
   @Test
-  public void validateEligibilityByType_BLIND_AFRFCS_TERMILL_CHILDVEHIC() {
-    // BLIND
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
-    resetErrors(app);
-    expectNoEligibilityChildObjects(app);
+  public void validateNoNotRequiredObjects() {
+    // TERMILL should have no child objects
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityTermIll().build());
 
-    // AFRFCS
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityAfrfcs().build();
-    resetErrors(app);
-    expectNoEligibilityChildObjects(app);
+    eligibilityValidator.validateNoNotRequiredObjects(app, errors);
+    assertEquals(0, errors.getErrorCount());
+    assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
+    assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
+    assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_ARMS));
+    assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BENEFIT));
+    assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BLIND));
 
-    // TERMILL
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityTermIll().build();
-    resetErrors(app);
-    expectNoEligibilityChildObjects(app);
-
-    // CHILDVEHIC
-    app =
-        getApplicationBuilder()
-            .addBaseApplication()
-            .setPerson()
-            .setEligibilityChildVehicle()
-            .build();
-    resetErrors(app);
-    expectNoEligibilityChildObjects(app);
-  }
-
-  private void expectNoEligibilityChildObjects(Application app) {
-    // Cannot have arms, walking, benefit, or child
+    // Add objects.
     addArms(app);
-    addWalking(app);
-    addChild(app);
+    addBlind(app);
     addBenefit(app);
-    resetErrors(app);
-    eligibilityValidator.validateNoUnexpectedEligibilityTypeObjects(app.getEligibility().getTypeCode(), errors);
-    assertEquals(4, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_ARMS));
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
+    addChild(app);
+    addWalking(app);
+
+    eligibilityValidator.validateNoNotRequiredObjects(app, errors);
+    assertEquals(5, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_CHILD3));
+    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_WALKING));
+    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_ARMS));
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BENEFIT));
+    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BLIND));
   }
 
   @Test
@@ -222,7 +140,7 @@ public class EligibilityValidatorTest extends ApplicationFixture {
     // Valid
     app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     app.getEligibility().setDescriptionOfConditions("www");
-    resetErrors(app);
+    reset();
 
     eligibilityValidator.validateConditionsDescription(app, errors);
     assertEquals(0, errors.getErrorCount());
@@ -230,7 +148,7 @@ public class EligibilityValidatorTest extends ApplicationFixture {
     // Invalid
     app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityAfrfcs().build();
     app.getEligibility().setDescriptionOfConditions("www");
-    resetErrors(app);
+    reset();
 
     eligibilityValidator.validateConditionsDescription(app, errors);
     assertEquals(1, errors.getErrorCount());
@@ -242,26 +160,24 @@ public class EligibilityValidatorTest extends ApplicationFixture {
 
     // Can only have healthcare pros if WALKD, CHILDBULK or CHILDVEHIC
     // Valid
-    app =
+    reset(
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
             .addHealthcarePro()
-            .build();
-    resetErrors(app);
+            .build());
     eligibilityValidator.validateHealthcareProfessionals(app, errors);
     assertEquals(0, errors.getErrorCount());
 
     // Invalid
-    app =
+    reset(
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityArms()
             .addHealthcarePro()
-            .build();
-    resetErrors(app);
+            .build());
     eligibilityValidator.validateHealthcareProfessionals(app, errors);
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_HEALTH_PROS));
   }
@@ -269,8 +185,18 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Test
   public void validateEligibility() {
     // Mostly check no null pointers.
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
-    resetErrors(app);
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build());
     eligibilityValidator.validate(app, errors);
+  }
+
+  @Test
+  public void hasEligibility() {
+    reset(getApplicationBuilder().addBaseApplication().build());
+    errors.rejectValue(FieldKeys.KEY_ELIGIBILITY, "FFF");
+    assertFalse(eligibilityValidator.hasEligibility(errors));
+
+    reset(
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build());
+    assertTrue(eligibilityValidator.hasEligibility(errors));
   }
 }

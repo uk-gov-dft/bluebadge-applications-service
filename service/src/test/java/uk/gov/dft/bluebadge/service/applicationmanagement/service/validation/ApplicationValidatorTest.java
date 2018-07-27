@@ -1,24 +1,22 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import org.junit.Test;
 import org.mockito.Mock;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifacts;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
 public class ApplicationValidatorTest extends ApplicationFixture {
 
-  ApplicationValidator applicationValidator;
-  @Mock
-  EligibilityValidator eligibilityValidator;
+  private ApplicationValidator applicationValidator;
+
+  @Mock private EligibilityValidator eligibilityValidator;
 
   public ApplicationValidatorTest() {
     super();
@@ -27,175 +25,168 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void checkRequiredObjectsToContinueValid() {
-    Application application =
-        getApplicationBuilder().addBaseApplication().setOrganisation().build();
-    resetErrors(application);
+    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
 
     // Given party type, party, and contact are ok, then ok to validate.
-    assertTrue(applicationValidator.hasParty(application, errors));
+    assertTrue(applicationValidator.hasParty(errors));
     assertEquals(0, errors.getErrorCount());
   }
 
   @Test
   public void checkRequiredObjectsExistToContinueValidation_missing_party() {
-    Application application =
-        getApplicationBuilder().addBaseApplication().setOrganisation().build();
-    resetErrors(application);
+    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
 
     errors.rejectValue(FieldKeys.KEY_PARTY, "");
 
     // Given the check failed ensure main validate method does nothing
     // And particularly has no null pointers.
-    applicationValidator.validate(application, errors);
+    applicationValidator.validate(app, errors);
     assertEquals(1, errors.getErrorCount());
   }
 
   @Test
   public void checkRequiredObjectsExistToContinueValidation_invalid_party_type() {
-    Application application =
-        getApplicationBuilder().addBaseApplication().setOrganisation().build();
-    resetErrors(application);
+    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
 
     // Given party type failed bean validation can't validate further
     errors.rejectValue(FieldKeys.KEY_PARTY_TYPE, "Invalid");
-    application.getParty().setTypeCode(PartyTypeCodeField.PERSON);
-    assertFalse(applicationValidator.hasParty(application, errors));
+    app.getParty().setTypeCode(PartyTypeCodeField.PERSON);
+    assertFalse(applicationValidator.hasParty(errors));
     assertEquals(1, errors.getErrorCount());
   }
 
   @Test
   public void validateLocalAuthority() {
-    Application application =
-        getApplicationBuilder().addBaseApplication().setOrganisation().build();
-    resetErrors(application);
+    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
 
     // Given KEY_LA valid, no errors.
-    applicationValidator.validateLocalAuthority(application, errors);
+    applicationValidator.validateLocalAuthority(app, errors);
     assertEquals(0, errors.getErrorCount());
 
     // Given KEY_LA ivalid, then error
-    application.setLocalAuthorityCode("ABC");
-    applicationValidator.validateLocalAuthority(application, errors);
+    app.setLocalAuthorityCode("ABC");
+    applicationValidator.validateLocalAuthority(app, errors);
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_LA));
   }
 
   @Test
-  public void validatePerson() {
-    Application application =
-        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
-    resetErrors(application);
+  public void validateDob() {
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build());
 
-    // When person valid, no errors added.
-    applicationValidator.validatePerson(application, errors);
+    // When dob valid, no errors added.
+    applicationValidator.validateDob(app, errors);
     assertEquals(0, errors.getErrorCount());
 
     // When KEY_PERSON_DOB in future get error
-    application.getParty().getPerson().setDob(LocalDate.now().plus(Period.ofYears(1)));
-    applicationValidator.validatePerson(application, errors);
+    app.getParty().getPerson().setDob(LocalDate.now().plus(Period.ofYears(1)));
+    applicationValidator.validateDob(app, errors);
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_PERSON_DOB));
+  }
 
-    // Reset
-    application.getParty().getPerson().setDob(ValidValues.DOB);
+  @Test
+  public void validatePerson() {
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build());
+
+    // When person valid, no errors added.
+    applicationValidator.validatePerson(app, errors);
+    assertEquals(0, errors.getErrorCount());
 
     // When Person, organisation must be null
-    addOrganisation(application);
-    resetErrors(application);
-    applicationValidator.validatePerson(application, errors);
+    addOrganisation(app);
+    reset();
+    applicationValidator.validatePerson(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ORGANISATION));
 
     // Reset
-    application.getParty().setOrganisation(null);
+    app.getParty().setOrganisation(null);
 
     // When Person, eligibility required
-    application.setEligibility(null);
-    resetErrors(application);
-    applicationValidator.validatePerson(application, errors);
+    app.setEligibility(null);
+    reset();
+    applicationValidator.validatePerson(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELIGIBILITY));
 
     // Reset
-    setEligibilityPip(application);
+    setEligibilityPip(app);
 
     // When Person, person required
-    application.getParty().setPerson(null);
-    resetErrors(application);
-    applicationValidator.validatePerson(application, errors);
+    app.getParty().setPerson(null);
+    reset();
+    applicationValidator.validatePerson(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_PERSON));
   }
 
   @Test
   public void validateOrganisation() {
-    Application application =
-        getApplicationBuilder().addBaseApplication().setOrganisation().build();
-    resetErrors(application);
+    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
 
     // Valid
-    applicationValidator.validateOrganisation(application, errors);
+    applicationValidator.validateOrganisation(app, errors);
     assertEquals(0, errors.getErrorCount());
 
     // Must have org object
-    application.getParty().setOrganisation(null);
-    applicationValidator.validateOrganisation(application, errors);
+    app.getParty().setOrganisation(null);
+    applicationValidator.validateOrganisation(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ORGANISATION));
 
     // Reset
-    addOrganisation(application);
+    addOrganisation(app);
 
     // Cannot have person object
-    addPerson(application);
-    resetErrors(application);
-    applicationValidator.validateOrganisation(application, errors);
+    addPerson(app);
+    reset();
+    applicationValidator.validateOrganisation(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_PERSON));
 
     // Reset
-    application.getParty().setPerson(null);
+    app.getParty().setPerson(null);
 
     // Cannot have eligibility object
-    setEligibilityPip(application);
-    resetErrors(application);
-    applicationValidator.validateOrganisation(application, errors);
+    setEligibilityPip(app);
+    reset();
+    applicationValidator.validateOrganisation(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELIGIBILITY));
 
     // Reset
-    application.setEligibility(null);
-
-    // Cannot have charity number if not charity
-    application.getParty().getOrganisation().setIsCharity(false);
-    application.getParty().getOrganisation().setCharityNumber(ValidValues.CHARITY_NO);
-    resetErrors(application);
-    applicationValidator.validateOrganisation(application, errors);
-    assertEquals(1, errors.getErrorCount());
-    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ORG_CHARITY_NO));
-
-    // Reset
-    application.getParty().getOrganisation().setIsCharity(true);
+    app.setEligibility(null);
 
     // Cannot have artifacts
-    application.setArtifacts(new Artifacts());
-    resetErrors(application);
-    applicationValidator.validateOrganisation(application, errors);
+    app.setArtifacts(new Artifacts());
+    reset();
+    applicationValidator.validateOrganisation(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ARTIFACTS));
   }
 
   @Test
+  public void validateCharity() {
+    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
+
+    // Cannot have charity number if not charity
+    app.getParty().getOrganisation().setIsCharity(false);
+    app.getParty().getOrganisation().setCharityNumber(ValidValues.CHARITY_NO);
+    reset();
+    applicationValidator.validateCharity(app, errors);
+    assertEquals(1, errors.getErrorCount());
+    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ORG_CHARITY_NO));
+  }
+
+  @Test
   public void validate() {
     // Couple of runs through the whole validate to check safe for null pointers.
-    Application app = getApplicationBuilder().addBaseApplication().build();
-    resetErrors(app);
+    reset(getApplicationBuilder().addBaseApplication().build());
     applicationValidator.validate(app, errors);
 
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
-    resetErrors(app);
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build());
     applicationValidator.validate(app, errors);
 
-    app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
-    resetErrors(app);
+    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
     applicationValidator.validate(app, errors);
   }
 }

@@ -1,6 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
-import static java.lang.Boolean.TRUE;
+import static uk.gov.dft.bluebadge.common.util.Matchers.collection;
+import static uk.gov.dft.bluebadge.common.util.Matchers.enumValues;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.ARMS;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.CHILDBULK;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.CHILDVEHIC;
@@ -9,33 +10,21 @@ import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibi
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.TERMILL;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WALKD;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WPMS;
-import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField.CANTWALK;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELIGIBILITY;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_ARMS;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_ARMS_VEH_ADAPTION;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BENEFIT;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BENE_EXPIRY_DT;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BLIND;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CONDITIONS_DESC;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_HEALTH_PROS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_OTHER_DESC;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_SPEED;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_TYPES;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.Matchers.collection;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.Matchers.enumValues;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase.ErrorTypes.NOT_VALID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
-
-import java.time.LocalDate;
 
 @Component
 public class EligibilityValidator extends ValidationBase {
@@ -45,7 +34,10 @@ public class EligibilityValidator extends ValidationBase {
   private WalkingValidator walkingValidator;
 
   @Autowired
-  public EligibilityValidator(BenefitValidator benefitValidator, ArmsValidator armsValidator, WalkingValidator walkingValidator) {
+  EligibilityValidator(
+      BenefitValidator benefitValidator,
+      ArmsValidator armsValidator,
+      WalkingValidator walkingValidator) {
     this.benefitValidator = benefitValidator;
     this.armsValidator = armsValidator;
     this.walkingValidator = walkingValidator;
@@ -59,7 +51,7 @@ public class EligibilityValidator extends ValidationBase {
       // Most are type specific
       validateEligibilityByType(app, errors);
       // And can't have objects relating to other types
-      validateNoUnexpectedEligibilityTypeObjects(app.getEligibility().getTypeCode(), errors);
+      validateNoNotRequiredObjects(app, errors);
       // A couple of rules are outside common type groupings
       validateHealthcareProfessionals(app, errors);
       validateConditionsDescription(app, errors);
@@ -107,7 +99,8 @@ public class EligibilityValidator extends ValidationBase {
     }
   }
 
-  void validateNoUnexpectedEligibilityTypeObjects(EligibilityCodeField type, Errors errors) {
+  void validateNoNotRequiredObjects(Application app, Errors errors) {
+    EligibilityCodeField type = app.getEligibility().getTypeCode();
     String messagePrefix = "For eligibility type " + type;
     // Blind
     if (!EligibilityCodeField.BLIND.equals(type)) {

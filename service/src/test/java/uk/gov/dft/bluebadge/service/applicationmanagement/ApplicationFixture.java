@@ -38,8 +38,9 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedatase
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.RefDataGroupEnum;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ValidationBase;
 
-public class ApplicationFixture {
+public class ApplicationFixture extends ValidationBase {
 
   protected interface ValidValues {
     String LA_CODE = "BIRM";
@@ -87,7 +88,7 @@ public class ApplicationFixture {
     initValidRefData();
   }
 
-  protected void initValidRefData() {
+  private void initValidRefData() {
     List<ReferenceData> referenceDataList = new ArrayList<>();
 
     for (RefDataGroupEnum group : RefDataGroupEnum.values()) {
@@ -124,7 +125,7 @@ public class ApplicationFixture {
     return new ApplicationBuilder();
   }
 
-  public static void addPerson(Application application) {
+  protected static void addPerson(Application application) {
     Person person = new Person();
     person.setBadgeHolderName(ValidValues.BADGE_HOLDER_NAME);
     person.setDob(ValidValues.DOB);
@@ -178,31 +179,31 @@ public class ApplicationFixture {
     addBenefit(application);
   }
 
-  protected static void setEligibilityDla(Application application) {
+  private static void setEligibilityDla(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.DLA);
     addBenefit(application);
   }
 
-  protected static void setEligibilityWpms(Application application) {
+  private static void setEligibilityWpms(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.WPMS);
     addBenefit(application);
   }
 
-  protected static void setEligibilityArms(Application application) {
+  private static void setEligibilityArms(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.ARMS);
     addArms(application);
   }
 
-  protected static void setEligibilityWalking(Application application) {
+  private static void setEligibilityWalking(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.WALKD);
     addWalking(application);
   }
 
-  protected static void setEligibilityChildBulk(Application application) {
+  private static void setEligibilityChildBulk(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.CHILDBULK);
     addChild(application);
@@ -214,29 +215,34 @@ public class ApplicationFixture {
     application.getEligibility().setBlind(blind);
   }
 
-  static void setEligibilityBlind(Application application) {
+  private static void setEligibilityBlind(Application application) {
     application.setEligibility(new Eligibility());
     addBlind(application);
     application.getEligibility().setTypeCode(EligibilityCodeField.BLIND);
   }
 
-  static void setEligibilityAfrfcs(Application application) {
+  private static void setEligibilityAfrfcs(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.AFRFCS);
   }
 
-  static void setEligibilityTermill(Application application) {
+  private static void setEligibilityTermill(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.TERMILL);
   }
 
-  static void setEligibilityChildVehic(Application application) {
+  private static void setEligibilityChildVehic(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.CHILDVEHIC);
   }
 
-  protected void resetErrors(Application application) {
+  protected void reset(Application application) {
+    app = application;
     errors = new BeanPropertyBindingResult(application, "application");
+  }
+
+  protected void reset() {
+    reset(app);
   }
 
   protected class ApplicationBuilder {
@@ -283,11 +289,13 @@ public class ApplicationFixture {
       return this;
     }
 
+    @SuppressWarnings("unused")
     public ApplicationBuilder setEligibilityDla() {
       ApplicationFixture.setEligibilityDla(application);
       return this;
     }
 
+    @SuppressWarnings("unused")
     public ApplicationBuilder setEligibilityWpms() {
       ApplicationFixture.setEligibilityWpms(application);
       return this;
@@ -317,6 +325,7 @@ public class ApplicationFixture {
       return this;
     }
 
+    @SuppressWarnings("unused")
     public ApplicationBuilder setEligibilityChildVehicle() {
       ApplicationFixture.setEligibilityChildVehic(application);
       return this;
