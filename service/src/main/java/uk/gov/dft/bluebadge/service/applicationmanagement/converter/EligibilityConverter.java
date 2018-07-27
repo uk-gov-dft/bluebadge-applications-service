@@ -89,9 +89,10 @@ public class EligibilityConverter {
       WalkingDifficulty walkingDifficulty = eligibility.getWalkingDifficulty();
 
       // Root fields
-      if (null != walkingDifficulty.getWalkingLengthOfTimeCode()) {
-        entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().toString());
-      }
+      Assert.notNull(
+          walkingDifficulty.getWalkingLengthOfTimeCode(),
+          "Walking length of time should not be null.  Bean is not null");
+      entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().toString());
       if (null != walkingDifficulty.getWalkingSpeedCode()) {
         entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().toString());
       }
