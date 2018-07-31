@@ -6,9 +6,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import static uk.gov.dft.bluebadge.service.applicationmanagement.config.ActuatorSecurityConfig.BEFORE_RESOURCE_SERVER_ORDER;
+
 @Configuration
-@Order(201)
+@Order(BEFORE_RESOURCE_SERVER_ORDER)
 public class ActuatorSecurityConfig extends WebSecurityConfigurerAdapter {
+  /** Order before the resource server (which is 3) */
+  public static final int BEFORE_RESOURCE_SERVER_ORDER = 2;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.requestMatcher(EndpointRequest.toAnyEndpoint())

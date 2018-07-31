@@ -1,5 +1,8 @@
-referencedataservice:
-  servicehost:
+blue-badge:
+  auth-server:
+    url: http://authorisation-service:8380/bb_auth
+  reference-data-service:
+    service-host:
     host: referencedata-service
 
 spring:

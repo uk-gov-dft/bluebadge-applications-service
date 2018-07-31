@@ -3,6 +3,8 @@ Feature: Verify Create application validation exceptions
 
   Background:
     * url baseUrl
+    * def result = callonce read('./oauth2.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify invalid create organisation
     * def application =
