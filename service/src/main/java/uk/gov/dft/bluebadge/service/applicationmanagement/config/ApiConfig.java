@@ -28,16 +28,16 @@ public class ApiConfig {
    */
   @Bean("referenceDataServiceRestTemplate")
   RestTemplate referenceDataServiceRestTemplate(
-    ClientCredentialsResourceDetails clientCredentialsResourceDetails,
-    ServiceConfiguration referenceDataServiceConfiguration) {
+      ClientCredentialsResourceDetails clientCredentialsResourceDetails,
+      ServiceConfiguration referenceDataServiceConfiguration) {
     OAuth2RestTemplate result =
-      new OAuth2RestTemplate(
-        clientCredentialsResourceDetails, new TokenForwardingClientContext());
+        new OAuth2RestTemplate(
+            clientCredentialsResourceDetails, new TokenForwardingClientContext());
     HttpComponentsClientHttpRequestFactory requestFactory =
-      new HttpComponentsClientHttpRequestFactory();
+        new HttpComponentsClientHttpRequestFactory();
     result.setRequestFactory(requestFactory);
     result.setUriTemplateHandler(
-      new DefaultUriBuilderFactory(referenceDataServiceConfiguration.getUrlPrefix()));
+        new DefaultUriBuilderFactory(referenceDataServiceConfiguration.getUrlPrefix()));
     return result;
   }
 }

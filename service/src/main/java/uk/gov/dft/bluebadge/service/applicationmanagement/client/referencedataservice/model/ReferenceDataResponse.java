@@ -9,9 +9,13 @@ import uk.gov.dft.bluebadge.common.api.model.CommonResponse;
 public class ReferenceDataResponse extends CommonResponse {
 
   @JsonProperty("data")
-  private final List<ReferenceData> data = null;
+  private List<ReferenceData> data = null;
 
   public List<ReferenceData> getData() {
     return data;
+  }
+
+  public void setData(List<ReferenceData> data) {
+    this.data = data;
   }
 }
