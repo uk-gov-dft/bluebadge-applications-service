@@ -1,0 +1,7 @@
+referencedataservice:
+  servicehost:
+    host: referencedata-service
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgresql:5432/bb_dev?currentSchema=applicationmanagement
