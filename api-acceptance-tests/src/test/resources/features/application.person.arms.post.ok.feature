@@ -3,6 +3,8 @@ Feature: Verify Create application Person with arms problems
 
   Background:
     * url baseUrl
+    * def result = callonce read('./oauth2.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify valid create for person with arms problems
     * def application =

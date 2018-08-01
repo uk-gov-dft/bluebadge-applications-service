@@ -3,6 +3,8 @@ Feature: Verify Create application for person with walking difficulty
 
   Background:
     * url baseUrl
+    * def result = callonce read('./oauth2.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify valid create application for person with walking difficulty
     * def application =

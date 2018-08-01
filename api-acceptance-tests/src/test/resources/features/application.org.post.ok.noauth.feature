@@ -1,10 +1,9 @@
-@application-org-post-ok
-Feature: Verify Create application
+@application-org-post-noauth
+Feature: Verify Create application fails auth
 
   Background:
     * url baseUrl
-    * def result = callonce read('./oauth2.feature')
-    * header Authorization = 'Bearer ' + result.accessToken
+
 
   Scenario: Verify valid create organisation
     * def application =
@@ -48,5 +47,5 @@ Feature: Verify Create application
     Given path 'applications'
     And request application
     When method POST
-    Then status 200
-    And match $.data contains "#notnull"
+    Then status 401
+

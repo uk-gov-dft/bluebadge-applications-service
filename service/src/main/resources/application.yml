@@ -1,12 +1,16 @@
-referencedataservice:
-  servicehost:
-    host: localhost
-    port: 8580
-    scheme: http
-    connectiontimeout: 6000
-    requesttimeout: 6000
-    contextpath: /uk-gov-dft/reference-data-service/1.0.0
-
+blue-badge:
+  auth-server:
+    url: http://localhost:8380/bb_auth
+    client-id: bb_user_management_id
+     ***REMOVED***
+  reference-data-service:
+    service-host:
+      host: localhost
+      port: 8580
+      scheme: http
+      connectiontimeout: 6000
+      requesttimeout: 6000
+      contextpath: /uk-gov-dft/reference-data-service/1.0.0
 
 logging:
   level:

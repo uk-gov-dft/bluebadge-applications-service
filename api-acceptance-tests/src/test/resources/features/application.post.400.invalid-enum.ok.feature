@@ -3,6 +3,8 @@ Feature: Verify Create application
 
   Background:
     * url baseUrl
+    * def result = callonce read('./oauth2.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify valid create organisation
     * def application =
