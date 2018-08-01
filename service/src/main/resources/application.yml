@@ -4,14 +4,13 @@ blue-badge:
     client-id: bb_user_management_id
      ***REMOVED***
   reference-data-service:
-    servicehost:
+    service-host:
       host: localhost
       port: 8580
       scheme: http
       connectiontimeout: 6000
       requesttimeout: 6000
       contextpath: /uk-gov-dft/reference-data-service/1.0.0
-
 
 logging:
   level:
@@ -41,8 +40,6 @@ spring:
     date-format: uk.gov.dft.bluebadge.common.api.RFC3339DateFormat
     serialization:
       write-dates-as-timestamps: false
-  profiles:
-    active: dev
 
 server:
   port: 8680

@@ -1,5 +1,5 @@
-@application-org-post-ok
-Feature: Verify Create application
+@application-org-post-noauth
+Feature: Verify Create application fails auth
 
   Background:
     * url baseUrl
