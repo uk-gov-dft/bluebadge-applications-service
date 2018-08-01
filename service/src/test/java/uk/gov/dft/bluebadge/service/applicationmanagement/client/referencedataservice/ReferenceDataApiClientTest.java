@@ -23,7 +23,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedatase
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceDataResponse;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ReferenceDataApiClientTest extends ApplicationContextTests {
+public class ReferenceDataApiClientTest {
   public static final String TEST_URI = "http://justtesting:7777/test/";
   private static final String BASE_ENDPOINT = TEST_URI + "reference-data";
 
