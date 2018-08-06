@@ -35,7 +35,7 @@ spring:
   datasource:
      ***REMOVED***
     username: ${bb_db_username:-developer}
-    url: jdbc:postgresql://postgres-service.${bb_env}.does.not.exist:/bb_dev?currentSchema=applicationmanagement
+    url: jdbc:postgresql://postgres-service.${bb_env}.does.not.exist:5432/${bb_database:-bb_dev}?currentSchema=applicationmanagement
   jackson:
     date-format: uk.gov.dft.bluebadge.common.api.RFC3339DateFormat
     serialization:
