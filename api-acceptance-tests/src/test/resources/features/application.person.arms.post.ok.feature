@@ -13,7 +13,7 @@ Feature: Verify Create application Person with arms problems
   applicationId: '',
   applicationTypeCode: 'NEW',
   localAuthorityCode: 'BIRM',
-  isPaymentTaken: false,
+  paymentTaken: false,
   submissionDate: '2018-12-25T12:30:45Z',
   existingBadgeNumber: 'KKKKKK',
   party: {

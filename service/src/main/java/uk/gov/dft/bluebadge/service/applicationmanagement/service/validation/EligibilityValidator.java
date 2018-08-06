@@ -29,18 +29,21 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCod
 @Component
 public class EligibilityValidator extends AbstractValidator {
 
-  private BenefitValidator benefitValidator;
-  private ArmsValidator armsValidator;
-  private WalkingValidator walkingValidator;
+  private final BenefitValidator benefitValidator;
+  private final ArmsValidator armsValidator;
+  private final WalkingValidator walkingValidator;
+  private final BlindValidator blindValidator;
 
   @Autowired
   EligibilityValidator(
       BenefitValidator benefitValidator,
       ArmsValidator armsValidator,
-      WalkingValidator walkingValidator) {
+      WalkingValidator walkingValidator,
+      BlindValidator blindValidator) {
     this.benefitValidator = benefitValidator;
     this.armsValidator = armsValidator;
     this.walkingValidator = walkingValidator;
+    this.blindValidator = blindValidator;
   }
 
   void validate(Application app, Errors errors) {
@@ -91,7 +94,7 @@ public class EligibilityValidator extends AbstractValidator {
         rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3, messagePrefix);
         break;
       case BLIND:
-        // Don't necessarily require blind object, no mandatory fields or special validation
+        blindValidator.validate(app, errors);
       case AFRFCS:
       case TERMILL:
       case CHILDVEHIC:

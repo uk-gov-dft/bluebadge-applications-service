@@ -148,6 +148,7 @@ public class Contact {
    */
   @ApiModelProperty(example = "01234123123", required = true, value = "")
   @NotNull
+  @Size(max = 20)
   public String getPrimaryPhoneNumber() {
     return primaryPhoneNumber;
   }
@@ -167,6 +168,7 @@ public class Contact {
    * @return secondaryPhoneNumber
    */
   @ApiModelProperty(example = "07970777111", value = "")
+  @Size(max = 20)
   public String getSecondaryPhoneNumber() {
     return secondaryPhoneNumber;
   }
@@ -187,6 +189,7 @@ public class Contact {
    */
   @ApiModelProperty(example = "nobody@blancmange.com", value = "")
   @Pattern(regexp = ".+\\@.+")
+  @Size(max = 100)
   public String getEmailAddress() {
     return emailAddress;
   }

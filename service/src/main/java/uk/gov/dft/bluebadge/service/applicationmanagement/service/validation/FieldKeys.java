@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 class FieldKeys {
   private FieldKeys() {}
 
+  static final String KEY_PAYMENT_TAKEN = "paymentTaken";
   static final String KEY_PARTY = "party";
   static final String KEY_PARTY_TYPE = "party.typeCode";
   static final String KEY_LA = "localAuthorityCode";
@@ -25,7 +26,6 @@ class FieldKeys {
   static final String KEY_ELI_HEALTH_PROS = KEY_ELIGIBILITY + ".healthcareProfessionals";
   static final String KEY_ELI_CONDITIONS_DESC = KEY_ELIGIBILITY + ".descriptionOfConditions";
   static final String KEY_ELI_BLIND = KEY_ELIGIBILITY + ".blind";
-  static final String KEY_ELI_BLIND_REG_AT_LA =
-      KEY_ELI_BLIND + "eligibility.blind.registeredAtLaId";
+  static final String KEY_ELI_BLIND_REG_AT_LA = KEY_ELI_BLIND + ".registeredAtLaId";
   static final String KEY_ARTIFACTS = "artifacts";
 }

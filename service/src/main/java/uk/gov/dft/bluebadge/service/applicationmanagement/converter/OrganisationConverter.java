@@ -10,7 +10,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 @Component
 public class OrganisationConverter {
 
-  private VehicleConverter vehicleConverter;
+  private final VehicleConverter vehicleConverter;
 
   @Autowired
   OrganisationConverter(VehicleConverter vehicleConverter) {

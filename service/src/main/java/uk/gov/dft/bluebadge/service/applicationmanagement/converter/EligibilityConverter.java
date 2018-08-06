@@ -17,11 +17,11 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 @Component
 public class EligibilityConverter {
 
-  private WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
-  private WalkingAidConverter walkingAidConverter;
-  private TreatmentConverter treatmentConverter;
-  private MedicationConverter medicationConverter;
-  private HealthcareProfessionalConverter healthcareProfessionalConverter;
+  private final WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
+  private final WalkingAidConverter walkingAidConverter;
+  private final TreatmentConverter treatmentConverter;
+  private final MedicationConverter medicationConverter;
+  private final HealthcareProfessionalConverter healthcareProfessionalConverter;
 
   @Autowired
   EligibilityConverter(

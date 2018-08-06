@@ -5,7 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
 
 /** Application */
@@ -20,8 +21,8 @@ public class Application {
   @JsonProperty("localAuthorityCode")
   private String localAuthorityCode = null;
 
-  @JsonProperty("isPaymentTaken")
-  private Boolean isPaymentTaken = null;
+  @JsonProperty("paymentTaken")
+  private Boolean paymentTaken = null;
 
   @JsonProperty("submissionDate")
   private OffsetDateTime submissionDate = null;
@@ -101,24 +102,24 @@ public class Application {
     this.localAuthorityCode = localAuthorityCode;
   }
 
-  public Application isPaymentTaken(Boolean isPaymentTaken) {
-    this.isPaymentTaken = isPaymentTaken;
+  public Application paymentTaken(Boolean paymentTaken) {
+    this.paymentTaken = paymentTaken;
     return this;
   }
 
   /**
-   * Get isPaymentTaken
+   * Get paymentTaken
    *
-   * @return isPaymentTaken
+   * @return paymentTaken
    */
   @ApiModelProperty(example = "true", required = true, value = "")
   @NotNull
-  public Boolean isIsPaymentTaken() {
-    return isPaymentTaken;
+  public Boolean getPaymentTaken() {
+    return paymentTaken;
   }
 
-  public void setIsPaymentTaken(Boolean isPaymentTaken) {
-    this.isPaymentTaken = isPaymentTaken;
+  public void setPaymentTaken(Boolean paymentTaken) {
+    this.paymentTaken = paymentTaken;
   }
 
   public Application submissionDate(OffsetDateTime submissionDate) {
@@ -237,7 +238,7 @@ public class Application {
     return Objects.equals(this.applicationId, application.applicationId)
         && Objects.equals(this.applicationTypeCode, application.applicationTypeCode)
         && Objects.equals(this.localAuthorityCode, application.localAuthorityCode)
-        && Objects.equals(this.isPaymentTaken, application.isPaymentTaken)
+        && Objects.equals(this.paymentTaken, application.paymentTaken)
         && Objects.equals(this.submissionDate, application.submissionDate)
         && Objects.equals(this.existingBadgeNumber, application.existingBadgeNumber)
         && Objects.equals(this.party, application.party)
@@ -251,7 +252,7 @@ public class Application {
         applicationId,
         applicationTypeCode,
         localAuthorityCode,
-        isPaymentTaken,
+        paymentTaken,
         submissionDate,
         existingBadgeNumber,
         party,
@@ -269,7 +270,7 @@ public class Application {
         .append(toIndentedString(applicationTypeCode))
         .append("\n");
     sb.append("    localAuthorityCode: ").append(toIndentedString(localAuthorityCode)).append("\n");
-    sb.append("    isPaymentTaken: ").append(toIndentedString(isPaymentTaken)).append("\n");
+    sb.append("    paymentTaken: ").append(toIndentedString(paymentTaken)).append("\n");
     sb.append("    submissionDate: ").append(toIndentedString(submissionDate)).append("\n");
     sb.append("    existingBadgeNumber: ")
         .append(toIndentedString(existingBadgeNumber))

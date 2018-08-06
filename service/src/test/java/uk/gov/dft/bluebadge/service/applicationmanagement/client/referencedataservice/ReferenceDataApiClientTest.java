@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationContextTests;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceDataResponse;
 

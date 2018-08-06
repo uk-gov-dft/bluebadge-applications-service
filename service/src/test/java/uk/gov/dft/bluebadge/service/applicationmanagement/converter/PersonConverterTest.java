@@ -25,6 +25,8 @@ public class PersonConverterTest extends ApplicationFixture {
   public void convertToEntity() {
     // Given a valid application
     application = getApplicationBuilder().addBaseApplication().setPerson().build();
+    // And nino has spaces in it
+    application.getParty().getPerson().setNino("aa 12 34 56 A");
 
     // When converting
     personConverter.convertToEntity(application, entity);
@@ -32,6 +34,8 @@ public class PersonConverterTest extends ApplicationFixture {
     // Then is successful
     assertEquals(new Integer(1), entity.getNoOfBadges());
     assertEquals(ValidValues.DOB, entity.getDob());
+    // And nino is uppercase with no spaces
+    assertEquals("AA123456A", entity.getNino());
   }
 
   @Test

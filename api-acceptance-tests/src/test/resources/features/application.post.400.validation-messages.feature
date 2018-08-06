@@ -13,7 +13,7 @@ Feature: Verify Create application validation exceptions
   applicationId: '',
   applicationTypeCode: 'NEW',
   localAuthorityCode: '',
-  isPaymentTaken: true,
+  paymentTaken: ,
   submissionDate: '2018-12-25T12:30:45Z',
   existingBadgeNumber: '',
   party: {
@@ -24,13 +24,13 @@ Feature: Verify Create application validation exceptions
       line2: 'Northern Quarter',
       townCity: 'Manchester',
       postCode: 'SK6 8GH',
-      primaryPhoneNumber: '01234123123',
+      primaryPhoneNumber: '01234123123somewhattoolong',
       secondaryPhoneNumber: '07970777111',
-      emailAddress: 'nobody@blancmange.com'
+      emailAddress: 'nobody.thiswillmaketheemaillongerthanahundredcharachters.hjjhjhjkmkmkmkmkmkjkjkjkjkjsfsfsdfsffsffdfd@blancmange.com'
     },
     person: {
       badgeHolderName: 'John Smith',
-      nino: 'NS123456A',
+      nino: 'NS123456A-1234',
       dob: '1970-05-29',
       nameAtBirth: 'John Smith',
       genderCode: 'FEMALE'
@@ -127,4 +127,7 @@ Feature: Verify Create application validation exceptions
     And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotValid.application.eligibility.disabilityArms", location:"#null", locationType:"#null"}
     And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotValid.application.eligibility.walkingDifficulty", location:"#null", locationType:"#null"}
     And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotValid.application.eligibility.childUnder3", location:"#null", locationType:"#null"}
-
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.application.paymentTaken", location:"#null", locationType:"#null"}
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Pattern.application.party.person.nino", location:"#null", locationType:"#null"}
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Size.application.party.contact.primaryPhoneNumber", location:"#null", locationType:"#null"}
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Size.application.party.contact.emailAddress", location:"#null", locationType:"#null"}

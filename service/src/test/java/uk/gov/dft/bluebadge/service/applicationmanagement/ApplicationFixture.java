@@ -269,6 +269,7 @@ public class ApplicationFixture extends AbstractValidator {
       application.setLocalAuthorityCode(ValidValues.LA_CODE);
       application.setApplicationTypeCode(ValidValues.APP_TYPE_CODE);
       application.setApplicationId(UUID.randomUUID().toString());
+      application.setPaymentTaken(Boolean.TRUE);
       return this;
     }
 

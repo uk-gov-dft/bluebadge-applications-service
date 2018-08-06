@@ -242,7 +242,8 @@
           "nino" : {
             "type" : "string",
             "description" : "The badgeholders national insurance number",
-            "example" : "NS123458S"
+            "example" : "NS123458S",
+            "pattern" : "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$"
           },
           "name" : {
             "type" : "string",
@@ -277,7 +278,7 @@
             "description" : "The code for the local authority.",
             "example" : "BIRM"
           },
-          "isPaymentTaken" : {
+          "paymentTaken" : {
             "type" : "boolean",
             "example" : true
           },
@@ -301,7 +302,7 @@
             "$ref" : "#/definitions/Artifacts"
           }
         },
-        "required" : [ "applicationTypeCode", "isPaymentTaken", "localAuthorityCode", "party" ]
+        "required" : [ "applicationTypeCode", "paymentTaken", "localAuthorityCode", "party" ]
       },
       "Party" : {
         "type" : "object",
@@ -332,7 +333,8 @@
           "nino" : {
             "type" : "string",
             "description" : "The badgeholders national insurance number",
-            "example" : "NS123456A"
+            "example" : "NS123456A",
+            "pattern" : "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$"
           },
           "dob" : {
             "type" : "string",
@@ -432,15 +434,18 @@
           },
           "primaryPhoneNumber" : {
             "type" : "string",
-            "example" : "01234123123"
+            "example" : "01234123123",
+            "maxLength" : 20
           },
           "secondaryPhoneNumber" : {
             "type" : "string",
-            "example" : "07970777111"
+            "example" : "07970777111",
+            "maxLength" : 20
           },
           "emailAddress" : {
             "type" : "string",
             "pattern" : ".+\\@.+",
+            "maxLength" : 100,
             "example" : "nobody@blancmange.com"
           }
         },
