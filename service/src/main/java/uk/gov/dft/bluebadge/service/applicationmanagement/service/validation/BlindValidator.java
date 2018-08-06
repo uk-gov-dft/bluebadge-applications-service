@@ -24,11 +24,10 @@ public class BlindValidator extends AbstractValidator {
   public void validate(Application app, Errors errors) {
     if (exists(errors, KEY_ELI_BLIND)
         && exists(errors, KEY_ELI_BLIND_REG_AT_LA)
-        && StringUtils.stripToNull(app.getEligibility().getBlind().getRegisteredAtLaId()) != null) {
-      if (!referenceDataService.isAuthorityCodeValid(
-          app.getEligibility().getBlind().getRegisteredAtLaId())) {
-        errors.rejectValue(KEY_ELI_BLIND_REG_AT_LA, NOT_VALID, "Invalid local authority code.");
-      }
+        && StringUtils.stripToNull(app.getEligibility().getBlind().getRegisteredAtLaId()) != null
+        && !referenceDataService.isAuthorityCodeValid(
+            app.getEligibility().getBlind().getRegisteredAtLaId())) {
+      errors.rejectValue(KEY_ELI_BLIND_REG_AT_LA, NOT_VALID, "Invalid local authority code.");
     }
   }
 }
