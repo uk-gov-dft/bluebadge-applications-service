@@ -14,6 +14,7 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 
 import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -28,7 +29,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.
 public class ApplicationValidator extends AbstractValidator implements Validator {
 
   private final ReferenceDataService referenceDataService;
-  private EligibilityValidator eligibilityValidator;
+  private final EligibilityValidator eligibilityValidator;
 
   @Autowired
   ApplicationValidator(
@@ -47,6 +48,19 @@ public class ApplicationValidator extends AbstractValidator implements Validator
     Application app = (Application) target;
 
     validateLocalAuthority(app, errors);
+
+    // Generated code (Application.java) has an invalid getter name for a Boolean.
+    // it should be getPaymentTaken rather than isPaymentTaken.
+    // If the generation has been rerun and the getter name has been retained then NotNull
+    // annotation will do nothing.  Hence the following.
+    // TODO remove the following when generation changed.
+    if (null == app.getPaymentTaken() && hasNoFieldErrors(errors, "paymentTaken")) {
+      errors.rejectValue(
+          FieldKeys.KEY_PAYMENT_TAKEN, "NotNull", "application.paymentTaken cannot be null.");
+      log.error(
+          "application.paymentTaken cannot be null.  This can only happen if the Application.java bean has been regenerated"
+              + "and the getter changed to isPaymentTaken.");
+    }
 
     // Don't continue if basic objects previously invalid due to bean validation.
     if (!hasParty(errors)) {
@@ -75,14 +89,15 @@ public class ApplicationValidator extends AbstractValidator implements Validator
   }
 
   void validateLocalAuthority(Application app, Errors errors) {
-    if (!referenceDataService.isAuthorityCodeValid(app.getLocalAuthorityCode())) {
+    if (null != StringUtils.stripToNull(app.getLocalAuthorityCode())
+        && !referenceDataService.isAuthorityCodeValid(app.getLocalAuthorityCode())) {
       errors.rejectValue(KEY_LA, NOT_VALID, "Invalid local authority code.");
     }
   }
 
   void validatePerson(Application app, Errors errors) {
 
-    String messagePrefix = "When party is KEY_PERSON";
+    String messagePrefix = "When party is PERSON";
 
     // Require Person and eligibility objects
     rejectIfEmptyOrWhitespace(errors, KEY_PERSON, messagePrefix);

@@ -1,5 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +11,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.dft.bluebadge.service.applicationmanagement.config.SecurityConfig;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
 @SpringBootTest(
   classes = ApplicationManagementApplication.class,
   properties = {"management.server.port=19991"}
@@ -19,8 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @ActiveProfiles({"test", "dev"})
 public class ApplicationContextTests {
 
-  @Autowired
-  private SecurityConfig securityConfig;
+  @Autowired private SecurityConfig securityConfig;
 
   @Test
   public void loadContext() {}
@@ -29,5 +28,4 @@ public class ApplicationContextTests {
   public void shouldInstantiateSecurityConfig() {
     assertThat(securityConfig, Matchers.notNullValue());
   }
-
 }

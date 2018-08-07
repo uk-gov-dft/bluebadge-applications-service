@@ -16,7 +16,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedatase
 @Slf4j
 public class ReferenceDataService {
 
-  private Set<String> authorityKeys = new HashSet<>();
+  private final Set<String> authorityKeys = new HashSet<>();
   private final ReferenceDataApiClient referenceDataApiClient;
   private boolean isLoaded = false;
 

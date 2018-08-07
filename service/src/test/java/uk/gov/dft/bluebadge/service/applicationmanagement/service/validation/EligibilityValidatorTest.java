@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -15,13 +16,14 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Mock private WalkingValidator walkingValidator;
   @Mock private ArmsValidator armsValidator;
   @Mock private BenefitValidator benefitValidator;
+  @Mock private BlindValidator blindValidator;
 
   private final EligibilityValidator eligibilityValidator;
 
   public EligibilityValidatorTest() {
     super();
     eligibilityValidator =
-        new EligibilityValidator(benefitValidator, armsValidator, walkingValidator);
+        new EligibilityValidator(benefitValidator, armsValidator, walkingValidator, blindValidator);
   }
 
   @Test
@@ -94,6 +96,15 @@ public class EligibilityValidatorTest extends ApplicationFixture {
     reset();
     // Get error
     validateEligibilityType(1, FieldKeys.KEY_ELI_CHILD3);
+  }
+
+  @Test
+  public void validateEligibilityType_Blind() {
+    // Given valid app
+    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build());
+
+    validateEligibilityType(0, FieldKeys.KEY_ELI_BLIND);
+    verify(blindValidator, times(1)).validate(any(), any());
   }
 
   private void validateEligibilityType(int expectedErrors, String field) {

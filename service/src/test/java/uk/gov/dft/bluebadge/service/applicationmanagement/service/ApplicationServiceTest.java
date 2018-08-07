@@ -33,6 +33,8 @@ public class ApplicationServiceTest extends ApplicationFixture {
     Application application =
         getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
     ApplicationEntity entity = ApplicationEntity.builder().build();
+    application.setSubmissionDate(null);
+
     entity.setId(UUID.randomUUID());
     when(converter.convertToEntity(application)).thenReturn(entity);
 
@@ -42,5 +44,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     verify(repository, times(1)).createApplication(entity);
     verify(repository, times(1)).createWalkingDifficultyTypes(any());
     Assert.notNull(result, "Should get id back");
+
+    Assert.notNull(application.getSubmissionDate(), "Submission date set as part of create");
   }
 }

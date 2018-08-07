@@ -12,7 +12,7 @@ Feature: Verify Create application fails auth
   applicationId: '',
   applicationTypeCode: 'NEW',
   localAuthorityCode: 'BIRM',
-  isPaymentTaken: true,
+  paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
   existingBadgeNumber: 'KKKJJJ',
   party: {

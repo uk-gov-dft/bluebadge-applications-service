@@ -52,7 +52,7 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
             .appTypeCode(application.getApplicationTypeCode().toString())
             .id(UUID.fromString(application.getApplicationId()))
             .localAuthorityCode(application.getLocalAuthorityCode())
-            .isPaymentTaken(application.isIsPaymentTaken())
+            .isPaymentTaken(application.getPaymentTaken())
             .submissionDatetime(application.getSubmissionDate())
             .existingBadgeNo(application.getExistingBadgeNumber())
             .contactName(contact.getFullName())

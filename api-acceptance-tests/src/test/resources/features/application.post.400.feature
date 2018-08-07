@@ -13,7 +13,7 @@ Feature: Verify Create application validation exceptions
   applicationId: '',
   applicationTypeCode: 'NEW',
   localAuthorityCode: 'BIRM',
-  isPaymentTaken: true,
+  paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
   existingBadgeNumber: 'I AM INVALID',
   party: {
