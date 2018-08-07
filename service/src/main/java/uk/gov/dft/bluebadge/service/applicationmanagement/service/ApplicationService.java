@@ -1,5 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
+import java.time.Clock;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,10 @@ public class ApplicationService {
   public UUID createApplication(Application applicationModel) {
 
     addUuid(applicationModel);
+
+    // For create set submission date to now
+    applicationModel.setSubmissionDate(OffsetDateTime.now(Clock.systemUTC()));
+    log.debug("Submission date set to:{}", applicationModel.getSubmissionDate());
 
     ApplicationEntity application = converter.convertToEntity(applicationModel);
 

@@ -49,4 +49,17 @@ public class PersonConverterTest extends ApplicationFixture {
     // Nothing happens
     assertNull(entity.getDob());
   }
+
+  @Test
+  public void convertToEntity_nullNino() {
+    application = getApplicationBuilder().addBaseApplication().setPerson().build();
+
+    application.getParty().getPerson().setNino(null);
+
+    // When converting
+    personConverter.convertToEntity(application, entity);
+
+    // no null pointer
+    assertNull(entity.getNino());
+  }
 }
