@@ -1,24 +1,17 @@
 ### API Acceptance tests
 
-#### Start the applicationmanagement service
+#### Start the message service
 
-First you need to start the applicationmanagement service by executing following commands
+First you need to start the service by executing following commands
 
 ```
-cd applications-service
-git pull
-git checkout whateverbranch
 gradle bootRun
 ```
 
 #### How to run api acceptance tests
 
-You may need to install maven plugin in intellij.
-
-Then go to api-acceptance-test project and right click on pom.xml → Add as Maven project
-
 ```
-mvn clean verify -f api-acceptance-tests/pom.xml -Pacceptance-test
+gradle acceptanceTests
 ```
 
 ### Relevant Articles: 

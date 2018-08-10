@@ -40,19 +40,20 @@ public class ReferenceDataService {
 
       log.info("Loading reference data.");
       List<ReferenceData> referenceDataList = referenceDataApiClient.retrieveReferenceData("APP");
-
-      // Store valid authority ids.
-      for (ReferenceData item : referenceDataList) {
-        if (RefDataGroupEnum.LOCAL_AUTHORITY.getGroupKey().equals(item.getGroupShortCode())) {
-          authorityKeys.add(item.getShortCode());
+      if(!referenceDataList.isEmpty()) {
+        // Store valid authority ids.
+        for (ReferenceData item : referenceDataList) {
+          if (RefDataGroupEnum.LOCAL_AUTHORITY.getGroupKey().equals(item.getGroupShortCode())) {
+            authorityKeys.add(item.getShortCode());
+          }
         }
-      }
 
-      if (log.isDebugEnabled()) {
-        validate(referenceDataList);
+        if (log.isDebugEnabled()) {
+          validate(referenceDataList);
+        }
+        log.info("Reference data loaded.");
+        isLoaded = true;
       }
-      log.info("Reference data loaded.");
-      isLoaded = true;
     }
   }
 
