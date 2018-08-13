@@ -13,7 +13,7 @@ class PersonConverter {
     if (null != application.getParty().getPerson()) {
       Person person = application.getParty().getPerson();
       entity.setHolderName(person.getBadgeHolderName());
-      if(null != person.getNino()) {
+      if (null != person.getNino()) {
         entity.setNino(StringUtils.removeAll(person.getNino().toUpperCase(), " "));
       }
       entity.setDob(person.getDob());
