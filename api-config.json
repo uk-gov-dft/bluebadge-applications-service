@@ -444,7 +444,7 @@
           },
           "emailAddress" : {
             "type" : "string",
-            "pattern" : ".+\\@.+",
+            "pattern" : "^\\S+\\@\\S+",
             "maxLength" : 100,
             "example" : "nobody@blancmange.com"
           }

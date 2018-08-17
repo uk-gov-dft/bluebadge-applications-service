@@ -188,7 +188,7 @@ public class Contact {
    * @return emailAddress
    */
   @ApiModelProperty(example = "nobody@blancmange.com", value = "")
-  @Pattern(regexp = ".+\\@.+")
+  @Pattern(regexp = "^\\S+\\@\\S+")
   @Size(max = 100)
   public String getEmailAddress() {
     return emailAddress;
