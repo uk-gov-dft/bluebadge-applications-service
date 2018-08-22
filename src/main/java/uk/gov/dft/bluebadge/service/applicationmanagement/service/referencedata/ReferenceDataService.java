@@ -40,7 +40,7 @@ public class ReferenceDataService {
 
       log.info("Loading reference data.");
       List<ReferenceData> referenceDataList = referenceDataApiClient.retrieveReferenceData("APP");
-      if(!referenceDataList.isEmpty()) {
+      if (!referenceDataList.isEmpty()) {
         // Store valid authority ids.
         for (ReferenceData item : referenceDataList) {
           if (RefDataGroupEnum.LOCAL_AUTHORITY.getGroupKey().equals(item.getGroupShortCode())) {
