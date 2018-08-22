@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -61,12 +62,14 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
       @ApiParam(value = "From submission date inclusive. 2018-12-25T12:30:45Z")
           @Valid
           @RequestParam(value = "from", required = false)
+          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
           Optional<OffsetDateTime> from,
       @ApiParam(value = "To submission date inclusive. 2018-12-25T12:30:45Z")
           @Valid
           @RequestParam(value = "to", required = false)
+          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
           Optional<OffsetDateTime> to,
-      @ApiParam(value = "", allowableValues = "NEW, RENEW, CANCEL, REVOKE")
+      @ApiParam(allowableValues = "NEW, RENEW, CANCEL, REVOKE")
           @Valid
           @RequestParam(value = "applicationTypeCode", required = false)
           Optional<String> applicationTypeCode) {

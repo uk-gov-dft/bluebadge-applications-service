@@ -4,6 +4,10 @@ Feature: Verify Create application for person with walking difficulty
   Background:
     * url baseUrl
     * def result = callonce read('./oauth2.feature')
+    * def dbConfig = { username: 'developer',  ***REMOVED*** }
+    * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
+    * def db = new DbUtils(dbConfig)
+    * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify valid create application for person with walking difficulty
@@ -23,13 +27,13 @@ Feature: Verify Create application for person with walking difficulty
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'SK6 8GH',
+      postCode: 'zz11 1zz',
       primaryPhoneNumber: 175154771,
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'
     },
     person: {
-      badgeHolderName: 'John Smith',
+      badgeHolderName: 'PersonDeleteMe',
       nino: 'NS123456A',
       dob: '1970-05-29',
       nameAtBirth: 'John Smith',

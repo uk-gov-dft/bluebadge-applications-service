@@ -10,7 +10,7 @@ public enum Statements {
   CREATE_WALKING_DIFFICULTY_TYPES("createWalkingDifficultyTypes"),
   FIND("findApplications");
 
-  private String name;
+  private final String name;
 
   Statements(String name) {
 

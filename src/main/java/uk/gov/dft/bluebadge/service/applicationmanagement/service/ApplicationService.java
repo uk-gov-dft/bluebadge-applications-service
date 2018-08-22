@@ -106,7 +106,7 @@ public class ApplicationService {
         .convertToModelList(repository.findApplications(params));
   }
 
-  Instant timeToInstantOrNull(OffsetDateTime time) {
+  private Instant timeToInstantOrNull(OffsetDateTime time) {
     if (null == time) {
       return null;
     }

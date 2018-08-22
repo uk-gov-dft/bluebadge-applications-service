@@ -41,6 +41,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
         getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
     ApplicationEntity entity = ApplicationEntity.builder().build();
     application.setSubmissionDate(null);
+    application.setApplicationId(null);
 
     entity.setId(UUID.randomUUID());
     when(converter.convertToEntity(application)).thenReturn(entity);
@@ -53,6 +54,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     Assert.assertNotNull("Should get id back", result);
 
     Assert.assertNotNull("Submission date set as part of create", application.getSubmissionDate());
+    Assert.assertNotNull("Id set as part of create", application.getApplicationId());
   }
 
   @Test(expected = BadRequestException.class)
