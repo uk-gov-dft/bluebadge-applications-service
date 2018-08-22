@@ -17,3 +17,4 @@ out
 /env.mk
 acceptance-tests/target/
 VERSION-computed
+**/dev-env*

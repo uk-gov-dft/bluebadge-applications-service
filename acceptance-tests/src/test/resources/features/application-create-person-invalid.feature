@@ -30,7 +30,7 @@ Feature: Verify Create application validation exceptions
       postCode: 'zz11 1zz',
       primaryPhoneNumber: '01234123123somewhattoolong',
       secondaryPhoneNumber: '07970777111',
-      emailAddress: 'nobody.thiswillmaketheemaillongerthanahundredcharachters.hjjhjhjkmkmkmkmkmkjkjkjkjkjsfsfsdfsffsffdfd@blancmange.com'
+      emailAddress: 'bob bob@invalidemail.com'
     },
     person: {
       badgeHolderName: 'PersonDeleteMe',
@@ -134,4 +134,4 @@ Feature: Verify Create application validation exceptions
     And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.application.paymentTaken", location:"#null", locationType:"#null"}
     And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Pattern.application.party.person.nino", location:"#null", locationType:"#null"}
     And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Size.application.party.contact.primaryPhoneNumber", location:"#null", locationType:"#null"}
-    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Size.application.party.contact.emailAddress", location:"#null", locationType:"#null"}
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Pattern.application.party.contact.emailAddress", location:"#null", locationType:"#null"}
