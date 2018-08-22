@@ -95,6 +95,7 @@ public class EligibilityValidator extends AbstractValidator {
         break;
       case BLIND:
         blindValidator.validate(app, errors);
+        break;
       case AFRFCS:
       case TERMILL:
       case CHILDVEHIC:
