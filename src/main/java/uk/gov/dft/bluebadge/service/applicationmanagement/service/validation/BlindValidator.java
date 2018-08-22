@@ -17,7 +17,7 @@ public class BlindValidator extends AbstractValidator {
   private final ReferenceDataService referenceDataService;
 
   @Autowired
-  public BlindValidator(ReferenceDataService referenceDataService) {
+  BlindValidator(ReferenceDataService referenceDataService) {
     this.referenceDataService = referenceDataService;
   }
 
