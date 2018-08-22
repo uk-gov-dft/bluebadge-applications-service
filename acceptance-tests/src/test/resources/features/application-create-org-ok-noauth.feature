@@ -1,4 +1,4 @@
-@application-org-post-noauth
+@application-create-org-ok-noauth
 Feature: Verify Create application fails auth
 
   Background:

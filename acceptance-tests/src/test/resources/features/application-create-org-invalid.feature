@@ -1,12 +1,12 @@
-@application-org-post-ok
-Feature: Verify Create application
+@application-create-org-invalid
+Feature: Verify Create application validation exceptions
 
   Background:
     * url baseUrl
     * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify valid create organisation
+  Scenario: Verify invalid create organisation
     * def application =
     """
     {
@@ -15,7 +15,7 @@ Feature: Verify Create application
   localAuthorityCode: 'BIRM',
   paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'KKKJJJ',
+  existingBadgeNumber: 'I AM INVALID',
   party: {
     typeCode: 'ORG',
     contact: {
@@ -48,5 +48,5 @@ Feature: Verify Create application
     Given path 'applications'
     And request application
     When method POST
-    Then status 200
-    And match $.data contains "#notnull"
+    Then status 400
+    And match $.error contains "#notnull"

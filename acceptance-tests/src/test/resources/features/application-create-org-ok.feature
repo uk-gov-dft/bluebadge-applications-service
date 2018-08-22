@@ -1,4 +1,4 @@
-@application-post-400-invalid-enum
+@application-create-org-ok
 Feature: Verify Create application
 
   Background:
@@ -12,7 +12,7 @@ Feature: Verify Create application
     {
   applicationId: '',
   applicationTypeCode: 'NEW',
-  localAuthorityCode: 'BIRM',
+  localAuthorityCode: 'ABERD',
   paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
   existingBadgeNumber: 'KKKJJJ',
@@ -35,7 +35,7 @@ Feature: Verify Create application
       vehicles: [
         {
           registrationNumber: 'VK61VZZ',
-          typeCode: 'I AM INVALID',
+          typeCode: 'CAR',
           usageFrequency: 'Daily'
         }
       ],
@@ -48,5 +48,6 @@ Feature: Verify Create application
     Given path 'applications'
     And request application
     When method POST
-    Then status 400
-    And match $.error.message contains "InvalidFormat.VehicleTypeCodeField"
+    Then status 200
+    And match $.data contains "#notnull"
+    * def applicationId = $.data

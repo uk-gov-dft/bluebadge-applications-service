@@ -7,7 +7,8 @@ public enum Statements {
   CREATE_TREATMENTS("createTreatments"),
   CREATE_VEHICLES("createVehicles"),
   CREATE_WALKING_AIDS("createWalkingAids"),
-  CREATE_WALKING_DIFFICULTY_TYPES("createWalkingDifficultyTypes");
+  CREATE_WALKING_DIFFICULTY_TYPES("createWalkingDifficultyTypes"),
+  FIND("findApplications");
 
   private String name;
 

@@ -1,12 +1,12 @@
-@application-post-400
-Feature: Verify Create application validation exceptions
+@application-create-org-invalid-enum
+Feature: Verify Create application
 
   Background:
     * url baseUrl
     * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify invalid create organisation
+  Scenario: Verify valid create organisation
     * def application =
     """
     {
@@ -15,7 +15,7 @@ Feature: Verify Create application validation exceptions
   localAuthorityCode: 'BIRM',
   paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'I AM INVALID',
+  existingBadgeNumber: 'KKKJJJ',
   party: {
     typeCode: 'ORG',
     contact: {
@@ -35,7 +35,7 @@ Feature: Verify Create application validation exceptions
       vehicles: [
         {
           registrationNumber: 'VK61VZZ',
-          typeCode: 'CAR',
+          typeCode: 'I AM INVALID',
           usageFrequency: 'Daily'
         }
       ],
@@ -49,4 +49,4 @@ Feature: Verify Create application validation exceptions
     And request application
     When method POST
     Then status 400
-    And match $.error contains "#notnull"
+    And match $.error.message contains "InvalidFormat.VehicleTypeCodeField"

@@ -1,4 +1,4 @@
-@application-post-400
+@application-create-mandatory-missing
 Feature: Verify Create application validation exceptions for mandatory fields
 
   Background:

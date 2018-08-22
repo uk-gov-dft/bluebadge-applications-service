@@ -1,4 +1,4 @@
-@application-post-400
+@application-create-person-invalid
 Feature: Verify Create application validation exceptions
 
   Background:

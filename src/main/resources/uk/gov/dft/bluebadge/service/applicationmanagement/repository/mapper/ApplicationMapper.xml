@@ -112,4 +112,44 @@
         </foreach>
     </insert>
 
+    <resultMap id="applicationSummaryMap" type="ApplicationSummaryEntity">
+        <result property="applicationId"  column="id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result property="partyTypeCode" column="party_code" />
+        <result property="applicationTypeCode" column="app_type_code" />
+        <result property="nino" column="nino" />
+        <result property="holderName" column="holder_name" />
+        <result property="submissionDate" column="submission_datetime" />
+        <result property="eligibilityCode" column="eligibility_code" />
+        <result property="postcode" column="contact_postcode" />
+    </resultMap>
+
+    <select id="findApplications" resultMap="applicationSummaryMap" parameterType="FindApplicationQueryParams">
+        SELECT
+          a.id, a.party_code, a.app_type_code
+          , a.nino, a.holder_name, a.submission_datetime
+          , a.eligibility_code, a.contact_postcode
+        FROM application a
+        WHERE
+        -- Authority code always required.
+          a.local_authority_code = #{authorityCode}
+        <if test="name != null">
+            AND UPPER(a.holder_name) LIKE CONCAT('%', UPPER(#{name}), '%')
+        </if>
+        <if test="submissionFrom != null">
+            AND a.submission_datetime &gt;= #{submissionFrom}
+        </if>
+        <if test="submissionTo != null">
+            AND a.submission_datetime &lt;= #{submissionTo}
+        </if>
+        <if test="applicationTypeCode != null">
+            AND a.app_type_code = #{applicationTypeCode}
+        </if>
+        <if test="postcode != null">
+            AND a.contact_postcode = REPLACE(UPPER(#{postcode}), ' ', '')
+        </if>
+        ORDER BY submission_datetime DESC
+        LIMIT 50
+    </select>
+
 </mapper>

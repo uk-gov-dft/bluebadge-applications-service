@@ -1,4 +1,4 @@
-@application-person-arms-post-ok
+@application-create-person-arms-ok
 Feature: Verify Create application Person with arms problems
 
   Background:

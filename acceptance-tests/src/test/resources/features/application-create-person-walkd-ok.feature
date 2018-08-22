@@ -1,4 +1,4 @@
-@application-person-walkd-post-ok
+@application-create-person-walkd-ok
 Feature: Verify Create application for person with walking difficulty
 
   Background:
