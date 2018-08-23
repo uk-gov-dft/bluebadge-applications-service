@@ -13,11 +13,11 @@ import org.springframework.jdbc.datasource.init.ScriptUtils;
 public class DbUtils {
   private final JdbcTemplate jdbc;
 
-  public DbUtils(Map<String, Object> config) {
-    String url = (String) config.get("url");
-    String username = (String) config.get("username");
+  public DbUtils(Map<String, String> config) {
+    String url = config.get("url");
+    String username = config.get("username");
     String  ***REMOVED***);
-    String driver = (String) config.get("driverClassName");
+    String driver = config.get("driverClassName");
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
     dataSource.setDriverClassName(driver);
     dataSource.setUrl(url);

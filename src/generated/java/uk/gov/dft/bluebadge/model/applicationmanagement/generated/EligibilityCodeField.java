@@ -2,7 +2,6 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import javax.validation.constraints.*;
 
 /** Gets or Sets EligibilityCodeField */
 public enum EligibilityCodeField {
