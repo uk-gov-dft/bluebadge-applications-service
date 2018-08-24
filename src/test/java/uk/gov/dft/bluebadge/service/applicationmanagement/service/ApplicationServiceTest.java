@@ -25,6 +25,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 
 public class ApplicationServiceTest extends ApplicationFixture {
 
+  public static final String INVALID_APPLICATION_TYPE_CODE = "WRONG";
+
   @Mock private ApplicationRepository repository;
   @Mock private ApplicationConverter converter;
   @Mock SecurityUtils securityUtils;
@@ -64,6 +66,17 @@ public class ApplicationServiceTest extends ApplicationFixture {
 
     // When find.
     service.find(null, null, null, null, null);
+
+    // Then Bad Request thrown.
+  }
+
+  @Test(expected = BadRequestException.class)
+  public void find_invalidApplicationTypeCode() {
+    // Given user with no local authority.
+    when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
+
+    // When find.
+    service.find(null, null, null, null, INVALID_APPLICATION_TYPE_CODE);
 
     // Then Bad Request thrown.
   }

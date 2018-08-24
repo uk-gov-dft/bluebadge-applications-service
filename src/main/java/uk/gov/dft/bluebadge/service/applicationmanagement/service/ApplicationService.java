@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,11 +94,20 @@ public class ApplicationService {
       throw new BadRequestException(error);
     }
 
+    ApplicationTypeCodeField applicationTypeCodeEnum =
+        ApplicationTypeCodeField.fromValue(applicationTypeCode);
+    if (StringUtils.isNotBlank(applicationTypeCode) && applicationTypeCodeEnum == null) {
+      Error error = new Error();
+      error.setMessage("Invalid applicationTypeCode: " + applicationTypeCode);
+      error.setReason("applicationTypeCode");
+      throw new BadRequestException(error);
+    }
+
     FindApplicationQueryParams params =
         FindApplicationQueryParams.builder()
             .authorityCode(userAuthorityCode)
             .name(name)
-            .applicationTypeCode(ApplicationTypeCodeField.fromValue(applicationTypeCode))
+            .applicationTypeCode(applicationTypeCodeEnum)
             .submissionTo(timeToInstantOrNull(to))
             .submissionFrom(timeToInstantOrNull(from))
             .postcode(postcode)

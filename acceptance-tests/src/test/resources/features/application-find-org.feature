@@ -99,3 +99,11 @@ Feature: Verify find newly created org badge
     Then status 200
     And match $.data[*].applicationId contains createdAppNo
     And match $.data[0] contains {submissionDate:"#notnull"}
+
+  Scenario: Verify find by wrong application type code
+    Given path 'applications'
+    And param applicationTypeCode = 'NEWWRONG'
+    When method GET
+    Then status 400
+    And match $.error.message contains 'Invalid applicationTypeCode: NEWWRONG'
+    And match $.error.reason contains 'applicationTypeCode'

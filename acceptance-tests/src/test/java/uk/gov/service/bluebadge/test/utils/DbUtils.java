@@ -11,7 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
 public class DbUtils {
-  private final static Logger log = LoggerFactory.getLogger(DbUtils.class);
+  private static final Logger log = LoggerFactory.getLogger(DbUtils.class);
   private final JdbcTemplate jdbc;
 
   public DbUtils(Map<String, String> config) {
