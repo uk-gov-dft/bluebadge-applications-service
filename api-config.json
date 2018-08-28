@@ -1,4 +1,4 @@
-{ 
+{
   "spec": {
     "swagger" : "2.0",
     "info" : {
@@ -701,7 +701,7 @@
       },
       "EligibilityCodeField" : {
         "type" : "string",
-        "enum" : [ "PIP", "DLA", "AFRFCS", "WPMS", "BLIND", "WALKD", "ARMS", "CHILDBULK", "CHILDVEHIC", "TERMILL" ],
+        "enum" : [ "PIP", "DLA", "AFRFCS", "WPMS", "BLIND", "WALKD", "ARMS", "CHILDBULK", "CHILDVEHIC" ],
         "example" : "PIP"
       },
       "GenderCodeField" : {

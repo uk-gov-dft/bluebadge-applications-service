@@ -7,7 +7,6 @@ import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibi
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.CHILDVEHIC;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.DLA;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.PIP;
-import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.TERMILL;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WALKD;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WPMS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
@@ -95,8 +94,8 @@ public class EligibilityValidator extends AbstractValidator {
         break;
       case BLIND:
         blindValidator.validate(app, errors);
+        break;
       case AFRFCS:
-      case TERMILL:
       case CHILDVEHIC:
         break;
     }
@@ -162,6 +161,6 @@ public class EligibilityValidator extends AbstractValidator {
   }
 
   private boolean isDiscretionaryEligibility(EligibilityCodeField type) {
-    return enumValues(WALKD, ARMS, CHILDVEHIC, CHILDBULK, TERMILL).contains(type);
+    return enumValues(WALKD, ARMS, CHILDVEHIC, CHILDBULK).contains(type);
   }
 }

@@ -21,9 +21,7 @@ public enum EligibilityCodeField {
 
   CHILDBULK("CHILDBULK"),
 
-  CHILDVEHIC("CHILDVEHIC"),
-
-  TERMILL("TERMILL");
+  CHILDVEHIC("CHILDVEHIC");
 
   private String value;
 
