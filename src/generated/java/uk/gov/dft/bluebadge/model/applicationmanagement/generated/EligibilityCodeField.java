@@ -35,7 +35,7 @@ public enum EligibilityCodeField {
     return String.valueOf(value);
   }
 
-  @JsonCreator
+//  @JsonCreator
   public static EligibilityCodeField fromValue(String text) {
     for (EligibilityCodeField b : EligibilityCodeField.values()) {
       if (String.valueOf(b.value).equals(text)) {
