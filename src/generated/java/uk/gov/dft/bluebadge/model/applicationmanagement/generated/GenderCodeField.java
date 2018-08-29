@@ -1,7 +1,6 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import javax.validation.constraints.*;
 
 /** Gets or Sets GenderCodeField */
 public enum GenderCodeField {

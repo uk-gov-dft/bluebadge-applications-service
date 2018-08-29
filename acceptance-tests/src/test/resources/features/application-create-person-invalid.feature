@@ -1,9 +1,13 @@
-@application-post-400
+@application-create-person-invalid
 Feature: Verify Create application validation exceptions
 
   Background:
     * url baseUrl
     * def result = callonce read('./oauth2.feature')
+    * def dbConfig = { username: 'developer',  ***REMOVED*** }
+    * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
+    * def db = new DbUtils(dbConfig)
+    * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify invalid create person
@@ -23,20 +27,20 @@ Feature: Verify Create application validation exceptions
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'SK6 8GH',
+      postCode: 'zz11 1zz',
       primaryPhoneNumber: '01234123123somewhattoolong',
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'bob bob@invalidemail.com'
     },
     person: {
-      badgeHolderName: 'John Smith',
+      badgeHolderName: 'PersonDeleteMe',
       nino: 'NS123456A-1234',
       dob: '1970-05-29',
       nameAtBirth: 'John Smith',
       genderCode: 'FEMALE'
     },
     organisation: {
-      badgeHolderName: 'Trotters Independant Traders',
+      badgeHolderName: 'TestDeleteMe',
       isCharity: false,
       charityNumber: '12345',
       vehicles: [

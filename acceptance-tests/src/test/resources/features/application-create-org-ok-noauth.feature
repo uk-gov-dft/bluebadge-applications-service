@@ -1,10 +1,13 @@
-@application-org-post-ok
-Feature: Verify Create application
+@application-create-org-ok-noauth
+Feature: Verify Create application fails auth
 
   Background:
     * url baseUrl
-    * def result = callonce read('./oauth2.feature')
-    * header Authorization = 'Bearer ' + result.accessToken
+    * def dbConfig = { username: 'developer',  ***REMOVED*** }
+    * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
+    * def db = new DbUtils(dbConfig)
+    * def setup = callonce db.runScript('acceptance-test-data.sql')
+
 
   Scenario: Verify valid create organisation
     * def application =
@@ -23,13 +26,13 @@ Feature: Verify Create application
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'SK6 8GH',
+      postCode: 'zz11 1zz',
       primaryPhoneNumber: 175154771,
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'
     },
     organisation: {
-      badgeHolderName: 'Trotters Independant Traders',
+      badgeHolderName: 'TestDeleteMe',
       isCharity: true,
       charityNumber: '12345',
       vehicles: [
@@ -48,5 +51,5 @@ Feature: Verify Create application
     Given path 'applications'
     And request application
     When method POST
-    Then status 200
-    And match $.data contains "#notnull"
+    Then status 401
+

@@ -1,9 +1,13 @@
-@application-post-400
+@application-create-mandatory-missing
 Feature: Verify Create application validation exceptions for mandatory fields
 
   Background:
     * url baseUrl
     * def result = callonce read('./oauth2.feature')
+    * def dbConfig = { username: 'developer',  ***REMOVED*** }
+    * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
+    * def db = new DbUtils(dbConfig)
+    * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify invalid create person with blank request body

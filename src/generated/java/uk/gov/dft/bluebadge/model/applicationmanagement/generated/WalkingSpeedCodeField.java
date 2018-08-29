@@ -1,7 +1,6 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import javax.validation.constraints.*;
 
 /** Required if able to walk, i.e. Walking length of time not cannot walk. */
 public enum WalkingSpeedCodeField {

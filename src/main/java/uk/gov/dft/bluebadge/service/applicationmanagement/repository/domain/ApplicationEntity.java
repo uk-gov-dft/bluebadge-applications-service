@@ -1,8 +1,8 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
@@ -20,7 +20,7 @@ public class ApplicationEntity implements Serializable {
   private String localAuthorityCode;
   private String appTypeCode;
   private Boolean isPaymentTaken;
-  private OffsetDateTime submissionDatetime;
+  private Instant submissionDatetime;
   private String existingBadgeNo;
   private String partyCode;
   private String contactName;

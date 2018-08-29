@@ -1,12 +1,16 @@
-@application-post-400
-Feature: Verify Create application validation exceptions
+@application-create-org-invalid-enum
+Feature: Verify Create application
 
   Background:
     * url baseUrl
     * def result = callonce read('./oauth2.feature')
+    * def dbConfig = { username: 'developer',  ***REMOVED*** }
+    * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
+    * def db = new DbUtils(dbConfig)
+    * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify invalid create organisation
+  Scenario: Verify valid create organisation
     * def application =
     """
     {
@@ -15,7 +19,7 @@ Feature: Verify Create application validation exceptions
   localAuthorityCode: 'BIRM',
   paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'I AM INVALID',
+  existingBadgeNumber: 'KKKJJJ',
   party: {
     typeCode: 'ORG',
     contact: {
@@ -23,19 +27,19 @@ Feature: Verify Create application validation exceptions
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'SK6 8GH',
+      postCode: 'zz11 1zz',
       primaryPhoneNumber: 175154771,
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'
     },
     organisation: {
-      badgeHolderName: 'Trotters Independant Traders',
+      badgeHolderName: 'TestDeleteMe',
       isCharity: true,
       charityNumber: '12345',
       vehicles: [
         {
           registrationNumber: 'VK61VZZ',
-          typeCode: 'CAR',
+          typeCode: 'I AM INVALID',
           usageFrequency: 'Daily'
         }
       ],
@@ -49,4 +53,4 @@ Feature: Verify Create application validation exceptions
     And request application
     When method POST
     Then status 400
-    And match $.error contains "#notnull"
+    And match $.error.message contains "InvalidFormat.VehicleTypeCodeField"
