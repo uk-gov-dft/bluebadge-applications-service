@@ -118,8 +118,12 @@ public class EligibilityValidatorTest extends ApplicationFixture {
 
   @Test
   public void failUnneededObjects() {
-    // TERMILL should have no child objects
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityTermIll().build());
+    reset(
+        getApplicationBuilder()
+            .addBaseApplication()
+            .setPerson()
+            .setEligibilityChildVehicle()
+            .build());
 
     eligibilityValidator.failUnneededObjects(app, errors);
     assertEquals(0, errors.getErrorCount());
