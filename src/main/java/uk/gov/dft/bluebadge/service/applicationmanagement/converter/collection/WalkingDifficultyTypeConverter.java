@@ -17,4 +17,10 @@ public class WalkingDifficultyTypeConverter
         .typeCode(model.toString())
         .build();
   }
+
+  @Override
+  public WalkingDifficultyTypeCodeField mapToModel(WalkingDifficultyTypeEntity entity) {
+    //TODO
+    return null;
+  }
 }

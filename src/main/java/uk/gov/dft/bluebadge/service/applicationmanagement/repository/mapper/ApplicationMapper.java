@@ -1,12 +1,15 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper;
 
 import java.util.List;
+import java.util.UUID;
+
 import org.apache.ibatis.annotations.Mapper;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -79,4 +82,11 @@ public interface ApplicationMapper {
    */
   List<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams);
+
+  /**
+   * Retrieve full details of a single application.
+   * @param params PK
+   * @return The application or null.
+   */
+  ApplicationEntity retrieveApplication(RetrieveApplicationQueryParams params);
 }

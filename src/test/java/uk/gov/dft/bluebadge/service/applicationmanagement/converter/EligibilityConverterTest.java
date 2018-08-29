@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibility;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
@@ -33,7 +34,7 @@ public class EligibilityConverterTest extends ApplicationFixture {
   private ApplicationEntity entity;
 
   public EligibilityConverterTest() {
-    super();
+    MockitoAnnotations.initMocks(this);
     converter =
         new EligibilityConverter(
             walkingDifficultyTypeConverter,

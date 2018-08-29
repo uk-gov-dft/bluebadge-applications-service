@@ -18,4 +18,10 @@ public class MedicationConverter
         .quantity(model.getQuantity())
         .build();
   }
+
+  @Override
+  public Medication mapToModel(MedicationEntity entity) {
+    // TODO
+    return null;
+  }
 }

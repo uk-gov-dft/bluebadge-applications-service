@@ -1,6 +1,8 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
 import java.util.List;
+import java.util.UUID;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -104,5 +107,10 @@ public class ApplicationRepository implements ApplicationMapper {
   public List<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams) {
     return sqlSession.selectList(Statements.FIND.getName(), findApplicationQueryParams);
+  }
+
+  @Override
+  public ApplicationEntity retrieveApplication(RetrieveApplicationQueryParams params) {
+    return sqlSession.selectOne(Statements.RETRIEVE.getName(), params);
   }
 }

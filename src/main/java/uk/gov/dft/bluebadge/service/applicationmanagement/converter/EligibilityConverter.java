@@ -15,7 +15,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.W
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
 @Component
-public class EligibilityConverter {
+class EligibilityConverter implements ApplicationBiConverter {
 
   private final WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
   private final WalkingAidConverter walkingAidConverter;
@@ -37,7 +37,12 @@ public class EligibilityConverter {
     this.healthcareProfessionalConverter = healthcareProfessionalConverter;
   }
 
-  void convertToEntity(Application application, ApplicationEntity entity) {
+  @Override
+  public void convertToModel(Application model, ApplicationEntity entity) {
+    // TODO
+  }
+
+  public void convertToEntity(Application application, ApplicationEntity entity) {
     Eligibility eligibility = application.getEligibility();
 
     // Can be null if org application

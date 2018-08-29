@@ -17,4 +17,10 @@ public class WalkingAidConverter
         .usage(model.getUsage())
         .build();
   }
+
+  @Override
+  public WalkingAid mapToModel(WalkingAidEntity entity) {
+    // TODO
+    return null;
+  }
 }

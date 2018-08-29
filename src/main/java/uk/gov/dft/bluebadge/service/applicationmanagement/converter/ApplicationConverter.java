@@ -1,78 +1,78 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.common.converter.ToEntityConverter;
-import uk.gov.dft.bluebadge.common.converter.ToEntityFormatter;
+import uk.gov.dft.bluebadge.common.converter.ToModelConverter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
-/** Converts an ALREADY validated entity to/from model. */
-@Component
-public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application> {
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.UUID;
 
-  private final EligibilityConverter eligibilityConverter;
-  private final OrganisationConverter organisationConverter;
-  private final PersonConverter personConverter;
+/**
+ * Converts an ALREADY validated entity to/from model.
+ */
+@Component
+public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application>, ToModelConverter<ApplicationEntity, Application> {
+
+  private final ArrayList<ApplicationBiConverter> converters = new ArrayList<>();
 
   @Autowired
   ApplicationConverter(
       EligibilityConverter eligibilityConverter,
-      OrganisationConverter organisationConverter,
-      PersonConverter personConverter) {
-    this.eligibilityConverter = eligibilityConverter;
-    this.organisationConverter = organisationConverter;
-    this.personConverter = personConverter;
+      PartyConverter partyConverter) {
+    converters.add(eligibilityConverter);
+    converters.add(partyConverter);
   }
 
   @Override
-  public ApplicationEntity convertToEntity(Application application) {
+  public ApplicationEntity convertToEntity(Application model) {
     // If creating an application pre populate the id.
     Assert.notNull(
-        application.getApplicationId(), "Before converting Application, must set applicationId.");
-    // The following are NotNull annotated in beans and validation should have been done.
+        model.getApplicationId(), "Before converting Application, must set applicationId.");
     Assert.notNull(
-        application.getParty(),
-        "Before converting Application validation should have failed for null party.");
-    Assert.notNull(
-        application.getParty().getContact(),
-        "Before converting Application validation should have failed for null contact.");
-    Assert.notNull(
-        application.getApplicationTypeCode(),
+        model.getApplicationTypeCode(),
         "Before converting Application validation should have failed if typeCode is null.");
-
-    Contact contact = application.getParty().getContact();
 
     // Populate application root fields
     ApplicationEntity entity =
         ApplicationEntity.builder()
-            .appTypeCode(application.getApplicationTypeCode().toString())
-            .id(UUID.fromString(application.getApplicationId()))
-            .localAuthorityCode(application.getLocalAuthorityCode())
-            .isPaymentTaken(application.getPaymentTaken())
+            .appTypeCode(model.getApplicationTypeCode().toString())
+            .id(UUID.fromString(model.getApplicationId()))
+            .localAuthorityCode(model.getLocalAuthorityCode())
+            .isPaymentTaken(model.getPaymentTaken())
             .submissionDatetime(
-                null == application.getSubmissionDate()
+                null == model.getSubmissionDate()
                     ? null
-                    : application.getSubmissionDate().toInstant())
-            .existingBadgeNo(application.getExistingBadgeNumber())
-            .contactName(contact.getFullName())
-            .contactBuildingStreet(contact.getBuildingStreet())
-            .contactLine2(contact.getLine2())
-            .contactTownCity(contact.getTownCity())
-            .contactEmailAddress(contact.getEmailAddress())
-            .contactPostcode(ToEntityFormatter.postcode(contact.getPostCode()))
-            .primaryPhoneNo(contact.getPrimaryPhoneNumber())
-            .secondaryPhoneNo(contact.getSecondaryPhoneNumber())
-            .partyCode(application.getParty().getTypeCode().toString())
+                    : model.getSubmissionDate().toInstant())
+            .existingBadgeNo(model.getExistingBadgeNumber())
             .build();
 
-    personConverter.convertToEntity(application, entity);
-    eligibilityConverter.convertToEntity(application, entity);
-    organisationConverter.convertToEntity(application, entity);
+    for (ApplicationBiConverter converter : converters) {
+      converter.convertToEntity(model, entity);
+    }
 
     return entity;
+  }
+
+  @Override
+  public Application convertToModel(ApplicationEntity entity) {
+    Application model = new Application();
+    model.setApplicationTypeCode(ApplicationTypeCodeField.fromValue(entity.getAppTypeCode()));
+    model.setApplicationId(entity.getId().toString());
+    model.setLocalAuthorityCode(entity.getLocalAuthorityCode());
+    model.setPaymentTaken(entity.getIsPaymentTaken());
+    model.setSubmissionDate(entity.getSubmissionDatetime().atOffset(ZoneOffset.UTC));
+    model.setExistingBadgeNumber(entity.getExistingBadgeNo());
+
+    for (ApplicationBiConverter converter : converters) {
+      converter.convertToModel(model, entity);
+    }
+
+    return model;
   }
 }

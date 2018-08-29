@@ -17,4 +17,10 @@ public class TreatmentConverter
         .time(model.getTime())
         .build();
   }
+
+  @Override
+  public Treatment mapToModel(TreatmentEntity entity) {
+    // TODO
+    return null;
+  }
 }

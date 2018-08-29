@@ -7,6 +7,8 @@ import java.util.UUID;
 interface ApplicationToEntityCollection<E, M> {
   E mapToEntity(M model, UUID applicationId);
 
+  M mapToModel(E entity);
+
   default List<E> convertToEntityList(List<M> modelList, UUID applicationId) {
     List<E> entities = new ArrayList<>();
     if (null != modelList && !modelList.isEmpty()) {
@@ -15,5 +17,17 @@ interface ApplicationToEntityCollection<E, M> {
       }
     }
     return entities;
+  }
+
+  default List<M> convertToModelList(List<E> entityList) {
+
+    if (null != entityList && !entityList.isEmpty()) {
+      List<M> models = new ArrayList<>();
+      for (E entity : entityList) {
+        models.add(mapToModel(entity));
+      }
+      return models;
+    }
+    return null;
   }
 }

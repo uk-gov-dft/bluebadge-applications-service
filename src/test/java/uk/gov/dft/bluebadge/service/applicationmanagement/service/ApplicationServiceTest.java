@@ -1,18 +1,10 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
@@ -23,17 +15,31 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.Application
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 public class ApplicationServiceTest extends ApplicationFixture {
 
-  public static final String INVALID_APPLICATION_TYPE_CODE = "WRONG";
+  private static final String INVALID_APPLICATION_TYPE_CODE = "WRONG";
 
-  @Mock private ApplicationRepository repository;
-  @Mock private ApplicationConverter converter;
-  @Mock SecurityUtils securityUtils;
+  @Mock
+  private ApplicationRepository repository;
+  @Mock
+  private ApplicationConverter converter;
+  @Mock
+  SecurityUtils securityUtils;
   private ApplicationService service;
 
   @Before
   public void setUp() {
+    MockitoAnnotations.initMocks(this);
     service = new ApplicationService(repository, converter, securityUtils);
   }
 
@@ -85,7 +91,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   public void find_withNullsValid() {
     // Given a search for applications with valid LA and no other criteria.
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
-    when(repository.findApplications(any())).thenReturn(new ArrayList<ApplicationSummaryEntity>());
+    when(repository.findApplications(any())).thenReturn(new ArrayList<>());
 
     // When searching
     service.find(null, null, null, null, null);
