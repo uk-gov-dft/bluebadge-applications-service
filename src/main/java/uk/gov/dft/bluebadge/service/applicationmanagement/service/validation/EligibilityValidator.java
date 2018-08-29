@@ -26,7 +26,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 
 @Component
-public class EligibilityValidator extends AbstractValidator {
+class EligibilityValidator extends AbstractValidator {
 
   private final BenefitValidator benefitValidator;
   private final ArmsValidator armsValidator;

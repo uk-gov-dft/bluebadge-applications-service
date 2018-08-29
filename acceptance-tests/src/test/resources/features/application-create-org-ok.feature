@@ -1,9 +1,13 @@
-@application-post-400-invalid-enum
+@application-create-org-ok
 Feature: Verify Create application
 
   Background:
     * url baseUrl
     * def result = callonce read('./oauth2.feature')
+    * def dbConfig = { username: 'developer',  ***REMOVED*** }
+    * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
+    * def db = new DbUtils(dbConfig)
+    * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify valid create organisation
@@ -12,7 +16,7 @@ Feature: Verify Create application
     {
   applicationId: '',
   applicationTypeCode: 'NEW',
-  localAuthorityCode: 'BIRM',
+  localAuthorityCode: 'ABERD',
   paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
   existingBadgeNumber: 'KKKJJJ',
@@ -23,19 +27,19 @@ Feature: Verify Create application
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'SK6 8GH',
+      postCode: 'ZZ111ZZ',
       primaryPhoneNumber: 175154771,
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'
     },
     organisation: {
-      badgeHolderName: 'Trotters Independant Traders',
+      badgeHolderName: 'TestDeleteMe',
       isCharity: true,
       charityNumber: '12345',
       vehicles: [
         {
           registrationNumber: 'VK61VZZ',
-          typeCode: 'I AM INVALID',
+          typeCode: 'CAR',
           usageFrequency: 'Daily'
         }
       ],
@@ -48,5 +52,6 @@ Feature: Verify Create application
     Given path 'applications'
     And request application
     When method POST
-    Then status 400
-    And match $.error.message contains "InvalidFormat.VehicleTypeCodeField"
+    Then status 200
+    And match $.data contains "#notnull"
+    * def applicationId = $.data

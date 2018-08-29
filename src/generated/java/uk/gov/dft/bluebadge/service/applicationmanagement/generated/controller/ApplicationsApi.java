@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -152,14 +152,14 @@ public interface ApplicationsApi {
           @Valid
           @RequestParam(value = "postcode", required = false)
           Optional<String> postcode,
-      @ApiParam(value = "From submission date inclusive. YYYY-MM-DD")
+      @ApiParam(value = "From submission date inclusive. 2018-12-25T12:30:45Z")
           @Valid
           @RequestParam(value = "from", required = false)
-          Optional<LocalDate> from,
-      @ApiParam(value = "To submission date inclusive. YYYY-MM-DD")
+          Optional<OffsetDateTime> from,
+      @ApiParam(value = "To submission date inclusive. 2018-12-25T12:30:45Z")
           @Valid
           @RequestParam(value = "to", required = false)
-          Optional<LocalDate> to,
+          Optional<OffsetDateTime> to,
       @ApiParam(value = "", allowableValues = "NEW, RENEW, CANCEL, REVOKE")
           @Valid
           @RequestParam(value = "applicationTypeCode", required = false)

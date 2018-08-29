@@ -98,14 +98,14 @@
             "in" : "query",
             "name" : "from",
             "type" : "string",
-            "format" : "date",
-            "description" : "From submission date inclusive. YYYY-MM-DD"
+            "format" : "date-time",
+            "description" : "From submission date inclusive. 2018-12-25T12:30:45Z"
           }, {
             "in" : "query",
             "name" : "to",
             "type" : "string",
-            "format" : "date",
-            "description" : "To submission date inclusive. YYYY-MM-DD"
+            "format" : "date-time",
+            "description" : "To submission date inclusive. 2018-12-25T12:30:45Z"
           }, {
             "in" : "query",
             "name" : "applicationTypeCode",
