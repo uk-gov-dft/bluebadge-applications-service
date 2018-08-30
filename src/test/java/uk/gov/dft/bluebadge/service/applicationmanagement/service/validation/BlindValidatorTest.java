@@ -28,7 +28,12 @@ public class BlindValidatorTest extends ApplicationFixture {
 
   @Test
   public void validate_nulls() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityTermIll().build());
+    reset(
+        getApplicationBuilder()
+            .addBaseApplication()
+            .setPerson()
+            .setEligibilityChildVehicle()
+            .build());
     validator.validate(app, errors);
   }
 }
