@@ -1,16 +1,32 @@
 #!/usr/bin/env bash
-export TARGET_ENV=dev
-# la-adminwebapp
-export LA_VERSION=0.5.0-SNAPSHOT
-# usermanagement service
-export UM_VERSION=0.5.0-SNAPSHOT
-# badge management service
-export BB_VERSION=0.5.0-SNAPSHOT
-# application service
+
+REPOS=(
+    'authorisation-service::AZ_VERSION'
+    'la-webapp::LA_VERSION'
+    'usermanagement-service::UM_VERSION'
+    'message-service::MG_VERSION'
+    'referencedata-service::RD_VERSION'
+    'badgemanagement-service::BB_VERSION'
+    'applications-service::AP_VERSION'
+)
+
+export GITHUB_TOKEN=$(cat ~/.ssh/github_token)
+
+echo "Fetching versions..."
+for index in "${REPOS[@]}" ; do
+    KEY="${index%%::*}"
+    VALUE="${index##*::}"
+    URL="https://github-automation-uk-gov-dft:$GITHUB_TOKEN@github.com/uk-gov-dft/$KEY.git"
+    version=$(git ls-remote --tags $URL | egrep -o "v[0-9.]+" | sort -t. -k 1,1n -k 2,2n -k 3,3n | uniq | tail -n-1 | cut -c2-)
+    export ${VALUE}=$version-SNAPSHOT
+    #echo "$KEY, $VALUE - $version-SNAPSHOT"
+done
+
+# Override the version with the branch name
 export AP_VERSION=$(cat VERSION-computed)
-# authorisation service
-export AZ_VERSION=0.5.0-SNAPSHOT
-# message-service
-export MG_VERSION=0.5.0-SNAPSHOT
-# referencedata-service
-export RD_VERSION=0.5.0-SNAPSHOT
+
+echo 'Setting version stack to:'
+for index in "${REPOS[@]}" ; do
+    envVar="${index##*::}"
+    echo "${envVar} = ${!envVar}"
+done

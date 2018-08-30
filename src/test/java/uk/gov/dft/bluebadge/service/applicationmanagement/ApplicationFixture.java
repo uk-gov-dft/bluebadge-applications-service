@@ -254,11 +254,6 @@ public class ApplicationFixture extends AbstractValidator {
     application.getEligibility().setTypeCode(EligibilityCodeField.AFRFCS);
   }
 
-  private static void setEligibilityTermill(Application application) {
-    application.setEligibility(new Eligibility());
-    application.getEligibility().setTypeCode(EligibilityCodeField.TERMILL);
-  }
-
   private static void setEligibilityChildVehic(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.CHILDVEHIC);
@@ -359,11 +354,6 @@ public class ApplicationFixture extends AbstractValidator {
     @SuppressWarnings("unused")
     public ApplicationBuilder setEligibilityChildVehicle() {
       ApplicationFixture.setEligibilityChildVehic(application);
-      return this;
-    }
-
-    public ApplicationBuilder setEligibilityTermIll() {
-      ApplicationFixture.setEligibilityTermill(application);
       return this;
     }
 
