@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
+import uk.gov.dft.bluebadge.service.applicationmanagement.EligibilityRules;
 
 @Component
 class EligibilityValidator extends AbstractValidator {
@@ -75,31 +76,27 @@ class EligibilityValidator extends AbstractValidator {
   void validateEligibilityByType(Application app, Errors errors) {
 
     String messagePrefix = "For eligibility type " + app.getEligibility().getTypeCode();
-    switch (app.getEligibility().getTypeCode()) {
-      case PIP:
-      case DLA:
-      case WPMS:
-        rejectIfEmptyOrWhitespace(errors, KEY_ELI_BENEFIT, messagePrefix);
-        benefitValidator.validate(app, errors);
-        break;
-      case ARMS:
-        rejectIfEmptyOrWhitespace(errors, KEY_ELI_ARMS, messagePrefix);
-        armsValidator.validate(app, errors);
-        break;
-      case WALKD:
-        rejectIfEmptyOrWhitespace(errors, KEY_ELI_WALKING, messagePrefix);
-        walkingValidator.validate(app, errors);
-        break;
-      case CHILDBULK:
-        rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3, messagePrefix);
-        break;
-      case BLIND:
-        blindValidator.validate(app, errors);
-        break;
-      case AFRFCS:
-      case TERMILL:
-      case CHILDVEHIC:
-        break;
+    if (EligibilityRules.requiresChildUnder3Object(app.getEligibility().getTypeCode())) {
+      rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3, messagePrefix);
+    }
+
+    if (EligibilityRules.requiresBlind(app.getEligibility().getTypeCode())) {
+      blindValidator.validate(app, errors);
+    }
+
+    if (EligibilityRules.requiresDisabilityArms(app.getEligibility().getTypeCode())) {
+      rejectIfEmptyOrWhitespace(errors, KEY_ELI_ARMS, messagePrefix);
+      armsValidator.validate(app, errors);
+    }
+
+    if (EligibilityRules.requiresWalkingDifficulty(app.getEligibility().getTypeCode())) {
+      rejectIfEmptyOrWhitespace(errors, KEY_ELI_WALKING, messagePrefix);
+      walkingValidator.validate(app, errors);
+    }
+
+    if (EligibilityRules.requiresBenefit(app.getEligibility().getTypeCode())) {
+      rejectIfEmptyOrWhitespace(errors, KEY_ELI_BENEFIT, messagePrefix);
+      benefitValidator.validate(app, errors);
     }
   }
 

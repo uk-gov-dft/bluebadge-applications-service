@@ -1,15 +1,15 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class PartyConverterTest extends ApplicationFixture {
 
@@ -21,7 +21,7 @@ public class PartyConverterTest extends ApplicationFixture {
 
   public PartyConverterTest() {
     MockitoAnnotations.initMocks(this);
-    converter = new PartyConverter(contactConverter,personConverter,organisationConverter);
+    converter = new PartyConverter(contactConverter, personConverter, organisationConverter);
   }
 
   @Test

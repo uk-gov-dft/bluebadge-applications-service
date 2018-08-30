@@ -1,25 +1,17 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
-import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
-import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.RefDataGroupEnum;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 public class BlindValidatorTest extends ApplicationFixture {
 
-  @Mock
-  protected ReferenceDataApiClient referenceDataApiClient;
+  @Mock protected ReferenceDataApiClient referenceDataApiClient;
 
   private ReferenceDataService referenceDataService;
   private BlindValidator validator;

@@ -20,7 +20,9 @@ public class TreatmentConverter
 
   @Override
   public Treatment mapToModel(TreatmentEntity entity) {
-    // TODO
-    return null;
+    Treatment model = new Treatment();
+    model.setDescription(entity.getDescription());
+    model.setTime(entity.getTime());
+    return model;
   }
 }

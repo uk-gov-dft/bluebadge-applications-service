@@ -21,7 +21,11 @@ public class MedicationConverter
 
   @Override
   public Medication mapToModel(MedicationEntity entity) {
-    // TODO
-    return null;
+    Medication model = new Medication();
+    model.setFrequency(entity.getFrequency());
+    model.setIsPrescribed(entity.getIsPrescribed());
+    model.setName(entity.getName());
+    model.setQuantity(entity.getQuantity());
+    return model;
   }
 }

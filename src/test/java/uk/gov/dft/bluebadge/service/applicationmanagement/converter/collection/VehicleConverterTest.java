@@ -1,53 +1,40 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection;
 
-import org.junit.Test;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Vehicle;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.VehicleTypeCodeField;
-import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
-
-import java.util.UUID;
-
 import static org.junit.Assert.assertEquals;
 
-public class VehicleConverterTest {
+import java.util.UUID;
+import org.junit.Test;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Vehicle;
+import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 
-  private static final String REGISTRATION_NUMBER = "VK61VXX";
-  private static final String USAGE_FREQUENCY = "USAGE";
-  private static final VehicleTypeCodeField VEHICLE_TYPE_CODE_FIELD = VehicleTypeCodeField.CAR;
-  private final VehicleConverter converter;
+public class VehicleConverterTest extends ApplicationFixture {
 
-  public VehicleConverterTest(VehicleConverter converter) {
-    this.converter = converter;
-  }
-
+  private final VehicleConverter converter = new VehicleConverter();
 
   @Test
   public void mapToEntity() {
     Vehicle vehicle = new Vehicle();
-    vehicle.setRegistrationNumber(REGISTRATION_NUMBER);
-    vehicle.setTypeCode(VEHICLE_TYPE_CODE_FIELD);
-    vehicle.setUsageFrequency(USAGE_FREQUENCY);
-    UUID uuid = UUID.randomUUID();
+    vehicle.setRegistrationNumber(ValidValues.VEH_REG);
+    vehicle.setTypeCode(ValidValues.VEH_TYPE);
+    vehicle.setUsageFrequency(ValidValues.VEH_USAGE);
 
-    VehicleEntity entity = converter.mapToEntity(vehicle, uuid);
+    VehicleEntity entity = converter.mapToEntity(vehicle, UUID.fromString(ValidValues.ID));
 
-    assertEquals(vehicle.getRegistrationNumber(), entity.getRegistrationNumber());
-    assertEquals(vehicle.getTypeCode().toString(), entity.getTypeCode());
-    assertEquals(vehicle.getUsageFrequency(), entity.getUsageFrequency());
-    assertEquals(uuid, entity.getApplicationId());
+    assertEquals(ValidValues.VEH_REG, entity.getRegistrationNumber());
+    assertEquals(ValidValues.VEH_TYPE.name(), entity.getTypeCode());
+    assertEquals(ValidValues.VEH_USAGE, entity.getUsageFrequency());
+    assertEquals(UUID.fromString(ValidValues.ID), entity.getApplicationId());
   }
 
   @Test
   public void mapToModel() {
-    VehicleEntity entity = VehicleEntity.builder()
-        .usageFrequency(USAGE_FREQUENCY)
-        .registrationNumber(REGISTRATION_NUMBER)
-        .typeCode(VEHICLE_TYPE_CODE_FIELD.name()).build();
+    VehicleEntity entity = getFullyPopulatedApplicationEntity().getVehicles().get(0);
 
     Vehicle model = converter.mapToModel(entity);
 
-    assertEquals(model.getRegistrationNumber(), REGISTRATION_NUMBER);
-    assertEquals(model.getUsageFrequency(), USAGE_FREQUENCY);
-    assertEquals(model.getTypeCode(), VEHICLE_TYPE_CODE_FIELD);
+    assertEquals(ValidValues.VEH_REG, model.getRegistrationNumber());
+    assertEquals(ValidValues.VEH_USAGE, model.getUsageFrequency());
+    assertEquals(ValidValues.VEH_TYPE, model.getTypeCode());
   }
 }

@@ -1,12 +1,5 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
-import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
-import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -14,19 +7,23 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
+
 public class ApplicationConverterTest extends ApplicationFixture {
 
   private ApplicationConverter converter;
 
-  @Mock
-  private PartyConverter partyConverter;
-  @Mock
-  private EligibilityConverter eligibilityConverter;
+  @Mock private PartyConverter partyConverter;
+  @Mock private EligibilityConverter eligibilityConverter;
 
   public ApplicationConverterTest() {
     MockitoAnnotations.initMocks(this);
-    converter =
-        new ApplicationConverter(eligibilityConverter, partyConverter);
+    converter = new ApplicationConverter(eligibilityConverter, partyConverter);
   }
 
   @Test

@@ -1,8 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper;
 
 import java.util.List;
-import java.util.UUID;
-
 import org.apache.ibatis.annotations.Mapper;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
@@ -85,6 +83,7 @@ public interface ApplicationMapper {
 
   /**
    * Retrieve full details of a single application.
+   *
    * @param params PK
    * @return The application or null.
    */

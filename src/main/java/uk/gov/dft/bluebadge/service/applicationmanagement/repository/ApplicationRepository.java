@@ -1,8 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
 import java.util.List;
-import java.util.UUID;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;

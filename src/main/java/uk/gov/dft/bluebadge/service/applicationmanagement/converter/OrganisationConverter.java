@@ -10,7 +10,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.V
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
 @Component
-class OrganisationConverter implements ApplicationBiConverter{
+class OrganisationConverter implements ApplicationBiConverter {
 
   private final VehicleConverter vehicleConverter;
 
@@ -21,11 +21,11 @@ class OrganisationConverter implements ApplicationBiConverter{
 
   @Override
   public void convertToModel(Application model, ApplicationEntity entity) {
-    if(PartyTypeCodeField.ORG.name().equals(entity.getPartyCode())){
-      if(null == model.getParty()){
+    if (PartyTypeCodeField.ORG.name().equals(entity.getPartyCode())) {
+      if (null == model.getParty()) {
         model.setParty(new Party());
       }
-      if(null == model.getParty().getOrganisation()){
+      if (null == model.getParty().getOrganisation()) {
         model.getParty().setOrganisation(new Organisation());
       }
       Organisation organisation = model.getParty().getOrganisation();

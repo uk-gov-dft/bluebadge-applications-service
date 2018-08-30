@@ -1,5 +1,12 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -7,22 +14,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Organisation;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.VehicleConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 public class OrganisationConverterTest extends ApplicationFixture {
 
-  @Mock
-  private VehicleConverter vehicleConverter;
+  @Mock private VehicleConverter vehicleConverter;
 
   private Application application;
   private ApplicationEntity entity = ApplicationEntity.builder().id(UUID.randomUUID()).build();
@@ -73,16 +72,17 @@ public class OrganisationConverterTest extends ApplicationFixture {
   @Test
   public void convertToModel() {
     ApplicationEntity entity = getFullyPopulatedApplicationEntity();
+    entity.setPartyCode(PartyTypeCodeField.ORG.name());
     Application model = new Application();
 
     organisationConverter.convertToModel(model, entity);
 
     Organisation organisation = model.getParty().getOrganisation();
-    assertEquals(ValidValues.BADGE_HOLDER_NAME,organisation.getBadgeHolderName());
+    assertEquals(ValidValues.BADGE_HOLDER_NAME, organisation.getBadgeHolderName());
     assertEquals(ValidValues.CHARITY_NO, organisation.getCharityNumber());
     assertEquals(ValidValues.IS_CHARITY, organisation.isIsCharity());
     assertEquals(ValidValues.NO_OF_BADGES, organisation.getNumberOfBadges());
 
-    verify(vehicleConverter, times(1)).mapToModel(null);
+    verify(vehicleConverter, times(1)).convertToModelList(entity.getVehicles());
   }
 }

@@ -21,8 +21,7 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Mock private EligibilityValidator eligibilityValidator;
 
-  @Mock
-  protected ReferenceDataApiClient referenceDataApiClient;
+  @Mock protected ReferenceDataApiClient referenceDataApiClient;
 
   public ApplicationValidatorTest() {
     MockitoAnnotations.initMocks(this);

@@ -1,5 +1,16 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
+import static java.time.Duration.ofMinutes;
+import static java.time.Period.ofYears;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,25 +32,12 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Vehi
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingDifficultyTypeEntity;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static java.time.Duration.ofMinutes;
-import static java.time.Period.ofYears;
-
 @RunWith(SpringRunner.class)
 @SqlGroup({@Sql(scripts = "classpath:/test-data.sql")})
 @Transactional
 public class ApplicationRepositoryIntTest extends ApplicationContextTests {
 
-  @Autowired
-  private ApplicationRepository applicationRepository;
+  @Autowired private ApplicationRepository applicationRepository;
 
   @Test
   public void create_all() {
@@ -216,13 +214,15 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
 
   @Test
   public void retrieve() {
-    RetrieveApplicationQueryParams params = RetrieveApplicationQueryParams.builder()
-        .uuid(UUID.fromString("1087ac26-491a-46f0-9006-36187dc40764")).build();
-    ApplicationEntity result =
-        applicationRepository.retrieveApplication(params);
+    RetrieveApplicationQueryParams params =
+        RetrieveApplicationQueryParams.builder()
+            .uuid(UUID.fromString("1087ac26-491a-46f0-9006-36187dc40764"))
+            .build();
+    ApplicationEntity result = applicationRepository.retrieveApplication(params);
     // Healthcare Professionals
     Assert.assertEquals("Prof Name", result.getHealthcareProfessionals().get(0).getProfName());
-    Assert.assertEquals("Prof Location", result.getHealthcareProfessionals().get(0).getProfLocation());
+    Assert.assertEquals(
+        "Prof Location", result.getHealthcareProfessionals().get(0).getProfLocation());
     // Medications
     Assert.assertEquals("Med Name", result.getMedications().get(0).getName());
     Assert.assertEquals("Med Frequency", result.getMedications().get(0).getFrequency());

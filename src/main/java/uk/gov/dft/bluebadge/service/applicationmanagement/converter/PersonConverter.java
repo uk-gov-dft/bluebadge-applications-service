@@ -10,15 +10,15 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Person;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
 @Component
-class PersonConverter implements ApplicationBiConverter{
+class PersonConverter implements ApplicationBiConverter {
 
   @Override
   public void convertToModel(Application model, ApplicationEntity entity) {
-    if(PartyTypeCodeField.PERSON.name().equals(entity.getPartyCode())){
-      if(null == model.getParty()){
+    if (PartyTypeCodeField.PERSON.name().equals(entity.getPartyCode())) {
+      if (null == model.getParty()) {
         model.setParty(new Party());
       }
-      if(null == model.getParty().getPerson()){
+      if (null == model.getParty().getPerson()) {
         model.getParty().setPerson(new Person());
       }
       Person person = model.getParty().getPerson();

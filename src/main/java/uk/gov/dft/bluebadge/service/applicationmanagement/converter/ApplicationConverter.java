@@ -1,5 +1,8 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -9,22 +12,16 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.UUID;
-
-/**
- * Converts an ALREADY validated entity to/from model.
- */
+/** Converts an ALREADY validated entity to/from model. */
 @Component
-public class ApplicationConverter implements ToEntityConverter<ApplicationEntity, Application>, ToModelConverter<ApplicationEntity, Application> {
+public class ApplicationConverter
+    implements ToEntityConverter<ApplicationEntity, Application>,
+        ToModelConverter<ApplicationEntity, Application> {
 
   private final ArrayList<ApplicationBiConverter> converters = new ArrayList<>();
 
   @Autowired
-  ApplicationConverter(
-      EligibilityConverter eligibilityConverter,
-      PartyConverter partyConverter) {
+  ApplicationConverter(EligibilityConverter eligibilityConverter, PartyConverter partyConverter) {
     converters.add(eligibilityConverter);
     converters.add(partyConverter);
   }
@@ -46,9 +43,7 @@ public class ApplicationConverter implements ToEntityConverter<ApplicationEntity
             .localAuthorityCode(model.getLocalAuthorityCode())
             .isPaymentTaken(model.getPaymentTaken())
             .submissionDatetime(
-                null == model.getSubmissionDate()
-                    ? null
-                    : model.getSubmissionDate().toInstant())
+                null == model.getSubmissionDate() ? null : model.getSubmissionDate().toInstant())
             .existingBadgeNo(model.getExistingBadgeNumber())
             .build();
 

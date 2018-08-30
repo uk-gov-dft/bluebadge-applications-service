@@ -13,10 +13,10 @@ public class ContactConverter implements ApplicationBiConverter {
   @Override
   public void convertToModel(Application model, ApplicationEntity entity) {
 
-    if(null == model.getParty()){
+    if (null == model.getParty()) {
       model.setParty(new Party());
     }
-    if(null == model.getParty().getContact()){
+    if (null == model.getParty().getContact()) {
       model.getParty().setContact(new Contact());
     }
     Contact contact = model.getParty().getContact();

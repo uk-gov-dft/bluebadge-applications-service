@@ -1,13 +1,13 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
+import static org.junit.Assert.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import static org.junit.Assert.*;
 
 public class ContactConverterTest extends ApplicationFixture {
 
@@ -17,7 +17,7 @@ public class ContactConverterTest extends ApplicationFixture {
   public void convertToModel() {
     ApplicationEntity entity = getFullyPopulatedApplicationEntity();
     Application model = new Application();
-    converter.convertToModel(model,entity);
+    converter.convertToModel(model, entity);
 
     Contact contact = model.getParty().getContact();
     Assert.assertEquals(contact.getBuildingStreet(), ValidValues.CONTACT_BUILDING);
