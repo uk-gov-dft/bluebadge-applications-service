@@ -27,3 +27,8 @@ Feature: Verify find newly created org badge
     Given path 'applications/' + 'a305706c-99ca-4e2a-ba0e-96d198de42f3'
     When method GET
     Then status 404
+
+  Scenario: App exists in different authority
+    Given path 'applications/' + '4cf7be77-cfe7-4c9f-a229-ea61e903fb3a'
+    When method GET
+    Then status 404
