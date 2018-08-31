@@ -240,7 +240,7 @@
         </collection>
     </resultMap>
 
-    <select id="retrieveApplication" resultMap="retrieveApplicationMap" parameterType="java.util.UUID">
+    <select id="retrieveApplication" resultMap="retrieveApplicationMap" parameterType="RetrieveApplicationQueryParams">
         SELECT a.id
         , a.local_authority_code
         , a.app_type_code
