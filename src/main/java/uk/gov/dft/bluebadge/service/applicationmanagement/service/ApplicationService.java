@@ -137,7 +137,11 @@ public class ApplicationService {
     }
 
     ApplicationEntity entity =
-        repository.retrieveApplication(RetrieveApplicationQueryParams.builder().uuid(uuid).build());
+        repository.retrieveApplication(
+            RetrieveApplicationQueryParams.builder()
+                .uuid(uuid)
+                .authorityCode(securityUtils.getCurrentLocalAuthorityShortCode())
+                .build());
     if (null == entity) {
       throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
     }

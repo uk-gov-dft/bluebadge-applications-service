@@ -316,6 +316,7 @@
         LEFT JOIN
           app_walking_type wt ON a.id = wt.application_id
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+        AND a.local_authority_code = #{authorityCode}
     </select>
 
 </mapper>
