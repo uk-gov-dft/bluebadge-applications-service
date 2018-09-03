@@ -34,6 +34,6 @@ public class ChildUnder3Converter implements ApplicationBiConverter {
     }
 
     entity.setBulkyEquipmentTypeCode(
-        model.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode().toString());
+        model.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode().name());
   }
 }
