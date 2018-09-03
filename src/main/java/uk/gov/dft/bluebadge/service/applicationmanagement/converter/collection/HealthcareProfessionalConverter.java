@@ -18,4 +18,12 @@ public class HealthcareProfessionalConverter
         .applicationId(applicationId)
         .build();
   }
+
+  @Override
+  public HealthcareProfessional mapToModel(HealthcareProfessionalEntity entity) {
+    HealthcareProfessional model = new HealthcareProfessional();
+    model.setLocation(entity.getProfLocation());
+    model.setName(entity.getProfName());
+    return model;
+  }
 }

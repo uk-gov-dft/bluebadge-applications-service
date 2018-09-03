@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
 public class EligibilityValidatorTest extends ApplicationFixture {
@@ -21,7 +22,7 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   private final EligibilityValidator eligibilityValidator;
 
   public EligibilityValidatorTest() {
-    super();
+    MockitoAnnotations.initMocks(this);
     eligibilityValidator =
         new EligibilityValidator(benefitValidator, armsValidator, walkingValidator, blindValidator);
   }
