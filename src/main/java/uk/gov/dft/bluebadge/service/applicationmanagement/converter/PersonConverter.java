@@ -2,9 +2,9 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.GenderCodeField;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Person;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
@@ -15,12 +15,10 @@ class PersonConverter implements ApplicationBiConverter {
   @Override
   public void convertToModel(Application model, ApplicationEntity entity) {
     if (PartyTypeCodeField.PERSON.name().equals(entity.getPartyCode())) {
-      if (null == model.getParty()) {
-        model.setParty(new Party());
-      }
-      if (null == model.getParty().getPerson()) {
-        model.getParty().setPerson(new Person());
-      }
+      Assert.notNull(model.getParty(), "Expected party to not be null.");
+
+      model.getParty().setPerson(new Person());
+
       Person person = model.getParty().getPerson();
       person.setBadgeHolderName(entity.getHolderName());
       person.setNino(entity.getNino());

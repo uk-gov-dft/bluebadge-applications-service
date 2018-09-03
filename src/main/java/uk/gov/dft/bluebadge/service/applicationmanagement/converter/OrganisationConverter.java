@@ -2,9 +2,9 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Organisation;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.VehicleConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
@@ -22,12 +22,9 @@ class OrganisationConverter implements ApplicationBiConverter {
   @Override
   public void convertToModel(Application model, ApplicationEntity entity) {
     if (PartyTypeCodeField.ORG.name().equals(entity.getPartyCode())) {
-      if (null == model.getParty()) {
-        model.setParty(new Party());
-      }
-      if (null == model.getParty().getOrganisation()) {
-        model.getParty().setOrganisation(new Organisation());
-      }
+      Assert.notNull(model.getParty(), "Expected not null party.");
+
+      model.getParty().setOrganisation(new Organisation());
       Organisation organisation = model.getParty().getOrganisation();
       organisation.setBadgeHolderName(entity.getHolderName());
       organisation.setIsCharity(entity.getOrgIsCharity());
