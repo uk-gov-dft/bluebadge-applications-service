@@ -5,24 +5,36 @@ import static org.junit.Assert.assertEquals;
 import java.util.UUID;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Vehicle;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.VehicleTypeCodeField;
+import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 
-public class VehicleConverterTest {
+public class VehicleConverterTest extends ApplicationFixture {
+
+  private final VehicleConverter converter = new VehicleConverter();
 
   @Test
   public void mapToEntity() {
     Vehicle vehicle = new Vehicle();
-    vehicle.setRegistrationNumber("VK61VXX");
-    vehicle.setTypeCode(VehicleTypeCodeField.CAR);
-    vehicle.setUsageFrequency("USAGE");
-    UUID uuid = UUID.randomUUID();
+    vehicle.setRegistrationNumber(ValidValues.VEH_REG);
+    vehicle.setTypeCode(ValidValues.VEH_TYPE);
+    vehicle.setUsageFrequency(ValidValues.VEH_USAGE);
 
-    VehicleConverter converter = new VehicleConverter();
-    VehicleEntity entity = converter.mapToEntity(vehicle, uuid);
+    VehicleEntity entity = converter.mapToEntity(vehicle, UUID.fromString(ValidValues.ID));
 
-    assertEquals(vehicle.getRegistrationNumber(), entity.getRegistrationNumber());
-    assertEquals(vehicle.getTypeCode().toString(), entity.getTypeCode());
-    assertEquals(vehicle.getUsageFrequency(), entity.getUsageFrequency());
+    assertEquals(ValidValues.VEH_REG, entity.getRegistrationNumber());
+    assertEquals(ValidValues.VEH_TYPE.name(), entity.getTypeCode());
+    assertEquals(ValidValues.VEH_USAGE, entity.getUsageFrequency());
+    assertEquals(UUID.fromString(ValidValues.ID), entity.getApplicationId());
+  }
+
+  @Test
+  public void mapToModel() {
+    VehicleEntity entity = getFullyPopulatedApplicationEntity().getVehicles().get(0);
+
+    Vehicle model = converter.mapToModel(entity);
+
+    assertEquals(ValidValues.VEH_REG, model.getRegistrationNumber());
+    assertEquals(ValidValues.VEH_USAGE, model.getUsageFrequency());
+    assertEquals(ValidValues.VEH_TYPE, model.getTypeCode());
   }
 }

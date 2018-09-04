@@ -154,19 +154,61 @@ SELECT applicationmanagement_unittest.insert_data(60, 'ABERD');
 SELECT applicationmanagement_unittest.insert_data(10, 'XXXXXX');
 
 -- Add some specific ones.
--- Holder ZZZ999, LA ABERD, Type REPLACE
-insert into applicationmanagement_unittest.application(
+-- Holder 'Holder Name', LA ABERD, Type REPLACE
+INSERT INTO applicationmanagement_unittest.application(
  id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
  , contact_name, contact_building_street, contact_town_city, contact_postcode
- , holder_name
+ , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
+ , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
+ , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
+ , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
+ , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
+ , blind_registered_at_la_code, bulky_equipment_type_code
+ , url_proof_eligibility, url_proof_address, url_proof_identity, url_badge_photo
  ) VALUES (
- md5(random()::text || clock_timestamp()::text)::uuid, 'ABERD', 'REPLACE', true, current_timestamp, 'PERSON'
- , null, 'Street', 'Atown', 'ZZ111ZZ'
- , 'ZZZ999'
+ '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ABERD', 'REPLACE', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
+ , 'Contact Name', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
+ , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
+ , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
+ , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
+ , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
+ , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
+ , 'BIRM', 'BULK'
+ , 'Url Proof Eligibility', 'Url Proof Address', 'Url Proof Identity', 'Url Badge Photo'
  );
+INSERT INTO applicationmanagement_unittest.app_healthcare_professional(
+application_id, prof_name, prof_location
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Prof Name', 'Prof Location'
+);
+INSERT INTO applicationmanagement_unittest.app_medication(
+application_id, med_name, med_is_prescribed, med_quantity, med_frequency
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Med Name', true, 'Med Quantity', 'Med Frequency'
+);
+INSERT INTO applicationmanagement_unittest.app_treatment(
+application_id, treatment_description, treatment_time
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Treatment Description', 'Treatment Time'
+);
+INSERT INTO applicationmanagement_unittest.app_vehicle(
+application_id, registration_no, type_code, usage_frequency
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ER1', 'CAR', 'Usage Frequency'
+);
+INSERT INTO applicationmanagement_unittest.app_walking_aid(
+application_id, aid_how_provided_code, aid_description, aid_usage
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'PRIVATE', 'Aid Description', 'Aid Usage'
+);
+INSERT INTO applicationmanagement_unittest.app_walking_type(
+application_id, walking_type_code
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'PAIN'
+);
 
 -- Submitted 10 years ago - a cancel app.
-insert into applicationmanagement_unittest.application(
+INSERT INTO applicationmanagement_unittest.application(
  id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
  , contact_name, contact_building_street, contact_town_city, contact_postcode
  , holder_name

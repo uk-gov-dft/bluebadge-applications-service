@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.gov.dft.bluebadge.common.api.model.Error;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
+import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
@@ -21,6 +22,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationS
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 
 @Slf4j
 @Service
@@ -122,5 +124,27 @@ public class ApplicationService {
     }
 
     return time.toInstant();
+  }
+
+  public Application retrieve(String applicationId) {
+    UUID uuid;
+    try {
+      uuid = UUID.fromString(applicationId);
+    } catch (IllegalArgumentException e) {
+      Error error = new Error();
+      error.setReason("Invalid uuid in query param applicationId");
+      throw new BadRequestException(error);
+    }
+
+    ApplicationEntity entity =
+        repository.retrieveApplication(
+            RetrieveApplicationQueryParams.builder()
+                .uuid(uuid)
+                .authorityCode(securityUtils.getCurrentLocalAuthorityShortCode())
+                .build());
+    if (null == entity) {
+      throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
+    }
+    return converter.convertToModel(entity);
   }
 }

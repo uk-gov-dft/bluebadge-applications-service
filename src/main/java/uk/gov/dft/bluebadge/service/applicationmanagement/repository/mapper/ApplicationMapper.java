@@ -7,6 +7,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -79,4 +80,12 @@ public interface ApplicationMapper {
    */
   List<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams);
+
+  /**
+   * Retrieve full details of a single application.
+   *
+   * @param params PK
+   * @return The application or null.
+   */
+  ApplicationEntity retrieveApplication(RetrieveApplicationQueryParams params);
 }

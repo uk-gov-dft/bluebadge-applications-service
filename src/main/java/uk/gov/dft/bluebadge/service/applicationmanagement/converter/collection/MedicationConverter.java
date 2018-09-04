@@ -18,4 +18,14 @@ public class MedicationConverter
         .quantity(model.getQuantity())
         .build();
   }
+
+  @Override
+  public Medication mapToModel(MedicationEntity entity) {
+    Medication model = new Medication();
+    model.setFrequency(entity.getFrequency());
+    model.setIsPrescribed(entity.getIsPrescribed());
+    model.setName(entity.getName());
+    model.setQuantity(entity.getQuantity());
+    return model;
+  }
 }

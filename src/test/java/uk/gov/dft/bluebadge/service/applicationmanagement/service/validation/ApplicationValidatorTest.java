@@ -8,9 +8,12 @@ import java.time.LocalDate;
 import java.time.Period;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifacts;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
+import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
 public class ApplicationValidatorTest extends ApplicationFixture {
 
@@ -18,8 +21,11 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Mock private EligibilityValidator eligibilityValidator;
 
+  @Mock protected ReferenceDataApiClient referenceDataApiClient;
+
   public ApplicationValidatorTest() {
-    super();
+    MockitoAnnotations.initMocks(this);
+    ReferenceDataService referenceDataService = initValidRefData(referenceDataApiClient);
     applicationValidator = new ApplicationValidator(referenceDataService, eligibilityValidator);
   }
 
