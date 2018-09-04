@@ -1,10 +1,10 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.common.converter.ToEntityFormatter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
 @Component
@@ -12,14 +12,9 @@ public class ContactConverter implements ApplicationBiConverter {
 
   @Override
   public void convertToModel(Application model, ApplicationEntity entity) {
+    Assert.notNull(model.getParty(), "Expected party to not be null.");
 
-    if (null == model.getParty()) {
-      model.setParty(new Party());
-    }
-    if (null == model.getParty().getContact()) {
-      model.getParty().setContact(new Contact());
-    }
-    Contact contact = model.getParty().getContact();
+    Contact contact = new Contact();
     contact.setFullName(entity.getContactName());
     contact.setBuildingStreet(entity.getContactBuildingStreet());
     contact.setLine2(entity.getContactLine2());
@@ -28,6 +23,7 @@ public class ContactConverter implements ApplicationBiConverter {
     contact.setPostCode(entity.getContactPostcode());
     contact.setPrimaryPhoneNumber(entity.getPrimaryPhoneNo());
     contact.setSecondaryPhoneNumber(entity.getSecondaryPhoneNo());
+    model.getParty().setContact(contact);
   }
 
   @Override

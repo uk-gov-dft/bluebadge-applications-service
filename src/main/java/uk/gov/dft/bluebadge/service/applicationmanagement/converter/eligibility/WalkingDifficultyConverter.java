@@ -71,11 +71,10 @@ public class WalkingDifficultyConverter implements ApplicationBiConverter {
     if (null != model.getEligibility().getWalkingDifficulty()) {
       WalkingDifficulty walkingDifficulty = model.getEligibility().getWalkingDifficulty();
 
-      if (null != walkingDifficulty.getWalkingLengthOfTimeCode()) {
-        entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().toString());
-      }
+      entity.setWalkLengthCode(walkingDifficulty.getWalkingLengthOfTimeCode().name());
+
       if (null != walkingDifficulty.getWalkingSpeedCode()) {
-        entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().toString());
+        entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().name());
       }
       entity.setWalkOtherDesc(walkingDifficulty.getOtherDescription());
 

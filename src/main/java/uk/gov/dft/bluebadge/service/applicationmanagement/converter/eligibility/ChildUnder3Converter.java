@@ -29,13 +29,11 @@ public class ChildUnder3Converter implements ApplicationBiConverter {
 
   @Override
   public void convertToEntity(Application model, ApplicationEntity entity) {
-    if (null == model.getEligibility()) {
+    if (null == model.getEligibility() || null == model.getEligibility().getChildUnder3()) {
       return;
     }
-    if (null != model.getEligibility().getChildUnder3()
-        && null != model.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode()) {
-      entity.setBulkyEquipmentTypeCode(
-          model.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode().toString());
-    }
+
+    entity.setBulkyEquipmentTypeCode(
+        model.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode().name());
   }
 }

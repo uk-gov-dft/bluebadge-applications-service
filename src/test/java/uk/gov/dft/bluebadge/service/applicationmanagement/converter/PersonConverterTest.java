@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Person;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
@@ -69,6 +70,7 @@ public class PersonConverterTest extends ApplicationFixture {
   public void convertToModel() {
     ApplicationEntity entity = getFullyPopulatedApplicationEntity();
     Application model = new Application();
+    model.setParty(new Party());
 
     converter.convertToModel(model, entity);
     Person person = model.getParty().getPerson();

@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Organisation;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.VehicleConverter;
@@ -74,7 +75,7 @@ public class OrganisationConverterTest extends ApplicationFixture {
     ApplicationEntity entity = getFullyPopulatedApplicationEntity();
     entity.setPartyCode(PartyTypeCodeField.ORG.name());
     Application model = new Application();
-
+    model.setParty(new Party());
     organisationConverter.convertToModel(model, entity);
 
     Organisation organisation = model.getParty().getOrganisation();

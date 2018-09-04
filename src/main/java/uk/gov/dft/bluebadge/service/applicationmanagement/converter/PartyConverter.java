@@ -27,9 +27,7 @@ public class PartyConverter implements ApplicationBiConverter {
 
   @Override
   public void convertToModel(Application model, ApplicationEntity entity) {
-    if (null == model.getParty()) {
-      model.setParty(new Party());
-    }
+    model.setParty(new Party());
 
     model.getParty().setTypeCode(PartyTypeCodeField.fromValue(entity.getPartyCode()));
 

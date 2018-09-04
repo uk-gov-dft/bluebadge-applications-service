@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
@@ -17,6 +18,7 @@ public class ContactConverterTest extends ApplicationFixture {
   public void convertToModel() {
     ApplicationEntity entity = getFullyPopulatedApplicationEntity();
     Application model = new Application();
+    model.setParty(new Party());
     converter.convertToModel(model, entity);
 
     Contact contact = model.getParty().getContact();
