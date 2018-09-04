@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("squid:S1168")
 interface ApplicationToEntityCollection<E, M> {
   E mapToEntity(M model, UUID applicationId);
 
