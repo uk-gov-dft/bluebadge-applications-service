@@ -2,14 +2,18 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
 import static java.time.Duration.ofMinutes;
 import static java.time.Period.ofYears;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -53,7 +58,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .partyCode("PERSON")
             .primaryPhoneNo("01234567890")
             .secondaryPhoneNo("01234567890")
-            .submissionDatetime(Instant.now())
+            .submissionDatetime(OffsetDateTime.now(Clock.systemUTC()).toInstant())
             .armsAdaptedVehDesc("Car")
             .armsDrivingFreq("drive frq")
             .armsIsAdaptedVehicle(true)
@@ -70,7 +75,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .eligibilityConditions("elig conditions")
             .holderName("holderName")
             .build();
-    Assert.assertEquals(1, applicationRepository.createApplication(entity));
+    assertEquals(1, applicationRepository.createApplication(entity));
 
     List<HealthcareProfessionalEntity> pros = new ArrayList<>();
     pros.add(
@@ -79,7 +84,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .profLocation("location")
             .profName("pro name")
             .build());
-    Assert.assertEquals(1, applicationRepository.createHealthcareProfessionals(pros));
+    assertEquals(1, applicationRepository.createHealthcareProfessionals(pros));
 
     List<MedicationEntity> meds = new ArrayList<>();
     meds.add(
@@ -90,7 +95,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .name("med name")
             .quantity("med quantity")
             .build());
-    Assert.assertEquals(1, applicationRepository.createMedications(meds));
+    assertEquals(1, applicationRepository.createMedications(meds));
 
     List<TreatmentEntity> treats = new ArrayList<>();
     treats.add(
@@ -99,7 +104,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .description("desc")
             .time("Hours")
             .build());
-    Assert.assertEquals(1, applicationRepository.createTreatments(treats));
+    assertEquals(1, applicationRepository.createTreatments(treats));
 
     List<VehicleEntity> vehicles = new ArrayList<>();
     vehicles.add(
@@ -108,7 +113,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .registrationNumber("ABC123")
             .usageFrequency("often")
             .build());
-    Assert.assertEquals(1, applicationRepository.createVehicles(vehicles));
+    assertEquals(1, applicationRepository.createVehicles(vehicles));
 
     List<WalkingAidEntity> aids = new ArrayList<>();
     aids.add(
@@ -117,7 +122,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .description("desc")
             .usage("usage")
             .build());
-    Assert.assertEquals(1, applicationRepository.createWalkingAids(aids));
+    assertEquals(1, applicationRepository.createWalkingAids(aids));
 
     List<WalkingDifficultyTypeEntity> diffs = new ArrayList<>();
     diffs.add(
@@ -125,7 +130,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .applicationId(entity.getId())
             .typeCode("PAIN")
             .build());
-    Assert.assertEquals(1, applicationRepository.createWalkingDifficultyTypes(diffs));
+    assertEquals(1, applicationRepository.createWalkingDifficultyTypes(diffs));
   }
 
   @Test
@@ -134,7 +139,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
         FindApplicationQueryParams.builder().authorityCode("ABERD").build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 
-    Assert.assertEquals(50, results.size());
+    assertEquals(50, results.size());
   }
 
   @Test
@@ -143,7 +148,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
         FindApplicationQueryParams.builder().authorityCode("XXXXXX").build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 
-    Assert.assertEquals(10, results.size());
+    assertEquals(10, results.size());
   }
 
   @Test
@@ -161,8 +166,8 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 
-    Assert.assertEquals(1, results.size());
-    Assert.assertEquals("10years back", results.get(0).getHolderName());
+    assertEquals(1, results.size());
+    assertEquals("10years back", results.get(0).getHolderName());
   }
 
   @Test
@@ -174,9 +179,9 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 
-    Assert.assertTrue(!results.isEmpty());
+    assertTrue(!results.isEmpty());
     for (ApplicationSummaryEntity result : results) {
-      Assert.assertEquals("CANCEL", result.getApplicationTypeCode());
+      assertEquals("CANCEL", result.getApplicationTypeCode());
     }
   }
 
@@ -186,26 +191,108 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
         FindApplicationQueryParams.builder().authorityCode("ABERD").postcode("zz11 1ZZ").build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 
-    Assert.assertTrue(!results.isEmpty());
+    assertTrue(!results.isEmpty());
     for (ApplicationSummaryEntity result : results) {
-      Assert.assertEquals("ZZ111ZZ", result.getPostcode());
+      assertEquals("ZZ111ZZ", result.getPostcode());
     }
   }
 
   @Test
   public void find_name() {
-    // Given a badge holder with name ZZZ999
+    // Given a badge holder with name Holder Name
 
     // When retrieve by name as zz99 (case insensitive and wild card start/end)
     FindApplicationQueryParams params =
-        FindApplicationQueryParams.builder().authorityCode("ABERD").name("zz99").build();
+        FindApplicationQueryParams.builder().authorityCode("ABERD").name("olDER Na").build();
 
     // Then application returned
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 
-    Assert.assertTrue(!results.isEmpty());
+    assertTrue(!results.isEmpty());
     for (ApplicationSummaryEntity result : results) {
-      Assert.assertEquals("ZZZ999", result.getHolderName());
+      assertEquals("Holder Name", result.getHolderName());
     }
+  }
+
+  @Test
+  public void retrieve() {
+    RetrieveApplicationQueryParams params =
+        RetrieveApplicationQueryParams.builder()
+            .uuid(UUID.fromString("1087ac26-491a-46f0-9006-36187dc40764"))
+            .authorityCode("ABERD")
+            .build();
+    ApplicationEntity result = applicationRepository.retrieveApplication(params);
+    // Healthcare Professionals
+    assertEquals("Prof Name", result.getHealthcareProfessionals().get(0).getProfName());
+    assertEquals("Prof Location", result.getHealthcareProfessionals().get(0).getProfLocation());
+    // Medications
+    assertEquals("Med Name", result.getMedications().get(0).getName());
+    assertEquals("Med Frequency", result.getMedications().get(0).getFrequency());
+    assertEquals("Med Quantity", result.getMedications().get(0).getQuantity());
+    assertTrue(result.getMedications().get(0).getIsPrescribed());
+    // Treatments
+    assertEquals("Treatment Description", result.getTreatments().get(0).getDescription());
+    assertEquals("Treatment Time", result.getTreatments().get(0).getTime());
+    // Vehicles
+    assertEquals("ER1", result.getVehicles().get(0).getRegistrationNumber());
+    assertEquals("CAR", result.getVehicles().get(0).getTypeCode());
+    assertEquals("Usage Frequency", result.getVehicles().get(0).getUsageFrequency());
+    // Walking Aids
+    assertEquals("PRIVATE", result.getWalkingAids().get(0).getHowProvidedCode());
+    assertEquals("Aid Description", result.getWalkingAids().get(0).getDescription());
+    assertEquals("Aid Usage", result.getWalkingAids().get(0).getUsage());
+    // Walking Difficulty Types
+    assertEquals("PAIN", result.getWalkingDifficultyTypes().get(0).getTypeCode());
+    // Application
+    assertEquals("ABERD", result.getLocalAuthorityCode());
+    assertEquals("REPLACE", result.getAppTypeCode());
+    assertTrue(result.getIsPaymentTaken());
+    Instant expectedSubmission = Instant.parse("2011-01-01T03:00:00Z");
+    assertEquals(expectedSubmission, result.getSubmissionDatetime());
+    assertEquals("AAAAAA", result.getExistingBadgeNo());
+    assertEquals("PERSON", result.getPartyCode());
+    assertEquals("Contact Name", result.getContactName());
+    assertEquals("Contact Building Street", result.getContactBuildingStreet());
+    assertEquals("Contact Line2", result.getContactLine2());
+    assertEquals("Contact Town City", result.getContactTownCity());
+    assertEquals("ZZ111ZZ", result.getContactPostcode());
+    assertEquals("PPN", result.getPrimaryPhoneNo());
+    assertEquals("SPN", result.getSecondaryPhoneNo());
+    assertEquals("Contact Email Address", result.getContactEmailAddress());
+    assertEquals("Holder Name", result.getHolderName());
+    assertTrue(result.getOrgIsCharity());
+    assertEquals("Org Charity No", result.getOrgCharityNo());
+    assertEquals(new Integer(1), result.getNoOfBadges());
+    assertEquals("Nino", result.getNino());
+    assertEquals(LocalDate.parse("1970-05-29"), result.getDob());
+    assertEquals("MALE", result.getGenderCode());
+    assertEquals("Holder Name At Birth", result.getHolderNameAtBirth());
+    assertEquals("DLA", result.getEligibilityCode());
+    assertEquals("Eligibility Conditions", result.getEligibilityConditions());
+    assertTrue(result.getBenefitIsIndefinite());
+    assertEquals(LocalDate.parse("2020-01-31"), result.getBenefitExpiryDate());
+    assertEquals("Walk Other Desc", result.getWalkOtherDesc());
+    assertEquals("LESSMIN", result.getWalkLengthCode());
+    assertEquals("SLOW", result.getWalkSpeedCode());
+    assertEquals("Arms Driving Freq", result.getArmsDrivingFreq());
+    assertTrue(result.getArmsIsAdaptedVehicle());
+    assertEquals("Arms Adapted Veh Desc", result.getArmsAdaptedVehDesc());
+    assertEquals("BIRM", result.getBlindRegisteredAtLaCode());
+    assertEquals("BULK", result.getBulkyEquipmentTypeCode());
+    assertEquals("Url Proof Eligibility", result.getUrlProofEligibility());
+    assertEquals("Url Proof Address", result.getUrlProofAddress());
+    assertEquals("Url Proof Identity", result.getUrlProofIdentity());
+    assertEquals("Url Badge Photo", result.getUrlBadgePhoto());
+  }
+
+  @Test
+  public void retrieve_wrongAuthority() {
+    RetrieveApplicationQueryParams params =
+        RetrieveApplicationQueryParams.builder()
+            .uuid(UUID.fromString("1087ac26-491a-46f0-9006-36187dc40764"))
+            .authorityCode("BIRM")
+            .build();
+    ApplicationEntity result = applicationRepository.retrieveApplication(params);
+    assertNull(result);
   }
 }

@@ -11,11 +11,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.dft.bluebadge.common.controller.AbstractController;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummaryResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
@@ -82,5 +84,13 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
             to.orElse(null),
             applicationTypeCode.orElse(null));
     return ResponseEntity.ok(new ApplicationSummaryResponse().data(results));
+  }
+
+  @Override
+  public ResponseEntity<ApplicationResponse> retrieveApplication(
+      @ApiParam(required = true) @PathVariable("applicationId") String applicationId) {
+
+    Application result = service.retrieve(applicationId);
+    return ResponseEntity.ok(new ApplicationResponse().data(result));
   }
 }

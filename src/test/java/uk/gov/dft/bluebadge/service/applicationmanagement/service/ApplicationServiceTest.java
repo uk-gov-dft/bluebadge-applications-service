@@ -1,5 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -9,12 +11,13 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
+import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
@@ -25,7 +28,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 
 public class ApplicationServiceTest extends ApplicationFixture {
 
-  public static final String INVALID_APPLICATION_TYPE_CODE = "WRONG";
+  private static final String INVALID_APPLICATION_TYPE_CODE = "WRONG";
 
   @Mock private ApplicationRepository repository;
   @Mock private ApplicationConverter converter;
@@ -34,6 +37,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
 
   @Before
   public void setUp() {
+    MockitoAnnotations.initMocks(this);
     service = new ApplicationService(repository, converter, securityUtils);
   }
 
@@ -53,10 +57,10 @@ public class ApplicationServiceTest extends ApplicationFixture {
     verify(converter, times(1)).convertToEntity(application);
     verify(repository, times(1)).createApplication(entity);
     verify(repository, times(1)).createWalkingDifficultyTypes(any());
-    Assert.assertNotNull("Should get id back", result);
+    assertNotNull("Should get id back", result);
 
-    Assert.assertNotNull("Submission date set as part of create", application.getSubmissionDate());
-    Assert.assertNotNull("Id set as part of create", application.getApplicationId());
+    assertNotNull("Submission date set as part of create", application.getSubmissionDate());
+    assertNotNull("Id set as part of create", application.getApplicationId());
   }
 
   @Test(expected = BadRequestException.class)
@@ -85,7 +89,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   public void find_withNullsValid() {
     // Given a search for applications with valid LA and no other criteria.
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
-    when(repository.findApplications(any())).thenReturn(new ArrayList<ApplicationSummaryEntity>());
+    when(repository.findApplications(any())).thenReturn(new ArrayList<>());
 
     // When searching
     service.find(null, null, null, null, null);
@@ -106,7 +110,33 @@ public class ApplicationServiceTest extends ApplicationFixture {
         service.find("name", "postcode", OffsetDateTime.now(), OffsetDateTime.now(), "NEW");
 
     // Then valid converted model object returned.
-    Assert.assertEquals(1, results.size());
-    Assert.assertNotNull(results.get(0).getApplicationId());
+    assertEquals(1, results.size());
+    assertNotNull(results.get(0).getApplicationId());
+  }
+
+  @Test
+  public void retrieve() {
+    String uuid = UUID.randomUUID().toString();
+    ApplicationEntity entity = getFullyPopulatedApplicationEntity();
+    Application model =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWpms().build();
+
+    when(repository.retrieveApplication(any())).thenReturn(entity);
+    when(converter.convertToModel(entity)).thenReturn(model);
+
+    Application a = service.retrieve(uuid);
+
+    assertEquals(model, a);
+  }
+
+  @Test(expected = BadRequestException.class)
+  public void retrieve_invalidUuid() {
+    service.retrieve("ABC");
+  }
+
+  @Test(expected = NotFoundException.class)
+  public void retrieve_noResult() {
+    when(repository.retrieveApplication(any())).thenReturn(null);
+    service.retrieve(UUID.randomUUID().toString());
   }
 }

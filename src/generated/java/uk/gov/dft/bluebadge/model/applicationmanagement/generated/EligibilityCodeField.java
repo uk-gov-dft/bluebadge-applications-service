@@ -1,6 +1,5 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Gets or Sets EligibilityCodeField */
@@ -35,7 +34,7 @@ public enum EligibilityCodeField {
     return String.valueOf(value);
   }
 
-//  @JsonCreator
+  //  @JsonCreator
   public static EligibilityCodeField fromValue(String text) {
     for (EligibilityCodeField b : EligibilityCodeField.values()) {
       if (String.valueOf(b.value).equals(text)) {

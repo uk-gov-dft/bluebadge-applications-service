@@ -152,4 +152,171 @@
         LIMIT 50
     </select>
 
+    <resultMap id="retrieveApplicationMap" type="ApplicationEntity">
+        <id property="id"  column="id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="local_authority_code" property="localAuthorityCode" />
+        <result column="app_type_code" property="appTypeCode" />
+        <result column="is_payment_taken" property="isPaymentTaken" />
+        <result column="submission_datetime" property="submissionDatetime" />
+        <result column="existing_badge_no" property="existingBadgeNo" />
+        <result column="party_code" property="partyCode" />
+        <result column="contact_name" property="contactName" />
+        <result column="contact_building_street" property="contactBuildingStreet" />
+        <result column="contact_line2" property="contactLine2" />
+        <result column="contact_town_city" property="contactTownCity" />
+        <result column="contact_postcode" property="contactPostcode" />
+        <result column="primary_phone_no" property="primaryPhoneNo" />
+        <result column="secondary_phone_no" property="secondaryPhoneNo" />
+        <result column="contact_email_address" property="contactEmailAddress" />
+        <result column="holder_name" property="holderName" />
+        <result column="org_is_charity" property="orgIsCharity" />
+        <result column="org_charity_no" property="orgCharityNo" />
+        <result column="no_of_badges" property="noOfBadges" />
+        <result column="nino" property="nino" />
+        <result column="dob" property="dob" />
+        <result column="gender_code" property="genderCode" />
+        <result column="holder_name_at_birth" property="holderNameAtBirth" />
+        <result column="eligibility_code" property="eligibilityCode" />
+        <result column="eligibility_conditions" property="eligibilityConditions" />
+        <result column="benefit_is_indefinite" property="benefitIsIndefinite" />
+        <result column="benefit_expiry_date" property="benefitExpiryDate" />
+        <result column="walk_other_desc" property="walkOtherDesc" />
+        <result column="walk_length_code" property="walkLengthCode" />
+        <result column="walk_speed_code" property="walkSpeedCode" />
+        <result column="arms_driving_freq" property="armsDrivingFreq" />
+        <result column="arms_is_adapted_vehicle" property="armsIsAdaptedVehicle" />
+        <result column="arms_adapted_veh_desc" property="armsAdaptedVehDesc" />
+        <result column="blind_registered_at_la_code" property="blindRegisteredAtLaCode" />
+        <result column="bulky_equipment_type_code" property="bulkyEquipmentTypeCode" />
+        <result column="url_proof_eligibility" property="urlProofEligibility" />
+        <result column="url_proof_address" property="urlProofAddress" />
+        <result column="url_proof_identity" property="urlProofIdentity" />
+        <result column="url_badge_photo" property="urlBadgePhoto" />
+        <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
+                    javaType="ArrayList">
+            <id property="applicationId"  column="hp_application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+            <result column="hp_prof_name" property="profName" />
+            <result column="hp_prof_location" property="profLocation" />
+        </collection>
+        <collection property="medications" ofType="MedicationEntity"
+                    javaType="ArrayList">
+            <id property="applicationId"  column="med_application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+            <result column="med_name" property="name" />
+            <result column="med_is_prescribed" property="isPrescribed" />
+            <result column="med_quantity" property="quantity" />
+            <result column="med_frequency" property="frequency" />
+        </collection>
+        <collection property="treatments" ofType="TreatmentEntity"
+                    javaType="ArrayList">
+            <id property="applicationId"  column="t_application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+            <result column="treatment_time" property="time" />
+            <result column="treatment_description" property="description" />
+        </collection>
+        <collection property="vehicles" ofType="VehicleEntity"
+                    javaType="ArrayList">
+            <id property="applicationId"  column="v_application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+            <result column="registration_no" property="registrationNumber" />
+            <result column="v_type_code" property="typeCode" />
+            <result column="usage_frequency" property="usageFrequency" />
+        </collection>
+        <collection property="walkingAids" ofType="WalkingAidEntity"
+                    javaType="ArrayList">
+            <id property="applicationId"  column="aid_application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+            <result column="aid_how_provided_code" property="howProvidedCode" />
+            <result column="aid_description" property="description" />
+            <result column="aid_usage" property="usage" />
+        </collection>
+        <collection property="walkingDifficultyTypes" ofType="WalkingDifficultyTypeEntity"
+                    javaType="ArrayList">
+            <id property="applicationId"  column="wt_application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+            <result column="walking_type_code" property="typeCode" />
+        </collection>
+    </resultMap>
+
+    <select id="retrieveApplication" resultMap="retrieveApplicationMap" parameterType="RetrieveApplicationQueryParams">
+        SELECT a.id
+        , a.local_authority_code
+        , a.app_type_code
+        , a.is_payment_taken
+        , a.submission_datetime
+        , a.existing_badge_no
+        , a.party_code
+        , a.contact_name
+        , a.contact_building_street
+        , a.contact_line2
+        , a.contact_town_city
+        , a.contact_postcode
+        , a.primary_phone_no
+        , a.secondary_phone_no
+        , a.contact_email_address
+        , a.holder_name
+        , a.org_is_charity
+        , a.org_charity_no
+        , a.no_of_badges
+        , a.nino
+        , a.dob
+        , a.gender_code
+        , a.holder_name_at_birth
+        , a.eligibility_code
+        , a.eligibility_conditions
+        , a.benefit_is_indefinite
+        , a.benefit_expiry_date
+        , a.walk_other_desc
+        , a.walk_length_code
+        , a.walk_speed_code
+        , a.arms_driving_freq
+        , a.arms_is_adapted_vehicle
+        , a.arms_adapted_veh_desc
+        , a.blind_registered_at_la_code
+        , a.bulky_equipment_type_code
+        , a.url_proof_eligibility
+        , a.url_proof_address
+        , a.url_proof_identity
+        , a.url_badge_photo
+        , hp.application_id AS hp_application_id
+        , hp.prof_name AS hp_prof_name
+        , hp.prof_location AS hp_prof_location
+        , med.application_id AS med_application_id
+        , med.med_name
+        , med.med_is_prescribed
+        , med.med_quantity
+        , med.med_frequency
+        , t.application_id AS t_application_id
+        , t.treatment_description
+        , t.treatment_time
+        , v.application_id AS v_application_id
+        , v.registration_no
+        , v.type_code AS v_type_code
+        , v.usage_frequency
+        , aid.application_id AS aid_application_id
+        , aid.aid_how_provided_code
+        , aid.aid_description
+        , aid.aid_usage
+        , wt.application_id AS wt_application_id
+        , wt.walking_type_code
+        FROM
+        application a
+        LEFT JOIN
+          app_healthcare_professional hp ON a.id = hp.application_id
+        LEFT JOIN
+          app_medication med ON a.id = med.application_id
+        LEFT JOIN
+          app_treatment t ON a.id = t.application_id
+        LEFT JOIN
+          app_vehicle v ON a.id = v.application_id
+        LEFT JOIN
+          app_walking_aid aid ON a.id = aid.application_id
+        LEFT JOIN
+          app_walking_type wt ON a.id = wt.application_id
+        WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+        AND a.local_authority_code = #{authorityCode}
+    </select>
+
 </mapper>
