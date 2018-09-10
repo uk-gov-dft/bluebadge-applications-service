@@ -17,6 +17,8 @@ Feature: Verify find newly created org badge
     When method GET
     Then status 200
     And match $.data.applicationId contains createdAppNo
+    And match $.data.party.organisation.vehicles contains {registrationNumber:"VK61VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
+    And match $.data.party.organisation.vehicles contains {registrationNumber:"VK62VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
 
   Scenario: Verify retrieve 400 invalid uuid
     Given path 'applications/' + 'ABC'

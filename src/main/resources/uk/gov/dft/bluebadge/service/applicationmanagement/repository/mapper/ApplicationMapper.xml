@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.ApplicationMapper">
 
+
     <insert id="createApplication" parameterType="ApplicationEntity">
         INSERT INTO application
         ( id, 
@@ -194,54 +195,22 @@
         <result column="url_proof_identity" property="urlProofIdentity" />
         <result column="url_badge_photo" property="urlBadgePhoto" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
-                    javaType="ArrayList">
-            <id property="applicationId"  column="hp_application_id"
-                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
-            <result column="hp_prof_name" property="profName" />
-            <result column="hp_prof_location" property="profLocation" />
-        </collection>
+                    select="retrieveHealthcareProfessional" column="string_id"/>
         <collection property="medications" ofType="MedicationEntity"
-                    javaType="ArrayList">
-            <id property="applicationId"  column="med_application_id"
-                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
-            <result column="med_name" property="name" />
-            <result column="med_is_prescribed" property="isPrescribed" />
-            <result column="med_quantity" property="quantity" />
-            <result column="med_frequency" property="frequency" />
-        </collection>
+                     select="retrieveMedication" column="string_id"/>
         <collection property="treatments" ofType="TreatmentEntity"
-                    javaType="ArrayList">
-            <id property="applicationId"  column="t_application_id"
-                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
-            <result column="treatment_time" property="time" />
-            <result column="treatment_description" property="description" />
-        </collection>
+                    select="retrieveTreatment" column="string_id"/>
         <collection property="vehicles" ofType="VehicleEntity"
-                    javaType="ArrayList">
-            <id property="applicationId"  column="v_application_id"
-                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
-            <result column="registration_no" property="registrationNumber" />
-            <result column="v_type_code" property="typeCode" />
-            <result column="usage_frequency" property="usageFrequency" />
-        </collection>
+                    select="retrieveVehicle" column="string_id"/>
         <collection property="walkingAids" ofType="WalkingAidEntity"
-                    javaType="ArrayList">
-            <id property="applicationId"  column="aid_application_id"
-                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
-            <result column="aid_how_provided_code" property="howProvidedCode" />
-            <result column="aid_description" property="description" />
-            <result column="aid_usage" property="usage" />
-        </collection>
+                    select="retrieveWalkingAid" column="string_id"/>
         <collection property="walkingDifficultyTypes" ofType="WalkingDifficultyTypeEntity"
-                    javaType="ArrayList">
-            <id property="applicationId"  column="wt_application_id"
-                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
-            <result column="walking_type_code" property="typeCode" />
-        </collection>
+                    select="retrieveWalkingDifficultyType" column="string_id"/>
     </resultMap>
 
     <select id="retrieveApplication" resultMap="retrieveApplicationMap" parameterType="RetrieveApplicationQueryParams">
         SELECT a.id
+        , a.id::VARCHAR string_id
         , a.local_authority_code
         , a.app_type_code
         , a.is_payment_taken
@@ -280,43 +249,105 @@
         , a.url_proof_address
         , a.url_proof_identity
         , a.url_badge_photo
-        , hp.application_id AS hp_application_id
-        , hp.prof_name AS hp_prof_name
-        , hp.prof_location AS hp_prof_location
-        , med.application_id AS med_application_id
+        FROM application a
+        WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+        AND a.local_authority_code = #{authorityCode}
+    </select>
+
+    <resultMap id="retrieveWalkingDifficultyTypeMap" type="WalkingDifficultyTypeEntity">
+        <result property="applicationId"  column="application_id"
+            typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="walking_type_code" property="typeCode" />
+    </resultMap>
+    <select id="retrieveWalkingDifficultyType" resultType="WalkingDifficultyTypeEntity" resultMap="retrieveWalkingDifficultyTypeMap">
+        SELECT
+          wt.application_id
+        , wt.walking_type_code
+        FROM app_walking_type wt
+        WHERE wt.application_id::VARCHAR = #{id}
+    </select>
+
+    <resultMap id="walkingAidMap" type="WalkingAidEntity">
+        <result property="applicationId"  column="application_id"
+            typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="aid_how_provided_code" property="howProvidedCode" />
+        <result column="aid_description" property="description" />
+        <result column="aid_usage" property="usage" />
+    </resultMap>
+    <select id="retrieveWalkingAid" resultType="WalkingAidEntity" resultMap="walkingAidMap">
+        SELECT
+          aid.application_id
+        , aid.aid_how_provided_code
+        , aid.aid_description
+        , aid.aid_usage
+        FROM app_walking_aid aid
+        WHERE aid.application_id::VARCHAR = #{id}
+    </select>
+
+    <resultMap id="vehicleMap" type="VehicleEntity">
+        <result property="applicationId"  column="application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="registration_no" property="registrationNumber" />
+        <result column="type_code" property="typeCode" />
+        <result column="usage_frequency" property="usageFrequency" />
+    </resultMap>
+    <select id="retrieveVehicle" resultType="VehicleEntity" resultMap="vehicleMap">
+        SELECT
+          v.application_id
+        , v.registration_no
+        , v.type_code
+        , v.usage_frequency
+        FROM app_vehicle v
+        WHERE v.application_id::VARCHAR = #{id}
+    </select>
+
+    <resultMap id="treatmentMap" type="TreatmentEntity">
+        <result property="applicationId"  column="application_id"
+            typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="treatment_time" property="time" />
+        <result column="treatment_description" property="description" />
+    </resultMap>
+    <select id="retrieveTreatment" resultType="TreatmentEntity" resultMap="treatmentMap">
+        SELECT
+          t.application_id AS application_id
+        , t.treatment_description
+        , t.treatment_time
+        FROM app_treatment t
+        WHERE t.application_id::VARCHAR = #{id}
+    </select>
+
+    <resultMap id="healthcareProfessionalMap" type="HealthcareProfessionalEntity">
+        <result property="applicationId"  column="application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="prof_name" property="profName" />
+        <result column="prof_location" property="profLocation" />
+    </resultMap>
+    <select id="retrieveHealthcareProfessional" resultType="HealthcareProfessionalEntity" resultMap="healthcareProfessionalMap">
+        SELECT
+          hp.application_id
+        , hp.prof_name
+        , hp.prof_location
+        FROM app_healthcare_professional hp
+        WHERE hp.application_id::VARCHAR = #{id}
+    </select>
+
+    <resultMap id="medicationsMap" type="MedicationEntity">
+        <result property="applicationId"  column="application_id"
+            typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="med_name" property="name" />
+        <result column="med_is_prescribed" property="isPrescribed" />
+        <result column="med_quantity" property="quantity" />
+        <result column="med_frequency" property="frequency" />
+    </resultMap>
+    <select id="retrieveMedication"  resultType="MedicationEntity" resultMap="medicationsMap">
+        SELECT
+          med.application_id
         , med.med_name
         , med.med_is_prescribed
         , med.med_quantity
         , med.med_frequency
-        , t.application_id AS t_application_id
-        , t.treatment_description
-        , t.treatment_time
-        , v.application_id AS v_application_id
-        , v.registration_no
-        , v.type_code AS v_type_code
-        , v.usage_frequency
-        , aid.application_id AS aid_application_id
-        , aid.aid_how_provided_code
-        , aid.aid_description
-        , aid.aid_usage
-        , wt.application_id AS wt_application_id
-        , wt.walking_type_code
-        FROM
-        application a
-        LEFT JOIN
-          app_healthcare_professional hp ON a.id = hp.application_id
-        LEFT JOIN
-          app_medication med ON a.id = med.application_id
-        LEFT JOIN
-          app_treatment t ON a.id = t.application_id
-        LEFT JOIN
-          app_vehicle v ON a.id = v.application_id
-        LEFT JOIN
-          app_walking_aid aid ON a.id = aid.application_id
-        LEFT JOIN
-          app_walking_type wt ON a.id = wt.application_id
-        WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
-        AND a.local_authority_code = #{authorityCode}
+        FROM app_medication med
+        WHERE med.application_id::VARCHAR = #{id}
     </select>
 
 </mapper>

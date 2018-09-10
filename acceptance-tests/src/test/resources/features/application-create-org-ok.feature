@@ -41,6 +41,11 @@ Feature: Verify Create application
           registrationNumber: 'VK61VZZ',
           typeCode: 'CAR',
           usageFrequency: 'Daily'
+        },
+        {
+          registrationNumber: 'VK62VZZ',
+          typeCode: 'CAR',
+          usageFrequency: 'Daily'
         }
       ],
       numberOfBadges: 1
