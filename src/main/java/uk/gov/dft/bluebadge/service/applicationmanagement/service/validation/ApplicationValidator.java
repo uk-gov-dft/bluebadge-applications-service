@@ -102,7 +102,7 @@ public class ApplicationValidator extends AbstractValidator implements Validator
     // Require Person and eligibility objects
     rejectIfEmptyOrWhitespace(errors, KEY_PERSON, messagePrefix);
     rejectIfEmptyOrWhitespace(errors, KEY_ELIGIBILITY, messagePrefix);
-    rejectIfExists(errors, KEY_ORGANISATION, messagePrefix);
+    rejectIfExists(app, errors, KEY_ORGANISATION, messagePrefix);
     validateDob(app, errors);
   }
 
@@ -117,16 +117,16 @@ public class ApplicationValidator extends AbstractValidator implements Validator
   void validateOrganisation(Application app, Errors errors) {
     String messagePrefix = "When party is ORG";
     rejectIfEmptyOrWhitespace(errors, KEY_ORGANISATION, messagePrefix);
-    rejectIfExists(errors, KEY_PERSON, messagePrefix);
-    rejectIfExists(errors, KEY_ELIGIBILITY, messagePrefix);
-    rejectIfExists(errors, KEY_ARTIFACTS, messagePrefix);
+    rejectIfExists(app, errors, KEY_PERSON, messagePrefix);
+    rejectIfExists(app, errors, KEY_ELIGIBILITY, messagePrefix);
+    rejectIfExists(app, errors, KEY_ARTIFACTS, messagePrefix);
     validateCharity(app, errors);
   }
 
   void validateCharity(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_ORGANISATION)
         && !TRUE.equals(app.getParty().getOrganisation().isIsCharity())
-        && exists(errors, KEY_ORG_CHARITY_NO)) {
+        && exists(app, KEY_ORG_CHARITY_NO)) {
       errors.rejectValue(
           KEY_ORG_CHARITY_NO,
           NOT_VALID,

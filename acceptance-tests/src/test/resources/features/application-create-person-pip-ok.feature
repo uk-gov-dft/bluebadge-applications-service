@@ -1,4 +1,4 @@
-@application-create-person-arms-ok
+@application-create-person-pip-ok
 Feature: Verify Create application Person with arms problems
 
   Background:
@@ -41,11 +41,9 @@ Feature: Verify Create application Person with arms problems
     },
   },
   eligibility: {
-    typeCode: 'ARMS',
-    disabilityArms: {
-      drivingFrequency: 'driving frequency',
-      isAdaptedVehicle: true,
-      adaptedVehicleDescription: 'adapted vehicle description'
+    typeCode: 'PIP',
+    benefit: {
+      isIndefinite: true
     }
   },
   artifacts: {
