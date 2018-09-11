@@ -1,24 +1,9 @@
-blue-badge: 
-  auth-server:
+blue-badge:
+  auth-server: 
     url: https://authorisation-service.${bb_env}.${url}/bb_auth
-  usermanagementservice:
-    servicehost:
-      host: usermanagement-service.${bb_env}.${url}
-      port: 443
-      scheme: https
-  badgemanagementservice:
-    servicehost:
-      host: badge-service.${bb_env}.${url}
-      port: 443
-      scheme: https
-  referencedataservice:
-    servicehost:
+  reference-data-service:
+    service-host:
       host: reference-service.${bb_env}.${url}
-      port: 443
-      scheme: https
-  applicationsservice:
-    servicehost:
-      host: application-service.${bb_env}.${url}
       port: 443
       scheme: https
 
