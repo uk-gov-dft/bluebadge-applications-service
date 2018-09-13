@@ -14,7 +14,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 class BenefitValidator extends AbstractValidator {
 
   void validate(Application app, Errors errors) {
-    if (exists(errors, KEY_ELI_BENEFIT) && exists(errors, KEY_ELI_BENE_EXPIRY_DT)) {
+    if (exists(app, KEY_ELI_BENEFIT) && exists(app, KEY_ELI_BENE_EXPIRY_DT)) {
       if (LocalDate.now().isAfter(app.getEligibility().getBenefit().getExpiryDate())) {
         errors.rejectValue(
             KEY_ELI_BENE_EXPIRY_DT, NOT_VALID, "Benefit expiry date cannot be in the past.");

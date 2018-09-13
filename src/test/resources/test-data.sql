@@ -173,7 +173,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
- , 'BIRM', 'BULK'
+ , 'BIRM', 'SUCTION'
  , 'Url Proof Eligibility', 'Url Proof Address', 'Url Proof Identity', 'Url Badge Photo'
  );
 INSERT INTO applicationmanagement_unittest.app_healthcare_professional(
@@ -181,30 +181,60 @@ application_id, prof_name, prof_location
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Prof Name', 'Prof Location'
 );
+INSERT INTO applicationmanagement_unittest.app_healthcare_professional(
+application_id, prof_name, prof_location
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Prof Name2', 'Prof Location2'
+);
 INSERT INTO applicationmanagement_unittest.app_medication(
 application_id, med_name, med_is_prescribed, med_quantity, med_frequency
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Med Name', true, 'Med Quantity', 'Med Frequency'
 );
+INSERT INTO applicationmanagement_unittest.app_medication(
+application_id, med_name, med_is_prescribed, med_quantity, med_frequency
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Med Name2', true, 'Med Quantity2', 'Med Frequency2'
+);
 INSERT INTO applicationmanagement_unittest.app_treatment(
 application_id, treatment_description, treatment_time
 ) VALUES (
-'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Treatment Description', 'Treatment Time'
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Description', 'Time'
+);
+INSERT INTO applicationmanagement_unittest.app_treatment(
+application_id, treatment_description, treatment_time
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'Description2', 'Time2'
 );
 INSERT INTO applicationmanagement_unittest.app_vehicle(
 application_id, registration_no, type_code, usage_frequency
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ER1', 'CAR', 'Usage Frequency'
 );
+INSERT INTO applicationmanagement_unittest.app_vehicle(
+application_id, registration_no, type_code, usage_frequency
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ER2', 'CAR', 'Usage Frequency2'
+);
 INSERT INTO applicationmanagement_unittest.app_walking_aid(
 application_id, aid_how_provided_code, aid_description, aid_usage
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'PRIVATE', 'Aid Description', 'Aid Usage'
 );
+INSERT INTO applicationmanagement_unittest.app_walking_aid(
+application_id, aid_how_provided_code, aid_description, aid_usage
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'PRIVATE', 'Aid Description2', 'Aid Usage2'
+);
 INSERT INTO applicationmanagement_unittest.app_walking_type(
 application_id, walking_type_code
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'PAIN'
+);
+INSERT INTO applicationmanagement_unittest.app_walking_type(
+application_id, walking_type_code
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'BREATH'
 );
 
 -- Submitted 10 years ago - a cancel app.

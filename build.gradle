@@ -2,7 +2,7 @@ import groovy.json.JsonSlurper
 
 buildscript {
     ext {
-        springBootVersion = '2.0.2.RELEASE'
+        springBootVersion = '2.0.4.RELEASE'
     }
 
     repositories {
@@ -79,7 +79,7 @@ tasks.withType(Pmd) {
 
 dependencies {
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.5'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.1.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2")
     compile('org.springframework.boot:spring-boot-starter-aop')
     compile('org.springframework.boot:spring-boot-starter-security')

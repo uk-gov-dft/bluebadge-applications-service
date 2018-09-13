@@ -42,7 +42,6 @@ Feature: Verify Create application Person with arms problems
   },
   eligibility: {
     typeCode: 'ARMS',
-    descriptionOfConditions: 'description of conditions',
     disabilityArms: {
       drivingFrequency: 'driving frequency',
       isAdaptedVehicle: true,
