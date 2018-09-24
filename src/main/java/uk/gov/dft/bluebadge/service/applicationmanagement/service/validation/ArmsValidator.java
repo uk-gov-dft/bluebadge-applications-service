@@ -13,12 +13,12 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 class ArmsValidator extends AbstractValidator {
   void validate(Application app, Errors errors) {
     // Have enough data to validate without null pointers?
-    if (notExists(errors, KEY_ELI_ARMS)) {
+    if (notExists(app, KEY_ELI_ARMS)) {
       return;
     }
 
     if (!TRUE.equals(app.getEligibility().getDisabilityArms().isIsAdaptedVehicle())
-        && hasText(errors, KEY_ELI_ARMS_VEH_ADAPTION)) {
+        && hasText(app, KEY_ELI_ARMS_VEH_ADAPTION)) {
 
       errors.rejectValue(
           KEY_ELI_ARMS_VEH_ADAPTION,

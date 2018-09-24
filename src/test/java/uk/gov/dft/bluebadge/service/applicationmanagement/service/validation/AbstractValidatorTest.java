@@ -15,13 +15,13 @@ public class AbstractValidatorTest extends ApplicationFixture {
     reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
 
     // When reject person if exists
-    rejectIfExists(errors, FieldKeys.KEY_PERSON, "");
+    rejectIfExists(app, errors, FieldKeys.KEY_PERSON, "");
 
     // Then not rejected
     assertEquals(0, errors.getErrorCount());
 
     // When reject org if exists
-    rejectIfExists(errors, FieldKeys.KEY_ORGANISATION, "");
+    rejectIfExists(app, errors, FieldKeys.KEY_ORGANISATION, "");
 
     // Then rejected
     assertEquals(1, errors.getErrorCount());
@@ -71,29 +71,29 @@ public class AbstractValidatorTest extends ApplicationFixture {
   public void exists_Test() {
     reset(getApplicationBuilder().addBaseApplication().setPerson().build());
 
-    assertTrue(exists(errors, FieldKeys.KEY_PERSON));
-    assertFalse(exists(errors, FieldKeys.KEY_ORGANISATION));
+    assertTrue(exists(app, FieldKeys.KEY_PERSON));
+    assertFalse(exists(app, FieldKeys.KEY_ORGANISATION));
   }
 
   @Test
   public void notExists_Test() {
     reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
 
-    assertTrue(notExists(errors, FieldKeys.KEY_PERSON));
-    assertFalse(notExists(errors, FieldKeys.KEY_ORGANISATION));
+    assertTrue(notExists(app, FieldKeys.KEY_PERSON));
+    assertFalse(notExists(app, FieldKeys.KEY_ORGANISATION));
   }
 
   @Test
   public void hasText_Test() {
     reset(getApplicationBuilder().addBaseApplication().setPerson().build());
-    assertTrue(hasText(errors, "party.person.badgeHolderName"));
+    assertTrue(hasText(app, "party.person.badgeHolderName"));
 
     app.getParty().getPerson().setBadgeHolderName("");
     reset();
-    assertFalse(hasText(errors, "party.person.badgeHolderName"));
+    assertFalse(hasText(app, "party.person.badgeHolderName"));
 
     app.getParty().getPerson().setBadgeHolderName(null);
     reset();
-    assertFalse(hasText(errors, "party.person.badgeHolderName"));
+    assertFalse(hasText(app, "party.person.badgeHolderName"));
   }
 }

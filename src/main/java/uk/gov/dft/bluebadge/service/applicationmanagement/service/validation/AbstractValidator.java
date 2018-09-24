@@ -4,9 +4,13 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.SHOULD_NOT_EXIST;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 
 public abstract class AbstractValidator {
 
@@ -18,8 +22,9 @@ public abstract class AbstractValidator {
     static final String NOT_NULL = "NotNull";
   }
 
-  protected void rejectIfExists(Errors errors, String fieldKey, String messagePrefix) {
-    if (exists(errors, fieldKey)) {
+  protected void rejectIfExists(
+      Application application, Errors errors, String fieldKey, String messagePrefix) {
+    if (exists(application, fieldKey)) {
       errors.rejectValue(
           fieldKey, SHOULD_NOT_EXIST, messagePrefix + ": " + fieldKey + " should be null ");
     }
@@ -41,17 +46,28 @@ public abstract class AbstractValidator {
     return !hasNoFieldErrors(errors, fieldKey);
   }
 
-  protected boolean exists(Errors errors, String fieldKey) {
-    Object value = errors.getFieldValue(fieldKey);
-    return null != value;
+  protected boolean exists(Application app, String fieldKey) {
+    try {
+      ExpressionParser parser = new SpelExpressionParser();
+      Expression exp = parser.parseExpression(fieldKey);
+      Object message = exp.getValue(app);
+      return null != message;
+    } catch (NullPointerException e) {
+      return false;
+    }
   }
 
-  protected boolean notExists(Errors errors, String fieldKey) {
-    return !exists(errors, fieldKey);
+  protected boolean notExists(Application app, String fieldKey) {
+    return !exists(app, fieldKey);
   }
 
-  protected boolean hasText(Errors errors, String fieldKey) {
-    return !notExists(errors, fieldKey)
-        && StringUtils.isNotEmpty(errors.getFieldValue(fieldKey).toString());
+  protected boolean hasText(Application app, String fieldKey) {
+    if (exists(app, fieldKey)) {
+      ExpressionParser parser = new SpelExpressionParser();
+      Expression exp = parser.parseExpression(fieldKey);
+      String message = (String) exp.getValue(app);
+      return StringUtils.isNotEmpty(message);
+    }
+    return false;
   }
 }

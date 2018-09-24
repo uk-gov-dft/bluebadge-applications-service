@@ -104,27 +104,27 @@ class EligibilityValidator extends AbstractValidator {
     String messagePrefix = "For eligibility type " + type;
     // Blind
     if (!EligibilityCodeField.BLIND.equals(type)) {
-      rejectIfExists(errors, KEY_ELI_BLIND, messagePrefix);
+      rejectIfExists(app, errors, KEY_ELI_BLIND, messagePrefix);
     }
 
     // Benefit
     if (enumValues(PIP, DLA, WPMS).doesNotContain(type)) {
-      rejectIfExists(errors, KEY_ELI_BENEFIT, messagePrefix);
+      rejectIfExists(app, errors, KEY_ELI_BENEFIT, messagePrefix);
     }
 
     // Arms
     if (!EligibilityCodeField.ARMS.equals(type)) {
-      rejectIfExists(errors, KEY_ELI_ARMS, messagePrefix);
+      rejectIfExists(app, errors, KEY_ELI_ARMS, messagePrefix);
     }
 
     // Walking
     if (!EligibilityCodeField.WALKD.equals(type)) {
-      rejectIfExists(errors, KEY_ELI_WALKING, messagePrefix);
+      rejectIfExists(app, errors, KEY_ELI_WALKING, messagePrefix);
     }
 
     // Child
     if (!EligibilityCodeField.CHILDBULK.equals(type)) {
-      rejectIfExists(errors, KEY_ELI_CHILD3, messagePrefix);
+      rejectIfExists(app, errors, KEY_ELI_CHILD3, messagePrefix);
     }
   }
 
@@ -138,7 +138,7 @@ class EligibilityValidator extends AbstractValidator {
 
     EligibilityCodeField eligibilityType = app.getEligibility().getTypeCode();
 
-    if (exists(errors, FieldKeys.KEY_ELI_CONDITIONS_DESC)
+    if (exists(app, FieldKeys.KEY_ELI_CONDITIONS_DESC)
         && !isDiscretionaryEligibility(eligibilityType)) {
       errors.rejectValue(
           KEY_ELI_CONDITIONS_DESC,

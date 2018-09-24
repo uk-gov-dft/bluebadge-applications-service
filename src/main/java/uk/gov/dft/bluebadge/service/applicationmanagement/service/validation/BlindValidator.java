@@ -22,8 +22,8 @@ public class BlindValidator extends AbstractValidator {
   }
 
   public void validate(Application app, Errors errors) {
-    if (exists(errors, KEY_ELI_BLIND)
-        && exists(errors, KEY_ELI_BLIND_REG_AT_LA)
+    if (exists(app, KEY_ELI_BLIND)
+        && exists(app, KEY_ELI_BLIND_REG_AT_LA)
         && StringUtils.stripToNull(app.getEligibility().getBlind().getRegisteredAtLaId()) != null
         && !referenceDataService.isAuthorityCodeValid(
             app.getEligibility().getBlind().getRegisteredAtLaId())) {

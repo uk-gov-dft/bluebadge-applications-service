@@ -48,7 +48,7 @@ class WalkingValidator extends AbstractValidator {
         "If WALKD then time code should be not null");
 
     if (CANTWALK.equals(app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode())
-        && exists(errors, KEY_ELI_WALK_SPEED)) {
+        && exists(app, KEY_ELI_WALK_SPEED)) {
       errors.rejectValue(
           KEY_ELI_WALK_SPEED,
           NOT_VALID,
@@ -67,7 +67,7 @@ class WalkingValidator extends AbstractValidator {
             .getWalkingDifficulty()
             .getTypeCodes()
             .contains(WalkingDifficultyTypeCodeField.SOMELSE)
-        && hasText(errors, KEY_ELI_WALK_OTHER_DESC)) {
+        && hasText(app, KEY_ELI_WALK_OTHER_DESC)) {
       // If walking difficulty does not have something else selected cant have other
       // description.
       errors.rejectValue(

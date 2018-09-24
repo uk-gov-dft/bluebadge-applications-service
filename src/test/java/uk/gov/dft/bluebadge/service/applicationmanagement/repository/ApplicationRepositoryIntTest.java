@@ -223,26 +223,131 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .build();
     ApplicationEntity result = applicationRepository.retrieveApplication(params);
     // Healthcare Professionals
-    assertEquals("Prof Name", result.getHealthcareProfessionals().get(0).getProfName());
-    assertEquals("Prof Location", result.getHealthcareProfessionals().get(0).getProfLocation());
+    assertEquals(2, result.getHealthcareProfessionals().size());
+    assertTrue(
+        result
+            .getHealthcareProfessionals()
+            .contains(
+                HealthcareProfessionalEntity.builder()
+                    .applicationId(result.getId())
+                    .profName("Prof Name")
+                    .profLocation("Prof Location")
+                    .build()));
+    assertTrue(
+        result
+            .getHealthcareProfessionals()
+            .contains(
+                HealthcareProfessionalEntity.builder()
+                    .applicationId(result.getId())
+                    .profName("Prof Name2")
+                    .profLocation("Prof Location2")
+                    .build()));
     // Medications
-    assertEquals("Med Name", result.getMedications().get(0).getName());
-    assertEquals("Med Frequency", result.getMedications().get(0).getFrequency());
-    assertEquals("Med Quantity", result.getMedications().get(0).getQuantity());
-    assertTrue(result.getMedications().get(0).getIsPrescribed());
+    assertEquals(2, result.getMedications().size());
+    assertTrue(
+        result
+            .getMedications()
+            .contains(
+                MedicationEntity.builder()
+                    .applicationId(result.getId())
+                    .name("Med Name")
+                    .frequency("Med Frequency")
+                    .quantity("Med Quantity")
+                    .isPrescribed(true)
+                    .build()));
+    assertTrue(
+        result
+            .getMedications()
+            .contains(
+                MedicationEntity.builder()
+                    .applicationId(result.getId())
+                    .name("Med Name2")
+                    .frequency("Med Frequency2")
+                    .quantity("Med Quantity2")
+                    .isPrescribed(true)
+                    .build()));
     // Treatments
-    assertEquals("Treatment Description", result.getTreatments().get(0).getDescription());
-    assertEquals("Treatment Time", result.getTreatments().get(0).getTime());
+    assertEquals(2, result.getTreatments().size());
+    assertTrue(
+        result
+            .getTreatments()
+            .contains(
+                TreatmentEntity.builder()
+                    .applicationId(result.getId())
+                    .description("Description")
+                    .time("Time")
+                    .build()));
+    assertTrue(
+        result
+            .getTreatments()
+            .contains(
+                TreatmentEntity.builder()
+                    .applicationId(result.getId())
+                    .description("Description2")
+                    .time("Time2")
+                    .build()));
     // Vehicles
-    assertEquals("ER1", result.getVehicles().get(0).getRegistrationNumber());
-    assertEquals("CAR", result.getVehicles().get(0).getTypeCode());
-    assertEquals("Usage Frequency", result.getVehicles().get(0).getUsageFrequency());
+    assertEquals(2, result.getVehicles().size());
+    assertTrue(
+        result
+            .getVehicles()
+            .contains(
+                VehicleEntity.builder()
+                    .applicationId(result.getId())
+                    .registrationNumber("ER1")
+                    .typeCode("CAR")
+                    .usageFrequency("Usage Frequency")
+                    .build()));
+    assertTrue(
+        result
+            .getVehicles()
+            .contains(
+                VehicleEntity.builder()
+                    .applicationId(result.getId())
+                    .registrationNumber("ER2")
+                    .typeCode("CAR")
+                    .usageFrequency("Usage Frequency2")
+                    .build()));
     // Walking Aids
-    assertEquals("PRIVATE", result.getWalkingAids().get(0).getHowProvidedCode());
-    assertEquals("Aid Description", result.getWalkingAids().get(0).getDescription());
-    assertEquals("Aid Usage", result.getWalkingAids().get(0).getUsage());
+    assertEquals(2, result.getWalkingAids().size());
+    assertTrue(
+        result
+            .getWalkingAids()
+            .contains(
+                WalkingAidEntity.builder()
+                    .applicationId(result.getId())
+                    .howProvidedCode("PRIVATE")
+                    .description("Aid Description")
+                    .usage("Aid Usage")
+                    .build()));
+    assertTrue(
+        result
+            .getWalkingAids()
+            .contains(
+                WalkingAidEntity.builder()
+                    .applicationId(result.getId())
+                    .howProvidedCode("PRIVATE")
+                    .description("Aid Description2")
+                    .usage("Aid Usage2")
+                    .build()));
     // Walking Difficulty Types
-    assertEquals("PAIN", result.getWalkingDifficultyTypes().get(0).getTypeCode());
+    assertEquals(2, result.getWalkingDifficultyTypes().size());
+    assertTrue(
+        result
+            .getWalkingDifficultyTypes()
+            .contains(
+                WalkingDifficultyTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("PAIN")
+                    .build()));
+    assertTrue(
+        result
+            .getWalkingDifficultyTypes()
+            .contains(
+                WalkingDifficultyTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("BREATH")
+                    .build()));
     // Application
     assertEquals("ABERD", result.getLocalAuthorityCode());
     assertEquals("REPLACE", result.getAppTypeCode());
@@ -278,7 +383,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertTrue(result.getArmsIsAdaptedVehicle());
     assertEquals("Arms Adapted Veh Desc", result.getArmsAdaptedVehDesc());
     assertEquals("BIRM", result.getBlindRegisteredAtLaCode());
-    assertEquals("BULK", result.getBulkyEquipmentTypeCode());
+    assertEquals("SUCTION", result.getBulkyEquipmentTypeCode());
     assertEquals("Url Proof Eligibility", result.getUrlProofEligibility());
     assertEquals("Url Proof Address", result.getUrlProofAddress());
     assertEquals("Url Proof Identity", result.getUrlProofIdentity());
