@@ -7,9 +7,9 @@ DELETE FROM applicationmanagement.application WHERE contact_postcode = 'ZZ111ZZ'
 INSERT INTO applicationmanagement.application(
  id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
  , contact_name, contact_building_street, contact_town_city, contact_postcode
- , holder_name
+ , holder_name, primary_phone_no
  ) VALUES (
  '4cf7be77-cfe7-4c9f-a229-ea61e903fb3a'::uuid, 'BIRM', 'CANCEL', true, current_timestamp - interval '10 years', 'PERSON'
  , null, 'Street', 'Atown', 'ZZ111ZZ'
- , 'TestDeleteMe'
+ , 'TestDeleteMe', '01234567890'
  );
