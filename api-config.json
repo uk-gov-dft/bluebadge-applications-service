@@ -459,7 +459,7 @@
           },
           "descriptionOfConditions" : {
             "type" : "string",
-            "maxLength" : 100,
+            "maxLength" : 10000,
             "example" : "Freetext"
           },
           "benefit" : {
@@ -548,7 +548,7 @@
           },
           "adaptedVehicleDescription" : {
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 255
           }
         },
         "required" : [ "isAdaptedVehicle" ]
@@ -566,7 +566,7 @@
           "otherDescription" : {
             "description" : "Only entered if something else type selected and even then not required.",
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 255
           },
           "walkingAids" : {
             "type" : "array",
