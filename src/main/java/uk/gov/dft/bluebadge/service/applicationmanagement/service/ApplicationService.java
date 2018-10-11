@@ -145,6 +145,7 @@ public class ApplicationService {
 				log.debug("Application {} has been deleted", applicationId);
 			} else {
 				log.debug("Either application with id {} doesn't exist or it doesn't belong to user's local authority {}", applicationId, securityUtils.getCurrentLocalAuthorityShortCode());				
+				throw new NotFoundException("application", NotFoundException.Operation.DELETE);
 			} 
 		} else {
 			log.debug("User {} doesn't have permission to delete applications", securityUtils.getCurrentAuth().getEmailAddress());
