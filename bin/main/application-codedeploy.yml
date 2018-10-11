@@ -1,0 +1,21 @@
+blue-badge:
+  auth-server: 
+    url: https://authorisation-service.${bb_env}.${url}/bb_auth
+  reference-data-service:
+    service-host:
+      host: reference-service.${bb_env}.${url}
+      port: 443
+      scheme: https
+
+management:
+  server:
+    port: ${bb_health:-8081}
+
+spring:
+  datasource:
+     ***REMOVED***
+    username: ${bb_db_username:-developer}
+    url: jdbc:postgresql://postgres-service.${bb_env}.${url}:5432/${bb_database:-bb_dev}?currentSchema=applicationmanagement
+
+server:
+  port: ${bb_port:-8080}

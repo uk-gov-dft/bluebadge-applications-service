@@ -9,7 +9,15 @@ public enum Statements {
   CREATE_WALKING_AIDS("createWalkingAids"),
   CREATE_WALKING_DIFFICULTY_TYPES("createWalkingDifficultyTypes"),
   FIND("findApplications"),
-  RETRIEVE("retrieveApplication");
+  RETRIEVE("retrieveApplication"),
+  UPDATE("updateToDeleteApplication"),
+  DELETE_HEALTHCARE_PROFESSIONALS("deleteHealthcareProfessionals"),
+  DELETE_MEDICATIONS("deleteMedications"),
+  DELETE_TREATMENTS("deleteTreatments"),
+  DELETE_VEHICLES("deleteVehicles"),
+  DELETE_WALKING_AIDS("deleteWalkingAids"),
+  DELETE_WALKING_DIFFICULTY_TYPES("deleteWalkingDifficultyTypes"),
+;
 
   private final String name;
 

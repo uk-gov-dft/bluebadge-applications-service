@@ -1,0 +1,49 @@
+blue-badge: 
+  auth-server:
+    url: http://localhost:8380/bb_auth
+    client-id: bb_user_management_id
+     ***REMOVED***
+  reference-data-service:
+    service-host:
+      host: localhost
+      port: 8580
+      scheme: http
+      connectiontimeout: 6000
+      requesttimeout: 6000
+      contextpath: /uk-gov-dft/reference-data-service/1.0.0
+
+logging:
+  level:
+    root: ${APP_LOGGING_LEVEL:-INFO}
+    sample.mybatis.mapper: WARN
+    uk.gov.dft.bluebadge.service: ${APP_LOGGING_LEVEL:-DEBUG}
+
+management:
+  server:
+    port: 8681
+    servlet:
+      context-path: /manage
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+mybatis:
+  type-aliases-package: uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain
+
+spring:
+  datasource:
+     ***REMOVED***
+    username: developer
+    url: jdbc:postgresql://127.0.0.1:5432/bb_dev?currentSchema=applicationmanagement
+  jackson:
+    date-format: uk.gov.dft.bluebadge.common.api.RFC3339DateFormat
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8680
+  servlet:
+    context-path: /uk-gov-dft/application-management-service/1.0.0
+
+springfox.documentation.swagger.v2.path: /api-docs
