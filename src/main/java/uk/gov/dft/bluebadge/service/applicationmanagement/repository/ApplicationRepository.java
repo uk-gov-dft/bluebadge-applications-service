@@ -2,7 +2,6 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
 import java.util.List;
 import java.util.UUID;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
@@ -114,38 +113,38 @@ public class ApplicationRepository implements ApplicationMapper {
     return sqlSession.selectOne(Statements.RETRIEVE.getName(), params);
   }
 
-	@Override
-	public int deleteApplication(RetrieveApplicationQueryParams params) {
-		return sqlSession.update(Statements.UPDATE.getName(), params);
-	}
+  @Override
+  public int deleteApplication(RetrieveApplicationQueryParams params) {
+    return sqlSession.update(Statements.UPDATE.getName(), params);
+  }
 
-	@Override
-	public int deleteHealthcareProfessionals(UUID uuid) {
-		return sqlSession.delete(Statements.DELETE_HEALTHCARE_PROFESSIONALS.getName(), uuid);
-	}
+  @Override
+  public int deleteHealthcareProfessionals(UUID uuid) {
+    return sqlSession.delete(Statements.DELETE_HEALTHCARE_PROFESSIONALS.getName(), uuid);
+  }
 
-	@Override
-	public int deleteMedications(UUID uuid) {
-		return sqlSession.delete(Statements.DELETE_MEDICATIONS.getName(), uuid);
-	}
+  @Override
+  public int deleteMedications(UUID uuid) {
+    return sqlSession.delete(Statements.DELETE_MEDICATIONS.getName(), uuid);
+  }
 
-	@Override
-	public int deleteTreatments(UUID uuid) {
-		return sqlSession.delete(Statements.DELETE_TREATMENTS.getName(), uuid);
-	}
+  @Override
+  public int deleteTreatments(UUID uuid) {
+    return sqlSession.delete(Statements.DELETE_TREATMENTS.getName(), uuid);
+  }
 
-	@Override
-	public int deleteVehicles(UUID uuid) {
-		return sqlSession.delete(Statements.DELETE_VEHICLES.getName(), uuid);
-	}
+  @Override
+  public int deleteVehicles(UUID uuid) {
+    return sqlSession.delete(Statements.DELETE_VEHICLES.getName(), uuid);
+  }
 
-	@Override
-	public int deleteWalkingAids(UUID uuid) {
-		return sqlSession.delete(Statements.DELETE_WALKING_AIDS.getName(), uuid);
-	}
+  @Override
+  public int deleteWalkingAids(UUID uuid) {
+    return sqlSession.delete(Statements.DELETE_WALKING_AIDS.getName(), uuid);
+  }
 
-	@Override
-	public int deleteWalkingDifficultyTypes(UUID uuid) {
-		return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), uuid);
-	}
+  @Override
+  public int deleteWalkingDifficultyTypes(UUID uuid) {
+    return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), uuid);
+  }
 }

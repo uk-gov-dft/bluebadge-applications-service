@@ -149,7 +149,7 @@
         <if test="postcode != null">
             AND a.contact_postcode = REPLACE(UPPER(#{postcode}), ' ', '')
         </if>
-        AND a.deleted = false
+        AND a.is_deleted = false
         ORDER BY submission_datetime DESC
         LIMIT 50
     </select>
@@ -195,6 +195,8 @@
         <result column="url_proof_address" property="urlProofAddress" />
         <result column="url_proof_identity" property="urlProofIdentity" />
         <result column="url_badge_photo" property="urlBadgePhoto" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="deleted_timestamp" property="deletedTimestamp" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
                     select="retrieveHealthcareProfessional" column="string_id"/>
         <collection property="medications" ofType="MedicationEntity"
@@ -250,10 +252,12 @@
         , a.url_proof_address
         , a.url_proof_identity
         , a.url_badge_photo
+        , a.is_deleted
+        , a.deleted_timestamp
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND a.local_authority_code = #{authorityCode}
-        AND a.deleted = false
+        AND a.is_deleted = false
     </select>
 
     <resultMap id="retrieveWalkingDifficultyTypeMap" type="WalkingDifficultyTypeEntity">
@@ -409,11 +413,11 @@
           	url_proof_address = null,
           	url_proof_identity = null,
           	url_badge_photo = null,
-          	deleted = true,
-          	delete_datetime = current_timestamp
+          	is_deleted = true,
+          	deleted_timestamp = current_timestamp
         WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND local_authority_code = #{authorityCode}
-        AND deleted = false
+        AND is_deleted = false
       </update>
 
 </mapper>

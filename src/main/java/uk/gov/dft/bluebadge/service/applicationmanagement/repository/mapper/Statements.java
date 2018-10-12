@@ -17,7 +17,7 @@ public enum Statements {
   DELETE_VEHICLES("deleteVehicles"),
   DELETE_WALKING_AIDS("deleteWalkingAids"),
   DELETE_WALKING_DIFFICULTY_TYPES("deleteWalkingDifficultyTypes"),
-;
+  ;
 
   private final String name;
 

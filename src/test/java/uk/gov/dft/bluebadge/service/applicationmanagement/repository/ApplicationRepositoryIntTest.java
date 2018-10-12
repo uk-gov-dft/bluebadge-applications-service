@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 import static java.time.Duration.ofMinutes;
 import static java.time.Period.ofYears;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -14,6 +15,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationContextTests;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
@@ -400,4 +403,29 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     ApplicationEntity result = applicationRepository.retrieveApplication(params);
     assertNull(result);
   }
+  
+	@Test
+	public void delete() {
+
+		RetrieveApplicationQueryParams params = RetrieveApplicationQueryParams.builder()
+		    .uuid(UUID.fromString("0bd06c01-a193-4255-be0b-0fbee253ee5e")).authorityCode("LIVER").build();
+
+		ApplicationEntity result = applicationRepository.retrieveApplication(params);
+		assertEquals(2, result.getHealthcareProfessionals().size());
+		assertEquals(2, result.getMedications().size());
+		assertEquals(2, result.getTreatments().size());
+		assertEquals(2, result.getVehicles().size());
+		assertEquals(2, result.getWalkingAids().size());
+		assertEquals(2, result.getWalkingDifficultyTypes().size());
+
+		assertEquals("LIVER", result.getLocalAuthorityCode());
+		assertFalse(result.getIsDeleted());
+		assertNull(result.getDeletedTimestamp());
+
+		applicationRepository.deleteApplication(params);
+
+		ApplicationEntity deleted = applicationRepository.retrieveApplication(params);
+		assertNull(deleted);
+		
+	}
 }

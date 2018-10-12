@@ -2,7 +2,9 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -11,12 +13,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import uk.gov.dft.bluebadge.common.security.Permissions;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
@@ -141,15 +143,34 @@ public class ApplicationServiceTest extends ApplicationFixture {
     when(repository.retrieveApplication(any())).thenReturn(null);
     service.retrieve(UUID.randomUUID().toString());
   }
-  
-  @Test
+
+  @Test(expected=NotFoundException.class)
   public void delete_validResult() {
-	    String uuid = "00ff4cf5-8684-49f1-9bba-4702c567ee96";
-	    when(repository.deleteApplication(UUID.fromString(uuid))).thenReturn(1);
-	    when(securityUtils.isPermitted(Permissions.DELETE_APPLICATION)).thenReturn(true);
-	    
-	    service.delete(uuid);
-	    
-	    verify(repository, times(1)).deleteApplication(UUID.fromString(uuid));
+ 
+    String uuid = UUID.randomUUID().toString();
+    ApplicationEntity entity = getFullyPopulatedApplicationEntity();
+    Application model =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWpms().build();
+
+    when(repository.retrieveApplication(any())).thenReturn(entity);
+    when(converter.convertToModel(entity)).thenReturn(model);
+
+    Application a = service.retrieve(uuid);
+    assertEquals(model, a);
+    
+    service.delete(uuid);
+    when(repository.retrieveApplication(any())).thenReturn(null);
+    
+    a = service.retrieve(uuid);
+    assertNull(a);
+
+    verify(repository, times(1)).deleteApplication(any());
+    verify(repository, times(1)).deleteHealthcareProfessionals(any());
+    verify(repository, times(1)).deleteMedications(any());
+    verify(repository, times(1)).deleteTreatments(any());
+    verify(repository, times(1)).deleteVehicles(any());
+    verify(repository, times(1)).deleteWalkingAids(any());
+    verify(repository, times(1)).deleteWalkingDifficultyTypes(any());
   }
+
 }
