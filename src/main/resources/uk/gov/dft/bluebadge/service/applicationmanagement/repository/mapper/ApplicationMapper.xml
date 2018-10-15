@@ -388,7 +388,7 @@
           	contact_town_city = 'DELETED',
           	contact_postcode = 'DELETED',
           	primary_phone_no = 'DELETED',
-          	secondary_phone_no = 'DELETED'
+          	secondary_phone_no = 'DELETED',
           	contact_email_address = null,
           	holder_name = 'DELETED',
           	org_is_charity = null,
