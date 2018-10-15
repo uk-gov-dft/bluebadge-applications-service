@@ -392,17 +392,6 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
   }
 
   @Test
-  public void retrieve_wrongAuthority() {
-    RetrieveApplicationQueryParams params =
-        RetrieveApplicationQueryParams.builder()
-            .uuid(UUID.fromString("1087ac26-491a-46f0-9006-36187dc40764"))
-            .authorityCode("BIRM")
-            .build();
-    ApplicationEntity result = applicationRepository.retrieveApplication(params);
-    assertNull(result);
-  }
-
-  @Test
   public void delete() {
 
     RetrieveApplicationQueryParams params =

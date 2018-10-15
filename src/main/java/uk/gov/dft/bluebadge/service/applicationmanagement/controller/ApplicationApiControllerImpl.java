@@ -89,6 +89,7 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
   }
 
   @Override
+  @PreAuthorize("hasAuthority('PERM_VIEW_APPLICATION_DETAILS')")
   @PostAuthorize("@securityUtils.isAuthorisedLACode(returnObject.body.data.localAuthorityCode)")
   public ResponseEntity<ApplicationResponse> retrieveApplication(
       @ApiParam(required = true) @PathVariable("applicationId") String applicationId) {

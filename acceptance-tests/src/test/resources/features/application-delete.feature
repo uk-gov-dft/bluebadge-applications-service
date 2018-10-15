@@ -33,3 +33,12 @@ Feature: Verify find newly created org badge
     When method DELETE
     Then status 403   
     
+    
+  Scenario: Verify delete 403 NO PERMISSION
+    * def result_citizen = callonce read('./oauth2-citizen-app.feature')
+    * header Authorization = 'Bearer ' + result_citizen.accessToken
+    Given path 'applications/' + canDeleteAppNo
+    When method DELETE
+    Then status 403
+    
+    
