@@ -1,7 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper;
 
 import java.util.List;
-import java.util.UUID;
 import org.apache.ibatis.annotations.Mapper;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
@@ -92,15 +91,15 @@ public interface ApplicationMapper {
 
   int deleteApplication(RetrieveApplicationQueryParams params);
 
-  int deleteHealthcareProfessionals(UUID uuid);
+  int deleteHealthcareProfessionals(String applicationId);
 
-  int deleteMedications(UUID uuid);
+  int deleteMedications(String applicationId);
 
-  int deleteTreatments(UUID uuid);
+  int deleteTreatments(String applicationId);
 
-  int deleteVehicles(UUID uuid);
+  int deleteVehicles(String applicationId);
 
-  int deleteWalkingAids(UUID uuid);
+  int deleteWalkingAids(String applicationId);
 
-  int deleteWalkingDifficultyTypes(UUID uuid);
+  int deleteWalkingDifficultyTypes(String applicationId);
 }

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,12 +12,10 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
@@ -144,9 +141,9 @@ public class ApplicationServiceTest extends ApplicationFixture {
     service.retrieve(UUID.randomUUID().toString());
   }
 
-  @Test(expected=NotFoundException.class)
+  @Test(expected = NotFoundException.class)
   public void delete_validResult() {
- 
+
     String uuid = UUID.randomUUID().toString();
     ApplicationEntity entity = getFullyPopulatedApplicationEntity();
     Application model =
@@ -157,10 +154,10 @@ public class ApplicationServiceTest extends ApplicationFixture {
 
     Application a = service.retrieve(uuid);
     assertEquals(model, a);
-    
+
     service.delete(uuid);
     when(repository.retrieveApplication(any())).thenReturn(null);
-    
+
     a = service.retrieve(uuid);
     assertNull(a);
 
@@ -172,5 +169,4 @@ public class ApplicationServiceTest extends ApplicationFixture {
     verify(repository, times(1)).deleteWalkingAids(any());
     verify(repository, times(1)).deleteWalkingDifficultyTypes(any());
   }
-
 }

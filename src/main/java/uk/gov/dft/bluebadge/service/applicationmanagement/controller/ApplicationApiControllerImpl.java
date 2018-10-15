@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -88,6 +89,7 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
   }
 
   @Override
+  @PostAuthorize("@securityUtils.isAuthorisedLACode(returnObject.body.data.localAuthorityCode)")
   public ResponseEntity<ApplicationResponse> retrieveApplication(
       @ApiParam(required = true) @PathVariable("applicationId") String applicationId) {
 
@@ -95,14 +97,13 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
     return ResponseEntity.ok(new ApplicationResponse().data(result));
   }
 
-	@Override
-  @PreAuthorize("hasAuthority('DELETE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
-	public ResponseEntity<Void> deleteApplication(
-			@ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId) {
+  @Override
+  @PreAuthorize(
+      "hasAuthority('PERM_DELETE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
+  public ResponseEntity<Void> deleteApplication(
+      @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId) {
 
-		service.delete(applicationId);
-		return ResponseEntity.ok().build();
-	}
-  
-  
+    service.delete(applicationId);
+    return ResponseEntity.ok().build();
+  }
 }

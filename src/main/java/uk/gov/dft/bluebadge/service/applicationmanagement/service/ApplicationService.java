@@ -5,13 +5,11 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.extern.slf4j.Slf4j;
 import uk.gov.dft.bluebadge.common.api.model.Error;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
@@ -132,31 +130,31 @@ public class ApplicationService {
     UUID uuid = getUuid(applicationId);
 
     ApplicationEntity entity =
-        repository.retrieveApplication(
-            RetrieveApplicationQueryParams.builder()
-                .uuid(uuid)
-                .authorityCode(securityUtils.getCurrentLocalAuthorityShortCode())
-                .build());
+        repository.retrieveApplication(RetrieveApplicationQueryParams.builder().uuid(uuid).build());
     if (null == entity) {
       throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
     }
     return converter.convertToModel(entity);
   }
 
-	public void delete(String applicationId) {
-		log.debug("Deleting application: '{}'", applicationId);
-		UUID uuid = getUuid(applicationId);
+  public void delete(String applicationId) {
+    log.debug("Deleting application: '{}'", applicationId);
+    UUID uuid = getUuid(applicationId);
 
-		RetrieveApplicationQueryParams params = RetrieveApplicationQueryParams.builder().uuid(uuid).authorityCode(securityUtils.getCurrentLocalAuthorityShortCode()).build();
-		repository.deleteApplication(params);
-		repository.deleteHealthcareProfessionals(uuid);
-		repository.deleteMedications(uuid);
-		repository.deleteTreatments(uuid);
-		repository.deleteVehicles(uuid);
-		repository.deleteWalkingAids(uuid);
-		repository.deleteWalkingDifficultyTypes(uuid);
-		log.debug("Application: '{}' has been deleted", applicationId);
-	}
+    RetrieveApplicationQueryParams params =
+        RetrieveApplicationQueryParams.builder()
+            .uuid(uuid)
+            .authorityCode(securityUtils.getCurrentLocalAuthorityShortCode())
+            .build();
+    repository.deleteApplication(params);
+    repository.deleteHealthcareProfessionals(applicationId);
+    repository.deleteMedications(applicationId);
+    repository.deleteTreatments(applicationId);
+    repository.deleteVehicles(applicationId);
+    repository.deleteWalkingAids(applicationId);
+    repository.deleteWalkingDifficultyTypes(applicationId);
+    log.debug("Application: '{}' has been deleted", applicationId);
+  }
 
   private UUID getUuid(String applicationId) {
     UUID uuid;

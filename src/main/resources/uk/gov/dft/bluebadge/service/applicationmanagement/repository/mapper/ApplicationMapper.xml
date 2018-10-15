@@ -256,7 +256,6 @@
         , a.deleted_timestamp
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
-        AND a.local_authority_code = #{authorityCode}
         AND a.is_deleted = false
     </select>
 
@@ -357,27 +356,27 @@
     </select>
 
     <delete id="deleteHealthcareProfessionals" parameterType="String">
-      DELETE FROM app_healthcare_professional WHERE application_id=#{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+      DELETE FROM app_healthcare_professional WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
     <delete id="deleteMedications" parameterType="String">
-        DELETE FROM app_medication WHERE application_id=#{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+        DELETE FROM app_medication WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
     <delete id="deleteTreatments" parameterType="String">
-        DELETE FROM app_treatment WHERE application_id=#{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+        DELETE FROM app_treatment WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
     <delete id="deleteVehicles" parameterType="String">
-      	DELETE FROM app_vehicle WHERE application_id=#{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+      	DELETE FROM app_vehicle WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
     <delete id="deleteWalkingAids" parameterType="String">
-     	DELETE FROM app_walking_aid WHERE application_id=#{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+     	DELETE FROM app_walking_aid WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
     <delete id="deleteWalkingDifficultyTypes" parameterType="String">
-     	DELETE FROM app_walking_type WHERE application_id=#{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+     	DELETE FROM app_walking_type WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
     <update id="updateToDeleteApplication" parameterType="RetrieveApplicationQueryParams">

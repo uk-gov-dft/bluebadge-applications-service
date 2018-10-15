@@ -1,7 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
 import java.util.List;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
@@ -119,32 +118,32 @@ public class ApplicationRepository implements ApplicationMapper {
   }
 
   @Override
-  public int deleteHealthcareProfessionals(UUID uuid) {
-    return sqlSession.delete(Statements.DELETE_HEALTHCARE_PROFESSIONALS.getName(), uuid);
+  public int deleteHealthcareProfessionals(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_HEALTHCARE_PROFESSIONALS.getName(), applicationId);
   }
 
   @Override
-  public int deleteMedications(UUID uuid) {
-    return sqlSession.delete(Statements.DELETE_MEDICATIONS.getName(), uuid);
+  public int deleteMedications(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_MEDICATIONS.getName(), applicationId);
   }
 
   @Override
-  public int deleteTreatments(UUID uuid) {
-    return sqlSession.delete(Statements.DELETE_TREATMENTS.getName(), uuid);
+  public int deleteTreatments(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_TREATMENTS.getName(), applicationId);
   }
 
   @Override
-  public int deleteVehicles(UUID uuid) {
-    return sqlSession.delete(Statements.DELETE_VEHICLES.getName(), uuid);
+  public int deleteVehicles(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_VEHICLES.getName(), applicationId);
   }
 
   @Override
-  public int deleteWalkingAids(UUID uuid) {
-    return sqlSession.delete(Statements.DELETE_WALKING_AIDS.getName(), uuid);
+  public int deleteWalkingAids(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_WALKING_AIDS.getName(), applicationId);
   }
 
   @Override
-  public int deleteWalkingDifficultyTypes(UUID uuid) {
-    return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), uuid);
+  public int deleteWalkingDifficultyTypes(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), applicationId);
   }
 }
