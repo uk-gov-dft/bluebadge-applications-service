@@ -5,9 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
 
 /** Application */
@@ -29,7 +27,6 @@ public class Application {
   private OffsetDateTime submissionDate = null;
 
   @JsonProperty("existingBadgeNumber")
-  @Min(6)
   private String existingBadgeNumber = null;
 
   @JsonProperty("party")
