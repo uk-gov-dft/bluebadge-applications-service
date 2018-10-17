@@ -149,7 +149,10 @@
         <if test="postcode != null">
             AND a.contact_postcode = REPLACE(UPPER(#{postcode}), ' ', '')
         </if>
-        AND a.is_deleted = false
+        <if test="deleted != null">
+            AND a.is_deleted = #{deleted}
+        </if>
+        
         ORDER BY submission_datetime DESC
         LIMIT 50
     </select>
@@ -256,7 +259,7 @@
         , a.deleted_timestamp
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
-        AND a.is_deleted = false
+        AND a.is_deleted = #{deleted}
     </select>
 
     <resultMap id="retrieveWalkingDifficultyTypeMap" type="WalkingDifficultyTypeEntity">
@@ -388,7 +391,7 @@
           	contact_town_city = 'DELETED',
           	contact_postcode = 'DELETED',
           	primary_phone_no = 'DELETED',
-          	secondary_phone_no = 'DELETED',
+          	secondary_phone_no = null,
           	contact_email_address = null,
           	holder_name = 'DELETED',
           	org_is_charity = null,
@@ -416,8 +419,7 @@
           	is_deleted = true,
           	deleted_timestamp = current_timestamp
         WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
-        AND local_authority_code = #{authorityCode}
-        AND is_deleted = false
+        AND is_deleted = #{deleted}
       </update>
 
 </mapper>

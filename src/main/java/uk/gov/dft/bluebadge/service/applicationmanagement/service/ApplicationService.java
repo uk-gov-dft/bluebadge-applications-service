@@ -113,6 +113,7 @@ public class ApplicationService {
             .submissionTo(timeToInstantOrNull(to))
             .submissionFrom(timeToInstantOrNull(from))
             .postcode(postcode)
+            .deleted(Boolean.FALSE)
             .build();
     return new ApplicationSummaryConverter()
         .convertToModelList(repository.findApplications(params));
@@ -130,7 +131,8 @@ public class ApplicationService {
     UUID uuid = getUuid(applicationId);
 
     ApplicationEntity entity =
-        repository.retrieveApplication(RetrieveApplicationQueryParams.builder().uuid(uuid).build());
+        repository.retrieveApplication(
+            RetrieveApplicationQueryParams.builder().uuid(uuid).deleted(Boolean.FALSE).build());
     if (null == entity) {
       throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
     }
@@ -142,10 +144,8 @@ public class ApplicationService {
     UUID uuid = getUuid(applicationId);
 
     RetrieveApplicationQueryParams params =
-        RetrieveApplicationQueryParams.builder()
-            .uuid(uuid)
-            .authorityCode(securityUtils.getCurrentLocalAuthorityShortCode())
-            .build();
+        RetrieveApplicationQueryParams.builder().uuid(uuid).deleted(Boolean.FALSE).build();
+
     repository.deleteApplication(params);
     repository.deleteHealthcareProfessionals(applicationId);
     repository.deleteMedications(applicationId);
