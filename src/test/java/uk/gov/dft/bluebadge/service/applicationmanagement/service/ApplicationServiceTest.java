@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -138,5 +139,34 @@ public class ApplicationServiceTest extends ApplicationFixture {
   public void retrieve_noResult() {
     when(repository.retrieveApplication(any())).thenReturn(null);
     service.retrieve(UUID.randomUUID().toString());
+  }
+
+  @Test(expected = NotFoundException.class)
+  public void delete_validResult() {
+
+    String uuid = UUID.randomUUID().toString();
+    ApplicationEntity entity = getFullyPopulatedApplicationEntity();
+    Application model =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWpms().build();
+
+    when(repository.retrieveApplication(any())).thenReturn(entity);
+    when(converter.convertToModel(entity)).thenReturn(model);
+
+    Application a = service.retrieve(uuid);
+    assertEquals(model, a);
+
+    service.delete(uuid);
+    when(repository.retrieveApplication(any())).thenReturn(null);
+
+    a = service.retrieve(uuid);
+    assertNull(a);
+
+    verify(repository, times(1)).deleteApplication(any());
+    verify(repository, times(1)).deleteHealthcareProfessionals(any());
+    verify(repository, times(1)).deleteMedications(any());
+    verify(repository, times(1)).deleteTreatments(any());
+    verify(repository, times(1)).deleteVehicles(any());
+    verify(repository, times(1)).deleteWalkingAids(any());
+    verify(repository, times(1)).deleteWalkingDifficultyTypes(any());
   }
 }
