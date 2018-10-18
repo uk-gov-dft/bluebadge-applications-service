@@ -12,6 +12,8 @@ public enum WalkingDifficultyTypeCodeField {
 
   DANGER("DANGER"),
 
+  LONGTIME("LONGTIME"),
+
   STRUGGLE("STRUGGLE"),
 
   SOMELSE("SOMELSE");
