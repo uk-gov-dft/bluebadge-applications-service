@@ -6,7 +6,6 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
 
 /** Application */
@@ -156,7 +155,6 @@ public class Application {
    * @return existingBadgeNumber
    */
   @ApiModelProperty(value = "")
-  @Pattern(regexp = "^[0-9A-HJK]{6}$")
   public String getExistingBadgeNumber() {
     return existingBadgeNumber;
   }

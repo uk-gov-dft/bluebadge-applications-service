@@ -19,7 +19,7 @@ Feature: Verify Create application validation exceptions
   localAuthorityCode: 'BIRM',
   paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'I AM INVALID',
+  existingBadgeNumber: '',
   party: {
     typeCode: 'ORG',
     contact: {
@@ -34,7 +34,7 @@ Feature: Verify Create application validation exceptions
     },
     organisation: {
       badgeHolderName: 'TestDeleteMe',
-      isCharity: true,
+      isCharity: false,
       charityNumber: '12345',
       vehicles: [
         {
