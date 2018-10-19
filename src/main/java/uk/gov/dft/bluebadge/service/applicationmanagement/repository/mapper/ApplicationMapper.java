@@ -88,4 +88,18 @@ public interface ApplicationMapper {
    * @return The application or null.
    */
   ApplicationEntity retrieveApplication(RetrieveApplicationQueryParams params);
+
+  int deleteApplication(RetrieveApplicationQueryParams params);
+
+  int deleteHealthcareProfessionals(String applicationId);
+
+  int deleteMedications(String applicationId);
+
+  int deleteTreatments(String applicationId);
+
+  int deleteVehicles(String applicationId);
+
+  int deleteWalkingAids(String applicationId);
+
+  int deleteWalkingDifficultyTypes(String applicationId);
 }

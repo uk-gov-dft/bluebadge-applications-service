@@ -55,6 +55,7 @@ public class ApplicationFixture extends AbstractValidator {
     String BADGE_HOLDER_NAME = "Harry Bloggs";
     String BADGE_HOLDER_NAME_AT_BIRTH = "Harry Bloggs The Third";
     Boolean IS_CHARITY = Boolean.TRUE;
+    Boolean IS_DELETED = Boolean.FALSE;
     String CHARITY_NO = "123456";
     Integer NO_OF_BADGES = 1;
     LocalDate DOB = LocalDate.now().minus(Period.ofYears(30));
@@ -474,6 +475,8 @@ public class ApplicationFixture extends AbstractValidator {
         .vehicles(vehicleEntities)
         .walkingAids(walkingAidEntities)
         .walkingDifficultyTypes(walkingDifficultyTypeEntities)
+        .isDeleted(ValidValues.IS_DELETED)
+        .deletedTimestamp(null)
         .build();
   }
 }

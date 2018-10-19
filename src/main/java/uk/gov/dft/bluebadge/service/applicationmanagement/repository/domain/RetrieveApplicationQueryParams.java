@@ -9,5 +9,5 @@ import lombok.Data;
 public class RetrieveApplicationQueryParams {
 
   private UUID uuid;
-  private String authorityCode;
+  private boolean deleted;
 }
