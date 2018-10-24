@@ -3,7 +3,7 @@ Feature: Verify Create application validation exceptions
 
   Background:
     * url baseUrl
-    * def result = callonce read('./oauth2.feature')
+    * def result = callonce read('./oauth2-citizen-app.feature')
     * def dbConfig = { username: 'developer',  ***REMOVED*** }
     * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
     * def db = new DbUtils(dbConfig)
@@ -19,7 +19,7 @@ Feature: Verify Create application validation exceptions
   localAuthorityCode: 'BIRM',
   paymentTaken: true,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'I AM INVALID',
+  existingBadgeNumber: '',
   party: {
     typeCode: 'ORG',
     contact: {
@@ -34,7 +34,7 @@ Feature: Verify Create application validation exceptions
     },
     organisation: {
       badgeHolderName: 'TestDeleteMe',
-      isCharity: true,
+      isCharity: false,
       charityNumber: '12345',
       vehicles: [
         {
