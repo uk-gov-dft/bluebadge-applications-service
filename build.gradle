@@ -247,3 +247,7 @@ task outputComputedVersion {
 
 build.finalizedBy(outputComputedVersion)
 
+wrapper {
+  gradleVersion = "4.7"
+}
+
