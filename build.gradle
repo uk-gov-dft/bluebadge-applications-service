@@ -132,24 +132,24 @@ publishing {
 }
 
 def getTheVersion() {
+    def version = rootProject.file('VERSION').text.trim()
+    def versionSuffix = "Unknown"
     def workingDir = new File("${project.projectDir}")
-    def version = 'git describe --abbrev=0'.execute(null, workingDir)
-    version.waitFor()
-    def versionSuffix = "UnknownA"
     def result = 'git rev-parse --abbrev-ref HEAD'.execute(null, workingDir)
     result.waitFor()
     if (result.exitValue() == 0) {
         def gitBranch = result.text.trim().replaceAll('/','_')
+        if (gitBranch == 'develop') {
+            gitBranch = 'SNAPSHOT'
+        }
         if (gitBranch == 'master') {
-            versionSuffix = ''
-        } else if (gitBranch == 'develop') {
-            versionSuffix = '-SNAPSHOT'
+            versionSuffix = '' 
         } else {
             versionSuffix = '-' + gitBranch
         }
-
+        
     }
-    return "${version.text.trim()}${versionSuffix}"
+    return version + versionSuffix
 }
 
 artifactory {
@@ -242,7 +242,6 @@ task outputComputedVersion {
     def computedVersion = new File('VERSION-computed')
     computedVersion.delete()
     computedVersion.write(getTheVersion())
-    println(getTheVersion())
 }
 
 build.finalizedBy(outputComputedVersion)
