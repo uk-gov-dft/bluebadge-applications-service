@@ -5,20 +5,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.context.WebApplicationContext;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 
 @Component
 @Slf4j
+@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ReferenceDataService {
 
   private final Set<String> authorityKeys = new HashSet<>();
   private final ReferenceDataApiClient referenceDataApiClient;
-  private boolean isLoaded = false;
+  private AtomicBoolean isLoaded = new AtomicBoolean(false);
 
   @Autowired
   public ReferenceDataService(@Validated ReferenceDataApiClient referenceDataApiClient) {
@@ -26,7 +31,7 @@ public class ReferenceDataService {
   }
 
   public boolean isAuthorityCodeValid(String code) {
-    if (!isLoaded) init();
+    init();
     return code != null && authorityKeys.contains(code);
   }
 
@@ -36,7 +41,7 @@ public class ReferenceDataService {
    * dependency between services.
    */
   private void init() {
-    if (!isLoaded) {
+    if (!isLoaded.getAndSet(true)) {
 
       log.info("Loading reference data.");
       List<ReferenceData> referenceDataList = referenceDataApiClient.retrieveReferenceData("APP");
@@ -52,7 +57,6 @@ public class ReferenceDataService {
           validate(referenceDataList);
         }
         log.info("Reference data loaded.");
-        isLoaded = true;
       }
     }
   }
