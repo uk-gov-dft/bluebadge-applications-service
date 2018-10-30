@@ -61,4 +61,6 @@ public class ApplicationEntity implements Serializable {
   private List<WalkingAidEntity> walkingAids;
   private List<TreatmentEntity> treatments;
   private List<MedicationEntity> medications;
+  private Boolean isDeleted;
+  private LocalDate deletedTimestamp;
 }

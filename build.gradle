@@ -16,6 +16,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+        classpath 'org.owasp:dependency-check-gradle:3.3.1'
     }
 }
 
@@ -33,7 +34,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
-apply plugin: 'pmd'
+apply plugin: 'org.owasp.dependencycheck'
 
 group = 'uk.gov.dft.bluebadge'
 version = getTheVersion()
@@ -78,6 +79,9 @@ tasks.withType(Pmd) {
 }
 
 dependencies {
+    ext.commonVersion = '0.6.2-SNAPSHOT'
+    compile group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: "${commonVersion}", changing: true
+    
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.5'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2")
@@ -91,15 +95,16 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
 
-    compile group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: '0.4.1-SNAPSHOT'
     compileOnly ('org.projectlombok:lombok:1.16.22')
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-sleuth', version: '2.0.1.RELEASE'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.1.RELEASE'
 
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime group: 'ch.qos.logback.contrib', name: 'logback-json-classic', version: '0.1.5'
     runtime group: 'ch.qos.logback.contrib', name: 'logback-jackson', version: '0.1.5'
     runtime group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.3'
+    runtime group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.2'
 }
 
 checkstyle {
@@ -127,24 +132,24 @@ publishing {
 }
 
 def getTheVersion() {
-    def version = rootProject.file('VERSION').text.trim()
-    def versionSuffix = "Unknown"
     def workingDir = new File("${project.projectDir}")
+    def version = 'git describe --abbrev=0'.execute(null, workingDir)
+    version.waitFor()
+    def versionSuffix = "UnknownA"
     def result = 'git rev-parse --abbrev-ref HEAD'.execute(null, workingDir)
     result.waitFor()
     if (result.exitValue() == 0) {
         def gitBranch = result.text.trim().replaceAll('/','_')
-        if (gitBranch == 'develop') {
-            gitBranch = 'SNAPSHOT'
-        }
         if (gitBranch == 'master') {
-            versionSuffix = '' 
+            versionSuffix = ''
+        } else if (gitBranch == 'develop') {
+            versionSuffix = '-SNAPSHOT'
         } else {
             versionSuffix = '-' + gitBranch
         }
-        
+
     }
-    return version + versionSuffix
+    return "${version.text.trim()}${versionSuffix}"
 }
 
 artifactory {
@@ -237,7 +242,12 @@ task outputComputedVersion {
     def computedVersion = new File('VERSION-computed')
     computedVersion.delete()
     computedVersion.write(getTheVersion())
+    println(getTheVersion())
 }
 
 build.finalizedBy(outputComputedVersion)
+
+wrapper {
+  gradleVersion = "4.7"
+}
 

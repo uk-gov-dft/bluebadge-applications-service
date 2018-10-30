@@ -149,6 +149,10 @@
         <if test="postcode != null">
             AND a.contact_postcode = REPLACE(UPPER(#{postcode}), ' ', '')
         </if>
+        <if test="deleted != null">
+            AND a.is_deleted = #{deleted}
+        </if>
+        
         ORDER BY submission_datetime DESC
         LIMIT 50
     </select>
@@ -194,6 +198,8 @@
         <result column="url_proof_address" property="urlProofAddress" />
         <result column="url_proof_identity" property="urlProofIdentity" />
         <result column="url_badge_photo" property="urlBadgePhoto" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="deleted_timestamp" property="deletedTimestamp" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
                     select="retrieveHealthcareProfessional" column="string_id"/>
         <collection property="medications" ofType="MedicationEntity"
@@ -249,9 +255,11 @@
         , a.url_proof_address
         , a.url_proof_identity
         , a.url_badge_photo
+        , a.is_deleted
+        , a.deleted_timestamp
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
-        AND a.local_authority_code = #{authorityCode}
+        AND a.is_deleted = #{deleted}
     </select>
 
     <resultMap id="retrieveWalkingDifficultyTypeMap" type="WalkingDifficultyTypeEntity">
@@ -349,5 +357,69 @@
         FROM app_medication med
         WHERE med.application_id::VARCHAR = #{id}
     </select>
+
+    <delete id="deleteHealthcareProfessionals" parameterType="String">
+      DELETE FROM app_healthcare_professional WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
+    <delete id="deleteMedications" parameterType="String">
+        DELETE FROM app_medication WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
+    <delete id="deleteTreatments" parameterType="String">
+        DELETE FROM app_treatment WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
+    <delete id="deleteVehicles" parameterType="String">
+      	DELETE FROM app_vehicle WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
+    <delete id="deleteWalkingAids" parameterType="String">
+     	DELETE FROM app_walking_aid WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
+    <delete id="deleteWalkingDifficultyTypes" parameterType="String">
+     	DELETE FROM app_walking_type WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
+    <update id="updateToDeleteApplication" parameterType="RetrieveApplicationQueryParams">
+        UPDATE application
+        SET existing_badge_no = null, 
+          	contact_name = null,
+          	contact_building_street = 'DELETED',
+          	contact_line2 = null,
+          	contact_town_city = 'DELETED',
+          	contact_postcode = 'DELETED',
+          	primary_phone_no = 'DELETED',
+          	secondary_phone_no = null,
+          	contact_email_address = null,
+          	holder_name = 'DELETED',
+          	org_is_charity = null,
+          	org_charity_no = null,
+          	no_of_badges = null,
+          	nino = null,
+          	dob = null,
+          	gender_code = null,
+          	holder_name_at_birth = null,
+          	eligibility_conditions = null,
+          	benefit_is_indefinite = null,
+          	benefit_expiry_date = null,
+          	walk_other_desc = null,
+          	walk_length_code = null,
+          	walk_speed_code = null,
+          	arms_driving_freq = null,
+          	arms_is_adapted_vehicle = null,
+          	arms_adapted_veh_desc = null,
+          	blind_registered_at_la_code = null,
+          	bulky_equipment_type_code = null,
+          	url_proof_eligibility = null,
+          	url_proof_address = null,
+          	url_proof_identity = null,
+          	url_badge_photo = null,
+          	is_deleted = true,
+          	deleted_timestamp = current_timestamp
+        WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+        AND is_deleted = #{deleted}
+      </update>
 
 </mapper>

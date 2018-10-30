@@ -113,6 +113,7 @@ public class ApplicationService {
             .submissionTo(timeToInstantOrNull(to))
             .submissionFrom(timeToInstantOrNull(from))
             .postcode(postcode)
+            .deleted(Boolean.FALSE)
             .build();
     return new ApplicationSummaryConverter()
         .convertToModelList(repository.findApplications(params));
@@ -127,6 +128,35 @@ public class ApplicationService {
   }
 
   public Application retrieve(String applicationId) {
+    UUID uuid = getUuid(applicationId);
+
+    ApplicationEntity entity =
+        repository.retrieveApplication(
+            RetrieveApplicationQueryParams.builder().uuid(uuid).deleted(Boolean.FALSE).build());
+    if (null == entity) {
+      throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
+    }
+    return converter.convertToModel(entity);
+  }
+
+  public void delete(String applicationId) {
+    log.debug("Deleting application: '{}'", applicationId);
+    UUID uuid = getUuid(applicationId);
+
+    RetrieveApplicationQueryParams params =
+        RetrieveApplicationQueryParams.builder().uuid(uuid).deleted(Boolean.FALSE).build();
+
+    repository.deleteApplication(params);
+    repository.deleteHealthcareProfessionals(applicationId);
+    repository.deleteMedications(applicationId);
+    repository.deleteTreatments(applicationId);
+    repository.deleteVehicles(applicationId);
+    repository.deleteWalkingAids(applicationId);
+    repository.deleteWalkingDifficultyTypes(applicationId);
+    log.debug("Application: '{}' has been deleted", applicationId);
+  }
+
+  private UUID getUuid(String applicationId) {
     UUID uuid;
     try {
       uuid = UUID.fromString(applicationId);
@@ -136,15 +166,6 @@ public class ApplicationService {
       throw new BadRequestException(error);
     }
 
-    ApplicationEntity entity =
-        repository.retrieveApplication(
-            RetrieveApplicationQueryParams.builder()
-                .uuid(uuid)
-                .authorityCode(securityUtils.getCurrentLocalAuthorityShortCode())
-                .build());
-    if (null == entity) {
-      throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
-    }
-    return converter.convertToModel(entity);
+    return uuid;
   }
 }

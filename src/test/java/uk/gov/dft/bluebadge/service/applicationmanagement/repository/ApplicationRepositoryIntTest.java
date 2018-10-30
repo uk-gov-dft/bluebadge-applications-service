@@ -3,6 +3,8 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 import static java.time.Duration.ofMinutes;
 import static java.time.Period.ofYears;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -219,7 +221,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     RetrieveApplicationQueryParams params =
         RetrieveApplicationQueryParams.builder()
             .uuid(UUID.fromString("1087ac26-491a-46f0-9006-36187dc40764"))
-            .authorityCode("ABERD")
+            .deleted(Boolean.FALSE)
             .build();
     ApplicationEntity result = applicationRepository.retrieveApplication(params);
     // Healthcare Professionals
@@ -391,13 +393,68 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
   }
 
   @Test
-  public void retrieve_wrongAuthority() {
+  public void delete() {
+
     RetrieveApplicationQueryParams params =
         RetrieveApplicationQueryParams.builder()
-            .uuid(UUID.fromString("1087ac26-491a-46f0-9006-36187dc40764"))
-            .authorityCode("BIRM")
+            .uuid(UUID.fromString("0bd06c01-a193-4255-be0b-0fbee253ee5e"))
+            .deleted(Boolean.FALSE)
             .build();
+
     ApplicationEntity result = applicationRepository.retrieveApplication(params);
-    assertNull(result);
+    assertEquals(2, result.getHealthcareProfessionals().size());
+    assertEquals(2, result.getMedications().size());
+    assertEquals(2, result.getTreatments().size());
+    assertEquals(2, result.getVehicles().size());
+    assertEquals(2, result.getWalkingAids().size());
+    assertEquals(2, result.getWalkingDifficultyTypes().size());
+
+    assertEquals("LIVER", result.getLocalAuthorityCode());
+    assertFalse(result.getIsDeleted());
+    assertNull(result.getDeletedTimestamp());
+
+    applicationRepository.deleteApplication(params);
+
+    params =
+        RetrieveApplicationQueryParams.builder()
+            .uuid(UUID.fromString("0bd06c01-a193-4255-be0b-0fbee253ee5e"))
+            .deleted(Boolean.TRUE)
+            .build();
+    ApplicationEntity deleted = applicationRepository.retrieveApplication(params);
+
+    assertNull(deleted.getExistingBadgeNo());
+    assertNull(deleted.getContactName());
+    assertNull(deleted.getContactLine2());
+    assertNull(deleted.getContactEmailAddress());
+    assertNull(deleted.getOrgIsCharity());
+    assertNull(deleted.getOrgCharityNo());
+    assertNull(deleted.getNoOfBadges());
+    assertNull(deleted.getNino());
+    assertNull(deleted.getDob());
+    assertNull(deleted.getHolderNameAtBirth());
+    assertNull(deleted.getEligibilityConditions());
+    assertNull(deleted.getBenefitIsIndefinite());
+    assertNull(deleted.getBenefitExpiryDate());
+    assertNull(deleted.getWalkOtherDesc());
+    assertNull(deleted.getWalkLengthCode());
+    assertNull(deleted.getArmsDrivingFreq());
+    assertNull(deleted.getArmsIsAdaptedVehicle());
+    assertNull(deleted.getArmsAdaptedVehDesc());
+    assertNull(deleted.getBlindRegisteredAtLaCode());
+    assertNull(deleted.getBulkyEquipmentTypeCode());
+    assertNull(deleted.getUrlProofEligibility());
+    assertNull(deleted.getUrlProofAddress());
+    assertNull(deleted.getUrlBadgePhoto());
+    assertNull(deleted.getUrlProofIdentity());
+    assertNull(deleted.getSecondaryPhoneNo());
+
+    assertEquals("DELETED", deleted.getContactBuildingStreet());
+    assertEquals("DELETED", deleted.getContactTownCity());
+    assertEquals("DELETED", deleted.getContactPostcode());
+    assertEquals("DELETED", deleted.getPrimaryPhoneNo());
+    assertEquals("DELETED", deleted.getHolderName());
+
+    assertTrue(deleted.getIsDeleted());
+    assertNotNull(deleted.getDeletedTimestamp());
   }
 }

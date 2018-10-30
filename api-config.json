@@ -289,8 +289,7 @@
             "example" : "2018-12-25T12:30:45Z"
           },
           "existingBadgeNumber" : {
-            "type" : "string",
-            "pattern" : "^[0-9A-HJK]{6}$"
+            "type" : "string"
           },
           "party" : {
             "$ref" : "#/definitions/Party"
@@ -459,7 +458,7 @@
           },
           "descriptionOfConditions" : {
             "type" : "string",
-            "maxLength" : 100,
+            "maxLength" : 10000,
             "example" : "Freetext"
           },
           "benefit" : {
@@ -548,7 +547,7 @@
           },
           "adaptedVehicleDescription" : {
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 255
           }
         },
         "required" : [ "isAdaptedVehicle" ]
@@ -566,7 +565,7 @@
           "otherDescription" : {
             "description" : "Only entered if something else type selected and even then not required.",
             "type" : "string",
-            "maxLength" : 100
+            "maxLength" : 255
           },
           "walkingAids" : {
             "type" : "array",

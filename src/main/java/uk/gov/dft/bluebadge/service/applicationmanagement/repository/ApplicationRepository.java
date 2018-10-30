@@ -111,4 +111,39 @@ public class ApplicationRepository implements ApplicationMapper {
   public ApplicationEntity retrieveApplication(RetrieveApplicationQueryParams params) {
     return sqlSession.selectOne(Statements.RETRIEVE.getName(), params);
   }
+
+  @Override
+  public int deleteApplication(RetrieveApplicationQueryParams params) {
+    return sqlSession.update(Statements.UPDATE.getName(), params);
+  }
+
+  @Override
+  public int deleteHealthcareProfessionals(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_HEALTHCARE_PROFESSIONALS.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteMedications(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_MEDICATIONS.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteTreatments(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_TREATMENTS.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteVehicles(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_VEHICLES.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteWalkingAids(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_WALKING_AIDS.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteWalkingDifficultyTypes(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), applicationId);
+  }
 }
