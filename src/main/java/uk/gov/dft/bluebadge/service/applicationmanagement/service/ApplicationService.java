@@ -17,6 +17,7 @@ import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
+import uk.gov.dft.bluebadge.service.LogEventBuilder;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
@@ -32,6 +33,7 @@ public class ApplicationService {
   private final ApplicationRepository repository;
   private final ApplicationConverter converter;
   private final SecurityUtils securityUtils;
+  final static String[] createAuditEventFields = {"localAuthorityCode", "party.typeCode"};
 
   @Autowired
   ApplicationService(
@@ -70,7 +72,13 @@ public class ApplicationService {
     repository.createVehicles(application.getVehicles());
     repository.createWalkingAids(application.getWalkingAids());
     repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
+    logAuditEvent(applicationModel);
     return application.getId();
+  }
+
+  void logAuditEvent(Application application) {
+    new LogEventBuilder().forObject(application).forEvent(LogEventBuilder.AuditEvent.APPLICATION_CREATE)
+        .withLogger(log).withFields(createAuditEventFields).log();
   }
 
   private void addUuid(Application applicationModel) {

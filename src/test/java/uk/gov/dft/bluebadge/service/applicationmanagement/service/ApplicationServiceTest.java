@@ -1,5 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -16,6 +17,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
@@ -168,5 +172,28 @@ public class ApplicationServiceTest extends ApplicationFixture {
     verify(repository, times(1)).deleteVehicles(any());
     verify(repository, times(1)).deleteWalkingAids(any());
     verify(repository, times(1)).deleteWalkingDifficultyTypes(any());
+  }
+
+  @Test
+  public void auditEventFieldsExistInApplication() {
+    Application application =
+        getApplicationBuilder()
+            .addBaseApplication()
+            .setEligibilityWalking()
+            .setPerson()
+            .setOrganisation()
+            .build();
+    ExpressionParser parser = new SpelExpressionParser();
+    StandardEvaluationContext context = new StandardEvaluationContext(application);
+    // Check all the fields exist;
+    for(String field : ApplicationService.createAuditEventFields){
+      assertThat(parser.parseExpression(field).getValue(context)).isNotNull();
+    }
+  }
+
+  @Test
+  public void logAuditEvent() {
+    // Not much to test here other than no NPEs etc..
+    service.logAuditEvent(new Application());
   }
 }
