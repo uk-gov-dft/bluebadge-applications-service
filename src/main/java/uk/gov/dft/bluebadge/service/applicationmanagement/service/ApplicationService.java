@@ -77,8 +77,12 @@ public class ApplicationService {
   }
 
   void logAuditEvent(Application application) {
-    LogEventBuilder.builder().forObject(application).forEvent(AuditEventFields.CREATE.getEvent())
-        .withLogger(log).withFields(AuditEventFields.CREATE.getFields()).log();
+    LogEventBuilder.builder()
+        .forObject(application)
+        .forEvent(AuditEventFields.CREATE.getEvent())
+        .withLogger(log)
+        .withFields(AuditEventFields.CREATE.getFields())
+        .log();
   }
 
   private void addUuid(Application applicationModel) {

@@ -5,7 +5,11 @@ import uk.gov.dft.bluebadge.common.logging.LogEventBuilder.AuditEvent;
 
 @Getter
 public enum AuditEventFields {
-  CREATE(AuditEvent.APPLICATION_CREATED, "eligibility.typeCode", "localAuthorityCode", "submissionDate");
+  CREATE(
+      AuditEvent.APPLICATION_CREATED,
+      "eligibility.typeCode",
+      "localAuthorityCode",
+      "submissionDate");
 
   private final AuditEvent event;
   private final String[] fields;

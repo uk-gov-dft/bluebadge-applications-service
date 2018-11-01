@@ -1,13 +1,13 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.audit;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuditEventFieldsTest extends ApplicationFixture {
 
