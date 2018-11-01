@@ -11,19 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.dft.bluebadge.common.api.model.Error;
+import uk.gov.dft.bluebadge.common.logging.LogEventBuilder;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
-import uk.gov.dft.bluebadge.service.LogEventBuilder;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.AuditEventFields;
 
 @Slf4j
 @Service
@@ -33,7 +34,6 @@ public class ApplicationService {
   private final ApplicationRepository repository;
   private final ApplicationConverter converter;
   private final SecurityUtils securityUtils;
-  final static String[] createAuditEventFields = {"localAuthorityCode", "party.typeCode"};
 
   @Autowired
   ApplicationService(
@@ -77,8 +77,8 @@ public class ApplicationService {
   }
 
   void logAuditEvent(Application application) {
-    new LogEventBuilder().forObject(application).forEvent(LogEventBuilder.AuditEvent.APPLICATION_CREATE)
-        .withLogger(log).withFields(createAuditEventFields).log();
+    LogEventBuilder.builder().forObject(application).forEvent(AuditEventFields.CREATE.getEvent())
+        .withLogger(log).withFields(AuditEventFields.CREATE.getFields()).log();
   }
 
   private void addUuid(Application applicationModel) {
