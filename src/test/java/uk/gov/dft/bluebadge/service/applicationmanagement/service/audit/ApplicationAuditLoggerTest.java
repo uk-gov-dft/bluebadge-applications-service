@@ -9,7 +9,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
-public class AuditEventFieldsTest extends ApplicationFixture {
+public class ApplicationAuditLoggerTest extends ApplicationFixture {
 
   @Test
   public void auditEventFieldsExistInApplication() {
@@ -25,7 +25,8 @@ public class AuditEventFieldsTest extends ApplicationFixture {
     StandardEvaluationContext context = new StandardEvaluationContext(application);
 
     // Then for each audit event all the configured fields exist in the application
-    for (AuditEventFields event : AuditEventFields.values()) {
+    for (ApplicationAuditLogger.AuditEventFields event :
+        ApplicationAuditLogger.AuditEventFields.values()) {
       for (String field : event.getFields()) {
         assertThat(parser.parseExpression(field).getValue(context)).isNotNull();
       }

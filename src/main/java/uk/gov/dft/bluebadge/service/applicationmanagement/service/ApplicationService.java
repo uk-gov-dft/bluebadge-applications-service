@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.dft.bluebadge.common.api.model.Error;
-import uk.gov.dft.bluebadge.common.logging.LogEventBuilder;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
@@ -24,7 +23,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.Application
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
-import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.AuditEventFields;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
 
 @Slf4j
 @Service
@@ -34,15 +33,18 @@ public class ApplicationService {
   private final ApplicationRepository repository;
   private final ApplicationConverter converter;
   private final SecurityUtils securityUtils;
+  private ApplicationAuditLogger applicationAuditLogger;
 
   @Autowired
   ApplicationService(
       ApplicationRepository repository,
       ApplicationConverter converter,
-      SecurityUtils securityUtils) {
+      SecurityUtils securityUtils,
+      ApplicationAuditLogger applicationAuditLogger) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
+    this.applicationAuditLogger = applicationAuditLogger;
   }
 
   /**
@@ -72,17 +74,8 @@ public class ApplicationService {
     repository.createVehicles(application.getVehicles());
     repository.createWalkingAids(application.getWalkingAids());
     repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
-    logAuditEvent(applicationModel);
+    applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
     return application.getId();
-  }
-
-  void logAuditEvent(Application application) {
-    LogEventBuilder.builder()
-        .forObject(application)
-        .forEvent(AuditEventFields.CREATE.getEvent())
-        .withLogger(log)
-        .withFields(AuditEventFields.CREATE.getFields())
-        .log();
   }
 
   private void addUuid(Application applicationModel) {
