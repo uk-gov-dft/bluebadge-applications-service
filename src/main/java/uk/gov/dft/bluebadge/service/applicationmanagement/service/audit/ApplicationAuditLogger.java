@@ -10,17 +10,14 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 public class ApplicationAuditLogger {
   @Getter
   enum AuditEventFields {
-    CREATE(
-        LogEventBuilder.AuditEvent.APPLICATION_CREATED,
+    CREATE_FIELDS(
         "eligibility.typeCode",
         "localAuthorityCode",
         "submissionDate");
 
-    private final LogEventBuilder.AuditEvent event;
     private final String[] fields;
 
-    AuditEventFields(LogEventBuilder.AuditEvent event, String... fields) {
-      this.event = event;
+    AuditEventFields(String... fields) {
       this.fields = fields;
     }
   }
@@ -28,9 +25,9 @@ public class ApplicationAuditLogger {
   public void logCreateAuditEvent(Application application, Logger log) {
     LogEventBuilder.builder()
         .forObject(application)
-        .forEvent(AuditEventFields.CREATE.getEvent())
+        .forEvent(LogEventBuilder.AuditEvent.APPLICATION_CREATED)
         .withLogger(log)
-        .withFields(AuditEventFields.CREATE.getFields())
+        .withFields(AuditEventFields.CREATE_FIELDS.getFields())
         .log();
   }
 }
