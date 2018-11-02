@@ -10,10 +10,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 public class ApplicationAuditLogger {
   @Getter
   enum AuditEventFields {
-    CREATE_FIELDS(
-        "eligibility.typeCode",
-        "localAuthorityCode",
-        "submissionDate");
+    CREATE_FIELDS("eligibility.typeCode", "localAuthorityCode", "submissionDate");
 
     private final String[] fields;
 
