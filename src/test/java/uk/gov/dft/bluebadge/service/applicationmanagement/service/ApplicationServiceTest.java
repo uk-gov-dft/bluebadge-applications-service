@@ -26,6 +26,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationC
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
 
 public class ApplicationServiceTest extends ApplicationFixture {
 
@@ -34,12 +35,13 @@ public class ApplicationServiceTest extends ApplicationFixture {
   @Mock private ApplicationRepository repository;
   @Mock private ApplicationConverter converter;
   @Mock SecurityUtils securityUtils;
+  @Mock ApplicationAuditLogger applicationAuditLogger;
   private ApplicationService service;
 
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    service = new ApplicationService(repository, converter, securityUtils);
+    service = new ApplicationService(repository, converter, securityUtils, applicationAuditLogger);
   }
 
   @Test
