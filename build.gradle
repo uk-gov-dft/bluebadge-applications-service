@@ -65,21 +65,8 @@ sourceSets {
     }
 }
 
-tasks.withType(FindBugs) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
-tasks.withType(Pmd) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
-
 dependencies {
-    ext.commonVersion = '0.6.2-SNAPSHOT'
+    ext.commonVersion = '0.6.6-SNAPSHOT'
     compile group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: "${commonVersion}", changing: true
     
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.5'

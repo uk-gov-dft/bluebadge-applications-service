@@ -23,6 +23,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.Application
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
 
 @Slf4j
 @Service
@@ -32,15 +33,18 @@ public class ApplicationService {
   private final ApplicationRepository repository;
   private final ApplicationConverter converter;
   private final SecurityUtils securityUtils;
+  private ApplicationAuditLogger applicationAuditLogger;
 
   @Autowired
   ApplicationService(
       ApplicationRepository repository,
       ApplicationConverter converter,
-      SecurityUtils securityUtils) {
+      SecurityUtils securityUtils,
+      ApplicationAuditLogger applicationAuditLogger) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
+    this.applicationAuditLogger = applicationAuditLogger;
   }
 
   /**
@@ -70,6 +74,7 @@ public class ApplicationService {
     repository.createVehicles(application.getVehicles());
     repository.createWalkingAids(application.getWalkingAids());
     repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
+    applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
     return application.getId();
   }
 
