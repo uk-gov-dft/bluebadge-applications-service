@@ -86,7 +86,7 @@ tasks.withType(Pmd) {
 }
 
 dependencies {
-    ext.commonVersion = '0.6.7-SNAPSHOT'
+    ext.commonVersion = '0.6.8-SNAPSHOT'
     compile group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: "${commonVersion}", changing: true
     
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.5'
