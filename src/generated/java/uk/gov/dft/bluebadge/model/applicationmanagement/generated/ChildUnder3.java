@@ -5,6 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.validation.annotation.Validated;
 
 /** ChildUnder3 */
@@ -13,11 +16,14 @@ public class ChildUnder3 {
   @JsonProperty("bulkyMedicalEquipmentTypeCode")
   private BulkyMedicalEquipmentTypeCodeField bulkyMedicalEquipmentTypeCode = null;
 
-  public ChildUnder3 bulkyMedicalEquipmentTypeCode(
-      BulkyMedicalEquipmentTypeCodeField bulkyMedicalEquipmentTypeCode) {
-    this.bulkyMedicalEquipmentTypeCode = bulkyMedicalEquipmentTypeCode;
-    return this;
-  }
+  @JsonProperty("otherMedicalEquipment")
+  private String otherMedicalEquipment;
+
+//  public ChildUnder3 bulkyMedicalEquipmentTypeCode(
+//      BulkyMedicalEquipmentTypeCodeField bulkyMedicalEquipmentTypeCode) {
+//    this.bulkyMedicalEquipmentTypeCode = bulkyMedicalEquipmentTypeCode;
+//    return this;
+//  }
 
   /**
    * Get bulkyMedicalEquipmentTypeCode
@@ -36,22 +42,39 @@ public class ChildUnder3 {
     this.bulkyMedicalEquipmentTypeCode = bulkyMedicalEquipmentTypeCode;
   }
 
+  @ApiModelProperty(allowEmptyValue = true)
+  public String getOtherMedicalEquipment() {
+    return otherMedicalEquipment;
+  }
+
+  public void setOtherMedicalEquipment(String otherMedicalEquipment) {
+    this.otherMedicalEquipment = otherMedicalEquipment;
+  }
+
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
+
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ChildUnder3 childUnder3 = (ChildUnder3) o;
-    return Objects.equals(
-        this.bulkyMedicalEquipmentTypeCode, childUnder3.bulkyMedicalEquipmentTypeCode);
+
+    ChildUnder3 that = (ChildUnder3) o;
+
+    return new EqualsBuilder()
+      .append(bulkyMedicalEquipmentTypeCode, that.bulkyMedicalEquipmentTypeCode)
+      .append(otherMedicalEquipment, that.otherMedicalEquipment)
+      .isEquals();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(bulkyMedicalEquipmentTypeCode);
+    return new HashCodeBuilder(17, 37)
+      .append(bulkyMedicalEquipmentTypeCode)
+      .append(otherMedicalEquipment)
+      .toHashCode();
   }
 
   @Override
@@ -59,9 +82,8 @@ public class ChildUnder3 {
     StringBuilder sb = new StringBuilder();
     sb.append("class ChildUnder3 {\n");
 
-    sb.append("    bulkyMedicalEquipmentTypeCode: ")
-        .append(toIndentedString(bulkyMedicalEquipmentTypeCode))
-        .append("\n");
+    sb.append("    bulkyMedicalEquipmentTypeCode: ").append(toIndentedString(bulkyMedicalEquipmentTypeCode)).append("\n");
+    sb.append("    otherMedicalEquipment: ").append(toIndentedString(otherMedicalEquipment)).append("\n");
     sb.append("}");
     return sb.toString();
   }
