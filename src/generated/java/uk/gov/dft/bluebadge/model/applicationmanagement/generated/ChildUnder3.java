@@ -17,12 +17,6 @@ public class ChildUnder3 {
   @JsonProperty("otherMedicalEquipment")
   private String otherMedicalEquipment;
 
-  //  public ChildUnder3 bulkyMedicalEquipmentTypeCode(
-  //      BulkyMedicalEquipmentTypeCodeField bulkyMedicalEquipmentTypeCode) {
-  //    this.bulkyMedicalEquipmentTypeCode = bulkyMedicalEquipmentTypeCode;
-  //    return this;
-  //  }
-
   /**
    * Get bulkyMedicalEquipmentTypeCode
    *
