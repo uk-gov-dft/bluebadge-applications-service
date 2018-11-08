@@ -194,6 +194,7 @@
         <result column="arms_adapted_veh_desc" property="armsAdaptedVehDesc" />
         <result column="blind_registered_at_la_code" property="blindRegisteredAtLaCode" />
         <result column="bulky_equipment_type_code" property="bulkyEquipmentTypeCode" />
+        <result column="bulky_equipment_other_desc" property="bulkyEquipmentOtherDesc" />
         <result column="url_proof_eligibility" property="urlProofEligibility" />
         <result column="url_proof_address" property="urlProofAddress" />
         <result column="url_proof_identity" property="urlProofIdentity" />
@@ -251,6 +252,7 @@
         , a.arms_adapted_veh_desc
         , a.blind_registered_at_la_code
         , a.bulky_equipment_type_code
+        , a.bulky_equipment_other_desc
         , a.url_proof_eligibility
         , a.url_proof_address
         , a.url_proof_identity
@@ -412,6 +414,7 @@
           	arms_adapted_veh_desc = null,
           	blind_registered_at_la_code = null,
           	bulky_equipment_type_code = null,
+            bulky_equipment_other_desc = null,
           	url_proof_eligibility = null,
           	url_proof_address = null,
           	url_proof_identity = null,

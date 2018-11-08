@@ -51,6 +51,7 @@ public class ApplicationEntity implements Serializable {
   private String armsAdaptedVehDesc;
   private String blindRegisteredAtLaCode;
   private String bulkyEquipmentTypeCode;
+  private String bulkyEquipmentOtherDesc;
   private String urlProofEligibility;
   private String urlProofAddress;
   private String urlProofIdentity;

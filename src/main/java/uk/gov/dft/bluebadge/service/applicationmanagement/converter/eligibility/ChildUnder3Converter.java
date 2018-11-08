@@ -8,6 +8,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.EligibilityRules;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationBiConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
+import javax.validation.Valid;
+
 @Component
 public class ChildUnder3Converter implements ApplicationBiConverter {
 
@@ -16,14 +18,16 @@ public class ChildUnder3Converter implements ApplicationBiConverter {
     if (isPersonApplication(entity)
         && EligibilityRules.requiresChildUnder3Object(entity.getEligibilityCode())) {
       ensureHasEligibility(model);
+
       if (null == model.getEligibility().getChildUnder3()) {
         model.getEligibility().setChildUnder3(new ChildUnder3());
       }
-      model
-          .getEligibility()
-          .getChildUnder3()
+
+      ChildUnder3 childUnder3 = model.getEligibility().getChildUnder3();
+      childUnder3
           .setBulkyMedicalEquipmentTypeCode(
               BulkyMedicalEquipmentTypeCodeField.fromValue(entity.getBulkyEquipmentTypeCode()));
+      childUnder3.setOtherMedicalEquipment(entity.getBulkyEquipmentOtherDesc());
     }
   }
 
@@ -35,5 +39,6 @@ public class ChildUnder3Converter implements ApplicationBiConverter {
 
     entity.setBulkyEquipmentTypeCode(
         model.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode().name());
+    entity.setBulkyEquipmentOtherDesc(model.getEligibility().getChildUnder3().getOtherMedicalEquipment());
   }
 }
