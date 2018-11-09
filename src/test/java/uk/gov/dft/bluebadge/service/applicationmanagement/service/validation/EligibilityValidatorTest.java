@@ -9,7 +9,6 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
@@ -26,7 +25,12 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   public EligibilityValidatorTest() {
     MockitoAnnotations.initMocks(this);
     eligibilityValidator =
-        new EligibilityValidator(benefitValidator, armsValidator, walkingValidator, blindValidator, childUnder3Validator);
+        new EligibilityValidator(
+            benefitValidator,
+            armsValidator,
+            walkingValidator,
+            blindValidator,
+            childUnder3Validator);
   }
 
   @Test
@@ -90,7 +94,7 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   public void validateEligibilityType_ChildBulk_OK() {
     // Given valid app
     reset(
-      getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build());
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build());
 
     validateEligibilityType(0, FieldKeys.KEY_ELI_CHILD3);
     verify(childUnder3Validator, times(1)).validate(any(), any());
