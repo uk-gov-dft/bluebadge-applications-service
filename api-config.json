@@ -721,7 +721,7 @@
       },
       "BulkyMedicalEquipmentTypeCodeField" : {
         "type" : "string",
-        "enum" : [ "OTHER", "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
+        "enum" : [ "NONE", "OTHER", "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
         "example" : "CAST"
       },
       "WalkingDifficultyTypeCodeField" : {

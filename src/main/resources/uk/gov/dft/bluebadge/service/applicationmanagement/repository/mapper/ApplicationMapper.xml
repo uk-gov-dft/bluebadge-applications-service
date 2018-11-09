@@ -18,7 +18,8 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          bulky_equipment_type_code, url_proof_eligibility, url_proof_address,
+          bulky_equipment_type_code, bulky_equipment_other_desc,
+          url_proof_eligibility, url_proof_address,
           url_proof_identity, url_badge_photo, local_authority_code
         )
         VALUES
@@ -34,7 +35,8 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{bulkyEquipmentTypeCode}, #{urlProofEligibility}, #{urlProofAddress},
+          #{bulkyEquipmentTypeCode}, #{bulkyEquipmentOtherDesc},
+          #{urlProofEligibility}, #{urlProofAddress},
           #{urlProofIdentity}, #{urlBadgePhoto}, #{localAuthorityCode}
         )
     </insert>

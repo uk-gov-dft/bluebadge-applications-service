@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum BulkyMedicalEquipmentTypeCodeField {
   OTHER("OTHER"),
 
+  NONE("NONE"), // Kept for backwards compatibility with the API..
+
   CAST("CAST"),
 
   OXYSAT("OXYSAT"),
