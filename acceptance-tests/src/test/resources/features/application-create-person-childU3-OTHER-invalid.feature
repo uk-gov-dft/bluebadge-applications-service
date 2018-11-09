@@ -1,5 +1,5 @@
 @application-create-person-child-under3-ok
-Feature: Verify invalid Create application Person with child under 3 and no description
+Feature: Verify Create application Person
 
   Background:
     * url baseUrl

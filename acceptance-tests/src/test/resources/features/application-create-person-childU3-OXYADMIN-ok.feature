@@ -1,5 +1,5 @@
 @application-create-person-child-under3-ok
-Feature: Verify Create application Person with child under 3
+Feature: Verify Create application Person
 
   Background:
     * url baseUrl
@@ -10,7 +10,7 @@ Feature: Verify Create application Person with child under 3
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify valid create for person with child under 3 with OTHER equipment
+  Scenario: Verify valid create for person with child under 3 with OXYADMIN equipment
     * def application =
     """
     {
