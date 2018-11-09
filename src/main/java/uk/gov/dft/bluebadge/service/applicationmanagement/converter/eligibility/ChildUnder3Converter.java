@@ -24,7 +24,9 @@ public class ChildUnder3Converter implements ApplicationBiConverter {
       ChildUnder3 childUnder3 = model.getEligibility().getChildUnder3();
       childUnder3.setBulkyMedicalEquipmentTypeCode(
           BulkyMedicalEquipmentTypeCodeField.fromValue(entity.getBulkyEquipmentTypeCode()));
-      childUnder3.setOtherMedicalEquipment(entity.getBulkyEquipmentOtherDesc());
+      if (BulkyMedicalEquipmentTypeCodeField.OTHER == childUnder3.getBulkyMedicalEquipmentTypeCode()) {
+        childUnder3.setOtherMedicalEquipment(entity.getBulkyEquipmentOtherDesc());
+      }
     }
   }
 
@@ -36,7 +38,9 @@ public class ChildUnder3Converter implements ApplicationBiConverter {
 
     entity.setBulkyEquipmentTypeCode(
         model.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode().name());
-    entity.setBulkyEquipmentOtherDesc(
+    if (BulkyMedicalEquipmentTypeCodeField.OTHER == BulkyMedicalEquipmentTypeCodeField.fromValue(entity.getBulkyEquipmentTypeCode())) {
+      entity.setBulkyEquipmentOtherDesc(
         model.getEligibility().getChildUnder3().getOtherMedicalEquipment());
+    }
   }
 }
