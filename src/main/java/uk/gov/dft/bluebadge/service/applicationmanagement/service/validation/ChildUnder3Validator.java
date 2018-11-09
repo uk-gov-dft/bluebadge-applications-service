@@ -42,7 +42,7 @@ public class ChildUnder3Validator extends AbstractValidator {
         && StringUtils.isNotBlank(
             app.getEligibility().getChildUnder3().getOtherMedicalEquipment())) {
       errors.rejectValue(
-          KEY_ELI_CHILD3_OTHER_DESC, NOT_VALID, null, "Must be NOT specified with OTHER");
+          KEY_ELI_CHILD3_OTHER_DESC, NOT_VALID, null, "Can only be supplied with OTHER");
     }
   }
 }

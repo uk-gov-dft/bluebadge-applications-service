@@ -64,5 +64,5 @@ Feature: Verify Create application Person
     And request application
     When method POST
     Then status 400
-    And match $.error.errors contains {field:"eligibility.childUnder3.otherMedicalEquipment", reason:"Must be NOT specified with OTHER", message:"NotValid.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
+    And match $.error.errors contains {field:"eligibility.childUnder3.otherMedicalEquipment", reason:"Can only be supplied with OTHER", message:"NotValid.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
 
