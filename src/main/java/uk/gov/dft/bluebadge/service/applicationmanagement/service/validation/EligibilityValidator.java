@@ -33,17 +33,20 @@ class EligibilityValidator extends AbstractValidator {
   private final ArmsValidator armsValidator;
   private final WalkingValidator walkingValidator;
   private final BlindValidator blindValidator;
+  private ChildUnder3Validator childUnder3Validator;
 
   @Autowired
   EligibilityValidator(
       BenefitValidator benefitValidator,
       ArmsValidator armsValidator,
       WalkingValidator walkingValidator,
-      BlindValidator blindValidator) {
+      BlindValidator blindValidator,
+      ChildUnder3Validator childUnder3Validator) {
     this.benefitValidator = benefitValidator;
     this.armsValidator = armsValidator;
     this.walkingValidator = walkingValidator;
     this.blindValidator = blindValidator;
+    this.childUnder3Validator = childUnder3Validator;
   }
 
   void validate(Application app, Errors errors) {
@@ -76,7 +79,7 @@ class EligibilityValidator extends AbstractValidator {
 
     String messagePrefix = "For eligibility type " + app.getEligibility().getTypeCode();
     if (EligibilityRules.requiresChildUnder3Object(app.getEligibility().getTypeCode())) {
-      rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3, messagePrefix);
+      childUnder3Validator.validate(app, errors);
     }
 
     if (EligibilityRules.requiresBlind(app.getEligibility().getTypeCode())) {

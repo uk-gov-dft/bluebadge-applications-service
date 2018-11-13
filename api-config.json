@@ -490,6 +490,12 @@
         "properties" : {
           "bulkyMedicalEquipmentTypeCode" : {
             "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
+          },
+          "otherMedicalEquipment" : {
+            "type" : "string",
+            "description" : "A short description of the medical equipment.",
+            "example" : "Oxygen cylinders",
+            "maxLength" : 100
           }
         },
         "required" : [ "bulkyMedicalEquipmentTypeCode" ]
@@ -715,7 +721,7 @@
       },
       "BulkyMedicalEquipmentTypeCodeField" : {
         "type" : "string",
-        "enum" : [ "NONE", "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
+        "enum" : [ "NONE", "OTHER", "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
         "example" : "CAST"
       },
       "WalkingDifficultyTypeCodeField" : {

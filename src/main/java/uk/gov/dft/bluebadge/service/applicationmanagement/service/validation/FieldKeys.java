@@ -23,6 +23,7 @@ class FieldKeys {
   static final String KEY_ELI_WALK_OTHER_DESC = KEY_ELI_WALKING + ".otherDescription";
   static final String KEY_ELI_WALK_SPEED = KEY_ELI_WALKING + ".walkingSpeedCode";
   static final String KEY_ELI_CHILD3 = KEY_ELIGIBILITY + ".childUnder3";
+  static final String KEY_ELI_CHILD3_OTHER_DESC = KEY_ELI_CHILD3 + ".otherMedicalEquipment";
   static final String KEY_ELI_HEALTH_PROS = KEY_ELIGIBILITY + ".healthcareProfessionals";
   static final String KEY_ELI_CONDITIONS_DESC = KEY_ELIGIBILITY + ".descriptionOfConditions";
   static final String KEY_ELI_BLIND = KEY_ELIGIBILITY + ".blind";
