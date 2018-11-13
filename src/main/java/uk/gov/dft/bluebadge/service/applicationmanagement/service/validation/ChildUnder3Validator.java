@@ -5,22 +5,13 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3_OTHER_DESC;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BulkyMedicalEquipmentTypeCodeField;
-import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
 @Component
 public class ChildUnder3Validator extends AbstractValidator {
-
-  private final ReferenceDataService referenceDataService;
-
-  @Autowired
-  ChildUnder3Validator(ReferenceDataService referenceDataService) {
-    this.referenceDataService = referenceDataService;
-  }
 
   public void validate(Application app, Errors errors) {
 
@@ -33,7 +24,7 @@ public class ChildUnder3Validator extends AbstractValidator {
     if (BulkyMedicalEquipmentTypeCodeField.OTHER
             == app.getEligibility().getChildUnder3().getBulkyMedicalEquipmentTypeCode()
         && StringUtils.isBlank(app.getEligibility().getChildUnder3().getOtherMedicalEquipment())) {
-      rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3_OTHER_DESC, "Must be specified");
+      rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3_OTHER_DESC, "Must be specified if OTHER");
     }
 
     // validate NOT OTHER and otherDescription supplied
