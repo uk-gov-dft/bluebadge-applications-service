@@ -157,4 +157,9 @@ public class ApplicationRepository implements ApplicationMapper {
   public int deleteWalkingDifficultyTypes(String applicationId) {
     return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), applicationId);
   }
+
+  @Override
+  public int deleteArtifacts(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_ARTIFACTS.getName(), applicationId);
+  }
 }

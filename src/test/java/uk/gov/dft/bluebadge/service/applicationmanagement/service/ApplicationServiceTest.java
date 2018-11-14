@@ -1,8 +1,9 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
@@ -26,6 +28,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationC
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
 
 public class ApplicationServiceTest extends ApplicationFixture {
@@ -146,32 +149,26 @@ public class ApplicationServiceTest extends ApplicationFixture {
     service.retrieve(UUID.randomUUID().toString());
   }
 
-  @Test(expected = NotFoundException.class)
+  @Test
   public void delete_validResult() {
+    UUID uuid = UUID.randomUUID();
+    String uuidStr = uuid.toString();
 
-    String uuid = UUID.randomUUID().toString();
-    ApplicationEntity entity = getFullyPopulatedApplicationEntity();
-    Application model =
-        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWpms().build();
+    service.delete(uuidStr);
 
-    when(repository.retrieveApplication(any())).thenReturn(entity);
-    when(converter.convertToModel(entity)).thenReturn(model);
+    ArgumentCaptor<RetrieveApplicationQueryParams> captor =
+        ArgumentCaptor.forClass(RetrieveApplicationQueryParams.class);
+    verify(repository, times(1)).deleteApplication(captor.capture());
+    assertThat(captor).isNotNull();
+    assertThat(captor.getValue()).isNotNull();
+    assertThat(captor.getValue().getUuid()).isEqualTo(uuid);
 
-    Application a = service.retrieve(uuid);
-    assertEquals(model, a);
-
-    service.delete(uuid);
-    when(repository.retrieveApplication(any())).thenReturn(null);
-
-    a = service.retrieve(uuid);
-    assertNull(a);
-
-    verify(repository, times(1)).deleteApplication(any());
-    verify(repository, times(1)).deleteHealthcareProfessionals(any());
-    verify(repository, times(1)).deleteMedications(any());
-    verify(repository, times(1)).deleteTreatments(any());
-    verify(repository, times(1)).deleteVehicles(any());
-    verify(repository, times(1)).deleteWalkingAids(any());
-    verify(repository, times(1)).deleteWalkingDifficultyTypes(any());
+    verify(repository, times(1)).deleteHealthcareProfessionals(uuidStr);
+    verify(repository, times(1)).deleteMedications(uuidStr);
+    verify(repository, times(1)).deleteTreatments(uuidStr);
+    verify(repository, times(1)).deleteVehicles(uuidStr);
+    verify(repository, times(1)).deleteWalkingAids(uuidStr);
+    verify(repository, times(1)).deleteWalkingDifficultyTypes(uuidStr);
+    verify(repository, times(1)).deleteArtifacts(uuidStr);
   }
 }

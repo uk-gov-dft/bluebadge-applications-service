@@ -116,7 +116,7 @@ application_id, walking_type_code
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code, bulky_equipment_type_code
- , url_proof_eligibility, url_proof_address, url_proof_identity, url_badge_photo, is_deleted
+ , is_deleted
  ) VALUES (
  '7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'ABERD', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -126,7 +126,7 @@ application_id, walking_type_code
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'ABERD', 'SUCTION'
- , 'Url Proof Eligibility', 'Url Proof Address', 'Url Proof Identity', 'Url Badge Photo', false
+ , false
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
 application_id, prof_name, prof_location

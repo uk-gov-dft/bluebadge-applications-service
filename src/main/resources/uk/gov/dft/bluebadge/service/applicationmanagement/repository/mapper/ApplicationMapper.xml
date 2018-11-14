@@ -206,10 +206,6 @@
         <result column="arms_adapted_veh_desc" property="armsAdaptedVehDesc" />
         <result column="blind_registered_at_la_code" property="blindRegisteredAtLaCode" />
         <result column="bulky_equipment_type_code" property="bulkyEquipmentTypeCode" />
-        <result column="url_proof_eligibility" property="urlProofEligibility" />
-        <result column="url_proof_address" property="urlProofAddress" />
-        <result column="url_proof_identity" property="urlProofIdentity" />
-        <result column="url_badge_photo" property="urlBadgePhoto" />
         <result column="is_deleted" property="isDeleted" />
         <result column="deleted_timestamp" property="deletedTimestamp" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
@@ -224,6 +220,8 @@
                     select="retrieveWalkingAid" column="string_id"/>
         <collection property="walkingDifficultyTypes" ofType="WalkingDifficultyTypeEntity"
                     select="retrieveWalkingDifficultyType" column="string_id"/>
+        <collection property="artifacts" ofType="ArtifactEntity"
+                    select="retrieveArtifacts" column="string_id"/>
     </resultMap>
 
     <select id="retrieveApplication" resultMap="retrieveApplicationMap" parameterType="RetrieveApplicationQueryParams">
@@ -366,6 +364,22 @@
         WHERE med.application_id::VARCHAR = #{id}
     </select>
 
+    <resultMap id="retrieveArtifactsMap" type="ArtifactEntity">
+        <result property="applicationId"  column="application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="artifact_type" property="type" />
+        <result column="link" property="link" />
+    </resultMap>
+    <select id="retrieveArtifacts" resultType="ArtifactEntity" resultMap="retrieveArtifactsMap">
+        SELECT
+          art.application_id
+        , art.artifact_type
+        , art.link
+        FROM app_artifact art
+        WHERE art.application_id::VARCHAR = #{id}
+    </select>
+
+
     <delete id="deleteHealthcareProfessionals" parameterType="String">
       DELETE FROM app_healthcare_professional WHERE application_id::VARCHAR=#{uuid}
     </delete>
@@ -388,6 +402,10 @@
 
     <delete id="deleteWalkingDifficultyTypes" parameterType="String">
      	DELETE FROM app_walking_type WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
+    <delete id="deleteArtifacts" parameterType="String">
+     	DELETE FROM app_artifact WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
     <update id="updateToDeleteApplication" parameterType="RetrieveApplicationQueryParams">
@@ -420,10 +438,6 @@
           	arms_adapted_veh_desc = null,
           	blind_registered_at_la_code = null,
           	bulky_equipment_type_code = null,
-          	url_proof_eligibility = null,
-          	url_proof_address = null,
-          	url_proof_identity = null,
-          	url_badge_photo = null,
           	is_deleted = true,
           	deleted_timestamp = current_timestamp
         WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}

@@ -105,4 +105,6 @@ public interface ApplicationMapper {
   int deleteWalkingAids(String applicationId);
 
   int deleteWalkingDifficultyTypes(String applicationId);
+
+  int deleteArtifacts(String applicationId);
 }

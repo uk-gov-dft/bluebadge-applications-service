@@ -171,6 +171,7 @@ public class ApplicationService {
     repository.deleteVehicles(applicationId);
     repository.deleteWalkingAids(applicationId);
     repository.deleteWalkingDifficultyTypes(applicationId);
+    repository.deleteArtifacts(applicationId);
     log.debug("Application: '{}' has been deleted", applicationId);
   }
 

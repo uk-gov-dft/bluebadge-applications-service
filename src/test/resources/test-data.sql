@@ -241,6 +241,11 @@ application_id, walking_type_code
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'BREATH'
 );
+INSERT INTO applicationmanagement_unittest.app_artifact(
+application_id, artifact_type, link
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'PROOF_ID', 'link/to/artifact1'
+);
 
 -- Submitted 10 years ago - a cancel app.
 INSERT INTO applicationmanagement_unittest.application(
@@ -334,5 +339,10 @@ INSERT INTO applicationmanagement_unittest.app_walking_type(
 application_id, walking_type_code
 ) VALUES (
 '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'BREATH'
+);
+INSERT INTO applicationmanagement_unittest.app_artifact(
+application_id, artifact_type, link
+) VALUES (
+'0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'PROOF_ID', 'link/to/artifact'
 );
 

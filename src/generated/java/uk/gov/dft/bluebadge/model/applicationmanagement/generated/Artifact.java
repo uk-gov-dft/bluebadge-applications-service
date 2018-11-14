@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
-
 import javax.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
