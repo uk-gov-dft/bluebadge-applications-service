@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
@@ -96,6 +97,16 @@ public class ApplicationRepository implements ApplicationMapper {
       insertCount =
           sqlSession.insert(
               Statements.CREATE_WALKING_DIFFICULTY_TYPES.getName(), walkingDifficultyTypes);
+      log.debug("{} walking difficulties created.", insertCount);
+    }
+    return insertCount;
+  }
+
+  @Override
+  public int createArtifacts(List<ArtifactEntity> artifactEntities) {
+    int insertCount = 0;
+    if (createRequired(artifactEntities)) {
+      insertCount = sqlSession.insert(Statements.CREATE_ARTIFACTS.getName(), artifactEntities);
       log.debug("{} walking difficulties created.", insertCount);
     }
     return insertCount;

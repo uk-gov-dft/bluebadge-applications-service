@@ -8,6 +8,7 @@ public enum Statements {
   CREATE_VEHICLES("createVehicles"),
   CREATE_WALKING_AIDS("createWalkingAids"),
   CREATE_WALKING_DIFFICULTY_TYPES("createWalkingDifficultyTypes"),
+  CREATE_ARTIFACTS("createArtifacts"),
   FIND("findApplications"),
   RETRIEVE("retrieveApplication"),
   UPDATE("updateToDeleteApplication"),

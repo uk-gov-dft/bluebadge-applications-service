@@ -27,6 +27,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTyp
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationContextTests;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
@@ -133,6 +134,15 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .typeCode("PAIN")
             .build());
     assertEquals(1, applicationRepository.createWalkingDifficultyTypes(diffs));
+
+    List<ArtifactEntity> artifactEntities = new ArrayList<>();
+    artifactEntities.add(
+        ArtifactEntity.builder()
+            .applicationId(entity.getId())
+            .type("PAIN")
+            .link("/some/link/to/an/artifact")
+            .build());
+    assertEquals(1, applicationRepository.createArtifacts(artifactEntities));
   }
 
   @Test

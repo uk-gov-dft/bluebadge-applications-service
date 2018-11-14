@@ -18,8 +18,7 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          bulky_equipment_type_code, url_proof_eligibility, url_proof_address,
-          url_proof_identity, url_badge_photo, local_authority_code
+          bulky_equipment_type_code, local_authority_code
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -34,8 +33,7 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{bulkyEquipmentTypeCode}, #{urlProofEligibility}, #{urlProofAddress},
-          #{urlProofIdentity}, #{urlBadgePhoto}, #{localAuthorityCode}
+          #{bulkyEquipmentTypeCode}, #{localAuthorityCode}
         )
     </insert>
     
@@ -110,6 +108,20 @@
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
             #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
             , #{element.typeCode}
+        </foreach>
+    </insert>
+
+    <insert id="createArtifacts" parameterType="java.util.List">
+        INSERT INTO app_artifact
+        ( application_id
+        , artifact_type
+        , link
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.type}
+            , #{element.link}
         </foreach>
     </insert>
 
@@ -251,10 +263,6 @@
         , a.arms_adapted_veh_desc
         , a.blind_registered_at_la_code
         , a.bulky_equipment_type_code
-        , a.url_proof_eligibility
-        , a.url_proof_address
-        , a.url_proof_identity
-        , a.url_badge_photo
         , a.is_deleted
         , a.deleted_timestamp
         FROM application a
