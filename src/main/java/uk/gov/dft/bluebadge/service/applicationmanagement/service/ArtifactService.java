@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import uk.gov.dft.bluebadge.common.api.model.Error;
+import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.service.applicationmanagement.config.S3Config;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
@@ -18,6 +20,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Arti
 @Service
 @Transactional
 public class ArtifactService {
+
+  private static final String S3_NOT_FOUND_ERR_MSG = "Artifact does not exist within S3. Extracted bucket:%s, key:%s, from link:%s";
 
   private final AmazonS3 amazonS3;
   private final S3Config s3Config;
@@ -39,12 +43,13 @@ public class ArtifactService {
   }
 
   private ArtifactEntity saveS3Artifact(Artifact artifact, UUID applicationId) {
+    log.debug("Saving S3 artifact. link:{}", artifact.getLink());
     AmazonS3URI amazonS3URI = processS3URL(artifact.getLink());
-    String aritfactKey = applicationId.toString() + "/" + amazonS3URI.getKey();
+    String artifactKey = applicationId.toString() + "/" + amazonS3URI.getKey();
     amazonS3.copyObject(
-        amazonS3URI.getBucket(), amazonS3URI.getKey(), s3Config.getS3Bucket(), aritfactKey);
+        amazonS3URI.getBucket(), amazonS3URI.getKey(), s3Config.getS3Bucket(), artifactKey);
     return ArtifactEntity.builder()
-        .link(aritfactKey)
+        .link(artifactKey)
         .applicationId(applicationId)
         .type(artifact.getType().name())
         .build();
@@ -53,19 +58,25 @@ public class ArtifactService {
   private AmazonS3URI processS3URL(String url) {
     AmazonS3URI amazonS3URI = new AmazonS3URI(url);
     if (null == amazonS3URI.getBucket()) {
-      throw new IllegalArgumentException("Failed to extract S3 object bucket from url: " + url);
+      Error error = new Error()
+          .message("Failed to extract S3 object bucket from url: " + url)
+          .reason("artifact.link");
+      throw new BadRequestException(error);
     }
     if (null == amazonS3URI.getKey()) {
-      throw new IllegalArgumentException("Failed to extract S3 object key from url: " + url);
+      Error error = new Error()
+          .message("Failed to extract S3 object key from url: " + url)
+          .reason("artifact.link");
+      throw new BadRequestException(error);
     }
     if (!amazonS3.doesObjectExist(amazonS3URI.getBucket(), amazonS3URI.getKey())) {
-      throw new IllegalArgumentException(
-          "Object does not exist within S3. Extracted bucket: "
-              + amazonS3URI.getBucket()
-              + ", key:"
-              + amazonS3URI.getKey()
-              + ", from link:"
-              + url);
+      String message = String.format(S3_NOT_FOUND_ERR_MSG,
+          amazonS3URI.getBucket(), amazonS3URI.getBucket(), url);
+      log.info(message);
+      Error error = new Error()
+          .message(message)
+          .reason("artifact.link");
+      throw new BadRequestException(error);
     }
     return amazonS3URI;
   }

@@ -16,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.dft.bluebadge.common.api.model.Error;
+import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.service.applicationmanagement.config.S3Config;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
@@ -81,9 +83,10 @@ public class ArtifactServiceTest {
     try {
       artifactService.saveArtifacts(testArifacts, applicationId);
       fail("no exception thrown");
-    } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage()).startsWith("Failed to extract S3 object bucket from url");
-      assertThat(e.getMessage()).endsWith("https://s3.eu-west-2.amazonaws.com/");
+    } catch (BadRequestException e) {
+      Error error = e.getResponse().getBody().getError();
+      assertThat(error.getMessage()).startsWith("Failed to extract S3 object bucket from url");
+      assertThat(error.getMessage()).endsWith("https://s3.eu-west-2.amazonaws.com/");
     }
 
     verify(amazonS3Mock, never()).copyObject(any(), any(), any(), any());
@@ -101,9 +104,10 @@ public class ArtifactServiceTest {
     try {
       artifactService.saveArtifacts(testArifacts, applicationId);
       fail("no exception thrown");
-    } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage()).startsWith("Failed to extract S3 object key from url");
-      assertThat(e.getMessage()).endsWith("https://test-bucket1.s3.eu-west-2.amazonaws.com");
+    } catch (BadRequestException e) {
+      Error error = e.getResponse().getBody().getError();
+      assertThat(error.getMessage()).startsWith("Failed to extract S3 object key from url");
+      assertThat(error.getMessage()).endsWith("https://test-bucket1.s3.eu-west-2.amazonaws.com");
     }
 
     verify(amazonS3Mock, never()).copyObject(any(), any(), any(), any());
@@ -123,14 +127,26 @@ public class ArtifactServiceTest {
     try {
       artifactService.saveArtifacts(testArifacts, applicationId);
       fail("no exception thrown");
-    } catch (IllegalArgumentException e) {
-      assertThat(e.getMessage()).startsWith("Object does not exist within S3");
-      assertThat(e.getMessage()).endsWith("https://test-bucket-x.s3.eu-west-2.amazonaws.com/key-x");
+    } catch (BadRequestException e) {
+      Error error = e.getResponse().getBody().getError();
+      assertThat(error.getMessage()).startsWith("Artifact does not exist within S3");
+      assertThat(error.getMessage()).endsWith("https://test-bucket-x.s3.eu-west-2.amazonaws.com/key-x");
     }
 
     verify(amazonS3Mock, never()).copyObject(any(), any(), any(), any());
   }
 
   @Test
-  public void backOutArtifacts() {}
+  public void backOutArtifacts() {
+    ArtifactEntity artifactEntity1 = ArtifactEntity.builder().applicationId(UUID.randomUUID()).type("x")
+        .link("artifact/link1").build();
+    ArtifactEntity artifactEntity2 = ArtifactEntity.builder().applicationId(UUID.randomUUID()).type("x")
+        .link("artifact/link2").build();
+    List<ArtifactEntity> artifacts = ImmutableList.of(artifactEntity1, artifactEntity2);
+
+    artifactService.backOutArtifacts(artifacts);
+
+    verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link1");
+    verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link2");
+  }
 }
