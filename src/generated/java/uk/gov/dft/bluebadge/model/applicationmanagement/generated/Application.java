@@ -1,11 +1,14 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
 /** Application */
@@ -36,7 +39,8 @@ public class Application {
   private Eligibility eligibility = null;
 
   @JsonProperty("artifacts")
-  private Artifacts artifacts = null;
+  @Valid
+  private List<Artifact> artifacts = null;
 
   public Application applicationId(String applicationId) {
     this.applicationId = applicationId;
@@ -204,8 +208,16 @@ public class Application {
     this.eligibility = eligibility;
   }
 
-  public Application artifacts(Artifacts artifacts) {
+  public Application artifacts(List<Artifact> artifacts) {
     this.artifacts = artifacts;
+    return this;
+  }
+
+  public Application addArtifactsItem(Artifact artifactsItem) {
+    if (this.artifacts == null) {
+      this.artifacts = new ArrayList<>();
+    }
+    this.artifacts.add(artifactsItem);
     return this;
   }
 
@@ -216,11 +228,11 @@ public class Application {
    */
   @ApiModelProperty(value = "")
   @Valid
-  public Artifacts getArtifacts() {
+  public List<Artifact> getArtifacts() {
     return artifacts;
   }
 
-  public void setArtifacts(Artifacts artifacts) {
+  public void setArtifacts(List<Artifact> artifacts) {
     this.artifacts = artifacts;
   }
 
