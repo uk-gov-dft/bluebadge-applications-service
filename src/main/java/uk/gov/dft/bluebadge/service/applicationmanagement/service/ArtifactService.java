@@ -24,6 +24,7 @@ public class ArtifactService {
 
   private static final String S3_NOT_FOUND_ERR_MSG =
       "Artifact does not exist within S3. Extracted bucket:%s, key:%s, from link:%s";
+  public static final String ARTIFACT_LINK_ERR_FIELD = "artifact.link";
 
   private final AmazonS3 amazonS3;
   private final S3Config s3Config;
@@ -65,14 +66,14 @@ public class ArtifactService {
       Error error =
           new Error()
               .message("Failed to extract S3 object bucket from url: " + url)
-              .reason("artifact.link");
+              .reason(ARTIFACT_LINK_ERR_FIELD);
       throw new BadRequestException(error);
     }
     if (null == amazonS3URI.getKey()) {
       Error error =
           new Error()
               .message("Failed to extract S3 object key from url: " + url)
-              .reason("artifact.link");
+              .reason(ARTIFACT_LINK_ERR_FIELD);
       throw new BadRequestException(error);
     }
     if (!amazonS3.doesObjectExist(amazonS3URI.getBucket(), amazonS3URI.getKey())) {
@@ -80,7 +81,7 @@ public class ArtifactService {
           String.format(
               S3_NOT_FOUND_ERR_MSG, amazonS3URI.getBucket(), amazonS3URI.getBucket(), url);
       log.info(message);
-      Error error = new Error().message(message).reason("artifact.link");
+      Error error = new Error().message(message).reason(ARTIFACT_LINK_ERR_FIELD);
       throw new BadRequestException(error);
     }
     return amazonS3URI;
