@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.google.common.collect.ImmutableList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import org.junit.Before;
@@ -74,6 +75,19 @@ public class ArtifactServiceTest {
   }
 
   @Test
+  public void saveArtifacts_nullArtifacts() {
+    List<ArtifactEntity> artifactEntities = artifactService.saveArtifacts(null, UUID.randomUUID());
+    assertThat(artifactEntities).isEmpty();
+  }
+
+  @Test
+  public void saveArtifacts_emptyArtifacts() {
+    List<ArtifactEntity> artifactEntities =
+        artifactService.saveArtifacts(Collections.emptyList(), UUID.randomUUID());
+    assertThat(artifactEntities).isEmpty();
+  }
+
+  @Test
   public void saveArtifacts_invalidS3Link_noBucket() {
     UUID applicationId = UUID.randomUUID();
     Artifact badArtifact = new Artifact();
@@ -130,7 +144,8 @@ public class ArtifactServiceTest {
     } catch (BadRequestException e) {
       Error error = e.getResponse().getBody().getError();
       assertThat(error.getMessage()).startsWith("Artifact does not exist within S3");
-      assertThat(error.getMessage()).endsWith("https://test-bucket-x.s3.eu-west-2.amazonaws.com/key-x");
+      assertThat(error.getMessage())
+          .endsWith("https://test-bucket-x.s3.eu-west-2.amazonaws.com/key-x");
     }
 
     verify(amazonS3Mock, never()).copyObject(any(), any(), any(), any());
@@ -138,10 +153,18 @@ public class ArtifactServiceTest {
 
   @Test
   public void backOutArtifacts() {
-    ArtifactEntity artifactEntity1 = ArtifactEntity.builder().applicationId(UUID.randomUUID()).type("x")
-        .link("artifact/link1").build();
-    ArtifactEntity artifactEntity2 = ArtifactEntity.builder().applicationId(UUID.randomUUID()).type("x")
-        .link("artifact/link2").build();
+    ArtifactEntity artifactEntity1 =
+        ArtifactEntity.builder()
+            .applicationId(UUID.randomUUID())
+            .type("x")
+            .link("artifact/link1")
+            .build();
+    ArtifactEntity artifactEntity2 =
+        ArtifactEntity.builder()
+            .applicationId(UUID.randomUUID())
+            .type("x")
+            .link("artifact/link2")
+            .build();
     List<ArtifactEntity> artifacts = ImmutableList.of(artifactEntity1, artifactEntity2);
 
     artifactService.backOutArtifacts(artifacts);

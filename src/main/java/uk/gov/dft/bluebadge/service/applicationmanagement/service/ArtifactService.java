@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,7 +22,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Arti
 @Transactional
 public class ArtifactService {
 
-  private static final String S3_NOT_FOUND_ERR_MSG = "Artifact does not exist within S3. Extracted bucket:%s, key:%s, from link:%s";
+  private static final String S3_NOT_FOUND_ERR_MSG =
+      "Artifact does not exist within S3. Extracted bucket:%s, key:%s, from link:%s";
 
   private final AmazonS3 amazonS3;
   private final S3Config s3Config;
@@ -34,7 +36,9 @@ public class ArtifactService {
 
   public List<ArtifactEntity> saveArtifacts(List<Artifact> artifacts, final UUID applicationId) {
     Assert.notNull(applicationId, "The application ID must be set.");
-    Assert.notNull(artifacts, "The artifact collection is null.");
+    if (null == artifacts || artifacts.isEmpty()) {
+      return Collections.emptyList();
+    }
 
     return artifacts
         .stream()
@@ -58,24 +62,25 @@ public class ArtifactService {
   private AmazonS3URI processS3URL(String url) {
     AmazonS3URI amazonS3URI = new AmazonS3URI(url);
     if (null == amazonS3URI.getBucket()) {
-      Error error = new Error()
-          .message("Failed to extract S3 object bucket from url: " + url)
-          .reason("artifact.link");
+      Error error =
+          new Error()
+              .message("Failed to extract S3 object bucket from url: " + url)
+              .reason("artifact.link");
       throw new BadRequestException(error);
     }
     if (null == amazonS3URI.getKey()) {
-      Error error = new Error()
-          .message("Failed to extract S3 object key from url: " + url)
-          .reason("artifact.link");
+      Error error =
+          new Error()
+              .message("Failed to extract S3 object key from url: " + url)
+              .reason("artifact.link");
       throw new BadRequestException(error);
     }
     if (!amazonS3.doesObjectExist(amazonS3URI.getBucket(), amazonS3URI.getKey())) {
-      String message = String.format(S3_NOT_FOUND_ERR_MSG,
-          amazonS3URI.getBucket(), amazonS3URI.getBucket(), url);
+      String message =
+          String.format(
+              S3_NOT_FOUND_ERR_MSG, amazonS3URI.getBucket(), amazonS3URI.getBucket(), url);
       log.info(message);
-      Error error = new Error()
-          .message(message)
-          .reason("artifact.link");
+      Error error = new Error().message(message).reason("artifact.link");
       throw new BadRequestException(error);
     }
     return amazonS3URI;
