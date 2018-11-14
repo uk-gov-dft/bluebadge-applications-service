@@ -50,7 +50,6 @@ public class ApplicationEntity implements Serializable {
   private Boolean armsIsAdaptedVehicle;
   private String armsAdaptedVehDesc;
   private String blindRegisteredAtLaCode;
-  private String bulkyEquipmentTypeCode;
   private String bulkyEquipmentOtherDesc;
   private String urlProofEligibility;
   private String urlProofAddress;
@@ -62,6 +61,7 @@ public class ApplicationEntity implements Serializable {
   private List<WalkingAidEntity> walkingAids;
   private List<TreatmentEntity> treatments;
   private List<MedicationEntity> medications;
+  private List<BulkyEquipmentTypeEntity> bulkyEquipment;
   private Boolean isDeleted;
   private LocalDate deletedTimestamp;
 }

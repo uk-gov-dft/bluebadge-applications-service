@@ -74,6 +74,7 @@ public class ApplicationService {
     repository.createVehicles(application.getVehicles());
     repository.createWalkingAids(application.getWalkingAids());
     repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
+    repository.createBulkyEquipment(application.getBulkyEquipment());
     applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
     return application.getId();
   }
@@ -158,6 +159,7 @@ public class ApplicationService {
     repository.deleteVehicles(applicationId);
     repository.deleteWalkingAids(applicationId);
     repository.deleteWalkingDifficultyTypes(applicationId);
+    repository.deleteBulkyEquipmentTypes(applicationId);
     log.debug("Application: '{}' has been deleted", applicationId);
   }
 
