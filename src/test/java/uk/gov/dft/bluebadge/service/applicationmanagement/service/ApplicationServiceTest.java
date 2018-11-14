@@ -36,12 +36,15 @@ public class ApplicationServiceTest extends ApplicationFixture {
   @Mock private ApplicationConverter converter;
   @Mock SecurityUtils securityUtils;
   @Mock ApplicationAuditLogger applicationAuditLogger;
+  @Mock ArtifactService artifactService;
   private ApplicationService service;
 
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
-    service = new ApplicationService(repository, converter, securityUtils, applicationAuditLogger);
+    service =
+        new ApplicationService(
+            repository, converter, securityUtils, applicationAuditLogger, artifactService);
   }
 
   @Test

@@ -21,6 +21,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationC
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
@@ -34,17 +35,20 @@ public class ApplicationService {
   private final ApplicationConverter converter;
   private final SecurityUtils securityUtils;
   private ApplicationAuditLogger applicationAuditLogger;
+  private final ArtifactService artifactService;
 
   @Autowired
   ApplicationService(
       ApplicationRepository repository,
       ApplicationConverter converter,
       SecurityUtils securityUtils,
-      ApplicationAuditLogger applicationAuditLogger) {
+      ApplicationAuditLogger applicationAuditLogger,
+      ArtifactService artifactService) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
     this.applicationAuditLogger = applicationAuditLogger;
+    this.artifactService = artifactService;
   }
 
   /**
@@ -68,13 +72,22 @@ public class ApplicationService {
     insertCount = repository.createApplication(application);
     log.debug("{} applications created", insertCount);
 
-    repository.createHealthcareProfessionals(application.getHealthcareProfessionals());
-    repository.createMedications(application.getMedications());
-    repository.createTreatments(application.getTreatments());
-    repository.createVehicles(application.getVehicles());
-    repository.createWalkingAids(application.getWalkingAids());
-    repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
-    applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
+    List<ArtifactEntity> artifactEntities =
+        artifactService.saveArtifacts(applicationModel.getArtifacts(), application.getId());
+    try {
+      repository.createHealthcareProfessionals(application.getHealthcareProfessionals());
+      repository.createMedications(application.getMedications());
+      repository.createTreatments(application.getTreatments());
+      repository.createVehicles(application.getVehicles());
+      repository.createWalkingAids(application.getWalkingAids());
+      repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
+      repository.createArtifacts(artifactEntities);
+      applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
+    } catch (Exception e) {
+      log.error("Failed to create application, backing out persisted artifacts. ", e.getMessage());
+      artifactService.backOutArtifacts(artifactEntities);
+      throw e;
+    }
     return application.getId();
   }
 
