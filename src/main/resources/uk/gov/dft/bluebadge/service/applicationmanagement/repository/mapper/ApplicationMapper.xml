@@ -226,7 +226,7 @@
                     select="retrieveWalkingAid" column="string_id"/>
         <collection property="walkingDifficultyTypes" ofType="WalkingDifficultyTypeEntity"
                     select="retrieveWalkingDifficultyType" column="string_id"/>
-        <collection property="bulkyEquipmentTypes" ofType="BulkyEquipmentTypeEntity"
+        <collection property="bulkyEquipment" ofType="BulkyEquipmentTypeEntity"
                     select="retrieveBulkyEquipmentType" column="string_id"/>
     </resultMap>
 
@@ -284,13 +284,14 @@
                 typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
         <result column="bulky_equipment_type_code" property="typeCode" />
     </resultMap>
+
     <select id="retrieveBulkyEquipmentType" resultType="BulkyEquipmentTypeEntity"
             resultMap="retrieveBulkyEquipmentTypeMap">
         SELECT
         be.application_id
         , be.bulky_equipment_type_code
-        FROM app_bulky_equipment_type wt
-        WHERE wt.application_id::VARCHAR = #{id}
+        FROM app_bulky_equipment_type be
+        WHERE be.application_id::VARCHAR = #{id}
     </select>
 
     <resultMap id="retrieveWalkingDifficultyTypeMap" type="WalkingDifficultyTypeEntity">
@@ -412,6 +413,7 @@
     <delete id="deleteWalkingDifficultyTypes" parameterType="String">
      	DELETE FROM app_walking_type WHERE application_id::VARCHAR=#{uuid}
     </delete>
+
     <delete id="deleteBulkyEquipmentTypes" parameterType="String">
         DELETE FROM app_bulky_equipment_type WHERE application_id::VARCHAR=#{uuid}
     </delete>

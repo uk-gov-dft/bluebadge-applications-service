@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-@Alias("WalkingDifficultyTypeEntity")
+@Alias("BulkyEquipmentTypeEntity")
 public class BulkyEquipmentTypeEntity implements Serializable {
   private static final long serialVersionUID = 1L;
   private UUID applicationId;

@@ -341,6 +341,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
                     .description("Aid Description2")
                     .usage("Aid Usage2")
                     .build()));
+    
     // Walking Difficulty Types
     assertEquals(2, result.getWalkingDifficultyTypes().size());
     assertTrue(
@@ -359,6 +360,26 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
                     .applicationId(result.getId())
                     .typeCode("BREATH")
                     .build()));
+
+    // Bulky Equipment Types
+    assertEquals(2, result.getBulkyEquipment().size());
+    assertTrue(
+        result
+            .getBulkyEquipment()
+            .contains(
+                BulkyEquipmentTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("SUCTION")
+                    .build()));
+    assertTrue(
+        result
+            .getBulkyEquipment()
+            .contains(
+                BulkyEquipmentTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("OTHER")
+                    .build()));
+
     // Application
     assertEquals("ABERD", result.getLocalAuthorityCode());
     assertEquals("REPLACE", result.getAppTypeCode());
@@ -394,7 +415,6 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertTrue(result.getArmsIsAdaptedVehicle());
     assertEquals("Arms Adapted Veh Desc", result.getArmsAdaptedVehDesc());
     assertEquals("BIRM", result.getBlindRegisteredAtLaCode());
-    assertEquals("SUCTION", result.getBulkyEquipmentTypeCode());
     assertEquals("Url Proof Eligibility", result.getUrlProofEligibility());
     assertEquals("Url Proof Address", result.getUrlProofAddress());
     assertEquals("Url Proof Identity", result.getUrlProofIdentity());
@@ -404,9 +424,11 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
   @Test
   public void delete() {
 
+    UUID application_id = UUID.fromString("0bd06c01-a193-4255-be0b-0fbee253ee5e");
+
     RetrieveApplicationQueryParams params =
         RetrieveApplicationQueryParams.builder()
-            .uuid(UUID.fromString("0bd06c01-a193-4255-be0b-0fbee253ee5e"))
+            .uuid(application_id)
             .deleted(Boolean.FALSE)
             .build();
 
@@ -417,12 +439,14 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertEquals(2, result.getVehicles().size());
     assertEquals(2, result.getWalkingAids().size());
     assertEquals(2, result.getWalkingDifficultyTypes().size());
+    assertEquals(2, result.getBulkyEquipment().size());
 
     assertEquals("LIVER", result.getLocalAuthorityCode());
     assertFalse(result.getIsDeleted());
     assertNull(result.getDeletedTimestamp());
 
     applicationRepository.deleteApplication(params);
+    applicationRepository.deleteBulkyEquipmentTypes(application_id.toString());
 
     params =
         RetrieveApplicationQueryParams.builder()
@@ -450,7 +474,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertNull(deleted.getArmsIsAdaptedVehicle());
     assertNull(deleted.getArmsAdaptedVehDesc());
     assertNull(deleted.getBlindRegisteredAtLaCode());
-    assertNull(deleted.getBulkyEquipmentTypeCode());
+    assertEquals(0, deleted.getBulkyEquipment().size());
     assertNull(deleted.getUrlProofEligibility());
     assertNull(deleted.getUrlProofAddress());
     assertNull(deleted.getUrlBadgePhoto());

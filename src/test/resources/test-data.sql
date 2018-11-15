@@ -53,6 +53,11 @@ CREATE TABLE applicationmanagement_unittest.app_walking_type (
     walking_type_code character varying(10) NOT NULL
 );
 
+CREATE TABLE applicationmanagement_unittest.app_bulky_equipment_type (
+    application_id uuid NOT NULL,
+    bulky_equipment_type_code character varying(10) NOT NULL
+);
+
 CREATE TABLE applicationmanagement_unittest.application (
     id uuid NOT NULL,
     local_authority_code character varying(10) NOT NULL,
@@ -139,10 +144,12 @@ BEGIN
  insert into applicationmanagement_unittest.application(
  id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
  , contact_name, contact_building_street, contact_town_city, contact_postcode, holder_name
+ --, primary_phone_no
  ) VALUES (
  md5(random()::text || clock_timestamp()::text)::uuid, p_la, ''NEW'', true, current_timestamp, ''PERSON''
  , CONCAT(counter, ''Person''), CONCAT(counter, ''Street''), ''Atown'', CONCAT(''WV1'', counter, ''AW'')
  , CONCAT(counter, ''Holder'')
+ --, ''A1234635981''
  );
 
  END LOOP ;
@@ -166,7 +173,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
- , blind_registered_at_la_code, bulky_equipment_type_code
+ , blind_registered_at_la_code
  , url_proof_eligibility, url_proof_address, url_proof_identity, url_badge_photo
  ) VALUES (
  '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ABERD', 'REPLACE', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
@@ -176,7 +183,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
- , 'BIRM', 'SUCTION'
+ , 'BIRM'
  , 'Url Proof Eligibility', 'Url Proof Address', 'Url Proof Identity', 'Url Badge Photo'
  );
 INSERT INTO applicationmanagement_unittest.app_healthcare_professional(
@@ -239,6 +246,16 @@ application_id, walking_type_code
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'BREATH'
 );
+INSERT INTO applicationmanagement_unittest.app_bulky_equipment_type(
+application_id, bulky_equipment_type_code
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'SUCTION'
+);
+INSERT INTO applicationmanagement_unittest.app_bulky_equipment_type(
+application_id, bulky_equipment_type_code
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'OTHER'
+);
 
 -- Submitted 10 years ago - a cancel app.
 INSERT INTO applicationmanagement_unittest.application(
@@ -260,7 +277,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
- , blind_registered_at_la_code, bulky_equipment_type_code
+ , blind_registered_at_la_code
  , url_proof_eligibility, url_proof_address, url_proof_identity, url_badge_photo, is_deleted
  ) VALUES (
  '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'LIVER', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
@@ -270,7 +287,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
- , 'LIVER', 'SUCTION'
+ , 'LIVER'
  , 'Url Proof Eligibility', 'Url Proof Address', 'Url Proof Identity', 'Url Badge Photo', false
  );
 INSERT INTO applicationmanagement_unittest.app_healthcare_professional(
@@ -332,5 +349,15 @@ INSERT INTO applicationmanagement_unittest.app_walking_type(
 application_id, walking_type_code
 ) VALUES (
 '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'BREATH'
+);
+INSERT INTO applicationmanagement_unittest.app_bulky_equipment_type(
+application_id, bulky_equipment_type_code
+) VALUES (
+'0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'SUCTION'
+);
+INSERT INTO applicationmanagement_unittest.app_bulky_equipment_type(
+application_id, bulky_equipment_type_code
+) VALUES (
+'0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'VENT'
 );
 

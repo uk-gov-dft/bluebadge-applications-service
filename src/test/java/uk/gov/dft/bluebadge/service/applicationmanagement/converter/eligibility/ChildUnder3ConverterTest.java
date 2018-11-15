@@ -6,11 +6,12 @@ import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
+import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.BulkyEquipmentTypeConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
 public class ChildUnder3ConverterTest extends ApplicationFixture {
 
-  private final ChildUnder3Converter converter = new ChildUnder3Converter();
+  private final ChildUnder3Converter converter = new ChildUnder3Converter(new BulkyEquipmentTypeConverter());
 
   @Test
   public void convertToModel() {
@@ -33,6 +34,6 @@ public class ChildUnder3ConverterTest extends ApplicationFixture {
 
     assertEquals(
         ValidValues.BULKY_MEDICAL_EQUIPMENT_TYPE_CODE_FIELD.name(),
-        entity.getBulkyEquipmentTypeCode());
+        entity.getBulkyEquipment().get(0).getTypeCode());
   }
 }

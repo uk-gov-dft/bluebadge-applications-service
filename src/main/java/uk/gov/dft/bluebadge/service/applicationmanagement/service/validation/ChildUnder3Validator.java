@@ -30,7 +30,7 @@ public class ChildUnder3Validator extends AbstractValidator {
         && (null == childUnder3.getBulkyMedicalEquipmentTypeCodes()
             || childUnder3.getBulkyMedicalEquipmentTypeCodes().isEmpty())) {
       errors.rejectValue(
-          KEY_ELI_CHILD3_TYPES, "NotNull", "At least 1 bulky medical type code must be specified");
+          KEY_ELI_CHILD3_TYPES, "NotNull", "At least 1 bulky medical equipment type code must be specified");
 
       // No further validation if no type code.
       return;
