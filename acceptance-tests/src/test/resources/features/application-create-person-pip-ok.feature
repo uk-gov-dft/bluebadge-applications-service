@@ -1,5 +1,5 @@
 @application-create-person-pip-ok
-Feature: Verify Create application Person with arms problems
+Feature: Verify Create person pip ok
 
   Background:
     * url baseUrl

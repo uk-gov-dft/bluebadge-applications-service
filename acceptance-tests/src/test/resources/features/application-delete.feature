@@ -1,5 +1,5 @@
 @application-delete
-Feature: Verify find newly created org badge
+Feature: Verify delete
 
   Background:
     * url baseUrl

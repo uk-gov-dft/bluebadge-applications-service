@@ -1,5 +1,5 @@
 @application-create-person-child-under3-ok
-Feature: Verify Create application Person
+Feature: Verify Create person childU3 OXYADMIN invalid
 
   Background:
     * url baseUrl
@@ -43,7 +43,7 @@ Feature: Verify Create application Person
   eligibility: {
     typeCode: 'CHILDBULK',
     childUnder3: {
-      bulkyMedicalEquipmentTypeCode: 'OXYADMIN',
+      bulkyMedicalEquipmentTypeCodes: ['OXYADMIN'],
       otherMedicalEquipment: 'This should not be here'
     }
   },
@@ -64,5 +64,5 @@ Feature: Verify Create application Person
     And request application
     When method POST
     Then status 400
-    And match $.error.errors contains {field:"eligibility.childUnder3.otherMedicalEquipment", reason:"Can only be supplied with OTHER", message:"NotValid.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
+    And match $.error.errors contains {field:"eligibility.childUnder3.otherMedicalEquipment", reason:"Can only be supplied if a bulky equipment type of OTHER is present", message:"NotValid.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
 

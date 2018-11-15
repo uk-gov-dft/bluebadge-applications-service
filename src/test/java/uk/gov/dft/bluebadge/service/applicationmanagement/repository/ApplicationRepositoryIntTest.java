@@ -341,7 +341,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
                     .description("Aid Description2")
                     .usage("Aid Usage2")
                     .build()));
-    
+
     // Walking Difficulty Types
     assertEquals(2, result.getWalkingDifficultyTypes().size());
     assertTrue(

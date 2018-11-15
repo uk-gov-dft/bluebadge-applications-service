@@ -1,5 +1,5 @@
 @application-create-org-ok-noauth
-Feature: Verify Create application fails auth
+Feature: Verify Create org ok noauth
 
   Background:
     * url baseUrl
