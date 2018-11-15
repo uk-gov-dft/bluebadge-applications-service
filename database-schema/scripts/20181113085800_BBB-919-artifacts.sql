@@ -11,7 +11,8 @@ create table applicationmanagement.app_artifact
 (
   application_id  uuid not null
     constraint app_artifact_application_id_fk
-    references application,
+    references application
+    on delete cascade,
   artifact_type   varchar(30),
   link            varchar(256)
 );
