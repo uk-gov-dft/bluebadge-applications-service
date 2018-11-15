@@ -17,6 +17,7 @@ import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
@@ -154,7 +155,10 @@ public class ApplicationService {
     if (null == entity) {
       throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
     }
-    return converter.convertToModel(entity);
+    Application application = converter.convertToModel(entity);
+    List<Artifact> artifacts = artifactService.createAccessibleLinks(entity.getArtifacts());
+    application.setArtifacts(artifacts);
+    return application;
   }
 
   public void delete(String applicationId) {

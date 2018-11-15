@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.google.common.collect.ImmutableList;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -152,7 +153,37 @@ public class ArtifactServiceTest {
   }
 
   @Test
+  public void saveArtifacts_whenOneBadLink_thenNoLinkSaved() {
+    when(amazonS3Mock.doesObjectExist("test-bucket-x", "key-x")).thenReturn(false);
+
+    UUID applicationId = UUID.randomUUID();
+    Artifact badArtifact = new Artifact();
+    badArtifact
+        .type(Artifact.TypeEnum.PROOF_ID)
+        .link("https://test-bucket-x.s3.eu-west-2.amazonaws.com/key-x");
+    ImmutableList<Artifact> artifacts =
+        ImmutableList.<Artifact>builder().addAll(testArifacts).add(badArtifact).build();
+
+    try {
+      artifactService.saveArtifacts(artifacts, applicationId);
+      fail("no exception thrown");
+    } catch (BadRequestException e) {
+    }
+
+    verify(amazonS3Mock, never()).copyObject(any(), any(), any(), any());
+  }
+
+  @Test
   public void backOutArtifacts() {
+    List<ArtifactEntity> artifacts = getArtifactEntities();
+
+    artifactService.backOutArtifacts(artifacts);
+
+    verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link1");
+    verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link2");
+  }
+
+  private List<ArtifactEntity> getArtifactEntities() {
     ArtifactEntity artifactEntity1 =
         ArtifactEntity.builder()
             .applicationId(UUID.randomUUID())
@@ -165,11 +196,31 @@ public class ArtifactServiceTest {
             .type("x")
             .link("artifact/link2")
             .build();
-    List<ArtifactEntity> artifacts = ImmutableList.of(artifactEntity1, artifactEntity2);
+    return ImmutableList.of(artifactEntity1, artifactEntity2);
+  }
 
-    artifactService.backOutArtifacts(artifacts);
+  @Test
+  public void createAccessibleLinks() throws Exception {
+    when(amazonS3Mock.generatePresignedUrl(any()))
+        .thenReturn(new URL("http://art1"), new URL("http://art2"));
+    List<ArtifactEntity> artifactEntities = getArtifactEntities();
+    List<Artifact> accessibleLinks = artifactService.createAccessibleLinks(artifactEntities);
 
-    verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link1");
-    verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link2");
+    assertThat(accessibleLinks).hasSize(2);
+    assertThat(accessibleLinks).extracting("link").containsOnly("http://art1", "http://art2");
+  }
+
+  @Test
+  public void createAccessibleLinks_nullArtifactEntities() {
+    List<Artifact> accessibleLinks = artifactService.createAccessibleLinks(null);
+    assertThat(accessibleLinks).isEmpty();
+    verify(amazonS3Mock, never()).generatePresignedUrl(any());
+  }
+
+  @Test
+  public void createAccessibleLinks_emptyArtifactEntities() {
+    List<Artifact> accessibleLinks = artifactService.createAccessibleLinks(null);
+    assertThat(accessibleLinks).isEmpty();
+    verify(amazonS3Mock, never()).generatePresignedUrl(any());
   }
 }

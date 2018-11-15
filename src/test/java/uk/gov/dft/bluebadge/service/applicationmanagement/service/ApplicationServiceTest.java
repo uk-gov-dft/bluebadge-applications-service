@@ -3,7 +3,6 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -136,6 +135,8 @@ public class ApplicationServiceTest extends ApplicationFixture {
     Application a = service.retrieve(uuid);
 
     assertEquals(model, a);
+
+    verify(artifactService, times(1)).createAccessibleLinks(entity.getArtifacts());
   }
 
   @Test(expected = BadRequestException.class)
