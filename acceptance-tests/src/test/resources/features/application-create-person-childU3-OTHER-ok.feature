@@ -47,16 +47,7 @@ Feature: Verify Create application Person
       otherMedicalEquipment: 'Some really big equipment'
     }
   },
-  artifacts: {
-    proofOfEligibilityUrl: 'string',
-    proofOfAddressUrl: 'string',
-    proofOfIdentityUrl: 'string',
-    badgePhotoUrl: 'string',
-    proofOfEligibility: 'string',
-    proofOfAddress: 'string',
-    proofOfIdentity: 'string',
-    badgePhoto: 'string'
-  }
+  artifacts: []
 }
     """
 
