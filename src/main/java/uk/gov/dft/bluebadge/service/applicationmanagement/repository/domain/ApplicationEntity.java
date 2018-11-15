@@ -51,6 +51,7 @@ public class ApplicationEntity implements Serializable {
   private String armsAdaptedVehDesc;
   private String blindRegisteredAtLaCode;
   private String bulkyEquipmentTypeCode;
+  private String bulkyEquipmentOtherDesc;
   private List<HealthcareProfessionalEntity> healthcareProfessionals;
   private List<VehicleEntity> vehicles;
   private List<WalkingDifficultyTypeEntity> walkingDifficultyTypes;

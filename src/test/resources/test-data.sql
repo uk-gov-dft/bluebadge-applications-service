@@ -89,6 +89,7 @@ CREATE TABLE applicationmanagement_unittest.application (
     arms_adapted_veh_desc character varying(100),
     blind_registered_at_la_code character varying(10),
     bulky_equipment_type_code character varying(10),
+    bulky_equipment_other_desc character varying(100),
     is_deleted boolean DEFAULT false NOT NULL,
     deleted_timestamp date
 );

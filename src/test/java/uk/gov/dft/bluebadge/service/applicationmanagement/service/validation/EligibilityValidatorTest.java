@@ -18,13 +18,19 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Mock private ArmsValidator armsValidator;
   @Mock private BenefitValidator benefitValidator;
   @Mock private BlindValidator blindValidator;
+  @Mock private ChildUnder3Validator childUnder3Validator;
 
   private final EligibilityValidator eligibilityValidator;
 
   public EligibilityValidatorTest() {
     MockitoAnnotations.initMocks(this);
     eligibilityValidator =
-        new EligibilityValidator(benefitValidator, armsValidator, walkingValidator, blindValidator);
+        new EligibilityValidator(
+            benefitValidator,
+            armsValidator,
+            walkingValidator,
+            blindValidator,
+            childUnder3Validator);
   }
 
   @Test
@@ -85,18 +91,13 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   }
 
   @Test
-  public void validateEligibilityType_ChildBulk() {
+  public void validateEligibilityType_ChildBulk_OK() {
     // Given valid app
     reset(
         getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build());
 
     validateEligibilityType(0, FieldKeys.KEY_ELI_CHILD3);
-
-    // Given required object was missing
-    app.getEligibility().setChildUnder3(null);
-    reset();
-    // Get error
-    validateEligibilityType(1, FieldKeys.KEY_ELI_CHILD3);
+    verify(childUnder3Validator, times(1)).validate(any(), any());
   }
 
   @Test

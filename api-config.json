@@ -490,22 +490,15 @@
       },
       "ChildUnder3" : {
         "type" : "object",
-        "description" : "bulkyMedicalEquipmentTypeCode is DEPRECATED - use the array version.  Until removed One entry will be put in the non array field by citizen application if there are multiple codes entered. All entered values will be in the array version.",
         "properties" : {
           "bulkyMedicalEquipmentTypeCode" : {
             "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
           },
-          "bulkyMedicalEquipmentTypeCodes" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
-            }
-          },
           "otherMedicalEquipment" : {
             "type" : "string",
             "description" : "A short description of the medical equipment.",
-            "maxLength" : 100,
-            "example" : "Oxygen cylinders"
+            "example" : "Oxygen cylinders",
+            "maxLength" : 100
           }
         },
         "required" : [ "bulkyMedicalEquipmentTypeCode" ]
@@ -709,13 +702,12 @@
       },
       "BulkyMedicalEquipmentTypeCodeField" : {
         "type" : "string",
-        "enum" : [ "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT", "OTHER", "NONE" ],
-        "example" : "CAST",
-        "description" : "NONE is deprecated"
+        "enum" : [ "NONE", "OTHER", "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
+        "example" : "CAST"
       },
       "WalkingDifficultyTypeCodeField" : {
         "type" : "string",
-        "enum" : [ "PAIN", "BREATH", "BALANCE", "DANGER", "STRUGGLE", "SOMELSE", "LONGTIME" ],
+        "enum" : [ "PAIN", "BREATH", "BALANCE", "DANGER", "STRUGGLE", "SOMELSE" ],
         "example" : "PAIN"
       },
       "WalkingLengthOfTimeCodeField" : {

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Gets or Sets BulkyMedicalEquipmentTypeCodeField */
 public enum BulkyMedicalEquipmentTypeCodeField {
-  NONE("NONE"),
+  OTHER("OTHER"),
+
+  NONE("NONE"), // Kept for backwards compatibility with the API..
 
   CAST("CAST"),
 

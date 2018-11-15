@@ -18,7 +18,8 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          bulky_equipment_type_code, local_authority_code
+          bulky_equipment_type_code, bulky_equipment_other_desc,
+          local_authority_code
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -33,7 +34,8 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{bulkyEquipmentTypeCode}, #{localAuthorityCode}
+          #{bulkyEquipmentTypeCode}, #{bulkyEquipmentOtherDesc},
+          #{localAuthorityCode}
         )
     </insert>
     
@@ -206,6 +208,7 @@
         <result column="arms_adapted_veh_desc" property="armsAdaptedVehDesc" />
         <result column="blind_registered_at_la_code" property="blindRegisteredAtLaCode" />
         <result column="bulky_equipment_type_code" property="bulkyEquipmentTypeCode" />
+        <result column="bulky_equipment_other_desc" property="bulkyEquipmentOtherDesc" />
         <result column="is_deleted" property="isDeleted" />
         <result column="deleted_timestamp" property="deletedTimestamp" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
@@ -261,6 +264,7 @@
         , a.arms_adapted_veh_desc
         , a.blind_registered_at_la_code
         , a.bulky_equipment_type_code
+        , a.bulky_equipment_other_desc
         , a.is_deleted
         , a.deleted_timestamp
         FROM application a
@@ -438,6 +442,7 @@
           	arms_adapted_veh_desc = null,
           	blind_registered_at_la_code = null,
           	bulky_equipment_type_code = null,
+            bulky_equipment_other_desc = null,
           	is_deleted = true,
           	deleted_timestamp = current_timestamp
         WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
