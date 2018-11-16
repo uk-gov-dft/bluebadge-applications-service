@@ -1,5 +1,5 @@
 @application-create-person-invalid
-Feature: Verify Create application validation exceptions
+Feature: Verify Create person invalid
 
   Background:
     * url baseUrl

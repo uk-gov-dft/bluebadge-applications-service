@@ -60,6 +60,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     verify(converter, times(1)).convertToEntity(application);
     verify(repository, times(1)).createApplication(entity);
     verify(repository, times(1)).createWalkingDifficultyTypes(any());
+    verify(repository, times(1)).createBulkyEquipment(any());
     assertNotNull("Should get id back", result);
 
     assertNotNull("Submission date set as part of create", application.getSubmissionDate());

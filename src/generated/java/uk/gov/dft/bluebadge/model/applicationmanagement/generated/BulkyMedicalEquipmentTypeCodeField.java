@@ -2,12 +2,8 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Gets or Sets BulkyMedicalEquipmentTypeCodeField */
+/** NONE is deprecated */
 public enum BulkyMedicalEquipmentTypeCodeField {
-  OTHER("OTHER"),
-
-  NONE("NONE"), // Kept for backwards compatibility with the API..
-
   CAST("CAST"),
 
   OXYSAT("OXYSAT"),
@@ -22,7 +18,11 @@ public enum BulkyMedicalEquipmentTypeCodeField {
 
   SUCTION("SUCTION"),
 
-  VENT("VENT");
+  VENT("VENT"),
+
+  OTHER("OTHER"),
+
+  NONE("NONE");
 
   private String value;
 

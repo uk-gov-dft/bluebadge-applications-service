@@ -1,5 +1,5 @@
 @application-create-person-walkd-ok
-Feature: Verify Create application for person with walking difficulty
+Feature: Verify Create person walkd ok
 
   Background:
     * url baseUrl

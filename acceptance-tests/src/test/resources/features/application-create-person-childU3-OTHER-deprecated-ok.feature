@@ -1,5 +1,5 @@
-@application-create-person-child-under3-ok
-Feature: Verify Create person childU3 OXYADMIN ok
+@application-create-person-child-under3-deprecated-ok
+Feature: Verify Create person childU3 deprecated ok
 
   Background:
     * url baseUrl
@@ -10,7 +10,7 @@ Feature: Verify Create person childU3 OXYADMIN ok
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify valid create for person with child under 3 with OXYADMIN equipment
+  Scenario: Verify valid create for person with child under 3 with OTHER equipment
     * def application =
     """
     {
@@ -43,8 +43,8 @@ Feature: Verify Create person childU3 OXYADMIN ok
   eligibility: {
     typeCode: 'CHILDBULK',
     childUnder3: {
-      bulkyMedicalEquipmentTypeCodes: ['OXYADMIN'],
-      otherMedicalEquipment: ''
+      bulkyMedicalEquipmentTypeCode: 'OTHER',
+      otherMedicalEquipment: 'Some really big equipment'
     }
   },
   artifacts: {

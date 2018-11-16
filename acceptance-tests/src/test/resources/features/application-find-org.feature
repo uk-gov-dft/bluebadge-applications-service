@@ -1,5 +1,5 @@
 @application-find-org
-Feature: Verify find newly created org badge
+Feature: Verify find org
 
   Background:
     * url baseUrl

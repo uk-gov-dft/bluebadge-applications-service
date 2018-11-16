@@ -1,5 +1,5 @@
-@application-create-org-invalid
-Feature: Verify Create Org Invalid
+@application-create-person-child-under3-ok
+Feature: Verify Create person childU3 OXYADMIN deprecated ok
 
   Background:
     * url baseUrl
@@ -10,41 +10,52 @@ Feature: Verify Create Org Invalid
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify invalid create organisation
+  Scenario: Verify valid create for person with child under 3 with OXYADMIN equipment
     * def application =
     """
     {
   applicationId: '',
   applicationTypeCode: 'NEW',
   localAuthorityCode: 'BIRM',
-  paymentTaken: true,
+  paymentTaken: false,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: '',
+  existingBadgeNumber: 'KKKKKK',
   party: {
-    typeCode: 'ORG',
+    typeCode: 'PERSON',
     contact: {
       fullName: 'Mabel Jones',
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'ZZ11 1ZZ',
+      postCode: 'zz11 1zz',
       primaryPhoneNumber: 175154771,
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'
     },
-    organisation: {
-      badgeHolderName: 'TestDeleteMe',
-      isCharity: false,
-      charityNumber: '12345',
-      vehicles: [
-        {
-          registrationNumber: 'VK61VZZ',
-          typeCode: 'CAR',
-          usageFrequency: 'Daily'
-        }
-      ],
-      numberOfBadges: 1
+    person: {
+      badgeHolderName: 'PersonDeleteMe',
+      nino: 'NS123456A',
+      dob: '1970-05-29',
+      nameAtBirth: 'John Smith',
+      genderCode: 'MALE'
+    },
+  },
+  eligibility: {
+    typeCode: 'CHILDBULK',
+    childUnder3: {
+      bulkyMedicalEquipmentTypeCode: 'OXYADMIN',
+      otherMedicalEquipment: ''
     }
+  },
+  artifacts: {
+    proofOfEligibilityUrl: 'string',
+    proofOfAddressUrl: 'string',
+    proofOfIdentityUrl: 'string',
+    badgePhotoUrl: 'string',
+    proofOfEligibility: 'string',
+    proofOfAddress: 'string',
+    proofOfIdentity: 'string',
+    badgePhoto: 'string'
   }
 }
     """
@@ -52,5 +63,5 @@ Feature: Verify Create Org Invalid
     Given path 'applications'
     And request application
     When method POST
-    Then status 400
-    And match $.error contains "#notnull"
+    Then status 200
+    And match $.data contains "#notnull"

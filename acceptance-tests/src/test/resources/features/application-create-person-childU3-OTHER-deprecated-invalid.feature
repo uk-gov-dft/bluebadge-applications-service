@@ -1,5 +1,5 @@
-@application-create-person-child-under3-ok
-Feature: Verify Create person childU3 OXYADMIN ok
+@application-create-person-child-under3-OTHER-deprecated-invalid
+Feature: Verify Create person childU3 OTHER deprecated invalid
 
   Background:
     * url baseUrl
@@ -10,7 +10,7 @@ Feature: Verify Create person childU3 OXYADMIN ok
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify valid create for person with child under 3 with OXYADMIN equipment
+  Scenario: Verify invalid create for person with child under 3 with OTHER equipment and no additional description
     * def application =
     """
     {
@@ -43,7 +43,7 @@ Feature: Verify Create person childU3 OXYADMIN ok
   eligibility: {
     typeCode: 'CHILDBULK',
     childUnder3: {
-      bulkyMedicalEquipmentTypeCodes: ['OXYADMIN'],
+      bulkyMedicalEquipmentTypeCode: 'OTHER',
       otherMedicalEquipment: ''
     }
   },
@@ -63,5 +63,6 @@ Feature: Verify Create person childU3 OXYADMIN ok
     Given path 'applications'
     And request application
     When method POST
-    Then status 200
-    And match $.data contains "#notnull"
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
+
