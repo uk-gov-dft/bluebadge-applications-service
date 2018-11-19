@@ -1,6 +1,17 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.google.common.collect.Lists;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import org.springframework.validation.BeanPropertyBindingResult;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
@@ -38,18 +49,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Walk
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.RefDataGroupEnum;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator;
-
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;ó
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 public class ApplicationFixture extends AbstractValidator {
 
