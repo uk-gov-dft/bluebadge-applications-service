@@ -18,7 +18,7 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          bulky_equipment_type_code, bulky_equipment_other_desc,
+          bulky_equipment_type_code,
           local_authority_code
         )
         VALUES
@@ -34,11 +34,23 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{bulkyEquipmentTypeCode}, #{bulkyEquipmentOtherDesc},
+          #{bulkyEquipmentTypeCode},
           #{localAuthorityCode}
         )
     </insert>
-    
+
+    <insert id="createBulkyEquipment" parameterType="java.util.List">
+        INSERT INTO app_bulky_equipment_type
+        ( application_id
+        , bulky_equipment_type_code
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.typeCode}
+        </foreach>
+    </insert>
+
     <insert id="createHealthcareProfessionals" parameterType="java.util.List">
       INSERT INTO app_healthcare_professional
         ( application_id
@@ -207,7 +219,6 @@
         <result column="arms_is_adapted_vehicle" property="armsIsAdaptedVehicle" />
         <result column="arms_adapted_veh_desc" property="armsAdaptedVehDesc" />
         <result column="blind_registered_at_la_code" property="blindRegisteredAtLaCode" />
-        <result column="bulky_equipment_type_code" property="bulkyEquipmentTypeCode" />
         <result column="bulky_equipment_other_desc" property="bulkyEquipmentOtherDesc" />
         <result column="is_deleted" property="isDeleted" />
         <result column="deleted_timestamp" property="deletedTimestamp" />
@@ -223,6 +234,8 @@
                     select="retrieveWalkingAid" column="string_id"/>
         <collection property="walkingDifficultyTypes" ofType="WalkingDifficultyTypeEntity"
                     select="retrieveWalkingDifficultyType" column="string_id"/>
+        <collection property="bulkyEquipment" ofType="BulkyEquipmentTypeEntity"
+                    select="retrieveBulkyEquipmentType" column="string_id"/>
         <collection property="artifacts" ofType="ArtifactEntity"
                     select="retrieveArtifacts" column="string_id"/>
     </resultMap>
@@ -270,6 +283,21 @@
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND a.is_deleted = #{deleted}
+    </select>
+
+    <resultMap id="retrieveBulkyEquipmentTypeMap" type="BulkyEquipmentTypeEntity">
+        <result property="applicationId"  column="application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="bulky_equipment_type_code" property="typeCode" />
+    </resultMap>
+
+    <select id="retrieveBulkyEquipmentType" resultType="BulkyEquipmentTypeEntity"
+            resultMap="retrieveBulkyEquipmentTypeMap">
+        SELECT
+        be.application_id
+        , be.bulky_equipment_type_code
+        FROM app_bulky_equipment_type be
+        WHERE be.application_id::VARCHAR = #{id}
     </select>
 
     <resultMap id="retrieveWalkingDifficultyTypeMap" type="WalkingDifficultyTypeEntity">
@@ -407,6 +435,11 @@
     <delete id="deleteWalkingDifficultyTypes" parameterType="String">
      	DELETE FROM app_walking_type WHERE application_id::VARCHAR=#{uuid}
     </delete>
+
+    <delete id="deleteBulkyEquipmentTypes" parameterType="String">
+        DELETE FROM app_bulky_equipment_type WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
 
     <delete id="deleteArtifacts" parameterType="String">
      	DELETE FROM app_artifact WHERE application_id::VARCHAR=#{uuid}

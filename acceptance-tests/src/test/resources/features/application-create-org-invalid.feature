@@ -1,5 +1,5 @@
 @application-create-org-invalid
-Feature: Verify Create application validation exceptions
+Feature: Verify Create Org Invalid
 
   Background:
     * url baseUrl

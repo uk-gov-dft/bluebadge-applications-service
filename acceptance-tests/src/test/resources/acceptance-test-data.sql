@@ -1,15 +1,11 @@
 SET search_path TO applicationmanagement;
 
--- Use an invalid postcode and name to delete test data
-DELETE FROM applicationmanagement.application WHERE contact_postcode = 'ZZ111ZZ' AND holder_name IN('TestDeleteMe','PersonDeleteMe');
+-- Fks are all cascade on delete.
+DELETE FROM applicationmanagement.application WHERE contact_name LIKE 'TestDeleteMe%' OR contact_name LIKE 'PersonDeleteMe%'
+OR holder_name LIKE 'TestDeleteMe%' OR holder_name LIKE 'PersonDeleteMe%';
 
-DELETE FROM applicationmanagement.application WHERE id IN('0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid,'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid);
-DELETE FROM applicationmanagement.app_walking_type WHERE application_id IN('0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid,'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid);
-DELETE FROM applicationmanagement.app_walking_aid WHERE application_id IN('0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid,'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid);
-DELETE FROM applicationmanagement.app_vehicle WHERE application_id IN('0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid,'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid);
-DELETE FROM applicationmanagement.app_treatment WHERE application_id IN('0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid,'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid);
-DELETE FROM applicationmanagement.app_medication WHERE application_id IN('0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid,'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid);
-DELETE FROM applicationmanagement.app_healthcare_professional WHERE application_id IN('0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid,'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid);
+--Thedeleted one has personal info removed so delete by id.
+DELETE FROM applicationmanagement.application WHERE id = '7d93fdb5-56bf-41b3-8af0-147696711410';
 
 -- Different local authority
 INSERT INTO applicationmanagement.application(
@@ -31,7 +27,7 @@ INSERT INTO applicationmanagement.application(
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
- , blind_registered_at_la_code, bulky_equipment_type_code
+ , blind_registered_at_la_code
  , is_deleted
  ) VALUES (
  '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'LIVER', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
@@ -41,7 +37,7 @@ INSERT INTO applicationmanagement.application(
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
- , 'LIVER', 'SUCTION'
+ , 'LIVER'
  , false
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
@@ -104,6 +100,11 @@ application_id, walking_type_code
 ) VALUES (
 '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'BREATH'
 );
+INSERT INTO applicationmanagement.app_bulky_equipment_type(
+application_id, bulky_equipment_type_code
+) VALUES (
+'0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'SUCTION'
+);
 
 
 
@@ -115,7 +116,7 @@ application_id, walking_type_code
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
- , blind_registered_at_la_code, bulky_equipment_type_code
+ , blind_registered_at_la_code
  , is_deleted
  ) VALUES (
  '7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'ABERD', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
@@ -125,7 +126,7 @@ application_id, walking_type_code
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
- , 'ABERD', 'SUCTION'
+ , 'ABERD'
  , false
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
@@ -188,4 +189,38 @@ application_id, walking_type_code
 ) VALUES (
 '7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'BREATH'
 );
+INSERT INTO applicationmanagement.app_bulky_equipment_type(
+application_id, bulky_equipment_type_code
+) VALUES (
+'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'SUCTION'
+);
+
+-- For retrieve Child Bulk
+INSERT INTO applicationmanagement.application(
+ id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
+ , contact_name, contact_building_street, contact_town_city, contact_postcode
+ , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
+ , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
+ , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
+ , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
+ , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
+ , blind_registered_at_la_code
+ , url_proof_eligibility, url_proof_address, url_proof_identity, url_badge_photo, is_deleted
+ ) VALUES (
+ '89ca4c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'ABERD', 'NEW', true, current_timestamp, 'PERSON'
+ , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
+ , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
+ , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
+ , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'CHILDBULK', 'Eligibility Conditions'
+ , true, '2020-01-31'::DATE, null, 'LESSMIN'
+ , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
+ , 'LIVER'
+ , 'Url Proof Eligibility', 'Url Proof Address', 'Url Proof Identity', 'Url Badge Photo', false
+ );
+
+ INSERT INTO applicationmanagement.app_bulky_equipment_type(
+ application_id, bulky_equipment_type_code
+ ) VALUES (
+ '89ca4c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'SUCTION'
+ );
 

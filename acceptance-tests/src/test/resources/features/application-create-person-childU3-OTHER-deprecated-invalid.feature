@@ -1,5 +1,5 @@
-@application-create-person-child-under3-ok
-Feature: Verify Create person childU3 OTHER invalid
+@application-create-person-child-under3-OTHER-deprecated-invalid
+Feature: Verify Create person childU3 OTHER deprecated invalid
 
   Background:
     * url baseUrl
@@ -43,11 +43,20 @@ Feature: Verify Create person childU3 OTHER invalid
   eligibility: {
     typeCode: 'CHILDBULK',
     childUnder3: {
-      bulkyMedicalEquipmentTypeCodes: ['OTHER', 'VENT'],
+      bulkyMedicalEquipmentTypeCode: 'OTHER',
       otherMedicalEquipment: ''
     }
   },
-  artifacts: []
+  artifacts: {
+    proofOfEligibilityUrl: 'string',
+    proofOfAddressUrl: 'string',
+    proofOfIdentityUrl: 'string',
+    badgePhotoUrl: 'string',
+    proofOfEligibility: 'string',
+    proofOfAddress: 'string',
+    proofOfIdentity: 'string',
+    badgePhoto: 'string'
+  }
 }
     """
 

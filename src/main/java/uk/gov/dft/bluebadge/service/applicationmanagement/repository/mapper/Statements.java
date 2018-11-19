@@ -8,6 +8,7 @@ public enum Statements {
   CREATE_VEHICLES("createVehicles"),
   CREATE_WALKING_AIDS("createWalkingAids"),
   CREATE_WALKING_DIFFICULTY_TYPES("createWalkingDifficultyTypes"),
+  CREATE_BULKY_EQUIPMENT_TYPES("createBulkyEquipment"),
   CREATE_ARTIFACTS("createArtifacts"),
   FIND("findApplications"),
   RETRIEVE("retrieveApplication"),
@@ -18,6 +19,7 @@ public enum Statements {
   DELETE_VEHICLES("deleteVehicles"),
   DELETE_WALKING_AIDS("deleteWalkingAids"),
   DELETE_WALKING_DIFFICULTY_TYPES("deleteWalkingDifficultyTypes"),
+  DELETE_BULKY_EQUIPMENT_TYPES("deleteBulkyEquipmentTypes")
   DELETE_ARTIFACTS("deleteArtifacts");
 
   private final String name;

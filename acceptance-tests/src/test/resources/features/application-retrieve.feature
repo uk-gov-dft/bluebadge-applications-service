@@ -1,5 +1,5 @@
 @application-retrieve
-Feature: Verify find newly created org badge
+Feature: Verify retrieve
 
   Background:
     * url baseUrl

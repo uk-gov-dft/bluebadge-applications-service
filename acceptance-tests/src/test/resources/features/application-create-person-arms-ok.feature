@@ -1,5 +1,5 @@
 @application-create-person-arms-ok
-Feature: Verify Create application Person with arms problems
+Feature: Verify Create person arms ok
 
   Background:
     * url baseUrl

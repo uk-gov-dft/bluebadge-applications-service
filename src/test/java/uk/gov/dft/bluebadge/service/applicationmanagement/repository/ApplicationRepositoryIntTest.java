@@ -29,6 +29,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTyp
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationContextTests;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
@@ -136,6 +137,14 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .typeCode("PAIN")
             .build());
     assertEquals(1, applicationRepository.createWalkingDifficultyTypes(diffs));
+
+    List<BulkyEquipmentTypeEntity> eqs = new ArrayList<>();
+    eqs.add(
+        BulkyEquipmentTypeEntity.builder()
+            .applicationId(entity.getId())
+            .typeCode("OTHER")
+            .build());
+    assertEquals(1, applicationRepository.createBulkyEquipment(eqs));
 
     List<ArtifactEntity> artifactEntities = new ArrayList<>();
     artifactEntities.add(
@@ -342,6 +351,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
                     .description("Aid Description2")
                     .usage("Aid Usage2")
                     .build()));
+
     // Walking Difficulty Types
     assertEquals(2, result.getWalkingDifficultyTypes().size());
     assertTrue(
@@ -360,6 +370,26 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
                     .applicationId(result.getId())
                     .typeCode("BREATH")
                     .build()));
+
+    // Bulky Equipment Types
+    assertEquals(2, result.getBulkyEquipment().size());
+    assertTrue(
+        result
+            .getBulkyEquipment()
+            .contains(
+                BulkyEquipmentTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("SUCTION")
+                    .build()));
+    assertTrue(
+        result
+            .getBulkyEquipment()
+            .contains(
+                BulkyEquipmentTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("OTHER")
+                    .build()));
+
     // Application
     assertEquals("ABERD", result.getLocalAuthorityCode());
     assertEquals("REPLACE", result.getAppTypeCode());
@@ -395,7 +425,6 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertTrue(result.getArmsIsAdaptedVehicle());
     assertEquals("Arms Adapted Veh Desc", result.getArmsAdaptedVehDesc());
     assertEquals("BIRM", result.getBlindRegisteredAtLaCode());
-    assertEquals("SUCTION", result.getBulkyEquipmentTypeCode());
 
     assertThat(result.getArtifacts()).hasSize(1);
     assertThat(result.getArtifacts())
@@ -406,9 +435,11 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
   @Test
   public void delete() {
 
+    UUID application_id = UUID.fromString("0bd06c01-a193-4255-be0b-0fbee253ee5e");
+
     RetrieveApplicationQueryParams params =
         RetrieveApplicationQueryParams.builder()
-            .uuid(UUID.fromString("0bd06c01-a193-4255-be0b-0fbee253ee5e"))
+            .uuid(application_id)
             .deleted(Boolean.FALSE)
             .build();
 
@@ -419,6 +450,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertEquals(2, result.getVehicles().size());
     assertEquals(2, result.getWalkingAids().size());
     assertEquals(2, result.getWalkingDifficultyTypes().size());
+    assertEquals(2, result.getBulkyEquipment().size());
     assertEquals(1, result.getArtifacts().size());
 
     assertEquals("LIVER", result.getLocalAuthorityCode());
@@ -426,6 +458,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertNull(result.getDeletedTimestamp());
 
     applicationRepository.deleteApplication(params);
+    applicationRepository.deleteBulkyEquipmentTypes(application_id.toString());
 
     params =
         RetrieveApplicationQueryParams.builder()
@@ -453,7 +486,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertNull(deleted.getArmsIsAdaptedVehicle());
     assertNull(deleted.getArmsAdaptedVehDesc());
     assertNull(deleted.getBlindRegisteredAtLaCode());
-    assertNull(deleted.getBulkyEquipmentTypeCode());
+    assertEquals(0, deleted.getBulkyEquipment().size());
     assertNull(deleted.getSecondaryPhoneNo());
 
     assertEquals("DELETED", deleted.getContactBuildingStreet());

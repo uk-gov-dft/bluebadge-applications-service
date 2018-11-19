@@ -1,5 +1,5 @@
 @application-create-org-ok
-Feature: Verify Create application
+Feature: Verify Create org ok
 
   Background:
     * url baseUrl

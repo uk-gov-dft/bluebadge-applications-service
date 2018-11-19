@@ -1,5 +1,5 @@
-@application-create-person-child-under3-ok
-Feature: Verify Create person childU3 OTHER invalid
+@application-create-person-child-under3-deprecated-ok
+Feature: Verify Create person childU3 deprecated ok
 
   Background:
     * url baseUrl
@@ -10,7 +10,7 @@ Feature: Verify Create person childU3 OTHER invalid
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify invalid create for person with child under 3 with OTHER equipment and no additional description
+  Scenario: Verify valid create for person with child under 3 with OTHER equipment
     * def application =
     """
     {
@@ -43,17 +43,25 @@ Feature: Verify Create person childU3 OTHER invalid
   eligibility: {
     typeCode: 'CHILDBULK',
     childUnder3: {
-      bulkyMedicalEquipmentTypeCodes: ['OTHER', 'VENT'],
-      otherMedicalEquipment: ''
+      bulkyMedicalEquipmentTypeCode: 'OTHER',
+      otherMedicalEquipment: 'Some really big equipment'
     }
   },
-  artifacts: []
+  artifacts: {
+    proofOfEligibilityUrl: 'string',
+    proofOfAddressUrl: 'string',
+    proofOfIdentityUrl: 'string',
+    badgePhotoUrl: 'string',
+    proofOfEligibility: 'string',
+    proofOfAddress: 'string',
+    proofOfIdentity: 'string',
+    badgePhoto: 'string'
+  }
 }
     """
 
     Given path 'applications'
     And request application
     When method POST
-    Then status 400
-    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
-
+    Then status 200
+    And match $.data contains "#notnull"
