@@ -205,7 +205,7 @@ INSERT INTO applicationmanagement.application(
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
- , url_proof_eligibility, url_proof_address, url_proof_identity, url_badge_photo, is_deleted
+ , is_deleted
  ) VALUES (
  '89ca4c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'ABERD', 'NEW', true, current_timestamp, 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -215,7 +215,7 @@ INSERT INTO applicationmanagement.application(
  , true, '2020-01-31'::DATE, null, 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
- , 'Url Proof Eligibility', 'Url Proof Address', 'Url Proof Identity', 'Url Badge Photo', false
+ , false
  );
 
  INSERT INTO applicationmanagement.app_bulky_equipment_type(
