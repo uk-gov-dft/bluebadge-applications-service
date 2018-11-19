@@ -3,19 +3,14 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.springframework.validation.annotation.Validated;
-
-/** ChildUnder3 */
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
+import org.springframework.validation.annotation.Validated;
+
+/** ChildUnder3 */
 
 /**
  * bulkyMedicalEquipmentTypeCode is DEPRECATED - use the array version. Until removed One entry will
@@ -132,8 +127,7 @@ public class ChildUnder3 {
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        bulkyMedicalEquipmentTypeCodes, otherMedicalEquipment);
+    return Objects.hash(bulkyMedicalEquipmentTypeCodes, otherMedicalEquipment);
   }
 
   @Override
