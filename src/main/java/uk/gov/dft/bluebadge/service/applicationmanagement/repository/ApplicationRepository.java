@@ -107,9 +107,7 @@ public class ApplicationRepository implements ApplicationMapper {
   public int createBulkyEquipment(List<BulkyEquipmentTypeEntity> equipment) {
     int insertCount = 0;
     if (createRequired(equipment)) {
-      insertCount =
-          sqlSession.insert(
-              Statements.CREATE_BULKY_EQUIPMENT_TYPES.getName(), equipment);
+      insertCount = sqlSession.insert(Statements.CREATE_BULKY_EQUIPMENT_TYPES.getName(), equipment);
       log.debug("{} bulky equipments created.", insertCount);
     }
     return insertCount;

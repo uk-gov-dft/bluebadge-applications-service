@@ -1,6 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter.eligibility;
 
 import com.google.common.collect.Lists;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
@@ -10,8 +11,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.EligibilityRules;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationBiConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.BulkyEquipmentTypeConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import java.util.UUID;
 
 @Component
 public class ChildUnder3Converter implements ApplicationBiConverter {

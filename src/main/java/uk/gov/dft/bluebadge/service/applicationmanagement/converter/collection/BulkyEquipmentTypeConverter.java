@@ -1,10 +1,9 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection;
 
+import java.util.UUID;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BulkyMedicalEquipmentTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
-
-import java.util.UUID;
 
 @Component
 public class BulkyEquipmentTypeConverter
