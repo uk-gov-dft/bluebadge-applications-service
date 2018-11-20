@@ -1,6 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.config;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import javax.validation.constraints.NotNull;
@@ -36,6 +37,7 @@ public class S3Config {
   public AmazonS3 amazonS3() {
     log.debug("Amazon S3 config. Profile:{}", profile);
     return AmazonS3ClientBuilder.standard()
+        .withRegion(Regions.EU_WEST_1)
         .withCredentials(new ProfileCredentialsProvider(profile))
         .build();
   }
