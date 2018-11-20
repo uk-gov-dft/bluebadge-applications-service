@@ -5,6 +5,7 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3URI;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import java.net.URL;
 import java.util.Collections;
@@ -59,13 +60,24 @@ public class ArtifactService {
     log.debug("Saving S3 artifact. link:{}", artifact.getLink());
     AmazonS3URI amazonS3URI = new AmazonS3URI(artifact.getLink());
     String artifactKey = applicationId.toString() + "/" + amazonS3URI.getKey();
-    amazonS3.copyObject(
-        amazonS3URI.getBucket(), amazonS3URI.getKey(), s3Config.getS3Bucket(), artifactKey);
+    String bucketName = getBucketName();
+    log.debug("Copying from bucket {} to bucket {}", amazonS3URI.getBucket(), bucketName);
+    amazonS3.copyObject(amazonS3URI.getBucket(), amazonS3URI.getKey(), bucketName, artifactKey);
     return ArtifactEntity.builder()
         .link(artifactKey)
         .applicationId(applicationId)
         .type(artifact.getType().name())
         .build();
+  }
+
+  private String getBucketName() {
+    String bucketName = s3Config.getS3Bucket();
+    if (!amazonS3.doesBucketExistV2(bucketName)) {
+      log.debug("Bucket does not exist, so creating. name:{}", bucketName);
+      CreateBucketRequest bucketRequest = new CreateBucketRequest(bucketName);
+      amazonS3.createBucket(bucketRequest);
+    }
+    return s3Config.getS3Bucket();
   }
 
   private void checkURL(String url) {
