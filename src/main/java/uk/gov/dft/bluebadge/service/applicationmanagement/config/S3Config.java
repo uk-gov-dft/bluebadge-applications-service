@@ -37,7 +37,6 @@ public class S3Config {
   public AmazonS3 amazonS3() {
     log.debug("Amazon S3 config. Profile:{}", profile);
     return AmazonS3ClientBuilder.standard()
-        .withRegion(Regions.EU_WEST_1)
         .withCredentials(new ProfileCredentialsProvider(profile))
         .build();
   }
