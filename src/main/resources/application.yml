@@ -48,7 +48,6 @@ server:
 springfox.documentation.swagger.v2.path: /api-docs
 
 amazon:
-  profile: bluebadge-dev
   s3bucket: uk-gov-dft-test-applications-temp
 #  s3bucket: dev-dft-applications
   thumbnail-height-px: 300
