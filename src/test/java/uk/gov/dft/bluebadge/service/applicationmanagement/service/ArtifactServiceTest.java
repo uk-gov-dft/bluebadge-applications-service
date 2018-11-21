@@ -42,7 +42,6 @@ public class ArtifactServiceTest {
     S3Config config = new S3Config();
 
     config.setS3Bucket(DEST_BUCKET);
-    config.setProfile("profile");
     config.setThumbnailHeight(300);
     config.setSignedUrlDurationMs(1000);
 
