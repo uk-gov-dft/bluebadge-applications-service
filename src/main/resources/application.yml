@@ -48,7 +48,6 @@ server:
 springfox.documentation.swagger.v2.path: /api-docs
 
 amazon:
-  s3bucket: uk-gov-dft-test-applications-temp
-#  s3bucket: dev-dft-applications
+  s3bucket:  uk-gov-dft-dev-applications
   thumbnail-height-px: 300
   signed-url-duration-ms: 60000
