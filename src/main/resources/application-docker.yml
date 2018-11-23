@@ -10,4 +10,4 @@ spring:
     url: jdbc:postgresql://postgresql:5432/bb_dev?currentSchema=applicationmanagement
 
 amazon:
-  s3bucket: ${bb_application_artifact_bucket:bb_docker_dev_application_artifact_bucket}
+  s3bucket: ${bb_application_artifact_bucket:uk-gov-dft-dev-applications}
