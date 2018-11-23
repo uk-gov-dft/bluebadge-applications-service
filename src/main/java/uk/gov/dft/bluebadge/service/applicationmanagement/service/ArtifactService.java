@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+
 import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
@@ -58,7 +59,7 @@ public class ArtifactService {
 
   private ArtifactEntity saveS3Artifact(Artifact artifact, UUID applicationId) {
     log.debug("Saving S3 artifact. link:{}", artifact.getLink());
-    AmazonS3URI amazonS3URI = new AmazonS3URI(artifact.getLink());
+    AmazonS3URI amazonS3URI = new AmazonS3URI(artifact.getLink(), false);
     String artifactKey = applicationId.toString() + "/" + amazonS3URI.getKey();
     String bucketName = getBucketName();
     log.debug("Copying from bucket {} to bucket {}", amazonS3URI.getBucket(), bucketName);
@@ -83,7 +84,7 @@ public class ArtifactService {
   private void checkURL(String url) {
     AmazonS3URI amazonS3URI;
     try {
-      amazonS3URI = new AmazonS3URI(url);
+      amazonS3URI = new AmazonS3URI(url, false);
     } catch (Exception e) {
       log.info("Failed to extract S3 URI. Link:{}", url, e);
       Error error =
