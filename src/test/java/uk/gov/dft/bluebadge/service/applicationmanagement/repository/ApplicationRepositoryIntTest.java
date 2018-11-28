@@ -147,7 +147,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     artifactEntities.add(
         ArtifactEntity.builder()
             .applicationId(entity.getId())
-            .type("PAIN")
+            .type("PROOF_ID")
             .link("/some/link/to/an/artifact")
             .build());
     assertEquals(1, applicationRepository.createArtifacts(artifactEntities));

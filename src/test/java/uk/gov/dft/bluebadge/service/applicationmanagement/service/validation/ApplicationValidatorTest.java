@@ -163,7 +163,6 @@ public class ApplicationValidatorTest extends ApplicationFixture {
     app.setEligibility(null);
 
     // Cannot have artifacts
-    // TODO
     app.setArtifacts(new ArrayList<>());
     reset();
     applicationValidator.validateOrganisation(app, errors);

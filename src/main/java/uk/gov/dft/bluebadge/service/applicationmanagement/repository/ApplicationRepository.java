@@ -118,7 +118,7 @@ public class ApplicationRepository implements ApplicationMapper {
     int insertCount = 0;
     if (createRequired(artifactEntities)) {
       insertCount = sqlSession.insert(Statements.CREATE_ARTIFACTS.getName(), artifactEntities);
-      log.debug("{} walking difficulties created.", insertCount);
+      log.debug("{} artifacts created.", insertCount);
     }
     return insertCount;
   }
