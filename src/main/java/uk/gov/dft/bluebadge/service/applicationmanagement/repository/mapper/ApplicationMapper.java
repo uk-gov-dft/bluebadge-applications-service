@@ -2,9 +2,9 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BulkyMedicalEquipmentTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
@@ -82,6 +82,8 @@ public interface ApplicationMapper {
    */
   int createWalkingDifficultyTypes(List<WalkingDifficultyTypeEntity> walkingDifficultyTypes);
 
+  int createArtifacts(List<ArtifactEntity> artifactEntities);
+
   /**
    * Search for applications.
    *
@@ -114,4 +116,6 @@ public interface ApplicationMapper {
   int deleteWalkingDifficultyTypes(String applicationId);
 
   int deleteBulkyEquipmentTypes(String applicationId);
+
+  int deleteArtifacts(String applicationId);
 }

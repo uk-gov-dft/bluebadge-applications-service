@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
@@ -106,10 +107,18 @@ public class ApplicationRepository implements ApplicationMapper {
   public int createBulkyEquipment(List<BulkyEquipmentTypeEntity> equipment) {
     int insertCount = 0;
     if (createRequired(equipment)) {
-      insertCount =
-          sqlSession.insert(
-              Statements.CREATE_BULKY_EQUIPMENT_TYPES.getName(), equipment);
+      insertCount = sqlSession.insert(Statements.CREATE_BULKY_EQUIPMENT_TYPES.getName(), equipment);
       log.debug("{} bulky equipments created.", insertCount);
+    }
+    return insertCount;
+  }
+
+  @Override
+  public int createArtifacts(List<ArtifactEntity> artifactEntities) {
+    int insertCount = 0;
+    if (createRequired(artifactEntities)) {
+      insertCount = sqlSession.insert(Statements.CREATE_ARTIFACTS.getName(), artifactEntities);
+      log.debug("{} artifacts created.", insertCount);
     }
     return insertCount;
   }
@@ -163,5 +172,10 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public int deleteBulkyEquipmentTypes(String applicationId) {
     return sqlSession.delete(Statements.DELETE_BULKY_EQUIPMENT_TYPES.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteArtifacts(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_ARTIFACTS.getName(), applicationId);
   }
 }

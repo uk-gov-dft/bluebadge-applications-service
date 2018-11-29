@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 import org.apache.ibatis.type.Alias;
 
+@Alias("ArtifactEntity")
 @Data
 @Builder
-@Alias("BulkyEquipmentTypeEntity")
-public class BulkyEquipmentTypeEntity implements Serializable {
+public class ArtifactEntity implements Serializable {
   private static final long serialVersionUID = 1L;
-  private UUID applicationId;
-  private String typeCode;
+
+  @NonNull private UUID applicationId;
+  @NonNull private String type;
+  @NonNull private String link;
 }

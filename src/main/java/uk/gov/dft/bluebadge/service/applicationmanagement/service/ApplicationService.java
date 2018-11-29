@@ -17,10 +17,12 @@ import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
@@ -34,17 +36,20 @@ public class ApplicationService {
   private final ApplicationConverter converter;
   private final SecurityUtils securityUtils;
   private ApplicationAuditLogger applicationAuditLogger;
+  private final ArtifactService artifactService;
 
   @Autowired
   ApplicationService(
       ApplicationRepository repository,
       ApplicationConverter converter,
       SecurityUtils securityUtils,
-      ApplicationAuditLogger applicationAuditLogger) {
+      ApplicationAuditLogger applicationAuditLogger,
+      ArtifactService artifactService) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
     this.applicationAuditLogger = applicationAuditLogger;
+    this.artifactService = artifactService;
   }
 
   /**
@@ -68,14 +73,23 @@ public class ApplicationService {
     insertCount = repository.createApplication(application);
     log.debug("{} applications created", insertCount);
 
-    repository.createHealthcareProfessionals(application.getHealthcareProfessionals());
-    repository.createMedications(application.getMedications());
-    repository.createTreatments(application.getTreatments());
-    repository.createVehicles(application.getVehicles());
-    repository.createWalkingAids(application.getWalkingAids());
-    repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
-    repository.createBulkyEquipment(application.getBulkyEquipment());
-    applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
+    List<ArtifactEntity> artifactEntities =
+        artifactService.saveArtifacts(applicationModel.getArtifacts(), application.getId());
+    try {
+      repository.createHealthcareProfessionals(application.getHealthcareProfessionals());
+      repository.createMedications(application.getMedications());
+      repository.createTreatments(application.getTreatments());
+      repository.createVehicles(application.getVehicles());
+      repository.createWalkingAids(application.getWalkingAids());
+      repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
+      repository.createBulkyEquipment(application.getBulkyEquipment());
+      repository.createArtifacts(artifactEntities);
+      applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
+    } catch (Exception e) {
+      log.error("Failed to create application, backing out persisted artifacts. ", e.getMessage());
+      artifactService.backOutArtifacts(artifactEntities);
+      throw e;
+    }
     return application.getId();
   }
 
@@ -142,7 +156,10 @@ public class ApplicationService {
     if (null == entity) {
       throw new NotFoundException("application", NotFoundException.Operation.RETRIEVE);
     }
-    return converter.convertToModel(entity);
+    Application application = converter.convertToModel(entity);
+    List<Artifact> artifacts = artifactService.createAccessibleLinks(entity.getArtifacts());
+    application.setArtifacts(artifacts);
+    return application;
   }
 
   public void delete(String applicationId) {
@@ -160,6 +177,7 @@ public class ApplicationService {
     repository.deleteWalkingAids(applicationId);
     repository.deleteWalkingDifficultyTypes(applicationId);
     repository.deleteBulkyEquipmentTypes(applicationId);
+    repository.deleteArtifacts(applicationId);
     log.debug("Application: '{}' has been deleted", applicationId);
   }
 

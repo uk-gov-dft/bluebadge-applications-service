@@ -83,16 +83,8 @@ Feature: Verify Create person walkd ok
       }
     ]
   },
-  artifacts: {
-    proofOfEligibilityUrl: 'string',
-    proofOfAddressUrl: 'string',
-    proofOfIdentityUrl: 'string',
-    badgePhotoUrl: 'string',
-    proofOfEligibility: 'string',
-    proofOfAddress: 'string',
-    proofOfIdentity: 'string',
-    badgePhoto: 'string'
-  }
+  artifacts: [
+  ]
 }
     """
 

@@ -47,16 +47,7 @@ Feature: Verify Create person childU3 OXYADMIN deprecated invalid
       otherMedicalEquipment: 'This should not be here'
     }
   },
-  artifacts: {
-    proofOfEligibilityUrl: 'string',
-    proofOfAddressUrl: 'string',
-    proofOfIdentityUrl: 'string',
-    badgePhotoUrl: 'string',
-    proofOfEligibility: 'string',
-    proofOfAddress: 'string',
-    proofOfIdentity: 'string',
-    badgePhoto: 'string'
-  }
+  artifacts: []
 }
     """
 

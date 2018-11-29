@@ -1,6 +1,17 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import com.google.common.collect.Lists;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import org.springframework.validation.BeanPropertyBindingResult;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
@@ -27,6 +38,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingSpeedCo
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
@@ -37,18 +49,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Walk
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.RefDataGroupEnum;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator;
-
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 public class ApplicationFixture extends AbstractValidator {
 
@@ -436,6 +436,14 @@ public class ApplicationFixture extends AbstractValidator {
             .applicationId(UUID.fromString(ValidValues.ID))
             .build());
 
+    List<ArtifactEntity> artifactEntities = new ArrayList<>();
+    artifactEntities.add(
+        ArtifactEntity.builder()
+            .type("PROOF_ID")
+            .applicationId(UUID.fromString(ValidValues.ID))
+            .link("link/to/artifact")
+            .build());
+
     return ApplicationEntity.builder()
         .id(UUID.fromString(ValidValues.ID))
         .contactBuildingStreet(ValidValues.CONTACT_BUILDING)
@@ -482,6 +490,7 @@ public class ApplicationFixture extends AbstractValidator {
         .vehicles(vehicleEntities)
         .walkingAids(walkingAidEntities)
         .walkingDifficultyTypes(walkingDifficultyTypeEntities)
+        .artifacts(artifactEntities)
         .isDeleted(ValidValues.IS_DELETED)
         .deletedTimestamp(null)
         .build();

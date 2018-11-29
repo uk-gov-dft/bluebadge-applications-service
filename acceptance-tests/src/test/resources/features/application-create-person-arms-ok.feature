@@ -48,16 +48,8 @@ Feature: Verify Create person arms ok
       adaptedVehicleDescription: 'adapted vehicle description'
     }
   },
-  artifacts: {
-    proofOfEligibilityUrl: 'string',
-    proofOfAddressUrl: 'string',
-    proofOfIdentityUrl: 'string',
-    badgePhotoUrl: 'string',
-    proofOfEligibility: 'string',
-    proofOfAddress: 'string',
-    proofOfIdentity: 'string',
-    badgePhoto: 'string'
-  }
+  artifacts: [
+  ]
 }
     """
 

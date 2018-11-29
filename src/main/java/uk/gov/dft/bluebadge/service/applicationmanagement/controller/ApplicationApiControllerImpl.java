@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.ApplicationSer
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
 
 @RestController
+@Slf4j
 public class ApplicationApiControllerImpl extends AbstractController implements ApplicationsApi {
 
   private final ApplicationService service;
@@ -48,7 +50,7 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
   @Override
   public ResponseEntity<CreateApplicationResponse> createApplication(
       @ApiParam() @Valid @RequestBody Application application) {
-
+    log.info("Creating application");
     UUID newId = service.createApplication(application);
     return ResponseEntity.ok(new CreateApplicationResponse().data(newId.toString()));
   }
@@ -77,7 +79,7 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
           @Valid
           @RequestParam(value = "applicationTypeCode", required = false)
           Optional<String> applicationTypeCode) {
-
+    log.info("Find applications");
     List<ApplicationSummary> results =
         service.find(
             name.orElse(null),
@@ -93,7 +95,7 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
   @PostAuthorize("@securityUtils.isAuthorisedLACode(returnObject.body.data.localAuthorityCode)")
   public ResponseEntity<ApplicationResponse> retrieveApplication(
       @ApiParam(required = true) @PathVariable("applicationId") String applicationId) {
-
+    log.info("Retrieve application");
     Application result = service.retrieve(applicationId);
     return ResponseEntity.ok(new ApplicationResponse().data(result));
   }
@@ -102,8 +104,8 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
   @PreAuthorize(
       "hasAuthority('PERM_DELETE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
   public ResponseEntity<Void> deleteApplication(
-      @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId) {
-
+      @ApiParam(required = true) @PathVariable("applicationId") String applicationId) {
+    log.info("Delete application");
     service.delete(applicationId);
     return ResponseEntity.ok().build();
   }

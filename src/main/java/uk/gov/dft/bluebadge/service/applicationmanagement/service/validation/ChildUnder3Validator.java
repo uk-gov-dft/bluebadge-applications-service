@@ -1,16 +1,16 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3_OTHER_DESC;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3_TYPES;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BulkyMedicalEquipmentTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ChildUnder3;
-
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3_OTHER_DESC;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_CHILD3_TYPES;
 
 @Component
 public class ChildUnder3Validator extends AbstractValidator {
@@ -30,7 +30,9 @@ public class ChildUnder3Validator extends AbstractValidator {
         && (null == childUnder3.getBulkyMedicalEquipmentTypeCodes()
             || childUnder3.getBulkyMedicalEquipmentTypeCodes().isEmpty())) {
       errors.rejectValue(
-          KEY_ELI_CHILD3_TYPES, "NotNull", "At least 1 bulky medical equipment type code must be specified");
+          KEY_ELI_CHILD3_TYPES,
+          "NotNull",
+          "At least 1 bulky medical equipment type code must be specified");
 
       // No further validation if no type code.
       return;

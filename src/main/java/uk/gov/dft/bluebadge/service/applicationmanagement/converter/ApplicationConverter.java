@@ -63,6 +63,7 @@ public class ApplicationConverter
     model.setPaymentTaken(entity.getIsPaymentTaken());
     model.setSubmissionDate(entity.getSubmissionDatetime().atOffset(ZoneOffset.UTC));
     model.setExistingBadgeNumber(entity.getExistingBadgeNo());
+    model.setArtifacts(null);
 
     for (ApplicationBiConverter converter : converters) {
       converter.convertToModel(model, entity);

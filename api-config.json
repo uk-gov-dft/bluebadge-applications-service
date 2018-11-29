@@ -298,7 +298,10 @@
             "$ref" : "#/definitions/Eligibility"
           },
           "artifacts" : {
-            "$ref" : "#/definitions/Artifacts"
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Artifact"
+            }
           }
         },
         "required" : [ "applicationTypeCode", "paymentTaken", "localAuthorityCode", "party" ]
@@ -662,44 +665,22 @@
         },
         "required" : [ "howProvidedCode" ]
       },
-      "Artifacts" : {
+      "Artifact" : {
         "description" : "Provided files/evidence",
         "type" : "object",
         "properties" : {
-          "proofOfEligibilityUrl" : {
+          "type" : {
+            "description" : "The artifact type",
             "type" : "string",
-            "maxLength" : 255
+            "enum" : [ "PROOF_ELIG", "PROOF_ADD", "PROOF_ID", "PHOTO" ],
+            "example" : "PROOF_ADD"
           },
-          "proofOfAddressUrl" : {
-            "type" : "string",
-            "maxLength" : 255
-          },
-          "proofOfIdentityUrl" : {
-            "type" : "string",
-            "maxLength" : 255
-          },
-          "badgePhotoUrl" : {
-            "type" : "string",
-            "maxLength" : 255,
-            "description" : "A URL for the badge photo."
-          },
-          "proofOfEligibility" : {
-            "type" : "string",
-            "description" : "Base64 encoded."
-          },
-          "proofOfAddress" : {
-            "type" : "string",
-            "description" : "Base64 encoded."
-          },
-          "proofOfIdentity" : {
-            "type" : "string",
-            "description" : "Base64 encoded."
-          },
-          "badgePhoto" : {
-            "type" : "string",
-            "description" : "Base64 encoded. Must be between 50KB and 10MB, and of format JPG, PNG, or GIF."
+          "link" : {
+            "description" : "The link to the artifact",
+            "type" : "string"
           }
-        }
+        },
+        "required" : [ "type", "link" ]
       },
       "PartyTypeCodeField" : {
         "type" : "string",

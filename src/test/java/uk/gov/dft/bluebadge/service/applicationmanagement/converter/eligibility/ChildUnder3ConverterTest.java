@@ -11,7 +11,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 
 public class ChildUnder3ConverterTest extends ApplicationFixture {
 
-  private final ChildUnder3Converter converter = new ChildUnder3Converter(new BulkyEquipmentTypeConverter());
+  private final ChildUnder3Converter converter =
+      new ChildUnder3Converter(new BulkyEquipmentTypeConverter());
 
   @Test
   public void convertToModel() {
