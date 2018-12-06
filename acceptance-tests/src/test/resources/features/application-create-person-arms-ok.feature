@@ -1,5 +1,5 @@
 @application-create-person-arms-ok
-Feature: Verify Create application Person with arms problems
+Feature: Verify Create person arms ok
 
   Background:
     * url baseUrl
@@ -48,16 +48,8 @@ Feature: Verify Create application Person with arms problems
       adaptedVehicleDescription: 'adapted vehicle description'
     }
   },
-  artifacts: {
-    proofOfEligibilityUrl: 'string',
-    proofOfAddressUrl: 'string',
-    proofOfIdentityUrl: 'string',
-    badgePhotoUrl: 'string',
-    proofOfEligibility: 'string',
-    proofOfAddress: 'string',
-    proofOfIdentity: 'string',
-    badgePhoto: 'string'
-  }
+  artifacts: [
+  ]
 }
     """
 

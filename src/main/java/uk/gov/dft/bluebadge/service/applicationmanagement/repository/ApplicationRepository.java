@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
@@ -102,6 +104,26 @@ public class ApplicationRepository implements ApplicationMapper {
   }
 
   @Override
+  public int createBulkyEquipment(List<BulkyEquipmentTypeEntity> equipment) {
+    int insertCount = 0;
+    if (createRequired(equipment)) {
+      insertCount = sqlSession.insert(Statements.CREATE_BULKY_EQUIPMENT_TYPES.getName(), equipment);
+      log.debug("{} bulky equipments created.", insertCount);
+    }
+    return insertCount;
+  }
+
+  @Override
+  public int createArtifacts(List<ArtifactEntity> artifactEntities) {
+    int insertCount = 0;
+    if (createRequired(artifactEntities)) {
+      insertCount = sqlSession.insert(Statements.CREATE_ARTIFACTS.getName(), artifactEntities);
+      log.debug("{} artifacts created.", insertCount);
+    }
+    return insertCount;
+  }
+
+  @Override
   public List<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams) {
     return sqlSession.selectList(Statements.FIND.getName(), findApplicationQueryParams);
@@ -145,5 +167,15 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public int deleteWalkingDifficultyTypes(String applicationId) {
     return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteBulkyEquipmentTypes(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_BULKY_EQUIPMENT_TYPES.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteArtifacts(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_ARTIFACTS.getName(), applicationId);
   }
 }

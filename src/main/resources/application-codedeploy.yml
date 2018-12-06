@@ -19,3 +19,6 @@ spring:
 
 server:
   port: ${bb_port:-8080}
+
+amazon:
+  s3bucket: ${bb_application_artifact_bucket}

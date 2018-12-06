@@ -1,26 +1,27 @@
-@application-create-org-ok-noauth
-Feature: Verify Create org ok noauth
+@application-create-person-child-under3-deprecated-ok
+Feature: Verify Create person childU3 deprecated ok
 
   Background:
     * url baseUrl
+    * def result = callonce read('./oauth2-citizen-app.feature')
     * def dbConfig = { username: 'developer',  ***REMOVED*** }
     * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
+    * header Authorization = 'Bearer ' + result.accessToken
 
-
-  Scenario: Verify valid create organisation
+  Scenario: Verify valid create for person with child under 3 with OTHER equipment
     * def application =
     """
     {
   applicationId: '',
   applicationTypeCode: 'NEW',
   localAuthorityCode: 'BIRM',
-  paymentTaken: true,
+  paymentTaken: false,
   submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'KKKJJJ',
+  existingBadgeNumber: 'KKKKKK',
   party: {
-    typeCode: 'ORG',
+    typeCode: 'PERSON',
     contact: {
       fullName: 'Mabel Jones',
       buildingStreet: '65 Basil Chambers',
@@ -31,25 +32,27 @@ Feature: Verify Create org ok noauth
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'
     },
-    organisation: {
-      badgeHolderName: 'TestDeleteMe',
-      isCharity: true,
-      charityNumber: '12345',
-      vehicles: [
-        {
-          registrationNumber: 'VK61VZZ',
-          typeCode: 'CAR',
-          usageFrequency: 'Daily'
-        }
-      ],
-      numberOfBadges: 1
+    person: {
+      badgeHolderName: 'PersonDeleteMe',
+      nino: 'NS123456A',
+      dob: '1970-05-29',
+      nameAtBirth: 'John Smith',
+      genderCode: 'MALE'
+    },
+  },
+  eligibility: {
+    typeCode: 'CHILDBULK',
+    childUnder3: {
+      bulkyMedicalEquipmentTypeCode: 'OTHER',
+      otherMedicalEquipment: 'Some really big equipment'
     }
-  }
+  },
+  artifacts: []
 }
     """
 
     Given path 'applications'
     And request application
     When method POST
-    Then status 401
-
+    Then status 200
+    And match $.data contains "#notnull"

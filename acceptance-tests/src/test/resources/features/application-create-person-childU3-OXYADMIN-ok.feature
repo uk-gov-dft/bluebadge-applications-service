@@ -1,5 +1,5 @@
 @application-create-person-child-under3-ok
-Feature: Verify Create application Person
+Feature: Verify Create person childU3 OXYADMIN ok
 
   Background:
     * url baseUrl
@@ -43,20 +43,11 @@ Feature: Verify Create application Person
   eligibility: {
     typeCode: 'CHILDBULK',
     childUnder3: {
-      bulkyMedicalEquipmentTypeCode: 'OXYADMIN',
+      bulkyMedicalEquipmentTypeCodes: ['OXYADMIN'],
       otherMedicalEquipment: ''
     }
   },
-  artifacts: {
-    proofOfEligibilityUrl: 'string',
-    proofOfAddressUrl: 'string',
-    proofOfIdentityUrl: 'string',
-    badgePhotoUrl: 'string',
-    proofOfEligibility: 'string',
-    proofOfAddress: 'string',
-    proofOfIdentity: 'string',
-    badgePhoto: 'string'
-  }
+  artifacts: []
 }
     """
 

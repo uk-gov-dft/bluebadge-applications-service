@@ -3,7 +3,7 @@
     "swagger" : "2.0",
     "info" : {
       "description" : "Manage badge applications.\n",
-      "version" : "1.0.0",
+      "version" : "1.0.2",
       "title" : "Applications Service"
     },
     "tags" : [ {
@@ -298,7 +298,10 @@
             "$ref" : "#/definitions/Eligibility"
           },
           "artifacts" : {
-            "$ref" : "#/definitions/Artifacts"
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Artifact"
+            }
           }
         },
         "required" : [ "applicationTypeCode", "paymentTaken", "localAuthorityCode", "party" ]
@@ -487,18 +490,25 @@
       },
       "ChildUnder3" : {
         "type" : "object",
+        "description" : "bulkyMedicalEquipmentTypeCode is DEPRECATED - use the array version.  Until removed One entry will be put in the non array field by citizen application if there are multiple codes entered. All entered values will be in the array version.",
         "properties" : {
           "bulkyMedicalEquipmentTypeCode" : {
             "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
           },
+          "bulkyMedicalEquipmentTypeCodes" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
+            }
+          },
           "otherMedicalEquipment" : {
             "type" : "string",
             "description" : "A short description of the medical equipment.",
-            "example" : "Oxygen cylinders",
-            "maxLength" : 100
+            "maxLength" : 100,
+            "example" : "Oxygen cylinders"
           }
         },
-        "required" : [ "bulkyMedicalEquipmentTypeCode" ]
+        "required" : [ "bulkyMedicalEquipmentTypeCodes" ]
       },
       "Blind" : {
         "type" : "object",
@@ -655,44 +665,22 @@
         },
         "required" : [ "howProvidedCode" ]
       },
-      "Artifacts" : {
+      "Artifact" : {
         "description" : "Provided files/evidence",
         "type" : "object",
         "properties" : {
-          "proofOfEligibilityUrl" : {
+          "type" : {
+            "description" : "The artifact type",
             "type" : "string",
-            "maxLength" : 255
+            "enum" : [ "PROOF_ELIG", "PROOF_ADD", "PROOF_ID", "PHOTO" ],
+            "example" : "PROOF_ADD"
           },
-          "proofOfAddressUrl" : {
-            "type" : "string",
-            "maxLength" : 255
-          },
-          "proofOfIdentityUrl" : {
-            "type" : "string",
-            "maxLength" : 255
-          },
-          "badgePhotoUrl" : {
-            "type" : "string",
-            "maxLength" : 255,
-            "description" : "A URL for the badge photo."
-          },
-          "proofOfEligibility" : {
-            "type" : "string",
-            "description" : "Base64 encoded."
-          },
-          "proofOfAddress" : {
-            "type" : "string",
-            "description" : "Base64 encoded."
-          },
-          "proofOfIdentity" : {
-            "type" : "string",
-            "description" : "Base64 encoded."
-          },
-          "badgePhoto" : {
-            "type" : "string",
-            "description" : "Base64 encoded. Must be between 50KB and 10MB, and of format JPG, PNG, or GIF."
+          "link" : {
+            "description" : "The link to the artifact",
+            "type" : "string"
           }
-        }
+        },
+        "required" : [ "type", "link" ]
       },
       "PartyTypeCodeField" : {
         "type" : "string",
@@ -721,12 +709,13 @@
       },
       "BulkyMedicalEquipmentTypeCodeField" : {
         "type" : "string",
-        "enum" : [ "NONE", "OTHER", "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT" ],
-        "example" : "CAST"
+        "enum" : [ "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT", "OTHER", "NONE" ],
+        "example" : "CAST",
+        "description" : "NONE is deprecated"
       },
       "WalkingDifficultyTypeCodeField" : {
         "type" : "string",
-        "enum" : [ "PAIN", "BREATH", "BALANCE", "DANGER", "STRUGGLE", "SOMELSE" ],
+        "enum" : [ "PAIN", "BREATH", "BALANCE", "DANGER", "STRUGGLE", "SOMELSE", "LONGTIME" ],
         "example" : "PAIN"
       },
       "WalkingLengthOfTimeCodeField" : {

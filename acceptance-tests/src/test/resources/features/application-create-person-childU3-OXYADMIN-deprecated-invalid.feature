@@ -1,5 +1,5 @@
 @application-create-person-child-under3-ok
-Feature: Verify Create person childU3 OTHER invalid
+Feature: Verify Create person childU3 OXYADMIN deprecated invalid
 
   Background:
     * url baseUrl
@@ -10,7 +10,7 @@ Feature: Verify Create person childU3 OTHER invalid
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify invalid create for person with child under 3 with OTHER equipment and no additional description
+  Scenario: Verify invalid create for person with child under 3 with OXYADMIN equipment and otherEquipmentDesc supplied
     * def application =
     """
     {
@@ -43,8 +43,8 @@ Feature: Verify Create person childU3 OTHER invalid
   eligibility: {
     typeCode: 'CHILDBULK',
     childUnder3: {
-      bulkyMedicalEquipmentTypeCodes: ['OTHER', 'VENT'],
-      otherMedicalEquipment: ''
+      bulkyMedicalEquipmentTypeCode: 'OXYADMIN',
+      otherMedicalEquipment: 'This should not be here'
     }
   },
   artifacts: []
@@ -55,5 +55,5 @@ Feature: Verify Create person childU3 OTHER invalid
     And request application
     When method POST
     Then status 400
-    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
+    And match $.error.errors contains {field:"eligibility.childUnder3.otherMedicalEquipment", reason:"Can only be supplied if a bulky equipment type of OTHER is present", message:"NotValid.application.eligibility.childUnder3.otherMedicalEquipment", location:"#null", locationType:"#null"}
 
