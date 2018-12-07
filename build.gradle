@@ -48,7 +48,6 @@ configurations.all {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     jcenter()
     maven {
@@ -74,7 +73,7 @@ sourceSets {
 }
 
 dependencies {
-    ext.commonVersion = '0.6.9-SNAPSHOT'
+    ext.commonVersion = '0.6.9-feature_BBB-1069-pagination-SNAPSHOT'
     compile group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: "${commonVersion}", changing: true
     
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.5'
