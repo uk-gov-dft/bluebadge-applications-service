@@ -1,5 +1,8 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
+import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.DEFAULT_PAGE_NUM;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.DEFAULT_PAGE_SIZE;
+
 import java.time.Clock;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.dft.bluebadge.common.api.model.Error;
+import uk.gov.dft.bluebadge.common.api.model.PagedResult;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
@@ -100,12 +104,14 @@ public class ApplicationService {
     }
   }
 
-  public List<ApplicationSummary> find(
+  public PagedResult<ApplicationSummary> find(
       String name,
       String postcode,
       OffsetDateTime from,
       OffsetDateTime to,
-      String applicationTypeCode) {
+      String applicationTypeCode,
+      Integer pageNum,
+      Integer pageSize) {
 
     String userAuthorityCode = securityUtils.getCurrentLocalAuthorityShortCode();
 
@@ -135,8 +141,12 @@ public class ApplicationService {
             .postcode(postcode)
             .deleted(Boolean.FALSE)
             .build();
+
+    pageNum = null == pageNum ? DEFAULT_PAGE_NUM : pageNum;
+    pageSize = null == pageSize ? DEFAULT_PAGE_SIZE : pageSize;
+
     return new ApplicationSummaryConverter()
-        .convertToModelList(repository.findApplications(params));
+        .convertToModelList(repository.findApplications(params, pageNum, pageSize));
   }
 
   private Instant timeToInstantOrNull(OffsetDateTime time) {

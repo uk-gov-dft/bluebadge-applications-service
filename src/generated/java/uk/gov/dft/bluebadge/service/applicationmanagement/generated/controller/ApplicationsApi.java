@@ -163,7 +163,15 @@ public interface ApplicationsApi {
       @ApiParam(value = "", allowableValues = "NEW, RENEW, CANCEL, REVOKE")
           @Valid
           @RequestParam(value = "applicationTypeCode", required = false)
-          Optional<String> applicationTypeCode) {
+          Optional<String> applicationTypeCode,
+      @ApiParam(value = "The page to return. Must be a positive number. Default is 1.")
+          @Valid
+          @RequestParam(value = "pageNum", required = false)
+          Optional<Integer> pageNum,
+      @ApiParam(value = "The number of results. Min 1 max 100. Default 50")
+          @Valid
+          @RequestParam(value = "pageSize", required = false)
+          Optional<Integer> pageSize) {
     if (getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
       if (getAcceptHeader().get().contains("application/json")) {
         try {

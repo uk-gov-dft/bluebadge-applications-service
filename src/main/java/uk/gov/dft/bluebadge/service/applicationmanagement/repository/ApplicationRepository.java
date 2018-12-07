@@ -1,9 +1,12 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
@@ -24,6 +27,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.Stat
 @Slf4j
 public class ApplicationRepository implements ApplicationMapper {
 
+  public static final Integer DEFAULT_PAGE_NUM = 1;
+  public static final Integer DEFAULT_PAGE_SIZE = 50;
   private final SqlSession sqlSession;
 
   ApplicationRepository(SqlSession sqlSession) {
@@ -126,7 +131,18 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public List<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams) {
-    return sqlSession.selectList(Statements.FIND.getName(), findApplicationQueryParams);
+    return findApplications(findApplicationQueryParams, DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE);
+  }
+
+  @Override
+  public Page<ApplicationSummaryEntity> findApplications(
+      FindApplicationQueryParams findApplicationQueryParams, Integer pageNum, Integer pageSize) {
+    Assert.notNull(findApplicationQueryParams, "findApplicationQueryParams is null");
+    Assert.notNull(pageNum, "pageNum is null");
+    Assert.notNull(pageSize, "pageSize is null");
+    return PageHelper.startPage(pageNum, pageSize, true)
+        .doSelectPage(
+            () -> sqlSession.selectList(Statements.FIND.getName(), findApplicationQueryParams));
   }
 
   @Override

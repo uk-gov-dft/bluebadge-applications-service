@@ -178,7 +178,6 @@
         </if>
         
         ORDER BY submission_datetime DESC
-        LIMIT 50
     </select>
 
     <resultMap id="retrieveApplicationMap" type="ApplicationEntity">

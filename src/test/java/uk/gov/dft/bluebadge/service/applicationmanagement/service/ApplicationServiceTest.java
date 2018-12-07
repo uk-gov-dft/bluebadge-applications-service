@@ -4,29 +4,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.github.pagehelper.Page;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.dft.bluebadge.common.api.model.PagedResult;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
 
@@ -78,7 +82,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn(null);
 
     // When find.
-    service.find(null, null, null, null, null);
+    service.find(null, null, null, null, null, null, null);
 
     // Then Bad Request thrown.
   }
@@ -89,7 +93,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
 
     // When find.
-    service.find(null, null, null, null, INVALID_APPLICATION_TYPE_CODE);
+    service.find(null, null, null, null, INVALID_APPLICATION_TYPE_CODE, null, null);
 
     // Then Bad Request thrown.
   }
@@ -98,29 +102,46 @@ public class ApplicationServiceTest extends ApplicationFixture {
   public void find_withNullsValid() {
     // Given a search for applications with valid LA and no other criteria.
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
-    when(repository.findApplications(any())).thenReturn(new ArrayList<>());
+    when(repository.findApplications(any(), any(), any())).thenReturn(new Page<>());
 
     // When searching
-    service.find(null, null, null, null, null);
-
+    service.find(null, null, null, null, null, null, null);
     // No exceptions
+
+    verify(repository).findApplications(any(), eq(1), eq(50));
   }
 
   @Test
   public void find_validAndResults() {
     // Given a search for applications with all criteria specified
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
-    List<ApplicationSummaryEntity> entities = new ArrayList<>();
+    Page<ApplicationSummaryEntity> entities = new Page<>();
     entities.add(ApplicationSummaryEntity.builder().applicationId(UUID.randomUUID()).build());
-    when(repository.findApplications(any())).thenReturn(entities);
+    when(repository.findApplications(any(), any(), any())).thenReturn(entities);
 
     // When searching
-    List<ApplicationSummary> results =
-        service.find("name", "postcode", OffsetDateTime.now(), OffsetDateTime.now(), "NEW");
+    OffsetDateTime from = OffsetDateTime.now();
+    OffsetDateTime to = OffsetDateTime.now();
+    PagedResult<ApplicationSummary> results =
+        service.find(
+            "name", "postcode", from, to, "NEW", null, null);
 
     // Then valid converted model object returned.
-    assertEquals(1, results.size());
-    assertNotNull(results.get(0).getApplicationId());
+    assertEquals(1, results.getData().size());
+    assertNotNull(results.getData().get(0).getApplicationId());
+
+    ArgumentCaptor<FindApplicationQueryParams> captor =
+        ArgumentCaptor.forClass(FindApplicationQueryParams.class);
+    verify(repository).findApplications(captor.capture(), eq(1), eq(50));
+
+    assertThat(captor).isNotNull();
+    assertThat(captor.getValue()).isNotNull();
+    assertThat(captor.getValue().getName()).isEqualTo("name");
+    assertThat(captor.getValue().getPostcode()).isEqualTo("postcode");
+    assertThat(captor.getValue().getSubmissionFrom()).isEqualTo(from.toInstant());
+    assertThat(captor.getValue().getSubmissionTo()).isEqualTo(to.toInstant());
+    assertThat(captor.getValue().getAuthorityCode()).isEqualTo("ABERD");
+    assertThat(captor.getValue().getApplicationTypeCode()).isEqualTo(ApplicationTypeCodeField.NEW);
   }
 
   @Test

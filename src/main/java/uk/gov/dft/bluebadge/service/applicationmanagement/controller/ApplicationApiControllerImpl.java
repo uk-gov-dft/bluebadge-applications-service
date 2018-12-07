@@ -2,7 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.controller;
 
 import io.swagger.annotations.ApiParam;
 import java.time.OffsetDateTime;
-import java.util.List;
+
 import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.dft.bluebadge.common.api.model.PagedResult;
 import uk.gov.dft.bluebadge.common.controller.AbstractController;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
@@ -78,16 +79,30 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
       @ApiParam(allowableValues = "NEW, RENEW, CANCEL, REVOKE")
           @Valid
           @RequestParam(value = "applicationTypeCode", required = false)
-          Optional<String> applicationTypeCode) {
+          Optional<String> applicationTypeCode,
+      @ApiParam(value = "The page to return. Must be a positive number. Default is 1.")
+          @Valid
+          @RequestParam(value = "pageNum", required = false)
+          Optional<Integer> pageNum,
+      @ApiParam(value = "The number of results. Min 1 max 100. Default 100")
+          @Valid
+          @RequestParam(value = "pageSize", required = false)
+          Optional<Integer> pageSize) {
     log.info("Find applications");
-    List<ApplicationSummary> results =
+    PagedResult<ApplicationSummary> results =
         service.find(
             name.orElse(null),
             postcode.orElse(null),
             from.orElse(null),
             to.orElse(null),
-            applicationTypeCode.orElse(null));
-    return ResponseEntity.ok(new ApplicationSummaryResponse().data(results));
+            applicationTypeCode.orElse(null),
+            pageNum.orElse(null),
+            pageSize.orElse(null));
+    return ResponseEntity.ok(
+        (ApplicationSummaryResponse)
+            new ApplicationSummaryResponse()
+                .data(results.getData())
+                .pagingInfo(results.getPagingInfo()));
   }
 
   @Override

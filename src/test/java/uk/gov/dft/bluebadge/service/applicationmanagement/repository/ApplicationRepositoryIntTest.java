@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.github.pagehelper.Page;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -157,9 +158,26 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
   public void find_moreThan50() {
     FindApplicationQueryParams params =
         FindApplicationQueryParams.builder().authorityCode("ABERD").build();
-    List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
+    Page<ApplicationSummaryEntity> results = applicationRepository.findApplications(params, 1, 50);
 
-    assertEquals(50, results.size());
+    assertThat(results.size()).isEqualTo(50);
+    assertThat(results.getTotal()).isGreaterThan(50);
+    assertThat(results.getPageSize()).isEqualTo(50);
+    assertThat(results.getPageNum()).isEqualTo(1);
+    assertThat(results.getPages()).isGreaterThan(1);
+  }
+
+  @Test
+  public void find_moreThan50_2ndPage() {
+    FindApplicationQueryParams params =
+        FindApplicationQueryParams.builder().authorityCode("ABERD").build();
+    Page<ApplicationSummaryEntity> results = applicationRepository.findApplications(params, 2, 50);
+
+    assertThat(results.size()).isLessThan(50);
+    assertThat(results.getTotal()).isGreaterThan(50);
+    assertThat(results.getPageSize()).isEqualTo(50);
+    assertThat(results.getPageNum()).isEqualTo(2);
+    assertThat(results.getPages()).isGreaterThan(1);
   }
 
   @Test
