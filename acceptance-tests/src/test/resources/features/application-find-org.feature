@@ -18,6 +18,9 @@ Feature: Verify find org
     When method GET
     Then status 200
     And match $.data[*].applicationId contains createdAppNo
+    And match $.pageInfo == #nonNull
+    And match $.pageInfo.pageNum == 1
+    And match $.pageInfo.pageSize == 50
 
   Scenario: Verify find by name no result
     Given path 'applications'
