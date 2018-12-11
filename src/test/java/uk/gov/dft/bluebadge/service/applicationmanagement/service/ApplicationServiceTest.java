@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 
 import com.github.pagehelper.Page;
 import java.time.OffsetDateTime;
-
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -123,8 +122,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     OffsetDateTime from = OffsetDateTime.now();
     OffsetDateTime to = OffsetDateTime.now();
     PagedResult<ApplicationSummary> results =
-        service.find(
-            "name", "postcode", from, to, "NEW", null, null);
+        service.find("name", "postcode", from, to, "NEW", null, null);
 
     // Then valid converted model object returned.
     assertEquals(1, results.getData().size());

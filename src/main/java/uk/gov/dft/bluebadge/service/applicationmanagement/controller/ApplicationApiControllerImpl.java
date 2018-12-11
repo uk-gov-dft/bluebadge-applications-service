@@ -2,7 +2,6 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.controller;
 
 import io.swagger.annotations.ApiParam;
 import java.time.OffsetDateTime;
-
 import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
