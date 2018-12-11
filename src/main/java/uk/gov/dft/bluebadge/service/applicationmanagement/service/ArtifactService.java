@@ -7,6 +7,12 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import java.net.URL;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +24,6 @@ import uk.gov.dft.bluebadge.common.service.exception.InternalServerException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.service.applicationmanagement.config.S3Config;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
-
-import java.net.URL;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -121,8 +120,9 @@ class ArtifactService {
         a -> {
           if (amazonS3.doesObjectExist(s3Config.getS3Bucket(), a.getLink())) {
             amazonS3.deleteObject(s3Config.getS3Bucket(), a.getLink());
-          }else{
-            log.warn("Attempting to delete s3 object not found in s3. Missing key: {}", a.getLink());
+          } else {
+            log.warn(
+                "Attempting to delete s3 object not found in s3. Missing key: {}", a.getLink());
           }
         });
   }

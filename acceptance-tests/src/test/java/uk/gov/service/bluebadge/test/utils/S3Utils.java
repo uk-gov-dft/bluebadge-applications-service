@@ -2,7 +2,6 @@ package uk.gov.service.bluebadge.test.utils;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -23,7 +22,7 @@ public class S3Utils {
     return s3key;
   }
 
-  public boolean fileExists(String key){
+  public boolean fileExists(String key) {
     return s3.doesObjectExist(bucket, key);
   }
 }

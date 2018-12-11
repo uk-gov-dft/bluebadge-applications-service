@@ -29,15 +29,15 @@ public class ArtifactServiceTest {
       "https://test-bucket.s3.eu-west-2.amazonaws.com/test/key.jpg";
   private static final String VALID_S3_URL_2 =
       "https://test-bucket.s3.eu-west-2.amazonaws.com/test2/key2.jpg";
-  public static final String DEST_BUCKET = "dest-bucket";
+  private static final String DEST_BUCKET = "dest-bucket";
 
-  ArtifactService artifactService;
+  private ArtifactService artifactService;
 
   @Mock AmazonS3 amazonS3Mock;
   private List<Artifact> testArifacts;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     MockitoAnnotations.initMocks(this);
     S3Config config = new S3Config();
 
@@ -98,7 +98,7 @@ public class ArtifactServiceTest {
       artifactService.saveArtifacts(testArifacts, applicationId);
       fail("no exception thrown");
     } catch (BadRequestException e) {
-      Error error = e.getResponse().getBody().getError();
+      @SuppressWarnings("ConstantConditions") Error error = e.getResponse().getBody().getError();
       assertThat(error.getMessage()).startsWith("Failed to extract S3 object bucket from url");
       assertThat(error.getMessage()).endsWith("https://s3.eu-west-2.amazonaws.com/");
     }
