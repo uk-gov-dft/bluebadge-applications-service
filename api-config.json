@@ -111,6 +111,16 @@
             "name" : "applicationTypeCode",
             "type" : "string",
             "enum" : [ "NEW", "RENEW", "CANCEL", "REVOKE" ]
+          }, {
+            "in" : "query",
+            "name" : "pageNum",
+            "type" : "integer",
+            "description" : "The page to return. Must be a positive number. Default is 1."
+          }, {
+            "in" : "query",
+            "name" : "pageSize",
+            "type" : "integer",
+            "description" : "The number of results. Min 1 max 100. Default 50"
           } ],
           "tags" : [ "applications" ],
           "summary" : "Find applications.",
@@ -145,6 +155,9 @@
           },
           "error" : {
             "$ref" : "#/definitions/Error"
+          },
+          "pagingInfo" : {
+            "$ref" : "#/definitions/PagingInfo"
           }
         }
       },
@@ -179,6 +192,31 @@
                 }
               }
             }
+          }
+        }
+      },
+      "PagingInfo" : {
+        "type" : "object",
+        "properties" : {
+          "total" : {
+            "type" : "integer",
+            "description" : "The total number of results for the search."
+          },
+          "count" : {
+            "type" : "integer",
+            "description" : "The number of results included within the response"
+          },
+          "pageSize" : {
+            "type" : "integer",
+            "description" : "The number of results per page. Equivalent to the page limit"
+          },
+          "pageNum" : {
+            "type" : "integer",
+            "description" : "The index of the first result included within the response, within the total results"
+          },
+          "pages" : {
+            "type" : "integer",
+            "description" : "Total number of pages for the given page limit"
           }
         }
       },

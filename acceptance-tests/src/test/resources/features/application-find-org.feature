@@ -18,6 +18,23 @@ Feature: Verify find org
     When method GET
     Then status 200
     And match $.data[*].applicationId contains createdAppNo
+    And match $.pagingInfo.count == 1
+    And match $.pagingInfo.total == 1
+    And match $.pagingInfo.pageNum == 1
+    And match $.pagingInfo.pageSize == 50
+    And match $.pagingInfo.pages == 1
+
+  Scenario: Verify find by name second page
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageNum = 2
+    When method GET
+    Then status 200
+    And match $.pagingInfo.count == 0
+    And match $.pagingInfo.total == 1
+    And match $.pagingInfo.pageNum == 2
+    And match $.pagingInfo.pageSize == 50
+    And match $.pagingInfo.pages == 1
 
   Scenario: Verify find by name no result
     Given path 'applications'
@@ -107,3 +124,27 @@ Feature: Verify find org
     Then status 400
     And match $.error.message contains 'Invalid applicationTypeCode: NEWWRONG'
     And match $.error.reason contains 'applicationTypeCode'
+
+  Scenario: Verify invalid paging params (pageNum) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageNum = 0
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Min.pagingParams.pageNum", location:"#null", locationType:"#null"}
+
+  Scenario: Verify invalid paging params (pageSize = 0) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageSize = 0
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Min.pagingParams.pageSize", location:"#null", locationType:"#null"}
+
+  Scenario: Verify invalid paging params (pageSize > 200) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageSize = 201
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Max.pagingParams.pageSize", location:"#null", locationType:"#null"}
