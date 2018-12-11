@@ -18,9 +18,23 @@ Feature: Verify find org
     When method GET
     Then status 200
     And match $.data[*].applicationId contains createdAppNo
-    And match $.pageInfo == #nonNull
-    And match $.pageInfo.pageNum == 1
-    And match $.pageInfo.pageSize == 50
+    And match $.pagingInfo.count == 1
+    And match $.pagingInfo.total == 1
+    And match $.pagingInfo.pageNum == 1
+    And match $.pagingInfo.pageSize == 50
+    And match $.pagingInfo.pages == 1
+
+  Scenario: Verify find by name second page
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageNum = 2
+    When method GET
+    Then status 200
+    And match $.pagingInfo.count == 0
+    And match $.pagingInfo.total == 1
+    And match $.pagingInfo.pageNum == 2
+    And match $.pagingInfo.pageSize == 50
+    And match $.pagingInfo.pages == 1
 
   Scenario: Verify find by name no result
     Given path 'applications'
