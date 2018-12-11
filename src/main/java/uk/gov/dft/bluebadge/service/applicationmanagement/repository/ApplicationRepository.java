@@ -29,6 +29,7 @@ public class ApplicationRepository implements ApplicationMapper {
 
   public static final Integer DEFAULT_PAGE_NUM = 1;
   public static final Integer DEFAULT_PAGE_SIZE = 50;
+  public static final Integer MAX_PAGE_SIZE = 200;
   private final SqlSession sqlSession;
 
   ApplicationRepository(SqlSession sqlSession) {

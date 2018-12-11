@@ -83,7 +83,7 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
           @Valid
           @RequestParam(value = "pageNum", required = false)
           Optional<Integer> pageNum,
-      @ApiParam(value = "The number of results. Min 1 max 100. Default 100")
+      @ApiParam(value = "The number of results. Min 1 max 200. Default 50")
           @Valid
           @RequestParam(value = "pageSize", required = false)
           Optional<Integer> pageSize) {

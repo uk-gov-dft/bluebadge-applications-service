@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
 import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.DEFAULT_PAGE_NUM;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.DEFAULT_PAGE_SIZE;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.MAX_PAGE_SIZE;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -144,6 +145,9 @@ public class ApplicationService {
 
     pageNum = null == pageNum ? DEFAULT_PAGE_NUM : pageNum;
     pageSize = null == pageSize ? DEFAULT_PAGE_SIZE : pageSize;
+    if(MAX_PAGE_SIZE < pageSize){
+      pageSize = MAX_PAGE_SIZE;
+    }
 
     return new ApplicationSummaryConverter()
         .convertToModelList(repository.findApplications(params, pageNum, pageSize));
