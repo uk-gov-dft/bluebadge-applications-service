@@ -25,6 +25,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
+import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
@@ -81,7 +82,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn(null);
 
     // When find.
-    service.find(null, null, null, null, null, null, null);
+    service.find(FindApplicationQueryParams.builder().build(), new PagingParams());
 
     // Then Bad Request thrown.
   }
@@ -92,7 +93,12 @@ public class ApplicationServiceTest extends ApplicationFixture {
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
 
     // When find.
-    service.find(null, null, null, null, INVALID_APPLICATION_TYPE_CODE, null, null);
+    FindApplicationQueryParams queryParams =
+        FindApplicationQueryParams.builder()
+            .applicationTypeCode("INVALID_APPLICATION_TYPE_CODE")
+            .build();
+    PagingParams pagingParams = new PagingParams();
+    service.find(queryParams, pagingParams);
 
     // Then Bad Request thrown.
   }
@@ -104,7 +110,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
     when(repository.findApplications(any(), any(), any())).thenReturn(new Page<>());
 
     // When searching
-    service.find(null, null, null, null, null, null, null);
+    service.find(FindApplicationQueryParams.builder().build(), new PagingParams());
     // No exceptions
 
     verify(repository).findApplications(any(), eq(1), eq(50));
@@ -121,8 +127,16 @@ public class ApplicationServiceTest extends ApplicationFixture {
     // When searching
     OffsetDateTime from = OffsetDateTime.now();
     OffsetDateTime to = OffsetDateTime.now();
-    PagedResult<ApplicationSummary> results =
-        service.find("name", "postcode", from, to, "NEW", null, null);
+    FindApplicationQueryParams queryParams =
+        FindApplicationQueryParams.builder()
+            .name("name")
+            .postcode("postcode")
+            .from(from.toInstant())
+            .to(to.toInstant())
+            .applicationTypeCode("NEW")
+            .build();
+    PagingParams pagingParams = new PagingParams();
+    PagedResult<ApplicationSummary> results = service.find(queryParams, pagingParams);
 
     // Then valid converted model object returned.
     assertEquals(1, results.getData().size());

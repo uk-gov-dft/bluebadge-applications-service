@@ -29,7 +29,6 @@ public class ApplicationRepository implements ApplicationMapper {
 
   public static final Integer DEFAULT_PAGE_NUM = 1;
   public static final Integer DEFAULT_PAGE_SIZE = 50;
-  public static final Integer MAX_PAGE_SIZE = 200;
   private final SqlSession sqlSession;
 
   ApplicationRepository(SqlSession sqlSession) {
@@ -139,6 +138,9 @@ public class ApplicationRepository implements ApplicationMapper {
   public Page<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams, Integer pageNum, Integer pageSize) {
     Assert.notNull(findApplicationQueryParams, "findApplicationQueryParams is null");
+    Assert.notNull(
+        findApplicationQueryParams.getAuthorityCode(),
+        "findApplicationQueryParams.authorityCode is null");
     Assert.notNull(pageNum, "pageNum is null");
     Assert.notNull(pageSize, "pageSize is null");
     return PageHelper.startPage(pageNum, pageSize, true)

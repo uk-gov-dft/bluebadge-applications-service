@@ -1,13 +1,10 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.controller;
 
 import io.swagger.annotations.ApiParam;
-import java.time.OffsetDateTime;
-import java.util.Optional;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.dft.bluebadge.common.api.model.PagedResult;
 import uk.gov.dft.bluebadge.common.controller.AbstractController;
@@ -25,6 +21,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSum
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummaryResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
 import uk.gov.dft.bluebadge.service.applicationmanagement.generated.controller.ApplicationsApi;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.ApplicationService;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
 
@@ -42,7 +39,7 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
     this.validator = validator;
   }
 
-  @InitBinder
+  @InitBinder("application")
   protected void initBinder(WebDataBinder binder) {
     binder.addValidators(validator);
   }
@@ -57,46 +54,10 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
 
   @Override
   public ResponseEntity<ApplicationSummaryResponse> findApplications(
-      @ApiParam(value = "'Search by organisation or person name, results contain search param' ")
-          @Valid
-          @RequestParam(value = "name", required = false)
-          Optional<String> name,
-      @ApiParam(value = "'Returns results starting with the parameter.' ")
-          @Valid
-          @RequestParam(value = "postcode", required = false)
-          Optional<String> postcode,
-      @ApiParam(value = "From submission date inclusive. 2018-12-25T12:30:45Z")
-          @Valid
-          @RequestParam(value = "from", required = false)
-          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-          Optional<OffsetDateTime> from,
-      @ApiParam(value = "To submission date inclusive. 2018-12-25T12:30:45Z")
-          @Valid
-          @RequestParam(value = "to", required = false)
-          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-          Optional<OffsetDateTime> to,
-      @ApiParam(allowableValues = "NEW, RENEW, CANCEL, REVOKE")
-          @Valid
-          @RequestParam(value = "applicationTypeCode", required = false)
-          Optional<String> applicationTypeCode,
-      @ApiParam(value = "The page to return. Must be a positive number. Default is 1.")
-          @Valid
-          @RequestParam(value = "pageNum", required = false)
-          Optional<Integer> pageNum,
-      @ApiParam(value = "The number of results. Min 1 max 200. Default 50")
-          @Valid
-          @RequestParam(value = "pageSize", required = false)
-          Optional<Integer> pageSize) {
+      @Valid FindApplicationQueryParams searchParams, @Valid PagingParams pagingParams) {
     log.info("Find applications");
-    PagedResult<ApplicationSummary> results =
-        service.find(
-            name.orElse(null),
-            postcode.orElse(null),
-            from.orElse(null),
-            to.orElse(null),
-            applicationTypeCode.orElse(null),
-            pageNum.orElse(null),
-            pageSize.orElse(null));
+
+    PagedResult<ApplicationSummary> results = service.find(searchParams, pagingParams);
     return ResponseEntity.ok(
         (ApplicationSummaryResponse)
             new ApplicationSummaryResponse()

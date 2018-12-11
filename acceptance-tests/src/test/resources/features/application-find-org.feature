@@ -124,3 +124,27 @@ Feature: Verify find org
     Then status 400
     And match $.error.message contains 'Invalid applicationTypeCode: NEWWRONG'
     And match $.error.reason contains 'applicationTypeCode'
+
+  Scenario: Verify invalid paging params (pageNum) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageNum = 0
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Min.pagingParams.pageNum", location:"#null", locationType:"#null"}
+
+  Scenario: Verify invalid paging params (pageSize = 0) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageSize = 0
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Min.pagingParams.pageSize", location:"#null", locationType:"#null"}
+
+  Scenario: Verify invalid paging params (pageSize > 200) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageSize = 201
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Max.pagingParams.pageSize", location:"#null", locationType:"#null"}

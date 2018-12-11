@@ -197,11 +197,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     Instant to = ZonedDateTime.now().minus(ofYears(10)).toInstant();
     to = to.plus(ofMinutes(1));
     FindApplicationQueryParams params =
-        FindApplicationQueryParams.builder()
-            .authorityCode("ABERD")
-            .submissionFrom(from)
-            .submissionTo(to)
-            .build();
+        FindApplicationQueryParams.builder().authorityCode("ABERD").from(from).to(to).build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 
     assertEquals(1, results.size());
@@ -213,7 +209,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     FindApplicationQueryParams params =
         FindApplicationQueryParams.builder()
             .authorityCode("ABERD")
-            .applicationTypeCode(ApplicationTypeCodeField.CANCEL)
+            .applicationTypeCode(ApplicationTypeCodeField.CANCEL.name())
             .build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 

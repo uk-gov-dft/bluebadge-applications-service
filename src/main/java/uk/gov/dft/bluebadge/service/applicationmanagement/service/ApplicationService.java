@@ -1,9 +1,5 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
-import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.DEFAULT_PAGE_NUM;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.DEFAULT_PAGE_SIZE;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository.MAX_PAGE_SIZE;
-
 import java.time.Clock;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -21,8 +17,8 @@ import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
+import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.ApplicationRepository;
@@ -106,13 +102,7 @@ public class ApplicationService {
   }
 
   public PagedResult<ApplicationSummary> find(
-      String name,
-      String postcode,
-      OffsetDateTime from,
-      OffsetDateTime to,
-      String applicationTypeCode,
-      Integer pageNum,
-      Integer pageSize) {
+      FindApplicationQueryParams searchParams, PagingParams pagingParams) {
 
     String userAuthorityCode = securityUtils.getCurrentLocalAuthorityShortCode();
 
@@ -122,35 +112,20 @@ public class ApplicationService {
       error.setReason("localAuthorityShortCode");
       throw new BadRequestException(error);
     }
+    searchParams.setAuthorityCode(userAuthorityCode);
 
-    ApplicationTypeCodeField applicationTypeCodeEnum =
-        ApplicationTypeCodeField.fromValue(applicationTypeCode);
-    if (StringUtils.isNotBlank(applicationTypeCode) && applicationTypeCodeEnum == null) {
+    if (StringUtils.isNotBlank(searchParams.getApplicationTypeCodeStr())
+        && searchParams.getApplicationTypeCode() == null) {
       Error error = new Error();
-      error.setMessage("Invalid applicationTypeCode: " + applicationTypeCode);
+      error.setMessage("Invalid applicationTypeCode: " + searchParams.getApplicationTypeCodeStr());
       error.setReason("applicationTypeCode");
       throw new BadRequestException(error);
     }
 
-    FindApplicationQueryParams params =
-        FindApplicationQueryParams.builder()
-            .authorityCode(userAuthorityCode)
-            .name(name)
-            .applicationTypeCode(applicationTypeCodeEnum)
-            .submissionTo(timeToInstantOrNull(to))
-            .submissionFrom(timeToInstantOrNull(from))
-            .postcode(postcode)
-            .deleted(Boolean.FALSE)
-            .build();
-
-    pageNum = null == pageNum ? DEFAULT_PAGE_NUM : pageNum;
-    pageSize = null == pageSize ? DEFAULT_PAGE_SIZE : pageSize;
-    if(MAX_PAGE_SIZE < pageSize){
-      pageSize = MAX_PAGE_SIZE;
-    }
-
     return new ApplicationSummaryConverter()
-        .convertToModelList(repository.findApplications(params, pageNum, pageSize));
+        .convertToModelList(
+            repository.findApplications(
+                searchParams, pagingParams.getPageNum(), pagingParams.getPageSize()));
   }
 
   private Instant timeToInstantOrNull(OffsetDateTime time) {
