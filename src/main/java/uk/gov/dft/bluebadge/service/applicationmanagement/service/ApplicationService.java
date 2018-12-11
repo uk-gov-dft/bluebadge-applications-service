@@ -128,14 +128,6 @@ public class ApplicationService {
                 searchParams, pagingParams.getPageNum(), pagingParams.getPageSize()));
   }
 
-  private Instant timeToInstantOrNull(OffsetDateTime time) {
-    if (null == time) {
-      return null;
-    }
-
-    return time.toInstant();
-  }
-
   public Application retrieve(String applicationId) {
     UUID uuid = getUuid(applicationId);
 
