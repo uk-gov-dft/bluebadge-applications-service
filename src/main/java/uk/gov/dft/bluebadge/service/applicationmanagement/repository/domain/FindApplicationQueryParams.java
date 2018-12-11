@@ -1,7 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain;
 
 import java.time.Instant;
-import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
@@ -13,9 +12,25 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTyp
 public class FindApplicationQueryParams {
   private String name;
   private String postcode;
-  private ApplicationTypeCodeField applicationTypeCode;
-  private Instant submissionFrom;
-  private Instant submissionTo;
-  private @NotNull String authorityCode;
+  private String applicationTypeCode;
+  private Instant from;
+  private Instant to;
+  private String authorityCode;
   private boolean deleted;
+
+  public Instant getSubmissionFrom() {
+    return from;
+  }
+
+  public Instant getSubmissionTo() {
+    return to;
+  }
+
+  public ApplicationTypeCodeField getApplicationTypeCode() {
+    return ApplicationTypeCodeField.fromValue(applicationTypeCode);
+  }
+
+  public String getApplicationTypeCodeStr() {
+    return applicationTypeCode;
+  }
 }

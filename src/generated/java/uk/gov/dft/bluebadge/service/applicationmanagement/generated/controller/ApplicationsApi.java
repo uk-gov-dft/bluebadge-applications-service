@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -23,12 +22,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.dft.bluebadge.common.api.model.CommonResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummaryResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
+import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 
 @Api(value = "Applications", description = "the Applications API")
 public interface ApplicationsApi {
@@ -144,26 +144,7 @@ public interface ApplicationsApi {
     method = RequestMethod.GET
   )
   default ResponseEntity<ApplicationSummaryResponse> findApplications(
-      @ApiParam(value = "'Search by organisation or person name, results contain search param' ")
-          @Valid
-          @RequestParam(value = "name", required = false)
-          Optional<String> name,
-      @ApiParam(value = "'Returns results starting with the parameter.' ")
-          @Valid
-          @RequestParam(value = "postcode", required = false)
-          Optional<String> postcode,
-      @ApiParam(value = "From submission date inclusive. 2018-12-25T12:30:45Z")
-          @Valid
-          @RequestParam(value = "from", required = false)
-          Optional<OffsetDateTime> from,
-      @ApiParam(value = "To submission date inclusive. 2018-12-25T12:30:45Z")
-          @Valid
-          @RequestParam(value = "to", required = false)
-          Optional<OffsetDateTime> to,
-      @ApiParam(value = "", allowableValues = "NEW, RENEW, CANCEL, REVOKE")
-          @Valid
-          @RequestParam(value = "applicationTypeCode", required = false)
-          Optional<String> applicationTypeCode) {
+      FindApplicationQueryParams searchParams, PagingParams pagingParams) {
     if (getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
       if (getAcceptHeader().get().contains("application/json")) {
         try {

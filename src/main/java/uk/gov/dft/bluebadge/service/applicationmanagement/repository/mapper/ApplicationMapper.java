@@ -93,6 +93,9 @@ public interface ApplicationMapper {
   List<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams);
 
+  List<ApplicationSummaryEntity> findApplications(
+      FindApplicationQueryParams findApplicationQueryParams, Integer offset, Integer limit);
+
   /**
    * Retrieve full details of a single application.
    *
