@@ -122,7 +122,7 @@ class ArtifactService {
           if (amazonS3.doesObjectExist(s3Config.getS3Bucket(), a.getLink())) {
             amazonS3.deleteObject(s3Config.getS3Bucket(), a.getLink());
           }else{
-            log.error("Attempting to delete s3 object not found in s3. Missing key: {}", a.getLink());
+            log.warn("Attempting to delete s3 object not found in s3. Missing key: {}", a.getLink());
           }
         });
   }

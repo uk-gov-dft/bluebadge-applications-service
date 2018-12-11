@@ -176,8 +176,9 @@ public class ArtifactServiceTest {
   public void backOutArtifacts() {
     List<ArtifactEntity> artifacts = getArtifactEntities();
 
+    when(amazonS3Mock.doesObjectExist(DEST_BUCKET, "artifact/link1")).thenReturn(true);
+    when(amazonS3Mock.doesObjectExist(DEST_BUCKET, "artifact/link2")).thenReturn(true);
     artifactService.backOutArtifacts(artifacts);
-
     verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link1");
     verify(amazonS3Mock).deleteObject(DEST_BUCKET, "artifact/link2");
   }
