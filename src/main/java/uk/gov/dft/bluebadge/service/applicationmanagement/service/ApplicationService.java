@@ -169,6 +169,8 @@ public class ApplicationService {
     RetrieveApplicationQueryParams params =
         RetrieveApplicationQueryParams.builder().uuid(uuid).deleted(Boolean.FALSE).build();
 
+    artifactService.backOutArtifacts(repository.retrieveArtifacts(applicationId));
+
     repository.deleteApplication(params);
     repository.deleteHealthcareProfessionals(applicationId);
     repository.deleteMedications(applicationId);
