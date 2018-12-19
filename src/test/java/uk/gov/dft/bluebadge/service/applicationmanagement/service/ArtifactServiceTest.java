@@ -98,7 +98,8 @@ public class ArtifactServiceTest {
       artifactService.saveArtifacts(testArifacts, applicationId);
       fail("no exception thrown");
     } catch (BadRequestException e) {
-      @SuppressWarnings("ConstantConditions") Error error = e.getResponse().getBody().getError();
+      @SuppressWarnings("ConstantConditions")
+      Error error = e.getResponse().getBody().getError();
       assertThat(error.getMessage()).startsWith("Failed to extract S3 object bucket from url");
       assertThat(error.getMessage()).endsWith("https://s3.eu-west-2.amazonaws.com/");
     }
