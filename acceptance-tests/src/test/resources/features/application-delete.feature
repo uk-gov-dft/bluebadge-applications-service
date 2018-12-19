@@ -11,12 +11,21 @@ Feature: Verify delete
     * header Authorization = 'Bearer ' + result.accessToken
     * def cantDeleteAppNo = '0bd06c01-a193-4255-be0b-0fbee253ee5e'
     * def canDeleteAppNo = '7d93fdb5-56bf-41b3-8af0-147696711410'
+    * def System = Java.type('java.lang.System')
+    * def env = System.getenv('bb_env')
+    * def S3Utils = Java.type('uk.gov.service.bluebadge.test.utils.S3Utils')
+    * def s3 = new S3Utils('uk-gov-dft-' + (env == null ? 'ci' : env) +'-applications')
+    * def s3File = s3.putFile('/small.png', 'appArtifactsTestFile.png')
  
     
    Scenario: Verify delete ok
     Given path 'applications/' + canDeleteAppNo
+     And assert s3.fileExists('appArtifactsTestFile.png') == true
     When method DELETE
     Then status 200
+     And assert s3.fileExists('appArtifactsTestFile.png') == false
+
+
 
   Scenario: Verify delete 400 invalid uuid
     Given path 'applications/' + 'ABC'

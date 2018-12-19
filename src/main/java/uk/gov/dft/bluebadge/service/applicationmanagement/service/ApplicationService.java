@@ -1,7 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -149,6 +148,8 @@ public class ApplicationService {
 
     RetrieveApplicationQueryParams params =
         RetrieveApplicationQueryParams.builder().uuid(uuid).deleted(Boolean.FALSE).build();
+
+    artifactService.backOutArtifacts(repository.retrieveArtifacts(applicationId));
 
     repository.deleteApplication(params);
     repository.deleteHealthcareProfessionals(applicationId);

@@ -28,7 +28,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Arti
 @Slf4j
 @Service
 @Transactional
-public class ArtifactService {
+class ArtifactService {
 
   private static final String S3_NOT_FOUND_ERR_MSG =
       "Artifact does not exist within S3. Extracted bucket:%s, key:%s, from link:%s";
@@ -43,7 +43,7 @@ public class ArtifactService {
     this.s3Config = s3Config;
   }
 
-  public List<ArtifactEntity> saveArtifacts(List<Artifact> artifacts, final UUID applicationId) {
+  List<ArtifactEntity> saveArtifacts(List<Artifact> artifacts, final UUID applicationId) {
     Assert.notNull(applicationId, "The application ID must be set.");
     if (null == artifacts || artifacts.isEmpty()) {
       return Collections.emptyList();
@@ -115,11 +115,19 @@ public class ArtifactService {
     }
   }
 
-  public void backOutArtifacts(List<ArtifactEntity> artifactEntities) {
-    artifactEntities.forEach(a -> amazonS3.deleteObject(s3Config.getS3Bucket(), a.getLink()));
+  void backOutArtifacts(List<ArtifactEntity> artifactEntities) {
+    artifactEntities.forEach(
+        a -> {
+          if (amazonS3.doesObjectExist(s3Config.getS3Bucket(), a.getLink())) {
+            amazonS3.deleteObject(s3Config.getS3Bucket(), a.getLink());
+          } else {
+            log.warn(
+                "Attempting to delete s3 object not found in s3. Missing key: {}", a.getLink());
+          }
+        });
   }
 
-  public List<Artifact> createAccessibleLinks(List<ArtifactEntity> artifacts) {
+  List<Artifact> createAccessibleLinks(List<ArtifactEntity> artifacts) {
     if (null == artifacts) {
       return Collections.emptyList();
     }
