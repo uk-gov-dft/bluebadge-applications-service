@@ -16,6 +16,8 @@ public class Artifact {
   public enum TypeEnum {
     PROOF_ELIG("PROOF_ELIG"),
 
+    SUPPORT_DOCS("SUPPORT_DOCS"),
+
     PROOF_ADD("PROOF_ADD"),
 
     PROOF_ID("PROOF_ID"),

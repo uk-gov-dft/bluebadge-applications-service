@@ -129,6 +129,11 @@ public class ApplicationRepository implements ApplicationMapper {
   }
 
   @Override
+  public List<ArtifactEntity> retrieveArtifacts(String applicationId) {
+    return sqlSession.selectList(Statements.RETRIEVE_ARTIFACTS.getName(), applicationId);
+  }
+
+  @Override
   public List<ApplicationSummaryEntity> findApplications(
       FindApplicationQueryParams findApplicationQueryParams) {
     return findApplications(findApplicationQueryParams, DEFAULT_PAGE_NUM, DEFAULT_PAGE_SIZE);

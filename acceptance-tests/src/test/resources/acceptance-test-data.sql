@@ -194,6 +194,11 @@ application_id, bulky_equipment_type_code
 ) VALUES (
 '7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'SUCTION'
 );
+INSERT INTO applicationmanagement.app_artifact(
+application_id, artifact_type, link
+) VALUES (
+'7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'PHOTO', 'appArtifactsTestFile.png'
+);
 
 -- For retrieve Child Bulk
 INSERT INTO applicationmanagement.application(

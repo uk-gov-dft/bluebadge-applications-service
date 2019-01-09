@@ -53,7 +53,6 @@ public class ApplicationValidator extends AbstractValidator implements Validator
     // it should be getPaymentTaken rather than isPaymentTaken.
     // If the generation has been rerun and the getter name has been retained then NotNull
     // annotation will do nothing.  Hence the following.
-    // TODO remove the following when generation changed.
     if (null == app.getPaymentTaken() && hasNoFieldErrors(errors, "paymentTaken")) {
       errors.rejectValue(
           FieldKeys.KEY_PAYMENT_TAKEN, "NotNull", "application.paymentTaken cannot be null.");

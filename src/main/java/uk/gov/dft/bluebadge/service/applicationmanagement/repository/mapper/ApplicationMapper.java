@@ -104,6 +104,8 @@ public interface ApplicationMapper {
    */
   ApplicationEntity retrieveApplication(RetrieveApplicationQueryParams params);
 
+  List<ArtifactEntity> retrieveArtifacts(String applicationId);
+
   int deleteApplication(RetrieveApplicationQueryParams params);
 
   int deleteHealthcareProfessionals(String applicationId);
