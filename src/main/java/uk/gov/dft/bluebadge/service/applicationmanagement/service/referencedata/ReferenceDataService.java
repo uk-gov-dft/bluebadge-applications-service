@@ -104,7 +104,7 @@ public class ReferenceDataService {
     }
 
     if (null == refValues) {
-      log.error("No reference data loaded for group: {}", context);
+      log.warn("No reference data loaded for group: {}", context);
       return;
     }
 
@@ -116,14 +116,14 @@ public class ReferenceDataService {
     // Is each model value in ref data.
     for (String e : enumNames) {
       if (!refValues.contains(e)) {
-        log.error("{}: Enum value {}, not in ref data.", context, e);
+        log.warn("{}: Enum value {}, not in ref data.", context, e);
       }
     }
 
     // And the reverse
     for (String e : refValues) {
       if (!enumNames.contains(e)) {
-        log.error("{}: Ref data value {}, not in enum.", context, e);
+        log.warn("{}: Ref data value {}, not in enum.", context, e);
       }
     }
   }

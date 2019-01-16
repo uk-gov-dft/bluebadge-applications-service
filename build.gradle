@@ -2,7 +2,7 @@ import groovy.json.JsonSlurper
 
 buildscript {
     ext {
-        springBootVersion = '2.0.4.RELEASE'
+        springBootVersion = '2.1.2.RELEASE'
     }
 
     repositories {
@@ -82,7 +82,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-aop')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.1.RELEASE')
+    compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE')
 
     compile ('com.github.pagehelper:pagehelper-spring-boot-starter:1.2.10')
     compile('org.postgresql:postgresql:42.2.2')
