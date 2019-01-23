@@ -6,6 +6,8 @@ blue-badge:
       host: referencedata-service
 
 spring:
+  main:
+    banner-mode: "off"
   datasource:
     url: jdbc:postgresql://postgresql:5432/bb_dev?currentSchema=applicationmanagement
 
