@@ -9,13 +9,14 @@ import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.Eligibi
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WALKD;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WPMS;
 
-import java.util.EnumSet;
+import com.google.common.collect.Sets;
+import java.util.Set;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 
 public class EligibilityRules {
 
-  public static final EnumSet<EligibilityCodeField> DISCRETIONARY_ELIGIBILITIES =
-      EnumSet.of(WALKD, ARMS, CHILDVEHIC, CHILDBULK);
+  public static final Set<EligibilityCodeField> DISCRETIONARY_ELIGIBILITIES =
+      Sets.immutableEnumSet(WALKD, ARMS, CHILDVEHIC, CHILDBULK);
 
   private EligibilityRules() {}
 
