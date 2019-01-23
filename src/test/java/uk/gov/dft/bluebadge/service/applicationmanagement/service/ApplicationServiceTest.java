@@ -36,13 +36,12 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.Applicat
 
 public class ApplicationServiceTest extends ApplicationFixture {
 
-  private static final String INVALID_APPLICATION_TYPE_CODE = "WRONG";
-
   @Mock private ApplicationRepository repository;
   @Mock private ApplicationConverter converter;
   @Mock SecurityUtils securityUtils;
   @Mock ApplicationAuditLogger applicationAuditLogger;
   @Mock ArtifactService artifactService;
+  @Mock MessageService messageService;
   private ApplicationService service;
 
   @Before
@@ -50,7 +49,12 @@ public class ApplicationServiceTest extends ApplicationFixture {
     MockitoAnnotations.initMocks(this);
     service =
         new ApplicationService(
-            repository, converter, securityUtils, applicationAuditLogger, artifactService);
+            repository,
+            converter,
+            securityUtils,
+            applicationAuditLogger,
+            artifactService,
+            messageService);
   }
 
   @Test
@@ -74,6 +78,8 @@ public class ApplicationServiceTest extends ApplicationFixture {
 
     assertNotNull("Submission date set as part of create", application.getSubmissionDate());
     assertNotNull("Id set as part of create", application.getApplicationId());
+
+    verify(messageService).sendApplicationSubmittedMessage(application);
   }
 
   @Test(expected = BadRequestException.class)

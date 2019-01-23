@@ -4,6 +4,9 @@ blue-badge:
   reference-data-service:
     service-host:
       host: referencedata-service
+  message-service:
+    service-host:
+      host: message-service
 
 spring:
   datasource:

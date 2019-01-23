@@ -1,13 +1,21 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement;
 
 import static uk.gov.dft.bluebadge.common.util.Matchers.enumValues;
+import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.ARMS;
+import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.CHILDBULK;
+import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.CHILDVEHIC;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.DLA;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.PIP;
+import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WALKD;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WPMS;
 
+import java.util.EnumSet;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 
 public class EligibilityRules {
+
+  public static final EnumSet<EligibilityCodeField> DISCRETIONARY_ELIGIBILITIES =
+      EnumSet.of(WALKD, ARMS, CHILDVEHIC, CHILDBULK);
 
   private EligibilityRules() {}
 
