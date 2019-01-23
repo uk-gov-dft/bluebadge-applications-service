@@ -4,7 +4,6 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
-
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
@@ -96,7 +95,9 @@ public class ApplicationService {
       throw e;
     }
 
-    messageService.sendApplicationSubmittedMessage(applicationModel);
+    if (applicationModel.getParty().getTypeCode() == PartyTypeCodeField.PERSON) {
+      messageService.sendApplicationSubmittedMessage(applicationModel);
+    }
 
     return application.getId();
   }
