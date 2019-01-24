@@ -9,6 +9,8 @@ blue-badge:
       host: message-service
 
 spring:
+  main:
+    banner-mode: "off"
   datasource:
     url: jdbc:postgresql://postgresql:5432/bb_dev?currentSchema=applicationmanagement
 
