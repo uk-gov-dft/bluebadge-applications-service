@@ -436,6 +436,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertTrue(result.getArmsIsAdaptedVehicle());
     assertEquals("Arms Adapted Veh Desc", result.getArmsAdaptedVehDesc());
     assertEquals("BIRM", result.getBlindRegisteredAtLaCode());
+    assertEquals("Bulky1", result.getBulkyEquipmentOtherDesc());
 
     assertThat(result.getArtifacts()).hasSize(1);
     assertThat(result.getArtifacts())
