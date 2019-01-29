@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.github.pagehelper.Page;
@@ -80,6 +81,32 @@ public class ApplicationServiceTest extends ApplicationFixture {
     assertNotNull("Id set as part of create", application.getApplicationId());
 
     verify(messageService).sendApplicationSubmittedMessage(application);
+  }
+
+  @Test
+  public void createApplication_whenNoEmailAddress_thenNoMessageSent() {
+    Application application =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
+    ApplicationEntity entity = ApplicationEntity.builder().build();
+    application.setSubmissionDate(null);
+    application.setApplicationId(null);
+    application.getParty().getContact().setEmailAddress(null);
+
+    entity.setId(UUID.randomUUID());
+    when(converter.convertToEntity(application)).thenReturn(entity);
+
+    UUID result = service.createApplication(application);
+
+    verify(converter, times(1)).convertToEntity(application);
+    verify(repository, times(1)).createApplication(entity);
+    verify(repository, times(1)).createWalkingDifficultyTypes(any());
+    verify(repository, times(1)).createBulkyEquipment(any());
+    assertNotNull("Should get id back", result);
+
+    assertNotNull("Submission date set as part of create", application.getSubmissionDate());
+    assertNotNull("Id set as part of create", application.getApplicationId());
+
+    verifyZeroInteractions(messageService);
   }
 
   @Test(expected = BadRequestException.class)

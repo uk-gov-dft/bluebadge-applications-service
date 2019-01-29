@@ -17,6 +17,7 @@ import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
@@ -95,7 +96,9 @@ public class ApplicationService {
       throw e;
     }
 
-    if (applicationModel.getParty().getTypeCode() == PartyTypeCodeField.PERSON) {
+    Party party = applicationModel.getParty();
+    if (party.getTypeCode() == PartyTypeCodeField.PERSON
+        && StringUtils.isNotBlank(party.getContact().getEmailAddress())) {
       messageService.sendApplicationSubmittedMessage(applicationModel);
     }
 
