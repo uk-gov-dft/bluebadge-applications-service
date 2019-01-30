@@ -91,7 +91,7 @@ public class ApplicationService {
       repository.createArtifacts(artifactEntities);
       applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
     } catch (Exception e) {
-      log.error("Failed to create application, backing out persisted artifacts. ", e.getMessage());
+      // Remove any S3 objects created before transaction rolled back.
       artifactService.backOutArtifacts(artifactEntities);
       throw e;
     }
