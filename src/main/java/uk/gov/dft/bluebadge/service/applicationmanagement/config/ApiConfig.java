@@ -22,12 +22,28 @@ public class ApiConfig {
     return new ServiceConfiguration();
   }
 
-  /**
-   * OAuth rest template configured with a token forwarding context. So if a bearer token is found
-   * on the security context, then it is used for the rest template.
-   */
+  @Validated
+  @ConfigurationProperties("blue-badge.message-service.service-host")
+  @Bean
+  public ServiceConfiguration messageServiceConfiguration() {
+    return new ServiceConfiguration();
+  }
+
   @Bean("referenceDataServiceRestTemplate")
   RestTemplate referenceDataServiceRestTemplate(
+      ClientCredentialsResourceDetails clientCredentialsResourceDetails,
+      ServiceConfiguration referenceDataServiceConfiguration) {
+    return buildRestTemplate(clientCredentialsResourceDetails, referenceDataServiceConfiguration);
+  }
+
+  @Bean("messageServiceRestTemplate")
+  RestTemplate messageServiceRestTemplate(
+      ClientCredentialsResourceDetails clientCredentialsResourceDetails,
+      ServiceConfiguration messageServiceConfiguration) {
+    return buildRestTemplate(clientCredentialsResourceDetails, messageServiceConfiguration);
+  }
+
+  private RestTemplate buildRestTemplate(
       ClientCredentialsResourceDetails clientCredentialsResourceDetails,
       ServiceConfiguration referenceDataServiceConfiguration) {
     OAuth2RestTemplate result =

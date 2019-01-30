@@ -11,6 +11,14 @@ blue-badge:
       connectiontimeout: 6000
       requesttimeout: 6000
       contextpath: /uk-gov-dft/reference-data-service/1.0.0
+  message-service:
+    service-host:
+      host: localhost
+      port: 8480
+      scheme: http
+      connectiontimeout: 6000
+      requesttimeout: 6000
+      contextpath: /uk-gov-dft/message-service/1.0.0
 
 logging:
   level:

@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata
 
 import java.util.HashMap;
 import java.util.HashSet;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
+import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.LocalAuthorityRefData;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 
 @Component
@@ -21,7 +24,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedatase
 @Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ReferenceDataService {
 
-  private final Set<String> authorityKeys = new HashSet<>();
+  private final HashMap<String, LocalAuthorityRefData> authorities = new HashMap<>();
+  private final Map<String, ReferenceData> eligibilities = new HashMap<>();
   private final ReferenceDataApiClient referenceDataApiClient;
   private AtomicBoolean isLoaded = new AtomicBoolean(false);
 
@@ -32,7 +36,20 @@ public class ReferenceDataService {
 
   public boolean isAuthorityCodeValid(String code) {
     init();
-    return code != null && authorityKeys.contains(code);
+    return code != null && authorities.containsKey(code);
+  }
+
+  public LocalAuthorityRefData getLocalAuthority(String code) {
+    init();
+    Assert.notNull(code, "Local authority code is null");
+    return authorities.get(code);
+  }
+
+  public String getEligibilityDescription(String code) {
+    init();
+    Assert.notNull(code, "Eligibility code is null");
+    ReferenceData referenceData = eligibilities.get(code);
+    return referenceData == null ? null : referenceData.getDescription();
   }
 
   /**
@@ -49,7 +66,9 @@ public class ReferenceDataService {
         // Store valid authority ids.
         for (ReferenceData item : referenceDataList) {
           if (RefDataGroupEnum.LOCAL_AUTHORITY.getGroupKey().equals(item.getGroupShortCode())) {
-            authorityKeys.add(item.getShortCode());
+            authorities.put(item.getShortCode(), (LocalAuthorityRefData) item);
+          } else if (RefDataGroupEnum.ELIGIBILITY.getGroupKey().equals(item.getGroupShortCode())) {
+            eligibilities.put(item.getShortCode(), item);
           }
         }
 

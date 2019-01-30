@@ -6,6 +6,11 @@ blue-badge:
       host: reference-service.${bb_env}.${url}
       port: 443
       scheme: https
+  message-service:
+    service-host:
+      host: messaging-service.${bb_env}.${url}
+      port: 443
+      scheme: https
 
 management:
   server:

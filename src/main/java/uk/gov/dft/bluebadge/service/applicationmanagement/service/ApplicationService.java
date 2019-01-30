@@ -17,6 +17,8 @@ import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationSummaryConverter;
@@ -37,6 +39,7 @@ public class ApplicationService {
   private final SecurityUtils securityUtils;
   private ApplicationAuditLogger applicationAuditLogger;
   private final ArtifactService artifactService;
+  private final MessageService messageService;
 
   @Autowired
   ApplicationService(
@@ -44,12 +47,14 @@ public class ApplicationService {
       ApplicationConverter converter,
       SecurityUtils securityUtils,
       ApplicationAuditLogger applicationAuditLogger,
-      ArtifactService artifactService) {
+      ArtifactService artifactService,
+      MessageService messageService) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
     this.applicationAuditLogger = applicationAuditLogger;
     this.artifactService = artifactService;
+    this.messageService = messageService;
   }
 
   /**
@@ -90,6 +95,13 @@ public class ApplicationService {
       artifactService.backOutArtifacts(artifactEntities);
       throw e;
     }
+
+    Party party = applicationModel.getParty();
+    if (party.getTypeCode() == PartyTypeCodeField.PERSON
+        && StringUtils.isNotBlank(party.getContact().getEmailAddress())) {
+      messageService.sendApplicationSubmittedMessage(applicationModel);
+    }
+
     return application.getId();
   }
 
