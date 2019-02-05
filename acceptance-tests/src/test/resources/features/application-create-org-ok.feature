@@ -50,7 +50,9 @@ Feature: Verify Create org ok
       ],
       numberOfBadges: 1
     }
-  }
+  },
+  paymentTaken: true,
+  paymentReference: "paymentref"
 }
     """
 

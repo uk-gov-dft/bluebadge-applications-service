@@ -63,6 +63,7 @@ CREATE TABLE applicationmanagement_unittest.application (
     local_authority_code character varying(10) NOT NULL,
     app_type_code character varying(10) NOT NULL,
     is_payment_taken boolean NOT NULL,
+    payment_reference varchar(12),
     submission_datetime timestamp without time zone NOT NULL,
     existing_badge_no character varying(6),
     party_code character varying(10) NOT NULL,
@@ -171,7 +172,7 @@ SELECT applicationmanagement_unittest.insert_data(10, 'XXXXXX');
 -- Add some specific ones.
 -- Holder 'Holder Name', LA ABERD, Type REPLACE
 INSERT INTO applicationmanagement_unittest.application(
- id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
+ id, local_authority_code, app_type_code, is_payment_taken, payment_reference, submission_datetime, party_code
  , contact_name, contact_building_street, contact_town_city, contact_postcode
  , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
  , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
@@ -180,7 +181,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code, bulky_equipment_other_desc
  ) VALUES (
- '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ABERD', 'REPLACE', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
+ '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ABERD', 'REPLACE', true, 'mypayref', '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'Contact Name', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
  , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
  , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
@@ -275,10 +276,10 @@ INSERT INTO applicationmanagement_unittest.application(
  , null, 'Street', 'Atown', 'XY111ZZ'
  , '10years back'
  );
- 
+
  -- application to delete
 INSERT INTO applicationmanagement_unittest.application(
- id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
+ id, local_authority_code, app_type_code, is_payment_taken, payment_reference, submission_datetime, party_code
  , contact_name, contact_building_street, contact_town_city, contact_postcode
  , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
  , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
@@ -288,7 +289,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , blind_registered_at_la_code
  , is_deleted
  ) VALUES (
- '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'LIVER', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
+ '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'LIVER', 'NEW', true, 'mypayref', '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'Contact Name', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
  , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
  , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'

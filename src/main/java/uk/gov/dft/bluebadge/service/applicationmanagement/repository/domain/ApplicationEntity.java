@@ -20,6 +20,7 @@ public class ApplicationEntity implements Serializable {
   private String localAuthorityCode;
   private String appTypeCode;
   private Boolean isPaymentTaken;
+  private String paymentReference;
   private Instant submissionDatetime;
   private String existingBadgeNo;
   private String partyCode;

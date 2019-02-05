@@ -42,6 +42,7 @@ public class ApplicationConverter
             .id(UUID.fromString(model.getApplicationId()))
             .localAuthorityCode(model.getLocalAuthorityCode())
             .isPaymentTaken(model.getPaymentTaken())
+            .paymentReference((model.getPaymentReference()))
             .submissionDatetime(
                 null == model.getSubmissionDate() ? null : model.getSubmissionDate().toInstant())
             .existingBadgeNo(model.getExistingBadgeNumber())
@@ -61,8 +62,10 @@ public class ApplicationConverter
     model.setApplicationId(entity.getId().toString());
     model.setLocalAuthorityCode(entity.getLocalAuthorityCode());
     model.setPaymentTaken(entity.getIsPaymentTaken());
+    model.setPaymentReference(entity.getPaymentReference());
     model.setSubmissionDate(entity.getSubmissionDatetime().atOffset(ZoneOffset.UTC));
     model.setExistingBadgeNumber(entity.getExistingBadgeNo());
+
     model.setArtifacts(null);
 
     for (ApplicationBiConverter converter : converters) {
