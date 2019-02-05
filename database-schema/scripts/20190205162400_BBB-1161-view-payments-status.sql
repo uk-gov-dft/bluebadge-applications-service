@@ -2,7 +2,7 @@
 -- Migration SQL that makes the change goes here.
 
 ALTER TABLE applicationmanagement.application ADD COLUMN
-  payment_reference VARCHAR(12);
+  payment_reference VARCHAR(32);
 
 -- //@UNDO
 -- SQL to undo the change goes here.
