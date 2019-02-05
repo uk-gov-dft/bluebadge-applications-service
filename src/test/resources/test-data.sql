@@ -63,7 +63,7 @@ CREATE TABLE applicationmanagement_unittest.application (
     local_authority_code character varying(10) NOT NULL,
     app_type_code character varying(10) NOT NULL,
     is_payment_taken boolean NOT NULL,
-    payment_reference varchar(12),
+    payment_reference varchar(32),
     submission_datetime timestamp without time zone NOT NULL,
     existing_badge_no character varying(6),
     party_code character varying(10) NOT NULL,
