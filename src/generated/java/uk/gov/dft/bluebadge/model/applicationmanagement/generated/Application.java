@@ -37,6 +37,9 @@ public class Application {
   @JsonProperty("eligibility")
   private Eligibility eligibility = null;
 
+  @JsonProperty("paymentReference")
+  private String paymentReference = null;
+
   @JsonProperty("artifacts")
   @Valid
   private List<Artifact> artifacts = null;
@@ -189,6 +192,26 @@ public class Application {
 
   public Application eligibility(Eligibility eligibility) {
     this.eligibility = eligibility;
+    return this;
+  }
+
+  /**
+   * Get payment reference
+   *
+   * @return payment reference
+   */
+  @ApiModelProperty(value = "")
+  @Valid
+  public String getPaymentReference() {
+    return paymentReference;
+  }
+
+  public void setPaymentReference(String paymentReference) {
+    this.paymentReference = paymentReference;
+  }
+
+  public Application paymentReference(String paymentReference) {
+    this.paymentReference = paymentReference;
     return this;
   }
 

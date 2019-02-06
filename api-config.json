@@ -120,7 +120,7 @@
             "in" : "query",
             "name" : "pageSize",
             "type" : "integer",
-            "description" : "The number of results. Min 1 max 100. Default 50"
+            "description" : "The number of results. Min 1 max 200. Default 50"
           } ],
           "tags" : [ "applications" ],
           "summary" : "Find applications.",
@@ -319,6 +319,10 @@
           "paymentTaken" : {
             "type" : "boolean",
             "example" : true
+          },
+          "paymentReference" : {
+            "type" : "string",
+            "description" : "payment reference"
           },
           "submissionDate" : {
             "type" : "string",
@@ -710,7 +714,7 @@
           "type" : {
             "description" : "The artifact type",
             "type" : "string",
-            "enum" : [ "PROOF_ELIG", "PROOF_ADD", "PROOF_ID", "PHOTO" ],
+            "enum" : [ "PROOF_ELIG", "SUPPORT_DOCS", "PROOF_ADD", "PROOF_ID", "PHOTO" ],
             "example" : "PROOF_ADD"
           },
           "link" : {
@@ -769,7 +773,7 @@
       },
       "HowProvidedCodeField" : {
         "type" : "string",
-        "enum" : [ "PRESCRIBE", "PRIVATE", "SOCIAL" ],
+        "enum" : [ "PRESCRIBE", "PRIVATE", "SOCIAL", "PERSON" ],
         "example" : "PRIVATE"
       }
     },
