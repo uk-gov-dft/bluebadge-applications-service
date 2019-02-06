@@ -12,9 +12,12 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.validation.BeanPropertyBindingResult;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Benefit;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Blind;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BulkyMedicalEquipmentTypeCodeField;
@@ -36,6 +39,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficu
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingSpeedCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
+import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.LocalAuthorityRefData;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.model.ReferenceData;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
@@ -125,7 +129,11 @@ public class ApplicationFixture extends AbstractValidator {
         addRefDataGroup(referenceDataList, group.getGroupKey(), group.getEnumClass());
       }
     }
-    referenceDataList.add(getNewRefDataItem("LA", "BIRM", "Birmingham"));
+    LocalAuthorityRefData localAuthorityRefData = new LocalAuthorityRefData();
+    localAuthorityRefData.setGroupShortCode("LA");
+    localAuthorityRefData.setShortCode("BIRM");
+    localAuthorityRefData.setDescription("Birmingham");
+    referenceDataList.add(localAuthorityRefData);
 
     when(mockRefDataClient.retrieveReferenceData(any())).thenReturn(referenceDataList);
     return new ReferenceDataService(mockRefDataClient);
@@ -260,6 +268,14 @@ public class ApplicationFixture extends AbstractValidator {
   private static void setEligibilityChildVehic(Application application) {
     application.setEligibility(new Eligibility());
     application.getEligibility().setTypeCode(EligibilityCodeField.CHILDVEHIC);
+  }
+
+  protected static void setAllArtifacts(Application application) {
+    List<Artifact> artifacts =
+        Stream.of(Artifact.TypeEnum.values())
+            .map(type -> new Artifact().type(type).link("http://somerandomlink/" + type.name()))
+            .collect(Collectors.toList());
+    application.setArtifacts(artifacts);
   }
 
   protected void reset(Application application) {

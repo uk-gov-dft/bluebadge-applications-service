@@ -2,13 +2,13 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static uk.gov.dft.bluebadge.common.util.Matchers.collection;
 import static uk.gov.dft.bluebadge.common.util.Matchers.enumValues;
-import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.ARMS;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.CHILDBULK;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.CHILDVEHIC;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.DLA;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.PIP;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WALKD;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField.WPMS;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.EligibilityRules.DISCRETIONARY_ELIGIBILITIES;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELIGIBILITY;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_ARMS;
@@ -162,6 +162,6 @@ class EligibilityValidator extends AbstractValidator {
   }
 
   private boolean isDiscretionaryEligibility(EligibilityCodeField type) {
-    return enumValues(WALKD, ARMS, CHILDVEHIC, CHILDBULK).contains(type);
+    return DISCRETIONARY_ELIGIBILITIES.contains(type);
   }
 }

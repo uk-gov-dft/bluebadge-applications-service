@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedatas
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,7 +17,8 @@ public class ReferenceDataApiClient {
   private final RestTemplate restTemplate;
 
   @Autowired
-  public ReferenceDataApiClient(RestTemplate restTemplate) {
+  public ReferenceDataApiClient(
+      @Qualifier("referenceDataServiceRestTemplate") RestTemplate restTemplate) {
     this.restTemplate = restTemplate;
   }
 
