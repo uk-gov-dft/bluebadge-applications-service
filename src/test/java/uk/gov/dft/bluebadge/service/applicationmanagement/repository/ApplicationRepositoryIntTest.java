@@ -61,6 +61,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .contactPostcode("CN123TC")
             .contactTownCity("Town")
             .isPaymentTaken(true)
+            .paymentReference("mypayref")
             .localAuthorityCode("ABERD")
             .partyCode("PERSON")
             .primaryPhoneNo("01234567890")
@@ -405,6 +406,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertEquals("ABERD", result.getLocalAuthorityCode());
     assertEquals("REPLACE", result.getAppTypeCode());
     assertTrue(result.getIsPaymentTaken());
+    assertEquals("mypayref", result.getPaymentReference());
     Instant expectedSubmission = Instant.parse("2011-01-01T03:00:00Z");
     assertEquals(expectedSubmission, result.getSubmissionDatetime());
     assertEquals("AAAAAA", result.getExistingBadgeNo());
