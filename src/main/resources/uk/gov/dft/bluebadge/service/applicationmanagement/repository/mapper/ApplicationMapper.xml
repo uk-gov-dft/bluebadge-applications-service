@@ -6,8 +6,8 @@
 
     <insert id="createApplication" parameterType="ApplicationEntity">
         INSERT INTO application
-        ( id, 
-          app_type_code, is_payment_taken,
+        ( id,
+          app_type_code, is_payment_taken, payment_reference,
           submission_datetime, existing_badge_no, party_code,
           contact_name, contact_building_street, contact_line2,
           contact_town_city, contact_postcode, primary_phone_no,
@@ -22,7 +22,7 @@
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
-          #{appTypeCode}, #{isPaymentTaken},
+          #{appTypeCode}, #{isPaymentTaken}, #{paymentReference},
           #{submissionDatetime}, #{existingBadgeNo}, #{partyCode},
           #{contactName}, #{contactBuildingStreet}, #{contactLine2},
           #{contactTownCity}, #{contactPostcode}, #{primaryPhoneNo},
@@ -176,7 +176,7 @@
         <if test="deleted != null">
             AND a.is_deleted = #{deleted}
         </if>
-        
+
         ORDER BY submission_datetime DESC
     </select>
 
@@ -186,6 +186,7 @@
         <result column="local_authority_code" property="localAuthorityCode" />
         <result column="app_type_code" property="appTypeCode" />
         <result column="is_payment_taken" property="isPaymentTaken" />
+        <result column="payment_reference" property="paymentReference" />
         <result column="submission_datetime" property="submissionDatetime" />
         <result column="existing_badge_no" property="existingBadgeNo" />
         <result column="party_code" property="partyCode" />
@@ -243,6 +244,7 @@
         , a.local_authority_code
         , a.app_type_code
         , a.is_payment_taken
+        , a.payment_reference
         , a.submission_datetime
         , a.existing_badge_no
         , a.party_code
@@ -444,7 +446,7 @@
 
     <update id="updateToDeleteApplication" parameterType="RetrieveApplicationQueryParams">
         UPDATE application
-        SET existing_badge_no = null, 
+        SET existing_badge_no = null,
           	contact_name = null,
           	contact_building_street = 'DELETED',
           	contact_line2 = null,
