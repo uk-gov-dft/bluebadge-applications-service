@@ -87,10 +87,11 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
   }
 
   @Override
-  @PreAuthorize("hasAuthority('PERM_UPDATE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
+  @PreAuthorize(
+      "hasAuthority('PERM_UPDATE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
   public ResponseEntity<Void> updateApplication(
-    @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
-    @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
+      @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
+      @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
     service.update(applicationId, applicationUpdate);
     return ResponseEntity.ok().build();
   }

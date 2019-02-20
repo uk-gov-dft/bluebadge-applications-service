@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
@@ -21,8 +22,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Walk
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingDifficultyTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.ApplicationMapper;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.Statements;
-
-import java.util.List;
 
 /** Provides CRUD operations on ApplicationEntity entity. */
 @Component

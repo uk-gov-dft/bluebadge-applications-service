@@ -214,10 +214,7 @@ public interface ApplicationsApi {
   )
   @ApiResponses(
     value = {
-      @ApiResponse(
-        code = 200,
-        message = "OK. Application was updated"
-      ),
+      @ApiResponse(code = 200, message = "OK. Application was updated"),
       @ApiResponse(code = 400, message = "Invalid request", response = CommonResponse.class),
     }
   )
@@ -227,17 +224,16 @@ public interface ApplicationsApi {
     method = RequestMethod.PUT
   )
   default ResponseEntity<Void> updateApplication(
-    @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
-    @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
+      @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
+      @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
     if (getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
       if (getAcceptHeader().get().contains("application/json")) {
-          return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
       }
     } else {
       log.warn(
-        "ObjectMapper or HttpServletRequest not configured in default ApplicationsApi interface so no example is generated");
+          "ObjectMapper or HttpServletRequest not configured in default ApplicationsApi interface so no example is generated");
     }
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
-
 }

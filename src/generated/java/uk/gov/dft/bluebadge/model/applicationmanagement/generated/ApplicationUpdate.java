@@ -3,16 +3,12 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.validation.annotation.Validated;
 
 /** Application */
 @Validated
@@ -23,8 +19,7 @@ public class ApplicationUpdate {
   private ApplicationStatusField applicationStatus = null;
 
   // Added for use in the repository
-  @JsonIgnore
-  private UUID applicationId;
+  @JsonIgnore private UUID applicationId;
 
   /**
    * The unique number for this application - a UUID
@@ -42,7 +37,6 @@ public class ApplicationUpdate {
   public void setApplicationId(UUID applicationId) {
     this.applicationId = applicationId;
   }
-
 
   /**
    * Get applicationStatus
@@ -75,19 +69,14 @@ public class ApplicationUpdate {
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        applicationId,
-        applicationStatus);
+    return Objects.hash(applicationId, applicationStatus);
   }
 
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-      .append("applicationStatus", applicationStatus)
-      .append("applicationId", applicationId)
-      .toString();
+        .append("applicationStatus", applicationStatus)
+        .append("applicationId", applicationId)
+        .toString();
   }
-
-
-
 }

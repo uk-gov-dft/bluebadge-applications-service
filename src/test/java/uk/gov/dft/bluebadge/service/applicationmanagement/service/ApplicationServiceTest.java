@@ -245,23 +245,22 @@ public class ApplicationServiceTest extends ApplicationFixture {
 
   @Test(expected = BadRequestException.class)
   public void updateApplication_givenBadApplicationUuid() {
-    ApplicationUpdate applicationUpdate = ApplicationFixture.ApplicationUpdateBuilder
-      .anApplicationUpdate()
-      .withApplicationStatus(ApplicationStatusField.COMPLETED)
-      .build();
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(ApplicationStatusField.COMPLETED)
+            .build();
 
     service.update("rubbbish", applicationUpdate);
   }
-
 
   @Test(expected = BadRequestException.class)
   public void updateApplication_givenNullApplicationStatus() {
 
     // given
-    ApplicationUpdate applicationUpdate = ApplicationFixture.ApplicationUpdateBuilder
-      .anApplicationUpdate()
-      .withApplicationStatus(null)
-      .build();
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(null)
+            .build();
 
     // when
     service.update(UUID.randomUUID().toString(), applicationUpdate);
@@ -271,10 +270,10 @@ public class ApplicationServiceTest extends ApplicationFixture {
   public void updateApplication_givenValidRequest() {
 
     // given
-    ApplicationUpdate applicationUpdate = ApplicationFixture.ApplicationUpdateBuilder
-      .anApplicationUpdate()
-      .withApplicationStatus(ApplicationStatusField.COMPLETED)
-      .build();
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(ApplicationStatusField.COMPLETED)
+            .build();
 
     UUID applicationUuid = UUID.randomUUID();
     when(repository.updateApplication(any())).thenReturn(1);
@@ -283,30 +282,28 @@ public class ApplicationServiceTest extends ApplicationFixture {
     service.update(applicationUuid.toString(), applicationUpdate);
 
     // then
-    ArgumentCaptor<ApplicationUpdate> captor =
-      ArgumentCaptor.forClass(ApplicationUpdate.class);
+    ArgumentCaptor<ApplicationUpdate> captor = ArgumentCaptor.forClass(ApplicationUpdate.class);
     verify(repository, times(1)).updateApplication(captor.capture());
     assertThat(captor).isNotNull();
     assertThat(captor.getValue()).isNotNull();
     assertThat(captor.getValue().getApplicationId()).isEqualTo(applicationUuid);
-    assertThat(captor.getValue().getApplicationStatusField()).isEqualTo(ApplicationStatusField.COMPLETED);
+    assertThat(captor.getValue().getApplicationStatusField())
+        .isEqualTo(ApplicationStatusField.COMPLETED);
   }
 
   @Test(expected = BadRequestException.class)
   public void updateApplication_givenNonexistentApplicationId() {
 
     // given
-    ApplicationUpdate applicationUpdate = ApplicationFixture.ApplicationUpdateBuilder
-      .anApplicationUpdate()
-      .withApplicationStatus(ApplicationStatusField.COMPLETED)
-      .build();
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(ApplicationStatusField.COMPLETED)
+            .build();
 
     UUID applicationUuid = UUID.randomUUID();
     when(repository.updateApplication(any())).thenReturn(0);
 
     // when
     service.update(applicationUuid.toString(), applicationUpdate);
-
   }
-
 }

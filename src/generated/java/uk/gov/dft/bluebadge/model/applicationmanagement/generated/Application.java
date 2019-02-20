@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
 
@@ -271,7 +270,6 @@ public class Application {
     this.applicationStatus = applicationStatus;
   }
 
-
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -311,18 +309,17 @@ public class Application {
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-      .append("applicationId", applicationId)
-      .append("applicationTypeCode", applicationTypeCode)
-      .append("localAuthorityCode", localAuthorityCode)
-      .append("paymentTaken", paymentTaken)
-      .append("submissionDate", submissionDate)
-      .append("existingBadgeNumber", existingBadgeNumber)
-      .append("party", party)
-      .append("eligibility", eligibility)
-      .append("paymentReference", paymentReference)
-      .append("artifacts", artifacts)
-      .append("applicationStatus", applicationStatus)
-      .toString();
+        .append("applicationId", applicationId)
+        .append("applicationTypeCode", applicationTypeCode)
+        .append("localAuthorityCode", localAuthorityCode)
+        .append("paymentTaken", paymentTaken)
+        .append("submissionDate", submissionDate)
+        .append("existingBadgeNumber", existingBadgeNumber)
+        .append("party", party)
+        .append("eligibility", eligibility)
+        .append("paymentReference", paymentReference)
+        .append("artifacts", artifacts)
+        .append("applicationStatus", applicationStatus)
+        .toString();
   }
-
 }

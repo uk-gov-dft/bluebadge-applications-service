@@ -521,14 +521,14 @@ public class ApplicationFixture extends AbstractValidator {
     // Added for use in the repository
     private UUID applicationId;
 
-    private ApplicationUpdateBuilder() {
-    }
+    private ApplicationUpdateBuilder() {}
 
     public static ApplicationUpdateBuilder anApplicationUpdate() {
       return new ApplicationUpdateBuilder();
     }
 
-    public ApplicationUpdateBuilder withApplicationStatus(ApplicationStatusField applicationStatus) {
+    public ApplicationUpdateBuilder withApplicationStatus(
+        ApplicationStatusField applicationStatus) {
       this.applicationStatus = applicationStatus;
       return this;
     }

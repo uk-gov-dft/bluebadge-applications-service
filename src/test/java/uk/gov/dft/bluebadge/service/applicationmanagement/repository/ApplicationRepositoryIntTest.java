@@ -26,7 +26,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationContextTests;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;

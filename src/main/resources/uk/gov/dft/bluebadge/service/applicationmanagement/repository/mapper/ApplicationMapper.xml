@@ -483,7 +483,7 @@
         AND is_deleted = #{deleted}
     </update>
 
-    <update id="applicationUpdate" parameterType="ApplicationUpdate">
+    <update id="applicationUpdate" parameterType="uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate">
         UPDATE application
         SET application_status = #{applicationStatus}
         WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}

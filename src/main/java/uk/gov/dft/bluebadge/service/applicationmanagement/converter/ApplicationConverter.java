@@ -47,7 +47,10 @@ public class ApplicationConverter
             .submissionDatetime(
                 null == model.getSubmissionDate() ? null : model.getSubmissionDate().toInstant())
             .existingBadgeNo(model.getExistingBadgeNumber())
-            .applicationStatus(model.getApplicationStatus() == null ? ApplicationStatusField.TODO.name() : model.getApplicationStatus().name())
+            .applicationStatus(
+                model.getApplicationStatus() == null
+                    ? ApplicationStatusField.TODO.name()
+                    : model.getApplicationStatus().name())
             .build();
 
     for (ApplicationBiConverter converter : converters) {
