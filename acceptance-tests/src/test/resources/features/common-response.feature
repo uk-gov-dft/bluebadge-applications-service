@@ -1,5 +1,5 @@
 @common-response
-Feature: Verify Create org ok
+Feature: Verify responses wrap a CommonResponse
 
   Background:
     * url baseUrl

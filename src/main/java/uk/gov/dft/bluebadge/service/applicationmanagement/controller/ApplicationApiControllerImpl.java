@@ -1,8 +1,6 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.controller;
 
 import io.swagger.annotations.ApiParam;
-import java.util.UUID;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +21,9 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.generated.controller.A
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.ApplicationService;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
+
+import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @Slf4j
