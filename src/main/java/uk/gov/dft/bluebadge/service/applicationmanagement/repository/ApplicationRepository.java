@@ -2,11 +2,11 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
@@ -21,6 +21,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Walk
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingDifficultyTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.ApplicationMapper;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper.Statements;
+
+import java.util.List;
 
 /** Provides CRUD operations on ApplicationEntity entity. */
 @Component
@@ -201,5 +203,10 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public int deleteArtifacts(String applicationId) {
     return sqlSession.delete(Statements.DELETE_ARTIFACTS.getName(), applicationId);
+  }
+
+  @Override
+  public int updateApplication(ApplicationUpdate applicationUpdate) {
+    return sqlSession.update(Statements.UPDATE_APPLICATION.getName(), applicationUpdate);
   }
 }

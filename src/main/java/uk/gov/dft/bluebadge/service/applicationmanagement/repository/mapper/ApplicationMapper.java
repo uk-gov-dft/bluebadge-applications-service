@@ -1,7 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper;
 
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
@@ -14,6 +14,8 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Trea
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingDifficultyTypeEntity;
+
+import java.util.List;
 
 @Mapper
 public interface ApplicationMapper {
@@ -123,4 +125,6 @@ public interface ApplicationMapper {
   int deleteBulkyEquipmentTypes(String applicationId);
 
   int deleteArtifacts(String applicationId);
+
+  int updateApplication(ApplicationUpdate applicationUpdate);
 }

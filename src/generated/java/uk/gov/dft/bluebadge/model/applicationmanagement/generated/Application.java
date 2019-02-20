@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
 
 /** Application */
@@ -43,6 +45,9 @@ public class Application {
   @JsonProperty("artifacts")
   @Valid
   private List<Artifact> artifacts = null;
+
+  @JsonProperty("applicationStatus")
+  private ApplicationStatusField applicationStatus;
 
   public Application applicationId(String applicationId) {
     this.applicationId = applicationId;
@@ -258,6 +263,15 @@ public class Application {
     this.artifacts = artifacts;
   }
 
+  public ApplicationStatusField getApplicationStatus() {
+    return applicationStatus;
+  }
+
+  public void setApplicationStatus(ApplicationStatusField applicationStatus) {
+    this.applicationStatus = applicationStatus;
+  }
+
+
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -275,7 +289,8 @@ public class Application {
         && Objects.equals(this.existingBadgeNumber, application.existingBadgeNumber)
         && Objects.equals(this.party, application.party)
         && Objects.equals(this.eligibility, application.eligibility)
-        && Objects.equals(this.artifacts, application.artifacts);
+        && Objects.equals(this.artifacts, application.artifacts)
+        && Objects.equals(this.applicationStatus, application.applicationStatus);
   }
 
   @Override
@@ -289,38 +304,25 @@ public class Application {
         existingBadgeNumber,
         party,
         eligibility,
-        artifacts);
+        artifacts,
+        applicationStatus);
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Application {\n");
-
-    sb.append("    applicationId: ").append(toIndentedString(applicationId)).append("\n");
-    sb.append("    applicationTypeCode: ")
-        .append(toIndentedString(applicationTypeCode))
-        .append("\n");
-    sb.append("    localAuthorityCode: ").append(toIndentedString(localAuthorityCode)).append("\n");
-    sb.append("    paymentTaken: ").append(toIndentedString(paymentTaken)).append("\n");
-    sb.append("    submissionDate: ").append(toIndentedString(submissionDate)).append("\n");
-    sb.append("    existingBadgeNumber: ")
-        .append(toIndentedString(existingBadgeNumber))
-        .append("\n");
-    sb.append("    party: ").append(toIndentedString(party)).append("\n");
-    sb.append("    eligibility: ").append(toIndentedString(eligibility)).append("\n");
-    sb.append("    artifacts: ").append(toIndentedString(artifacts)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    return new ToStringBuilder(this)
+      .append("applicationId", applicationId)
+      .append("applicationTypeCode", applicationTypeCode)
+      .append("localAuthorityCode", localAuthorityCode)
+      .append("paymentTaken", paymentTaken)
+      .append("submissionDate", submissionDate)
+      .append("existingBadgeNumber", existingBadgeNumber)
+      .append("party", party)
+      .append("eligibility", eligibility)
+      .append("paymentReference", paymentReference)
+      .append("artifacts", artifacts)
+      .append("applicationStatus", applicationStatus)
+      .toString();
   }
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }

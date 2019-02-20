@@ -8,6 +8,7 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 
 /** Bean to hold a ApplicationEntity record. */
 @Alias("ApplicationEntity")
@@ -62,4 +63,5 @@ public class ApplicationEntity implements Serializable {
   private List<ArtifactEntity> artifacts;
   private Boolean isDeleted;
   private LocalDate deletedTimestamp;
+  private String applicationStatus;
 }

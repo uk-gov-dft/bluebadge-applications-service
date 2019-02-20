@@ -26,6 +26,7 @@ import uk.gov.dft.bluebadge.common.api.model.CommonResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummaryResponse;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
 import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
@@ -202,4 +203,41 @@ public interface ApplicationsApi {
     }
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
+
+  @ApiOperation(
+    value = "Update an application.",
+    nickname = "updateApplication",
+    notes = "",
+    tags = {
+      "applications",
+    }
+  )
+  @ApiResponses(
+    value = {
+      @ApiResponse(
+        code = 200,
+        message = "OK. Application was updated"
+      ),
+      @ApiResponse(code = 400, message = "Invalid request", response = CommonResponse.class),
+    }
+  )
+  @RequestMapping(
+    value = "/applications",
+    produces = {"application/json"},
+    method = RequestMethod.PUT
+  )
+  default ResponseEntity<Void> updateApplication(
+    @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
+    @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
+    if (getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+      if (getAcceptHeader().get().contains("application/json")) {
+          return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+      }
+    } else {
+      log.warn(
+        "ObjectMapper or HttpServletRequest not configured in default ApplicationsApi interface so no example is generated");
+    }
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
+
 }

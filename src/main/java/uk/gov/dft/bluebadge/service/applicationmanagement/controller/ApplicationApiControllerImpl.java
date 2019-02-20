@@ -19,6 +19,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummaryResponse;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
 import uk.gov.dft.bluebadge.service.applicationmanagement.generated.controller.ApplicationsApi;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
@@ -82,6 +83,15 @@ public class ApplicationApiControllerImpl extends AbstractController implements 
       @ApiParam(required = true) @PathVariable("applicationId") String applicationId) {
     log.info("Delete application");
     service.delete(applicationId);
+    return ResponseEntity.ok().build();
+  }
+
+  @Override
+  @PreAuthorize("hasAuthority('PERM_UPDATE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
+  public ResponseEntity<Void> updateApplication(
+    @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
+    @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
+    service.update(applicationId, applicationUpdate);
     return ResponseEntity.ok().build();
   }
 }

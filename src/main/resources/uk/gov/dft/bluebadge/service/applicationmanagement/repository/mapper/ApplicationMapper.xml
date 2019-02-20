@@ -18,7 +18,8 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          local_authority_code, bulky_equipment_other_desc
+          local_authority_code, bulky_equipment_other_desc,
+          application_status
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -33,7 +34,8 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc}
+          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc},
+          #{applicationStatus}
         )
     </insert>
 
@@ -479,6 +481,12 @@
           	deleted_timestamp = current_timestamp
         WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND is_deleted = #{deleted}
-      </update>
+    </update>
+
+    <update id="applicationUpdate" parameterType="ApplicationUpdate">
+        UPDATE application
+        SET application_status = #{applicationStatus}
+        WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+    </update>
 
 </mapper>

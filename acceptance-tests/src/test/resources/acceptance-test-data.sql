@@ -29,6 +29,7 @@ INSERT INTO applicationmanagement.application(
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
  , is_deleted
+ , application_status
  ) VALUES (
  '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'LIVER', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -39,6 +40,7 @@ INSERT INTO applicationmanagement.application(
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
  , false
+ , 'IN_PROGRESS'
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
 application_id, prof_name, prof_location
@@ -118,6 +120,7 @@ application_id, bulky_equipment_type_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
  , is_deleted
+ , application_status
  ) VALUES (
  '7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'ABERD', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -128,6 +131,7 @@ application_id, bulky_equipment_type_code
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'ABERD'
  , false
+ , 'IN_PROGRESS'
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
 application_id, prof_name, prof_location
@@ -211,6 +215,7 @@ INSERT INTO applicationmanagement.application(
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
  , is_deleted
+ , application_status
  ) VALUES (
  '89ca4c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'ABERD', 'NEW', true, current_timestamp, 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -221,6 +226,7 @@ INSERT INTO applicationmanagement.application(
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
  , false
+ , 'IN_PROGRESS'
  );
 
  INSERT INTO applicationmanagement.app_bulky_equipment_type(
