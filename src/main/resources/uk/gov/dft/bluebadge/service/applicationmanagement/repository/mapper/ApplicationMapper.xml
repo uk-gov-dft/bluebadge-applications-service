@@ -222,6 +222,7 @@
         <result column="bulky_equipment_other_desc" property="bulkyEquipmentOtherDesc" />
         <result column="is_deleted" property="isDeleted" />
         <result column="deleted_timestamp" property="deletedTimestamp" />
+        <result column="application_status" property="applicationStatus" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
                     select="retrieveHealthcareProfessional" column="string_id"/>
         <collection property="medications" ofType="MedicationEntity"
@@ -281,6 +282,7 @@
         , a.bulky_equipment_other_desc
         , a.is_deleted
         , a.deleted_timestamp
+        , a.application_status
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND a.is_deleted = #{deleted}

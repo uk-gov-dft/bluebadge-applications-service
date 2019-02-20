@@ -72,7 +72,7 @@ gradle acceptanceTests
 testExitCode=$?
 
 # Tear down
-tearDown
+#tearDown
 
 echo "Exiting with code:$testExitCode"
 
