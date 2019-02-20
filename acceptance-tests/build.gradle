@@ -2,6 +2,9 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
+        maven {
+            url 'https://artifactory.does.not.exist/artifactory/gradle-release'
+        }
     }
 
     dependencies {
