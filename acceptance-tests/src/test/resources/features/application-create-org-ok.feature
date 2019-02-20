@@ -61,3 +61,4 @@ Feature: Verify Create org ok
     When method POST
     Then status 200
     And match $.data contains "#notnull"
+    * def applicationId = $.data
