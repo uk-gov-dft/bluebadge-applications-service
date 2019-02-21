@@ -1,8 +1,8 @@
 -- Set up an LA Editor for use with the update application
-set search_path=usermanagement;
-DELETE FROM usermanagement.users WHERE id = -22;
-INSERT INTO usermanagement.users (id, name, email_address, local_authority_short_code, role_id, password, user_uuid, is_active, login_fail_count) VALUES
-(-22, 'Dick Grayson', 'editor@dft.gov.uk', 'ABERD', 3, '$2a$11$l8Y6fw6mOmj39naJfQtgvu1KITnSBDURsP7kCHWsJXthM.atfzNWC', '1dd704ed-4538-45e4-af10-e00fab8e27f1'::UUID, TRUE, 0 );
+-- set search_path=usermanagement;
+-- DELETE FROM usermanagement.users WHERE id = -22;
+-- INSERT INTO usermanagement.users (id, name, email_address, local_authority_short_code, role_id, password, user_uuid, is_active, login_fail_count) VALUES
+-- (-22, 'Dick Grayson', 'editor@dft.gov.uk', 'ABERD', 3, '$2a$11$l8Y6fw6mOmj39naJfQtgvu1KITnSBDURsP7kCHWsJXthM.atfzNWC', '1dd704ed-4538-45e4-af10-e00fab8e27f1'::UUID, TRUE, 0 );
 
 
 SET search_path TO applicationmanagement;
