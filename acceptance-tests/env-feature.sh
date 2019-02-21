@@ -1,3 +1,2 @@
 export AP_VERSION=$(cat VERSION-computed)
-
-export MG_VERSION=v0.9.0-feature_BBB-777-la-notify
+export AZ_VERSION=v0.15.0-feature_BBB-1234-application-status

@@ -1,10 +1,3 @@
--- Set up an LA Editor for use with the update application
--- set search_path=usermanagement;
--- DELETE FROM usermanagement.users WHERE id = -22;
--- INSERT INTO usermanagement.users (id, name, email_address, local_authority_short_code, role_id, password, user_uuid, is_active, login_fail_count) VALUES
--- (-22, 'Dick Grayson', 'editor@dft.gov.uk', 'ABERD', 3, '$2a$11$l8Y6fw6mOmj39naJfQtgvu1KITnSBDURsP7kCHWsJXthM.atfzNWC', '1dd704ed-4538-45e4-af10-e00fab8e27f1'::UUID, TRUE, 0 );
-
-
 SET search_path TO applicationmanagement;
 
 -- Fks are all cascade on delete.
@@ -242,3 +235,33 @@ INSERT INTO applicationmanagement.application(
  '89ca4c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'SUCTION'
  );
 
+-- For update status
+INSERT INTO applicationmanagement.application(
+    id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
+    , contact_name, contact_building_street, contact_town_city, contact_postcode
+    , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
+    , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
+    , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
+    , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
+    , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
+    , blind_registered_at_la_code
+    , is_deleted
+    , application_status
+    ) VALUES (
+                 '11114c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'ABERD', 'NEW', true, current_timestamp, 'PERSON'
+                 , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
+                 , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
+                 , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
+                 , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'CHILDBULK', 'Eligibility Conditions'
+                 , true, '2020-01-31'::DATE, null, 'LESSMIN'
+                 , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
+                 , 'LIVER'
+                 , false
+                 , 'IN_PROGRESS'
+                 );
+
+INSERT INTO applicationmanagement.app_bulky_equipment_type(
+    application_id, bulky_equipment_type_code
+    ) VALUES (
+                 '11114c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'SUCTION'
+                 );

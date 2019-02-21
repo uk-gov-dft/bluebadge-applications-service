@@ -12,7 +12,7 @@ Feature: Verify update
     * header Content-Type = 'application/json'
 
   Scenario: Verify update ok
-    Given path 'applications/7d93fdb5-56bf-41b3-8af0-147696711410'
+    Given path 'applications/11114c39-02d5-4197-b032-1d9ce22c24b5'
     And request '{"applicationStatus" : "IN_PROGRESS" }'
     When method PUT
     Then status 200
@@ -20,10 +20,10 @@ Feature: Verify update
     # Read the updated application
     * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
-    Given path 'applications/7d93fdb5-56bf-41b3-8af0-147696711410'
+    Given path 'applications/11114c39-02d5-4197-b032-1d9ce22c24b5'
     When method GET
     Then status 200
-    And match $.data.applicationId contains '7d93fdb5-56bf-41b3-8af0-147696711410'
+    And match $.data.applicationId contains '11114c39-02d5-4197-b032-1d9ce22c24b5'
     And match $.data.applicationStatus == 'IN_PROGRESS'
 
   Scenario: Verify update 400 invalid uuid
