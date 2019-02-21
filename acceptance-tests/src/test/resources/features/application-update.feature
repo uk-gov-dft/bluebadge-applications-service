@@ -11,6 +11,9 @@ Feature: Verify update
     * header Authorization = 'Bearer ' + result.accessToken
     * def createResult = callonce read('./application-create-org-ok.feature')
     * def createdAppNo = createResult.applicationId
+    # Added below so that subsequent requests use the correct creds
+    * def result = callonce read('./oauth2-la-editor.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
 
   Scenario: Verify update ok
     Given path 'applications/' + createdAppNo
@@ -18,6 +21,8 @@ Feature: Verify update
     When method PUT
     Then status 200
 
+    # Read the updated application
+    * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
     Given path 'applications/' + createdAppNo
     When method GET

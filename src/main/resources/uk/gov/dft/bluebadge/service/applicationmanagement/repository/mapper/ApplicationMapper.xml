@@ -149,6 +149,8 @@
         <result property="submissionDate" column="submission_datetime" />
         <result property="eligibilityCode" column="eligibility_code" />
         <result property="postcode" column="contact_postcode" />
+        <result column="application_status" property="applicationStatus" />
+
     </resultMap>
 
     <select id="findApplications" resultMap="applicationSummaryMap" parameterType="FindApplicationQueryParams">
@@ -156,6 +158,7 @@
           a.id, a.party_code, a.app_type_code
           , a.nino, a.holder_name, a.submission_datetime
           , a.eligibility_code, a.contact_postcode
+          , a.application_status
         FROM application a
         WHERE
         -- Authority code always required.
