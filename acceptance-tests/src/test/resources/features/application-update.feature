@@ -33,7 +33,7 @@ Feature: Verify update
     Then status 400
 
   Scenario: Verify update 404 app not exists
-    Given path 'applications/a305706c-99ca-4e2a-ba0e-96d198de42f3'
+    Given path 'applications/a305706c-99ca-4e2a-ba0e-96d198deffff'
     And request '{"applicationStatus" : "IN_PROGRESS" }'
     When method PUT
     Then status 404
