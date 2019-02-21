@@ -1,5 +1,5 @@
-@application-retrieve
-Feature: Verify retrieve
+@application-update
+Feature: Verify update
 
   Background:
     * url baseUrl
@@ -12,27 +12,33 @@ Feature: Verify retrieve
     * def createResult = callonce read('./application-create-org-ok.feature')
     * def createdAppNo = createResult.applicationId
 
-  Scenario: Verify retrieve ok
+  Scenario: Verify update ok
+    Given path 'applications/' + createdAppNo
+    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    When method PUT
+    Then status 200
+
+    * header Authorization = 'Bearer ' + result.accessToken
     Given path 'applications/' + createdAppNo
     When method GET
     Then status 200
     And match $.data.applicationId contains createdAppNo
-    And match $.data.party.organisation.vehicles contains {registrationNumber:"VK61VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
-    And match $.data.party.organisation.vehicles contains {registrationNumber:"VK62VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
-    And match $.data.paymentReference == 'paymentref'
-    And match $.data.applicationStatus == 'TODO'
+    And match $.data.applicationStatus == 'IN_PROGRESS'
 
-  Scenario: Verify retrieve 400 invalid uuid
+  Scenario: Verify update 400 invalid uuid
     Given path 'applications/' + 'ABC'
-    When method GET
+    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    When method PUT
     Then status 400
 
-  Scenario: Verify retrieve 404 app not exists
+  Scenario: Verify update 400 app not exists
     Given path 'applications/' + 'a305706c-99ca-4e2a-ba0e-96d198de42f3'
-    When method GET
-    Then status 404
+    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    When method PUT
+    Then status 400
 
-  Scenario: App exists in different authority
+  Scenario: Verify update - App exists in different authority
     Given path 'applications/' + '4cf7be77-cfe7-4c9f-a229-ea61e903fb3a'
-    When method GET
+    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    When method PUT
     Then status 403

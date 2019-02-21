@@ -219,13 +219,13 @@ public interface ApplicationsApi {
     }
   )
   @RequestMapping(
-    value = "/applications",
+    value = "/applications/{applicationId}",
     produces = {"application/json"},
     method = RequestMethod.PUT
   )
   default ResponseEntity<Void> updateApplication(
       @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
-      @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
+      @Valid @RequestBody ApplicationUpdate applicationUpdate) {
     if (getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
       if (getAcceptHeader().get().contains("application/json")) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
