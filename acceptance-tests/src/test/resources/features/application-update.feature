@@ -13,7 +13,7 @@ Feature: Verify update
 
   Scenario: Verify update ok
     Given path 'applications/11114c39-02d5-4197-b032-1d9ce22c24b5'
-    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    And request '{"applicationStatus" : "INPROGRESS" }'
     When method PUT
     Then status 200
 
@@ -24,22 +24,22 @@ Feature: Verify update
     When method GET
     Then status 200
     And match $.data.applicationId contains '11114c39-02d5-4197-b032-1d9ce22c24b5'
-    And match $.data.applicationStatus == 'IN_PROGRESS'
+    And match $.data.applicationStatus == 'INPROGRESS'
 
   Scenario: Verify update 400 invalid uuid
     Given path 'applications/' + 'ABC'
-    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    And request '{"applicationStatus" : "INPROGRESS" }'
     When method PUT
     Then status 400
 
   Scenario: Verify update 404 app not exists
     Given path 'applications/a305706c-99ca-4e2a-ba0e-96d198deffff'
-    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    And request '{"applicationStatus" : "INPROGRESS" }'
     When method PUT
     Then status 404
 
   Scenario: Verify update - App exists in different authority
     Given path 'applications/' + '4cf7be77-cfe7-4c9f-a229-ea61e903fb3a'
-    And request '{"applicationStatus" : "IN_PROGRESS" }'
+    And request '{"applicationStatus" : "INPROGRESS" }'
     When method PUT
     Then status 403

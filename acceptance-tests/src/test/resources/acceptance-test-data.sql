@@ -40,7 +40,7 @@ INSERT INTO applicationmanagement.application(
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
  , false
- , 'IN_PROGRESS'
+ , 'INPROGRESS'
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
 application_id, prof_name, prof_location
@@ -131,7 +131,7 @@ application_id, bulky_equipment_type_code
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'ABERD'
  , false
- , 'IN_PROGRESS'
+ , 'INPROGRESS'
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
 application_id, prof_name, prof_location
@@ -226,7 +226,7 @@ INSERT INTO applicationmanagement.application(
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
  , false
- , 'IN_PROGRESS'
+ , 'INPROGRESS'
  );
 
  INSERT INTO applicationmanagement.app_bulky_equipment_type(
@@ -257,7 +257,7 @@ INSERT INTO applicationmanagement.application(
                  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
                  , 'LIVER'
                  , false
-                 , 'IN_PROGRESS'
+                 , 'INPROGRESS'
                  );
 
 INSERT INTO applicationmanagement.app_bulky_equipment_type(
