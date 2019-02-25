@@ -9,7 +9,7 @@ Feature: Verify Create org ok noauth
     * def setup = callonce db.runScript('acceptance-test-data.sql')
 
 
-  Scenario: Verify valid create organisation
+  Scenario: Verify cannot create without auth
     * def application =
     """
     {
