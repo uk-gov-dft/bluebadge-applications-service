@@ -43,7 +43,7 @@ tearDown
 
 # Get the dev-env stuff
 echo "Retrieving dev-env (develop) scripts."
-curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" https://github.com/uk-gov-dft/dev-env/archive/develop.tar.gz | tar xz
+curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" https://github.com/uk-gov-dft/dev-env/archive/push-to-docker-registry.tar.gz | tar xz
 if [ $? -ne 0 ]; then
    echo "Cannot download dev-env!"
    exit 1
