@@ -10,7 +10,7 @@ Feature: Verify Create org invalid enum
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
 
-  Scenario: Verify valid create organisation
+  Scenario: Verify invalid create organisation, invalid enum
     * def application =
     """
     {
@@ -53,4 +53,4 @@ Feature: Verify Create org invalid enum
     And request application
     When method POST
     Then status 400
-    And match $.error.message contains "InvalidFormat.VehicleTypeCodeField"
+    And match $.error.errors[0].message contains "InvalidFormat.party.organisation.vehicles.typeCode"
