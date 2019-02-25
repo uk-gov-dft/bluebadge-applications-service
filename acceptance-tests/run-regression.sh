@@ -14,9 +14,9 @@ tearDown() {
     echo "Pruning docker containers/images"
     docker system prune -a -f
 
-    if [[ -d dev-env-develop ]]; then
-      echo "Tearing down existing dev-env-develop directory"
-      rm -rf dev-env-develop
+    if [[ -d "dev-env-$BRANCH_NAME" ]]; then
+      echo "Tearing down existing dev-env-$BRANCH_NAME directory"
+      rm -rf "dev-env-$BRANCH_NAME"
     fi
 }
 
@@ -42,8 +42,8 @@ fi
 tearDown
 
 # Get the dev-env stuff
-echo "Retrieving dev-env (develop) scripts."
-curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" https://github.com/uk-gov-dft/dev-env/archive/push-to-docker-registry.tar.gz | tar xz
+echo "**************************** Retrieving dev-env ($BRANCH_NAME) scripts."
+curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" "https://github.com/uk-gov-dft/dev-env/archive/$BRANCH_NAME.tar.gz" | tar xz
 if [ $? -ne 0 ]; then
    echo "Cannot download dev-env!"
    exit 1
@@ -52,14 +52,14 @@ fi
 # 'VERSION-computed' needed for environment variables
 gradle :outputComputedVersion
 
-. dev-env-develop/env.sh
+. dev-env-push-to-docker-registry/env.sh
 if ! [[ "$BRANCH_NAME" =~ ^develop.*|^release.* ]]; then
    . env-feature.sh
 fi
 
 outputVersions
 
-cd dev-env-develop
+cd "dev-env-$BRANCH_NAME"
 
 docker-compose build
 docker-compose up -d --no-color
