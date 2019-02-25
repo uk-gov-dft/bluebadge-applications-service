@@ -27,14 +27,14 @@ import java.util.UUID;
 
 @RestController
 @Slf4j
-public class ApplicationApiControllerImpl implements ApplicationsApi {
+public class ApplicationApiController implements ApplicationsApi {
 
   private final ApplicationService service;
   private final ApplicationValidator validator;
 
   @SuppressWarnings("unused")
   @Autowired
-  public ApplicationApiControllerImpl(ApplicationService service, ApplicationValidator validator) {
+  public ApplicationApiController(ApplicationService service, ApplicationValidator validator) {
     this.service = service;
     this.validator = validator;
   }
