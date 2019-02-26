@@ -14,21 +14,20 @@ tearDown() {
     echo "Pruning docker containers/images"
     docker system prune -a -f
 
-    if [[ -d "dev-env-$BRANCH_NAME" ]]; then
-      echo "Tearing down existing dev-env-$BRANCH_NAME directory"
-      rm -rf "dev-env-$BRANCH_NAME"
+    if [[ -d "dev-env-develop" ]]; then
+      echo "Tearing down existing dev-env-develop directory"
+      rm -rf "dev-env-develop"
     fi
 }
 
 outputVersions() {
   echo "TARGET_ENV=$TARGET_ENV"
-  echo "LA_VERSION=$LA_VERSION"
-  echo "UM_VERSION=$UM_VERSION"
-  echo "BB_VERSION=$BB_VERSION"
-  echo "AP_VERSION=$AP_VERSION"
-  echo "AZ_VERSION=$AZ_VERSION"
-  echo "MG_VERSION=$MG_VERSION"
-  echo "RD_VERSION=$RD_VERSION"
+
+  for version in `export | grep VERSION`;
+  do
+
+    echo $version
+  done
 }
 
 set -a
@@ -42,8 +41,8 @@ fi
 tearDown
 
 # Get the dev-env stuff
-echo "**************************** Retrieving dev-env ($BRANCH_NAME) scripts."
-curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" "https://github.com/uk-gov-dft/dev-env/archive/$BRANCH_NAME.tar.gz" | tar xz
+echo "**************************** Retrieving dev-env (develop) scripts."
+curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" "https://github.com/uk-gov-dft/dev-env/archive/develop.tar.gz" | tar xz
 if [ $? -ne 0 ]; then
    echo "Cannot download dev-env!"
    exit 1
@@ -52,14 +51,15 @@ fi
 # 'VERSION-computed' needed for environment variables
 gradle :outputComputedVersion
 
-. dev-env-push-to-docker-registry/env.sh
-if ! [[ "$BRANCH_NAME" =~ ^develop.*|^release.* ]]; then
+. "dev-env-develop/env.sh"
+if ! [[ "develop" =~ ^develop.*|^release.* ]]; then
    . env-feature.sh
 fi
+. "dev-env-develop/export-docker-versions.sh"
 
 outputVersions
 
-cd "dev-env-$BRANCH_NAME"
+cd "dev-env-develop"
 
 docker-compose build
 docker-compose up -d --no-color
