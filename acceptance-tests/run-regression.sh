@@ -20,14 +20,31 @@ tearDown() {
     fi
 }
 
+dockerVersion(){
+  grep -q SNAPSHOT <<< $1 && echo latest || echo $1
+}
+
 outputVersions() {
   echo "TARGET_ENV=$TARGET_ENV"
 
-  for version in `export | grep VERSION`;
-  do
-
-    echo $version
-  done
+  echo "LA_VERSION=$LA_VERSION"
+  echo "UM_VERSION=$UM_VERSION"
+  echo "BB_VERSION=$BB_VERSION"
+  echo "AP_VERSION=$AP_VERSION"
+  echo "AZ_VERSION=$AZ_VERSION"
+  echo "MG_VERSION=$MG_VERSION"
+  echo "RD_VERSION=$RD_VERSION"
+  echo "PR_VERSION=$PR_VERSION"
+  echo "PY_VERSION=$PY_VERSION"
+  echo "LA_DOCKER_VERSION=$(dockerVersion $LA_VERSION)"
+  echo "UM_DOCKER_VERSION=$(dockerVersion $UM_VERSION)"
+  echo "BB_DOCKER_VERSION=$(dockerVersion $BB_VERSION)"
+  echo "AP_DOCKER_VERSION=$(dockerVersion $AP_VERSION)"
+  echo "AZ_DOCKER_VERSION=$(dockerVersion $AZ_VERSION)"
+  echo "MG_DOCKER_VERSION=$(dockerVersion $MG_VERSION)"
+  echo "RD_DOCKER_VERSION=$(dockerVersion $RD_VERSION)"
+  echo "PR_DOCKER_VERSION=$(dockerVersion $PR_VERSION)"
+  echo "PY_DOCKER_VERSION=$(dockerVersion $PY_VERSION)"
 }
 
 set -a
@@ -55,7 +72,6 @@ gradle :outputComputedVersion
 if ! [[ "develop" =~ ^develop.*|^release.* ]]; then
    . env-feature.sh
 fi
-. "dev-env-develop/export-docker-versions.sh"
 
 outputVersions
 
