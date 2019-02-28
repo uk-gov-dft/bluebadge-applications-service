@@ -29,6 +29,7 @@ INSERT INTO applicationmanagement.application(
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
  , is_deleted
+ , application_status
  ) VALUES (
  '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'LIVER', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -39,6 +40,7 @@ INSERT INTO applicationmanagement.application(
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
  , false
+ , 'INPROGRESS'
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
 application_id, prof_name, prof_location
@@ -118,6 +120,7 @@ application_id, bulky_equipment_type_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
  , is_deleted
+ , application_status
  ) VALUES (
  '7d93fdb5-56bf-41b3-8af0-147696711410'::uuid, 'ABERD', 'NEW', true, '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -128,6 +131,7 @@ application_id, bulky_equipment_type_code
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'ABERD'
  , false
+ , 'INPROGRESS'
  );
 INSERT INTO applicationmanagement.app_healthcare_professional(
 application_id, prof_name, prof_location
@@ -211,6 +215,7 @@ INSERT INTO applicationmanagement.application(
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
  , is_deleted
+ , application_status
  ) VALUES (
  '89ca4c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'ABERD', 'NEW', true, current_timestamp, 'PERSON'
  , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -221,6 +226,7 @@ INSERT INTO applicationmanagement.application(
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
  , false
+ , 'INPROGRESS'
  );
 
  INSERT INTO applicationmanagement.app_bulky_equipment_type(
@@ -229,3 +235,33 @@ INSERT INTO applicationmanagement.application(
  '89ca4c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'SUCTION'
  );
 
+-- For update status
+INSERT INTO applicationmanagement.application(
+    id, local_authority_code, app_type_code, is_payment_taken, submission_datetime, party_code
+    , contact_name, contact_building_street, contact_town_city, contact_postcode
+    , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
+    , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
+    , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
+    , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
+    , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
+    , blind_registered_at_la_code
+    , is_deleted
+    , application_status
+    ) VALUES (
+                 '11114c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'ABERD', 'NEW', true, current_timestamp, 'PERSON'
+                 , 'TestDeleteMe', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
+                 , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
+                 , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
+                 , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'CHILDBULK', 'Eligibility Conditions'
+                 , true, '2020-01-31'::DATE, null, 'LESSMIN'
+                 , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
+                 , 'LIVER'
+                 , false
+                 , 'INPROGRESS'
+                 );
+
+INSERT INTO applicationmanagement.app_bulky_equipment_type(
+    application_id, bulky_equipment_type_code
+    ) VALUES (
+                 '11114c39-02d5-4197-b032-1d9ce22c24b5'::uuid, 'SUCTION'
+                 );

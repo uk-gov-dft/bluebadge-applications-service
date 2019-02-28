@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.common.converter.ToEntityConverter;
 import uk.gov.dft.bluebadge.common.converter.ToModelConverter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 
@@ -46,6 +47,10 @@ public class ApplicationConverter
             .submissionDatetime(
                 null == model.getSubmissionDate() ? null : model.getSubmissionDate().toInstant())
             .existingBadgeNo(model.getExistingBadgeNumber())
+            .applicationStatus(
+                model.getApplicationStatus() == null
+                    ? ApplicationStatusField.TODO.name()
+                    : model.getApplicationStatus().name())
             .build();
 
     for (ApplicationBiConverter converter : converters) {
@@ -65,7 +70,7 @@ public class ApplicationConverter
     model.setPaymentReference(entity.getPaymentReference());
     model.setSubmissionDate(entity.getSubmissionDatetime().atOffset(ZoneOffset.UTC));
     model.setExistingBadgeNumber(entity.getExistingBadgeNo());
-
+    model.setApplicationStatus(ApplicationStatusField.fromValue(entity.getApplicationStatus()));
     model.setArtifacts(null);
 
     for (ApplicationBiConverter converter : converters) {

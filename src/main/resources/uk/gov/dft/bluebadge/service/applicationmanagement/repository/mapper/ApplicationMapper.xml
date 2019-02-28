@@ -18,7 +18,8 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          local_authority_code, bulky_equipment_other_desc
+          local_authority_code, bulky_equipment_other_desc,
+          application_status
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -33,7 +34,8 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc}
+          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc},
+          #{applicationStatus}
         )
     </insert>
 
@@ -147,6 +149,8 @@
         <result property="submissionDate" column="submission_datetime" />
         <result property="eligibilityCode" column="eligibility_code" />
         <result property="postcode" column="contact_postcode" />
+        <result column="application_status" property="applicationStatus" />
+
     </resultMap>
 
     <select id="findApplications" resultMap="applicationSummaryMap" parameterType="FindApplicationQueryParams">
@@ -154,6 +158,7 @@
           a.id, a.party_code, a.app_type_code
           , a.nino, a.holder_name, a.submission_datetime
           , a.eligibility_code, a.contact_postcode
+          , a.application_status
         FROM application a
         WHERE
         -- Authority code always required.
@@ -220,6 +225,7 @@
         <result column="bulky_equipment_other_desc" property="bulkyEquipmentOtherDesc" />
         <result column="is_deleted" property="isDeleted" />
         <result column="deleted_timestamp" property="deletedTimestamp" />
+        <result column="application_status" property="applicationStatus" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
                     select="retrieveHealthcareProfessional" column="string_id"/>
         <collection property="medications" ofType="MedicationEntity"
@@ -279,6 +285,7 @@
         , a.bulky_equipment_other_desc
         , a.is_deleted
         , a.deleted_timestamp
+        , a.application_status
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND a.is_deleted = #{deleted}
@@ -479,6 +486,12 @@
           	deleted_timestamp = current_timestamp
         WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND is_deleted = #{deleted}
-      </update>
+    </update>
+
+    <update id="updateApplication" parameterType="uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate">
+        UPDATE application
+        SET application_status = #{applicationStatus}
+        WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+    </update>
 
 </mapper>
