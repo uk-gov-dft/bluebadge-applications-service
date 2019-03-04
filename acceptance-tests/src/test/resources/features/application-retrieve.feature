@@ -20,7 +20,7 @@ Feature: Verify retrieve
     And match $.data.party.organisation.vehicles contains {registrationNumber:"VK61VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
     And match $.data.party.organisation.vehicles contains {registrationNumber:"VK62VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
     And match $.data.paymentReference == 'paymentref'
-
+    And match $.data.applicationStatus == 'TODO'
 
   Scenario: Verify retrieve 400 invalid uuid
     Given path 'applications/' + 'ABC'

@@ -16,7 +16,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.validation.BeanPropertyBindingResult;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Benefit;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Blind;
@@ -314,6 +316,7 @@ public class ApplicationFixture extends AbstractValidator {
       application.setPaymentTaken(ValidValues.PAYMENT_TAKEN);
       application.setExistingBadgeNumber(ValidValues.EXISTING_BADGE_NO);
       application.setSubmissionDate(OffsetDateTime.now(Clock.systemUTC()));
+      application.setApplicationStatus(ApplicationStatusField.TODO);
       return this;
     }
 
@@ -510,5 +513,36 @@ public class ApplicationFixture extends AbstractValidator {
         .isDeleted(ValidValues.IS_DELETED)
         .deletedTimestamp(null)
         .build();
+  }
+
+  public static final class ApplicationUpdateBuilder {
+    // Supplied in the original PUT request
+    private ApplicationStatusField applicationStatus = null;
+    // Added for use in the repository
+    private UUID applicationId;
+
+    private ApplicationUpdateBuilder() {}
+
+    public static ApplicationUpdateBuilder anApplicationUpdate() {
+      return new ApplicationUpdateBuilder();
+    }
+
+    public ApplicationUpdateBuilder withApplicationStatus(
+        ApplicationStatusField applicationStatus) {
+      this.applicationStatus = applicationStatus;
+      return this;
+    }
+
+    public ApplicationUpdateBuilder withApplicationId(UUID applicationId) {
+      this.applicationId = applicationId;
+      return this;
+    }
+
+    public ApplicationUpdate build() {
+      ApplicationUpdate applicationUpdate = new ApplicationUpdate();
+      applicationUpdate.setApplicationId(applicationId);
+      applicationUpdate.setApplicationStatus(applicationStatus);
+      return applicationUpdate;
+    }
   }
 }

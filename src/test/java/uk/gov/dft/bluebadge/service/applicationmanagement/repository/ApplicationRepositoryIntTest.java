@@ -82,6 +82,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .holderNameAtBirth("name at birth")
             .eligibilityConditions("elig conditions")
             .holderName("holderName")
+            .applicationStatus("TODO")
             .build();
     assertEquals(1, applicationRepository.createApplication(entity));
 

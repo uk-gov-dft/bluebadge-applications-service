@@ -13,6 +13,7 @@ public enum Statements {
   FIND("findApplications"),
   RETRIEVE("retrieveApplication"),
   UPDATE("updateToDeleteApplication"),
+  UPDATE_APPLICATION("updateApplication"),
   DELETE_HEALTHCARE_PROFESSIONALS("deleteHealthcareProfessionals"),
   DELETE_MEDICATIONS("deleteMedications"),
   DELETE_TREATMENTS("deleteTreatments"),

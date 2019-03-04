@@ -62,4 +62,5 @@ public class ApplicationEntity implements Serializable {
   private List<ArtifactEntity> artifacts;
   private Boolean isDeleted;
   private LocalDate deletedTimestamp;
+  private String applicationStatus;
 }

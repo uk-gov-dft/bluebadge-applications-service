@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
+import uk.gov.dft.bluebadge.common.util.ValidationPattern;
 
 /** Person */
 @Validated
@@ -60,10 +61,7 @@ public class Person {
    * @return nino
    */
   @ApiModelProperty(example = "NS123456A", value = "The badgeholders national insurance number")
-  @Pattern(
-    regexp =
-        "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$"
-  )
+  @Pattern(regexp = ValidationPattern.NINO_CASE_INSENSITIVE)
   public String getNino() {
     return nino;
   }

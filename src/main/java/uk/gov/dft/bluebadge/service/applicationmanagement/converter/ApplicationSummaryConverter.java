@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import java.time.ZoneOffset;
 import uk.gov.dft.bluebadge.common.converter.ToModelConverter;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
@@ -23,6 +24,7 @@ public class ApplicationSummaryConverter
       model.setSubmissionDate(entity.getSubmissionDate().atOffset(ZoneOffset.UTC));
     }
     model.setPartyTypeCode(PartyTypeCodeField.fromValue(entity.getPartyTypeCode()));
+    model.setApplicationStatus(ApplicationStatusField.fromValue(entity.getApplicationStatus()));
     return model;
   }
 }
