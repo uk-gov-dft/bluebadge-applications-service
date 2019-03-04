@@ -5,7 +5,6 @@ import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 
 @Builder
 @Data

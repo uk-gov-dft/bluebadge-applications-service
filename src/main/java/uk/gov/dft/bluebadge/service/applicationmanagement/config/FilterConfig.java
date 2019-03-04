@@ -14,5 +14,7 @@ public class FilterConfig {
   }
 
   @Bean
-  public JwtMdcFilter getJwtMdcFilter() { return new JwtMdcFilter(); }
+  public JwtMdcFilter getJwtMdcFilter() {
+    return new JwtMdcFilter();
+  }
 }
