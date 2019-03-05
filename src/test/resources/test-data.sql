@@ -53,6 +53,11 @@ CREATE TABLE applicationmanagement_unittest.app_walking_type (
     walking_type_code character varying(10) NOT NULL
 );
 
+CREATE TABLE applicationmanagement_unittest.app_breathlessness_type (
+    application_id uuid NOT NULL,
+    breathlessness_type_code character varying(10) NOT NULL
+);
+
 CREATE TABLE applicationmanagement_unittest.app_bulky_equipment_type (
     application_id uuid NOT NULL,
     bulky_equipment_type_code character varying(10) NOT NULL
@@ -88,6 +93,7 @@ CREATE TABLE applicationmanagement_unittest.application (
     benefit_is_indefinite boolean,
     benefit_expiry_date date,
     walk_other_desc character varying(100),
+    breathlessness_other_desc character varying(100),
     walk_length_code character varying(10),
     walk_speed_code character varying(10),
     arms_driving_freq character varying(100),
@@ -178,7 +184,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
  , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
- , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
+ , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, breathlessness_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code, bulky_equipment_other_desc, application_status
  ) VALUES (
@@ -187,7 +193,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
  , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
- , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
+ , true, '2020-01-31'::DATE, 'Walk Other Desc', 'Breathlessness Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'BIRM', 'Bulky1', 'TODO'
  );
@@ -251,6 +257,16 @@ application_id, walking_type_code
 ) VALUES (
 '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'BREATH'
 );
+INSERT INTO applicationmanagement_unittest.app_breathlessness_type(
+application_id, breathlessness_type_code
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'UPHILL'
+);
+INSERT INTO applicationmanagement_unittest.app_breathlessness_type(
+application_id, breathlessness_type_code
+) VALUES (
+'1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'OTHER'
+);
 INSERT INTO applicationmanagement_unittest.app_bulky_equipment_type(
 application_id, bulky_equipment_type_code
 ) VALUES (
@@ -285,7 +301,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
  , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
- , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, walk_length_code
+ , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, breathlessness_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code
  , is_deleted
@@ -295,7 +311,7 @@ INSERT INTO applicationmanagement_unittest.application(
  , 'Holder Name', 'AAAAAA', 'Contact Line2', 'PPN', 'SPN'
  , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
- , true, '2020-01-31'::DATE, 'Walk Other Desc', 'LESSMIN'
+ , true, '2020-01-31'::DATE, 'Walk Other Desc', 'Breathlessness Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'LIVER'
  , false
@@ -359,6 +375,16 @@ INSERT INTO applicationmanagement_unittest.app_walking_type(
 application_id, walking_type_code
 ) VALUES (
 '0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'BREATH'
+);
+INSERT INTO applicationmanagement_unittest.app_breathlessness_type(
+application_id, breathlessness_type_code
+) VALUES (
+'0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'UPHILL'
+);
+INSERT INTO applicationmanagement_unittest.app_breathlessness_type(
+application_id, breathlessness_type_code
+) VALUES (
+'0bd06c01-a193-4255-be0b-0fbee253ee5e'::uuid, 'OTHER'
 );
 INSERT INTO applicationmanagement_unittest.app_bulky_equipment_type(
 application_id, bulky_equipment_type_code

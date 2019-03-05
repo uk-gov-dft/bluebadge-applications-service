@@ -6,6 +6,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpd
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BreathlessnessTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
@@ -83,6 +84,14 @@ public interface ApplicationMapper {
    */
   int createWalkingDifficultyTypes(List<WalkingDifficultyTypeEntity> walkingDifficultyTypes);
 
+  /**
+   * Create multiple breathlessness types for an application.
+   *
+   * @param breathlessnessTypes List of BreathlessnessTypeEntity to create.
+   * @return Created count.
+   */
+  int createBreathlessnessTypes(List<BreathlessnessTypeEntity> breathlessnessTypes);
+
   int createArtifacts(List<ArtifactEntity> artifactEntities);
 
   /**
@@ -120,6 +129,8 @@ public interface ApplicationMapper {
   int deleteWalkingAids(String applicationId);
 
   int deleteWalkingDifficultyTypes(String applicationId);
+
+  int deleteBreathlessnessTypes(String applicationId);
 
   int deleteBulkyEquipmentTypes(String applicationId);
 

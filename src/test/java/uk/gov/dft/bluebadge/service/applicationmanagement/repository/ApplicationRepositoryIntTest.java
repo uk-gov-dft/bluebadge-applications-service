@@ -31,6 +31,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationContextTest
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BreathlessnessTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
@@ -76,6 +77,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .dob(LocalDate.now().minus(ofYears(30)))
             .eligibilityCode("PIP")
             .walkOtherDesc("walk desc")
+                .breathlessnessOtherDesc("breathlessness desc")
             .orgIsCharity(true)
             .orgCharityNo("123456")
             .noOfBadges(1)
@@ -140,6 +142,19 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .typeCode("PAIN")
             .build());
     assertEquals(1, applicationRepository.createWalkingDifficultyTypes(diffs));
+
+    List<BreathlessnessTypeEntity> breathlessnessTypes = new ArrayList<>();
+    breathlessnessTypes.add(
+            BreathlessnessTypeEntity.builder()
+                    .applicationId(entity.getId())
+                    .typeCode("UPHILL")
+                    .build());
+    breathlessnessTypes.add(
+            BreathlessnessTypeEntity.builder()
+                    .applicationId(entity.getId())
+                    .typeCode("OTHER")
+                    .build());
+    assertEquals(2, applicationRepository.createBreathlessnessTypes(breathlessnessTypes));
 
     List<BulkyEquipmentTypeEntity> eqs = new ArrayList<>();
     eqs.add(
@@ -383,6 +398,24 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
                     .applicationId(result.getId())
                     .typeCode("BREATH")
                     .build()));
+    // Breathlessness Types
+    assertEquals(2, result.getBreathlessnessTypes().size());
+    assertTrue(
+            result
+                    .getBreathlessnessTypes()
+                    .contains(
+                            BreathlessnessTypeEntity.builder()
+                                    .applicationId(result.getId())
+                                    .typeCode("UPHILL")
+                                    .build()));
+    assertTrue(
+            result
+                    .getBreathlessnessTypes()
+                    .contains(
+                            BreathlessnessTypeEntity.builder()
+                                    .applicationId(result.getId())
+                                    .typeCode("OTHER")
+                                    .build()));
 
     // Bulky Equipment Types
     assertEquals(2, result.getBulkyEquipment().size());
@@ -433,6 +466,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertTrue(result.getBenefitIsIndefinite());
     assertEquals(LocalDate.parse("2020-01-31"), result.getBenefitExpiryDate());
     assertEquals("Walk Other Desc", result.getWalkOtherDesc());
+    assertEquals("Breathlessness Other Desc", result.getBreathlessnessOtherDesc());
     assertEquals("LESSMIN", result.getWalkLengthCode());
     assertEquals("SLOW", result.getWalkSpeedCode());
     assertEquals("Arms Driving Freq", result.getArmsDrivingFreq());
@@ -465,6 +499,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertEquals(2, result.getVehicles().size());
     assertEquals(2, result.getWalkingAids().size());
     assertEquals(2, result.getWalkingDifficultyTypes().size());
+    assertEquals(2, result.getBreathlessnessTypes().size());
     assertEquals(2, result.getBulkyEquipment().size());
     assertEquals(1, result.getArtifacts().size());
 
@@ -496,6 +531,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertNull(deleted.getBenefitIsIndefinite());
     assertNull(deleted.getBenefitExpiryDate());
     assertNull(deleted.getWalkOtherDesc());
+    assertNull(deleted.getBreathlessnessOtherDesc());
     assertNull(deleted.getWalkLengthCode());
     assertNull(deleted.getArmsDrivingFreq());
     assertNull(deleted.getArmsIsAdaptedVehicle());

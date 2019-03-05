@@ -70,7 +70,13 @@ Feature: Verify Create person walkd ok
           frequency: 'medication frequency',
           quantity: 'medication quantity'
         }
-      ]
+      ],
+      breathlessness: {
+        typeCodes: [
+          'OWNPACE', 'OTHER'
+        ],
+        otherDescription: 'other description'
+      }
     },
     healthcareProfessionals: [
       {
