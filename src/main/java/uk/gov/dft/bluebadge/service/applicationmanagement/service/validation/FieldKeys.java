@@ -21,6 +21,9 @@ class FieldKeys {
   static final String KEY_ELI_WALKING = KEY_ELIGIBILITY + ".walkingDifficulty";
   static final String KEY_ELI_WALK_TYPES = KEY_ELI_WALKING + ".typeCodes";
   static final String KEY_ELI_WALK_OTHER_DESC = KEY_ELI_WALKING + ".otherDescription";
+  static final String KEY_ELI_WALKING_BREATHLESSNESS = KEY_ELI_WALKING + ".breathlessness";
+  static final String KEY_ELI_WALKING_BREATHLESSNESS_TYPES = KEY_ELI_WALKING_BREATHLESSNESS + ".typeCodes";
+  static final String KEY_ELI_BREATHLESSNESS_OTHER_DESC = KEY_ELI_WALKING_BREATHLESSNESS + ".otherDescription";
   static final String KEY_ELI_WALK_SPEED = KEY_ELI_WALKING + ".walkingSpeedCode";
   static final String KEY_ELI_CHILD3 = KEY_ELIGIBILITY + ".childUnder3";
   static final String KEY_ELI_CHILD3_TYPES = KEY_ELI_CHILD3 + ".bulkyMedicalEquipmentTypeCodes";
