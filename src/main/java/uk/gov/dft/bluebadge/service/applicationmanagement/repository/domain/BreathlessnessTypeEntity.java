@@ -1,11 +1,10 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain;
 
+import java.io.Serializable;
+import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
-
-import java.io.Serializable;
-import java.util.UUID;
 
 @Data
 @Builder

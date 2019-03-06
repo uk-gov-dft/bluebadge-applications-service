@@ -12,6 +12,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
+import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.BreathlessnessTypeConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.MedicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.TreatmentConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.WalkingAidConverter;
@@ -26,6 +27,7 @@ public class WalkingDifficultyConverterTest extends ApplicationFixture {
   @Mock WalkingAidConverter walkingAidConverter;
   @Mock TreatmentConverter treatmentConverter;
   @Mock MedicationConverter medicationConverter;
+  @Mock BreathlessnessTypeConverter breathlessnessTypeConverter;
 
   public WalkingDifficultyConverterTest() {
     MockitoAnnotations.initMocks(this);
@@ -34,7 +36,8 @@ public class WalkingDifficultyConverterTest extends ApplicationFixture {
             walkingDifficultyTypeConverter,
             walkingAidConverter,
             treatmentConverter,
-            medicationConverter);
+            medicationConverter,
+            breathlessnessTypeConverter);
   }
 
   @Test

@@ -1,5 +1,8 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -8,13 +11,8 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficu
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
-import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
-
 public class WalkingValidatorTest extends ApplicationFixture {
   @Mock private BreathlessnessValidator breathlessnessValidatorMock;
-
 
   private WalkingValidator walkingValidator;
 
@@ -23,7 +21,6 @@ public class WalkingValidatorTest extends ApplicationFixture {
     MockitoAnnotations.initMocks(this);
     walkingValidator = new WalkingValidator(breathlessnessValidatorMock);
   }
-
 
   @Test
   public void validateWalkingSpeed() {

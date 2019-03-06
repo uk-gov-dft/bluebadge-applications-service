@@ -111,13 +111,11 @@ public class ApplicationRepository implements ApplicationMapper {
   }
 
   @Override
-  public int createBreathlessnessTypes(
-          List<BreathlessnessTypeEntity> breathlessnessTypes) {
+  public int createBreathlessnessTypes(List<BreathlessnessTypeEntity> breathlessnessTypes) {
     int insertCount = 0;
     if (createRequired(breathlessnessTypes)) {
       insertCount =
-              sqlSession.insert(
-                      Statements.CREATE_BREATHLESSNESS_TYPES.getName(), breathlessnessTypes);
+          sqlSession.insert(Statements.CREATE_BREATHLESSNESS_TYPES.getName(), breathlessnessTypes);
       log.debug("{} breathlessness types created.", insertCount);
     }
     return insertCount;

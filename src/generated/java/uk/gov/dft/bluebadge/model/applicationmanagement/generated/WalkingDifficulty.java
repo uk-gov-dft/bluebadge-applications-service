@@ -248,7 +248,7 @@ public class WalkingDifficulty {
         && Objects.equals(this.walkingLengthOfTimeCode, walkingDifficulty.walkingLengthOfTimeCode)
         && Objects.equals(this.walkingSpeedCode, walkingDifficulty.walkingSpeedCode)
         && Objects.equals(this.treatments, walkingDifficulty.treatments)
-            && Objects.equals(this.breathlessness, walkingDifficulty.breathlessness)
+        && Objects.equals(this.breathlessness, walkingDifficulty.breathlessness)
         && Objects.equals(this.medications, walkingDifficulty.medications);
   }
 

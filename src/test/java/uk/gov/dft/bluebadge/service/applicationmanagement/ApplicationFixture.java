@@ -87,13 +87,14 @@ public class ApplicationFixture extends AbstractValidator {
         WalkingLengthOfTimeCodeField.FEWMIN;
     WalkingSpeedCodeField WALKING_SPEED_CODE_FIELD = WalkingSpeedCodeField.FAST;
     BreathlessnessTypeCodeField BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL =
-            BreathlessnessTypeCodeField.UPHILL;
+        BreathlessnessTypeCodeField.UPHILL;
     BreathlessnessTypeCodeField BREATHLESSNESS_TYPE_CODE_FIELD_OTHER =
-            BreathlessnessTypeCodeField.OTHER;
+        BreathlessnessTypeCodeField.OTHER;
     List<BreathlessnessTypeCodeField> BREATHLESSNESS_TYPE_CODES =
-            Lists.newArrayList(BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL);
+        Lists.newArrayList(BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL);
     List<BreathlessnessTypeCodeField> BREATHLESSNESS_TYPE_CODES_WITH_OTHER =
-            Lists.newArrayList(BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL, BREATHLESSNESS_TYPE_CODE_FIELD_OTHER);
+        Lists.newArrayList(
+            BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL, BREATHLESSNESS_TYPE_CODE_FIELD_OTHER);
     String ARMS_DRIVE_FREQ = "drive freq";
     Boolean ARMS_IS_ADAPTED = Boolean.TRUE;
     String PHONE_NO = "123456";
@@ -297,11 +298,6 @@ public class ApplicationFixture extends AbstractValidator {
     application.getEligibility().getWalkingDifficulty().setBreathlessness(breathlessness);
   }
 
-  private static void addBreathlessnessWithoutTypecode(Application application) {
-    Breathlessness breathlessness = new Breathlessness();
-    application.getEligibility().getWalkingDifficulty().setBreathlessness(breathlessness);
-  }
-
   private static void addBreathlessnessOther(Application application) {
     Breathlessness breathlessness = new Breathlessness();
     breathlessness.setTypeCodes(ValidValues.BREATHLESSNESS_TYPE_CODES_WITH_OTHER);
@@ -422,11 +418,6 @@ public class ApplicationFixture extends AbstractValidator {
 
     public ApplicationBuilder addBreathlessness() {
       ApplicationFixture.addBreathlessness(application);
-      return this;
-    }
-
-    public ApplicationBuilder addBreathlessnessWithoutTypecode() {
-      ApplicationFixture.addBreathlessnessWithoutTypecode(application);
       return this;
     }
 

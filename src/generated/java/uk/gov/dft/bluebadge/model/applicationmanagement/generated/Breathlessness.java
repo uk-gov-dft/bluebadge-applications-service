@@ -2,7 +2,6 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-
 import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
@@ -23,6 +22,10 @@ public class Breathlessness {
     return this;
   }
 
+  public Breathlessness otherDescription(String otherDescription) {
+    this.otherDescription = otherDescription;
+    return this;
+  }
   /**
    * Get typeCodes
    *
@@ -65,7 +68,7 @@ public class Breathlessness {
     }
     Breathlessness breathlessness = (Breathlessness) o;
     return Objects.equals(this.typeCodes, breathlessness.typeCodes)
-            && Objects.equals(this.otherDescription, breathlessness.otherDescription);
+        && Objects.equals(this.otherDescription, breathlessness.otherDescription);
   }
 
   @Override

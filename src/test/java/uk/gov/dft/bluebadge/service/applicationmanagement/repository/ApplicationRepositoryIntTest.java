@@ -77,7 +77,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .dob(LocalDate.now().minus(ofYears(30)))
             .eligibilityCode("PIP")
             .walkOtherDesc("walk desc")
-                .breathlessnessOtherDesc("breathlessness desc")
+            .breathlessnessOtherDesc("breathlessness desc")
             .orgIsCharity(true)
             .orgCharityNo("123456")
             .noOfBadges(1)
@@ -145,15 +145,12 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
 
     List<BreathlessnessTypeEntity> breathlessnessTypes = new ArrayList<>();
     breathlessnessTypes.add(
-            BreathlessnessTypeEntity.builder()
-                    .applicationId(entity.getId())
-                    .typeCode("UPHILL")
-                    .build());
+        BreathlessnessTypeEntity.builder()
+            .applicationId(entity.getId())
+            .typeCode("UPHILL")
+            .build());
     breathlessnessTypes.add(
-            BreathlessnessTypeEntity.builder()
-                    .applicationId(entity.getId())
-                    .typeCode("OTHER")
-                    .build());
+        BreathlessnessTypeEntity.builder().applicationId(entity.getId()).typeCode("OTHER").build());
     assertEquals(2, applicationRepository.createBreathlessnessTypes(breathlessnessTypes));
 
     List<BulkyEquipmentTypeEntity> eqs = new ArrayList<>();
@@ -401,21 +398,21 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     // Breathlessness Types
     assertEquals(2, result.getBreathlessnessTypes().size());
     assertTrue(
-            result
-                    .getBreathlessnessTypes()
-                    .contains(
-                            BreathlessnessTypeEntity.builder()
-                                    .applicationId(result.getId())
-                                    .typeCode("UPHILL")
-                                    .build()));
+        result
+            .getBreathlessnessTypes()
+            .contains(
+                BreathlessnessTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("UPHILL")
+                    .build()));
     assertTrue(
-            result
-                    .getBreathlessnessTypes()
-                    .contains(
-                            BreathlessnessTypeEntity.builder()
-                                    .applicationId(result.getId())
-                                    .typeCode("OTHER")
-                                    .build()));
+        result
+            .getBreathlessnessTypes()
+            .contains(
+                BreathlessnessTypeEntity.builder()
+                    .applicationId(result.getId())
+                    .typeCode("OTHER")
+                    .build()));
 
     // Bulky Equipment Types
     assertEquals(2, result.getBulkyEquipment().size());
