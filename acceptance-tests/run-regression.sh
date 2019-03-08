@@ -14,14 +14,19 @@ tearDown() {
     echo "Pruning docker containers/images"
     docker system prune -a -f
 
-    if [[ -d dev-env-develop ]]; then
-      echo "Tearing down existing dev-env-develop directory"
-      rm -rf dev-env-develop
+    if [[ -d "dev-env-$BRANCH_NAME" ]]; then
+      echo "Tearing down existing dev-env-$BRANCH_NAME directory"
+      rm -rf "dev-env-$BRANCH_NAME"
     fi
+}
+
+dockerVersion(){
+  grep -q SNAPSHOT <<< $1 && echo latest || echo $1
 }
 
 outputVersions() {
   echo "TARGET_ENV=$TARGET_ENV"
+
   echo "LA_VERSION=$LA_VERSION"
   echo "UM_VERSION=$UM_VERSION"
   echo "BB_VERSION=$BB_VERSION"
@@ -29,6 +34,17 @@ outputVersions() {
   echo "AZ_VERSION=$AZ_VERSION"
   echo "MG_VERSION=$MG_VERSION"
   echo "RD_VERSION=$RD_VERSION"
+  echo "PR_VERSION=$PR_VERSION"
+  echo "PY_VERSION=$PY_VERSION"
+  echo "LA_DOCKER_VERSION=$(dockerVersion $LA_VERSION)"
+  echo "UM_DOCKER_VERSION=$(dockerVersion $UM_VERSION)"
+  echo "BB_DOCKER_VERSION=$(dockerVersion $BB_VERSION)"
+  echo "AP_DOCKER_VERSION=$(dockerVersion $AP_VERSION)"
+  echo "AZ_DOCKER_VERSION=$(dockerVersion $AZ_VERSION)"
+  echo "MG_DOCKER_VERSION=$(dockerVersion $MG_VERSION)"
+  echo "RD_DOCKER_VERSION=$(dockerVersion $RD_VERSION)"
+  echo "PR_DOCKER_VERSION=$(dockerVersion $PR_VERSION)"
+  echo "PY_DOCKER_VERSION=$(dockerVersion $PY_VERSION)"
 }
 
 set -a
@@ -42,25 +58,25 @@ fi
 tearDown
 
 # Get the dev-env stuff
-echo "Retrieving dev-env (develop) scripts."
-curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" https://github.com/uk-gov-dft/dev-env/archive/develop.tar.gz | tar xz
+echo "**************************** Retrieving dev-env ($BRANCH_NAME) scripts."
+curl -sL -H "Authorization: token $(cat ~/.ssh/github_token)" "https://github.com/uk-gov-dft/dev-env/archive/$BRANCH_NAME.tar.gz" | tar xz
 if [ $? -ne 0 ]; then
-   echo "Cannot download dev-env!"
+   echo "Cannot download dev-env ($BRANCH_NAME)!"
    exit 1
 fi
 
 # 'VERSION-computed' needed for environment variables
 gradle :outputComputedVersion
 
-. dev-env-develop/env.sh
+. "dev-env-$BRANCH_NAME/env.sh"
 if ! [[ "$BRANCH_NAME" =~ ^develop.*|^release.* ]]; then
    . env-feature.sh
 fi
 
 outputVersions
 
-cd dev-env-develop
-bash load-modules.sh
+cd "dev-env-$BRANCH_NAME"
+
 docker-compose build
 docker-compose up -d --no-color
 ./wait_for_it.sh localhost:5432 localhost:8681:/manage/actuator/health localhost:8381:/manage/actuator/health localhost:8281:/manage/actuator/health localhost:8081:/manage/actuator/health localhost:8481:/manage/actuator/health localhost:8181:/manage/actuator/health localhost:8581:/manage/actuator/health
