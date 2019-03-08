@@ -23,8 +23,10 @@ import uk.gov.dft.bluebadge.common.security.SecurityUtils;
 import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.controller.PagingParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationConverter;
@@ -79,6 +81,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
 
     assertNotNull("Submission date set as part of create", application.getSubmissionDate());
     assertNotNull("Id set as part of create", application.getApplicationId());
+    assertNotNull("applicationStatus should be set to TODO", application.getApplicationStatus());
 
     verify(messageService).sendApplicationSubmittedMessage(application);
   }
@@ -110,7 +113,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   }
 
   @Test(expected = BadRequestException.class)
-  public void find_nullAuthorityCode() {
+  public void findApplication_givenNullAuthorityCode() {
     // Given user with no local authority.
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn(null);
 
@@ -121,7 +124,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   }
 
   @Test(expected = BadRequestException.class)
-  public void find_invalidApplicationTypeCode() {
+  public void findApplication_givenInvalidApplicationTypeCode() {
     // Given user with no local authority.
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
 
@@ -137,7 +140,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   }
 
   @Test
-  public void find_withNullsValid() {
+  public void findApplication_givenWNullsValid() {
     // Given a search for applications with valid LA and no other criteria.
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
     when(repository.findApplications(any(), any(), any())).thenReturn(new Page<>());
@@ -150,7 +153,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   }
 
   @Test
-  public void find_validAndResults() {
+  public void findApplication_givenValidRequestAndResults() {
     // Given a search for applications with all criteria specified
     when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
     Page<ApplicationSummaryEntity> entities = new Page<>();
@@ -190,7 +193,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   }
 
   @Test
-  public void retrieve() {
+  public void retrieveApplication() {
     String uuid = UUID.randomUUID().toString();
     ApplicationEntity entity = getFullyPopulatedApplicationEntity();
     Application model =
@@ -207,18 +210,18 @@ public class ApplicationServiceTest extends ApplicationFixture {
   }
 
   @Test(expected = BadRequestException.class)
-  public void retrieve_invalidUuid() {
+  public void retrieveApplication_givenInvalidUuid() {
     service.retrieve("ABC");
   }
 
   @Test(expected = NotFoundException.class)
-  public void retrieve_noResult() {
+  public void retrieveApplication_givenNoResult() {
     when(repository.retrieveApplication(any())).thenReturn(null);
     service.retrieve(UUID.randomUUID().toString());
   }
 
   @Test
-  public void delete_validResult() {
+  public void deleteApplication_givenValidRequest() {
     UUID uuid = UUID.randomUUID();
     String uuidStr = uuid.toString();
 
@@ -238,5 +241,69 @@ public class ApplicationServiceTest extends ApplicationFixture {
     verify(repository, times(1)).deleteWalkingAids(uuidStr);
     verify(repository, times(1)).deleteWalkingDifficultyTypes(uuidStr);
     verify(repository, times(1)).deleteArtifacts(uuidStr);
+  }
+
+  @Test(expected = BadRequestException.class)
+  public void updateApplication_givenBadApplicationUuid() {
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(ApplicationStatusField.COMPLETED)
+            .build();
+
+    service.update("rubbbish", applicationUpdate);
+  }
+
+  @Test(expected = BadRequestException.class)
+  public void updateApplication_givenNullApplicationStatus() {
+
+    // given
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(null)
+            .build();
+
+    // when
+    service.update(UUID.randomUUID().toString(), applicationUpdate);
+  }
+
+  @Test
+  public void updateApplication_givenValidRequest() {
+
+    // given
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(ApplicationStatusField.COMPLETED)
+            .build();
+
+    UUID applicationUuid = UUID.randomUUID();
+    when(repository.updateApplication(any())).thenReturn(1);
+
+    // when
+    service.update(applicationUuid.toString(), applicationUpdate);
+
+    // then
+    ArgumentCaptor<ApplicationUpdate> captor = ArgumentCaptor.forClass(ApplicationUpdate.class);
+    verify(repository, times(1)).updateApplication(captor.capture());
+    assertThat(captor).isNotNull();
+    assertThat(captor.getValue()).isNotNull();
+    assertThat(captor.getValue().getApplicationId()).isEqualTo(applicationUuid);
+    assertThat(captor.getValue().getApplicationStatusField())
+        .isEqualTo(ApplicationStatusField.COMPLETED);
+  }
+
+  @Test(expected = BadRequestException.class)
+  public void updateApplication_givenNonexistentApplicationId() {
+
+    // given
+    ApplicationUpdate applicationUpdate =
+        ApplicationFixture.ApplicationUpdateBuilder.anApplicationUpdate()
+            .withApplicationStatus(ApplicationStatusField.COMPLETED)
+            .build();
+
+    UUID applicationUuid = UUID.randomUUID();
+    when(repository.updateApplication(any())).thenReturn(0);
+
+    // when
+    service.update(applicationUuid.toString(), applicationUpdate);
   }
 }

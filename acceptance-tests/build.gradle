@@ -1,17 +1,5 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
-    }
-}
-
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 apply plugin: 'java'

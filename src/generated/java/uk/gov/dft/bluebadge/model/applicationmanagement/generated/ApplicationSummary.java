@@ -7,7 +7,10 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
+import uk.gov.dft.bluebadge.common.util.ValidationPattern;
 
 /** ApplicationSummary */
 @Validated
@@ -32,6 +35,9 @@ public class ApplicationSummary {
 
   @JsonProperty("eligibilityCode")
   private EligibilityCodeField eligibilityCode = null;
+
+  @JsonProperty("applicationStatus")
+  private ApplicationStatusField applicationStatus;
 
   public ApplicationSummary applicationId(String applicationId) {
     this.applicationId = applicationId;
@@ -106,10 +112,7 @@ public class ApplicationSummary {
    * @return nino
    */
   @ApiModelProperty(example = "NS123458S", value = "The badgeholders national insurance number")
-  @Pattern(
-    regexp =
-        "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$"
-  )
+  @Pattern(regexp = ValidationPattern.NINO_CASE_INSENSITIVE)
   public String getNino() {
     return nino;
   }
@@ -181,6 +184,16 @@ public class ApplicationSummary {
     this.eligibilityCode = eligibilityCode;
   }
 
+  @Valid
+  public ApplicationStatusField getApplicationStatus() {
+    return applicationStatus;
+  }
+
+  public void setApplicationStatus(ApplicationStatusField applicationStatus) {
+    this.applicationStatus = applicationStatus;
+  }
+
+
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -196,7 +209,8 @@ public class ApplicationSummary {
         && Objects.equals(this.nino, applicationSummary.nino)
         && Objects.equals(this.name, applicationSummary.name)
         && Objects.equals(this.submissionDate, applicationSummary.submissionDate)
-        && Objects.equals(this.eligibilityCode, applicationSummary.eligibilityCode);
+      && Objects.equals(this.eligibilityCode, applicationSummary.eligibilityCode)
+      && Objects.equals(this.applicationStatus, applicationSummary.applicationStatus);
   }
 
   @Override
@@ -208,34 +222,22 @@ public class ApplicationSummary {
         nino,
         name,
         submissionDate,
-        eligibilityCode);
+        eligibilityCode,
+        applicationStatus);
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ApplicationSummary {\n");
-
-    sb.append("    applicationId: ").append(toIndentedString(applicationId)).append("\n");
-    sb.append("    partyTypeCode: ").append(toIndentedString(partyTypeCode)).append("\n");
-    sb.append("    applicationTypeCode: ")
-        .append(toIndentedString(applicationTypeCode))
-        .append("\n");
-    sb.append("    nino: ").append(toIndentedString(nino)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    submissionDate: ").append(toIndentedString(submissionDate)).append("\n");
-    sb.append("    eligibilityCode: ").append(toIndentedString(eligibilityCode)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    return new ToStringBuilder(this)
+      .append("applicationId", applicationId)
+      .append("partyTypeCode", partyTypeCode)
+      .append("applicationTypeCode", applicationTypeCode)
+      .append("nino", nino)
+      .append("name", name)
+      .append("submissionDate", submissionDate)
+      .append("eligibilityCode", eligibilityCode)
+      .append("applicationStatus", applicationStatus)
+      .toString();
   }
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }

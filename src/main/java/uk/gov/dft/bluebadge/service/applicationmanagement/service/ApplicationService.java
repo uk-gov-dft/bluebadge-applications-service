@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import uk.gov.dft.bluebadge.common.api.model.Error;
 import uk.gov.dft.bluebadge.common.api.model.PagedResult;
 import uk.gov.dft.bluebadge.common.security.SecurityUtils;
@@ -16,6 +17,7 @@ import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
@@ -173,6 +175,24 @@ public class ApplicationService {
     repository.deleteBulkyEquipmentTypes(applicationId);
     repository.deleteArtifacts(applicationId);
     log.debug("Application: '{}' has been deleted", applicationId);
+  }
+
+  public void update(String applicationId, ApplicationUpdate applicationUpdate) {
+    Assert.notNull(applicationId, "applicationId must not be null");
+    Assert.notNull(applicationUpdate, "applicationUpdate must not be null");
+
+    if (applicationUpdate.getApplicationStatusField() == null) {
+      Error error = new Error();
+      error.setReason("applicationStatus must not be null");
+      throw new BadRequestException(error);
+    }
+
+    applicationUpdate.setApplicationId(getUuid(applicationId));
+    if (repository.updateApplication(applicationUpdate) == 0) {
+      Error error = new Error();
+      error.setReason("Nonexistent applicationId specified");
+      throw new BadRequestException(error);
+    }
   }
 
   private UUID getUuid(String applicationId) {

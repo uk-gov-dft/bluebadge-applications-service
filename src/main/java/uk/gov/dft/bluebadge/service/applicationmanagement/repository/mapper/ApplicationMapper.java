@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.repository.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
@@ -123,4 +124,6 @@ public interface ApplicationMapper {
   int deleteBulkyEquipmentTypes(String applicationId);
 
   int deleteArtifacts(String applicationId);
+
+  int updateApplication(ApplicationUpdate applicationUpdate);
 }
