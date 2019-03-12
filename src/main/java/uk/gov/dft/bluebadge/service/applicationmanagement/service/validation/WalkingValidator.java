@@ -40,7 +40,7 @@ class WalkingValidator extends AbstractValidator {
 
       validateWalkingOtherDescription(app, errors);
       validateWalkingSpeed(app, errors);
-      breathlessnessValidator.validate(app, errors);
+      validateBreathlessness(app, errors);
     }
   }
 
@@ -84,5 +84,16 @@ class WalkingValidator extends AbstractValidator {
           NOT_VALID,
           KEY_ELI_WALK_OTHER_DESC + " can only be present if SOMELSE selected as a type.");
     }
+  }
+
+  /**
+   * Breathlessness must be set if BREATH typeCode is selected;
+   * otherDescription must be set if Breathlessness OTHER typeCode is selected
+   *
+   * @param app Application.
+   * @param errors Errors.
+   */
+  void validateBreathlessness(Application app, Errors errors) {
+    breathlessnessValidator.validate(app, errors);
   }
 }

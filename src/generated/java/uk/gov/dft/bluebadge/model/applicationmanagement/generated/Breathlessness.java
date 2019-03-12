@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
 
 /** Breathlessness */
@@ -47,9 +49,7 @@ public class Breathlessness {
    *
    * @return otherDescription
    */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
-  @Valid
+  @ApiModelProperty(required = false, value = "")
   public String getOtherDescription() {
     return otherDescription;
   }
@@ -78,22 +78,9 @@ public class Breathlessness {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Breathlessness {\n");
-
-    sb.append("    typeCodes: ").append(toIndentedString(typeCodes)).append("\n");
-    sb.append("    otherDescription: ").append(toIndentedString(otherDescription)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
+    return new ToStringBuilder(this)
+            .append("typeCodes", typeCodes)
+            .append("otherDescription", otherDescription)
+            .toString();
   }
 }
