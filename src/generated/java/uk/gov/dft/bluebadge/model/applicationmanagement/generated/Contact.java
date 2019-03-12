@@ -130,7 +130,7 @@ public class Contact {
    */
   @ApiModelProperty(example = "SK6 8GH", required = true, value = "")
   @NotNull
-  @Pattern(regexp = ValidationPattern.POSTCODE_SIMPLE)
+  @Pattern(regexp = ValidationPattern.EMPTY_OR_POSTCODE_CASE_INSENSITIVE)
   public String getPostCode() {
     return postCode;
   }
