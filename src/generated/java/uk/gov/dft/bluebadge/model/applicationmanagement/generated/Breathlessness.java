@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
 
@@ -79,8 +78,8 @@ public class Breathlessness {
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-            .append("typeCodes", typeCodes)
-            .append("otherDescription", otherDescription)
-            .toString();
+        .append("typeCodes", typeCodes)
+        .append("otherDescription", otherDescription)
+        .toString();
   }
 }

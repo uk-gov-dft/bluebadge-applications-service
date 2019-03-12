@@ -87,8 +87,8 @@ class WalkingValidator extends AbstractValidator {
   }
 
   /**
-   * Breathlessness must be set if BREATH typeCode is selected;
-   * otherDescription must be set if Breathlessness OTHER typeCode is selected
+   * Breathlessness must be set if BREATH typeCode is selected; otherDescription must be set if
+   * Breathlessness OTHER typeCode is selected
    *
    * @param app Application.
    * @param errors Errors.
