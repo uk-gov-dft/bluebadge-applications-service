@@ -1,6 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static org.junit.Assert.assertEquals;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING_BREATHLESSNESS_TYPES;
 
 import org.junit.Test;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
@@ -10,11 +11,25 @@ public class BreathlessnessValidatorTest extends ApplicationFixture {
 
   @Test
   public void validate() {
+    // Invalid first - Not BREATH Walking Difficulty but want to set BREATHLESSNESS
     reset(
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
+            .addBreathlessness()
+            .build());
+    breathlessnessValidator.validate(app, errors);
+    assertEquals(1, errors.getErrorCount());
+    assertEquals(1, errors.getFieldErrorCount(KEY_ELI_WALKING_BREATHLESSNESS_TYPES));
+
+    // Valid second
+    reset(
+        getApplicationBuilder()
+            .addBaseApplication()
+            .setPerson()
+            .setEligibilityWalking()
+            .setBreathOnWalkingEligibility()
             .addBreathlessness()
             .build());
     breathlessnessValidator.validate(app, errors);

@@ -1,6 +1,5 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
-import static uk.gov.dft.bluebadge.common.util.Matchers.collection;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.*;
 
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BreathlessnessTypeCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
 
 @Component
@@ -15,28 +15,35 @@ class BreathlessnessValidator extends AbstractValidator {
 
   void validate(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_ELI_WALKING_BREATHLESSNESS)) {
-      // If exists then validate values.
-      if (null == app.getEligibility().getWalkingDifficulty()
-          || null == app.getEligibility().getWalkingDifficulty().getBreathlessness()) {
+      WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
+
+      if (null == walkingDifficulty) {
+        errors.rejectValue(KEY_ELI_WALKING, NOT_VALID, "Eligibility must be set to WALKDIFF");
         return;
       }
 
-      // Must have at least 1 type code to continue
-      if (app.getEligibility()
-              .getWalkingDifficulty()
-              .getTypeCodes()
-              .contains(WalkingDifficultyTypeCodeField.BREATH)
-          && collection(
-                  app.getEligibility().getWalkingDifficulty().getBreathlessness().getTypeCodes())
-              .isNullOrEmpty()) {
-        errors.rejectValue(
-            KEY_ELI_WALKING_BREATHLESSNESS_TYPES,
-            NOT_VALID,
-            "Must have at least 1 breathlessness type code if eligibility is WALKDIFF and BREATHLESSNESS is selected.");
-        return;
+      // Must set WalkingDifficulty type to BREATH if want to use BREATHLESSNESS types
+      if (!walkingDifficulty.getTypeCodes().contains(WalkingDifficultyTypeCodeField.BREATH)) {
+        if (null != walkingDifficulty.getBreathlessness()) {
+          errors.rejectValue(
+              KEY_ELI_WALKING_BREATHLESSNESS_TYPES,
+              NOT_VALID,
+              "For BREATHLESSNESS you must select BREATH as on of the Walking difficulty types");
+          return;
+        }
+      } else {
+        if (null == walkingDifficulty.getBreathlessness()) {
+          errors.rejectValue(
+              KEY_ELI_WALKING_BREATHLESSNESS_TYPES,
+              NOT_VALID,
+              "Must have at least 1 BREATHLESSNESS type code if eligibility is WALKDIFF and BREATHLESSNESS is selected.\"");
+          return;
+        } else {
+          validateBreathlessnessOtherDescription(app, errors);
+        }
       }
 
-      validateBreathlessnessOtherDescription(app, errors);
+      return;
     }
   }
 
@@ -47,8 +54,9 @@ class BreathlessnessValidator extends AbstractValidator {
    * @param errors Errors.
    */
   void validateBreathlessnessOtherDescription(Application app, Errors errors) {
-    if ((!app.getEligibility()
-            .getWalkingDifficulty()
+    WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
+
+    if ((!walkingDifficulty
             .getBreathlessness()
             .getTypeCodes()
             .contains(BreathlessnessTypeCodeField.OTHER))
@@ -60,8 +68,7 @@ class BreathlessnessValidator extends AbstractValidator {
           KEY_ELI_BREATHLESSNESS_OTHER_DESC + " can only be present if OTHER selected as a type.");
     }
 
-    if ((app.getEligibility()
-            .getWalkingDifficulty()
+    if ((walkingDifficulty
             .getBreathlessness()
             .getTypeCodes()
             .contains(BreathlessnessTypeCodeField.OTHER))

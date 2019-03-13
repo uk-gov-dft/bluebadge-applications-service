@@ -292,6 +292,13 @@ public class ApplicationFixture extends AbstractValidator {
     application.setArtifacts(artifacts);
   }
 
+  private static void setBreathOnWalkingEligibility(Application application) {
+    application
+        .getEligibility()
+        .getWalkingDifficulty()
+        .addTypeCodesItem(WalkingDifficultyTypeCodeField.BREATH);
+  }
+
   private static void addBreathlessness(Application application) {
     Breathlessness breathlessness = new Breathlessness();
     breathlessness.setTypeCodes(ValidValues.BREATHLESSNESS_TYPE_CODES);
@@ -413,6 +420,11 @@ public class ApplicationFixture extends AbstractValidator {
 
     public ApplicationBuilder setEligibilityAfrfcs() {
       ApplicationFixture.setEligibilityAfrfcs(application);
+      return this;
+    }
+
+    public ApplicationBuilder setBreathOnWalkingEligibility() {
+      ApplicationFixture.setBreathOnWalkingEligibility(application);
       return this;
     }
 
