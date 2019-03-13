@@ -18,9 +18,3 @@ out
 acceptance-tests/target/
 VERSION-computed
 **/dev-env*
-acceptance-tests/bin
-bin/
-.env-feature
-
-*.log
-run-regression-script.sh

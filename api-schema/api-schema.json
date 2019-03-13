@@ -2,7 +2,7 @@
   "swagger" : "2.0",
   "info" : {
     "description" : "Manage badge applications.\n",
-    "version" : "1.0.4",
+    "version" : "1.0.5",
     "title" : "Applications Service"
   },
   "tags" : [ {
@@ -505,7 +505,7 @@
         "postCode" : {
           "type" : "string",
           "example" : "SK6 8GH",
-          "pattern" : "^[A-Za-z]{1,2}[0-9][0-9A-Za-z]?\\s?[0-9][A-Za-z]{2}$"
+          "pattern" : "^$|^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[\\s]*[0-9][A-Za-z]{2})$"
         },
         "primaryPhoneNumber" : {
           "type" : "string",
