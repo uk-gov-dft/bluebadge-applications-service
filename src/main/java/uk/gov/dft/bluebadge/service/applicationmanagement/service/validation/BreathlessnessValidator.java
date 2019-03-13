@@ -59,5 +59,18 @@ class BreathlessnessValidator extends AbstractValidator {
           NOT_VALID,
           KEY_ELI_BREATHLESSNESS_OTHER_DESC + " can only be present if OTHER selected as a type.");
     }
+
+    if ((app.getEligibility()
+            .getWalkingDifficulty()
+            .getBreathlessness()
+            .getTypeCodes()
+            .contains(BreathlessnessTypeCodeField.OTHER))
+        && !hasText(app, KEY_ELI_BREATHLESSNESS_OTHER_DESC)) {
+      // If breathlessness OTHER is selected must have other description.
+      errors.rejectValue(
+          KEY_ELI_BREATHLESSNESS_OTHER_DESC,
+          NOT_VALID,
+          KEY_ELI_BREATHLESSNESS_OTHER_DESC + " must be present if OTHER selected as a type.");
+    }
   }
 }

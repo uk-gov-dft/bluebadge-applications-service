@@ -46,5 +46,17 @@ public class BreathlessnessValidatorTest extends ApplicationFixture {
     breathlessnessValidator.validateBreathlessnessOtherDescription(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BREATHLESSNESS_OTHER_DESC));
+
+    reset(
+        getApplicationBuilder()
+            .addBaseApplication()
+            .setPerson()
+            .setEligibilityWalking()
+            .addBreathlessnessOther()
+            .build());
+    app.getEligibility().getWalkingDifficulty().getBreathlessness().setOtherDescription("");
+    breathlessnessValidator.validateBreathlessnessOtherDescription(app, errors);
+    assertEquals(1, errors.getErrorCount());
+    assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BREATHLESSNESS_OTHER_DESC));
   }
 }
