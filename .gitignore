@@ -21,3 +21,6 @@ VERSION-computed
 acceptance-tests/bin
 bin/
 .env-feature
+
+*.log
+run-regression-script.sh
