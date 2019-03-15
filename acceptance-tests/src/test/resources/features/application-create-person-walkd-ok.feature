@@ -45,7 +45,7 @@ Feature: Verify Create person walkd ok
     descriptionOfConditions: 'Freetext',
     walkingDifficulty: {
       typeCodes: [
-        'BALANCE', 'SOMELSE'
+        'BALANCE', 'SOMELSE', 'BREATH'
       ],
       otherDescription: 'other description',
       walkingAids: [

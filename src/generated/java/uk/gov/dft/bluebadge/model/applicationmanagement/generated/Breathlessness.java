@@ -5,7 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
 
@@ -33,7 +34,7 @@ public class Breathlessness {
    * @return typeCodes
    */
   @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @NotEmpty
   @Valid
   public List<BreathlessnessTypeCodeField> getTypeCodes() {
     return typeCodes;
@@ -49,6 +50,7 @@ public class Breathlessness {
    * @return otherDescription
    */
   @ApiModelProperty(required = false, value = "")
+  @Size(max = 255)
   public String getOtherDescription() {
     return otherDescription;
   }
