@@ -1,5 +1,5 @@
 @application-create-person-walkd-invalid
-Feature: Verify Create person walkd invalid
+Feature: Verify Create person walkd ok
 
   Background:
     * url baseUrl
