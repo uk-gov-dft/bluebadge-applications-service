@@ -1,7 +1,7 @@
 -- // BBB-1148-add-breathlessness
 -- Migration SQL that makes the change goes here.
 
-ALTER TABLE applicationmanagement.application ADD COLUMN breathlessness_other_desc TEXT;
+ALTER TABLE applicationmanagement.application ADD COLUMN breathlessness_other_desc VARCHAR(256);
 
 CREATE TABLE applicationmanagement.app_breathlessness_type(
   application_id      UUID         NOT NULL

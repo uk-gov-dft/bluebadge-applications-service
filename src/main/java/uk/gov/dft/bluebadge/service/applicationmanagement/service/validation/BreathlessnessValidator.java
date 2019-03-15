@@ -3,6 +3,9 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.*;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
@@ -32,11 +35,13 @@ class BreathlessnessValidator extends AbstractValidator {
           return;
         }
       } else {
-        if (null == walkingDifficulty.getBreathlessness()) {
+        if (null == walkingDifficulty.getBreathlessness()
+            || walkingDifficulty.getBreathlessness().getTypeCodes() == null
+            || removeNulls(walkingDifficulty.getBreathlessness().getTypeCodes()).isEmpty()) {
           errors.rejectValue(
               KEY_ELI_WALKING_BREATHLESSNESS_TYPES,
               NOT_VALID,
-              "Must have at least 1 BREATHLESSNESS type code if eligibility is WALKDIFF and BREATHLESSNESS is selected.\"");
+              "Must have at least 1 BREATHLESSNESS type code if eligibility is WALKDIFF and BREATHLESSNESS is selected.");
           return;
         } else {
           validateBreathlessnessOtherDescription(app, errors);
@@ -79,5 +84,9 @@ class BreathlessnessValidator extends AbstractValidator {
           NOT_VALID,
           KEY_ELI_BREATHLESSNESS_OTHER_DESC + " must be present if OTHER selected as a type.");
     }
+  }
+
+  private List<?> removeNulls(List<?> list) {
+    return list.parallelStream().filter(Objects::nonNull).collect(Collectors.toList());
   }
 }
