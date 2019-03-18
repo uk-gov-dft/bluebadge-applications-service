@@ -27,7 +27,7 @@ Feature: Verify Create org ok
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'ZZ111ZZ',
+      postCode: 'SW1P 4DR',
       primaryPhoneNumber: 175154771,
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'

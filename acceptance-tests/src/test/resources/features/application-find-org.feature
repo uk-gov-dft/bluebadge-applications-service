@@ -45,7 +45,7 @@ Feature: Verify find org
 
   Scenario: Verify find by postcode
     Given path 'applications'
-    And param postcode = 'ZZ111ZZ'
+    And param postcode = 'SW1P 4DR'
     When method GET
     Then status 200
     And match $.data[*].applicationId contains createdAppNo
@@ -59,7 +59,7 @@ Feature: Verify find org
 
   Scenario: Verify find by postcode and type
     Given path 'applications'
-    And param postcode = 'zz111zz'
+    And param postcode = 'SW1P 4DR'
     And param applicationTypeCode = 'NEW'
     When method GET
     Then status 200
@@ -67,7 +67,7 @@ Feature: Verify find org
 
   Scenario: Verify find by postcode but wrong type no result
     Given path 'applications'
-    And param postcode = 'zz111zz'
+    And param postcode = 'SW1P 4DR'
     And param applicationTypeCode = 'CANCEL'
     When method GET
     Then status 200
@@ -75,7 +75,7 @@ Feature: Verify find org
 
   Scenario: Verify find by submission date from
     Given path 'applications'
-    And param postcode = 'zz111zz'
+    And param postcode = 'SW1P 4DR'
     And param from = '2018-01-01T12:30:45Z'
     When method GET
     Then status 200
@@ -83,7 +83,7 @@ Feature: Verify find org
 
   Scenario: Verify find by submission date from no result
     Given path 'applications'
-    And param postcode = 'zz111zz'
+    And param postcode = 'SW1P 4DR'
     And param from = '2050-11-25T12:30:45Z'
     When method GET
     Then status 200
@@ -91,7 +91,7 @@ Feature: Verify find org
 
   Scenario: Verify find by submission date to
     Given path 'applications'
-    And param postcode = 'zz111zz'
+    And param postcode = 'SW1P 4DR'
     And param to = '2050-01-01T12:30:45.123Z'
     When method GET
     Then status 200
@@ -99,7 +99,7 @@ Feature: Verify find org
 
   Scenario: Verify find by submission date to no result
     Given path 'applications'
-    And param postcode = 'zz111zz'
+    And param postcode = 'SW1P 4DR'
     And param to = '2017-11-25T12:30:45Z'
     When method GET
     Then status 200
@@ -108,7 +108,7 @@ Feature: Verify find org
   Scenario: Verify find all filters set
     Given path 'applications'
     And param name = 'Delete'
-    And param postcode = 'zz111zz'
+    And param postcode = 'SW1P 4DR'
     And param from = '2018-01-01T12:30:45Z'
     And param to = '2050-01-01T12:30:45.123Z'
     And param applicationTypeCode = 'NEW'
