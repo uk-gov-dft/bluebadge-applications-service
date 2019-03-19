@@ -18,8 +18,8 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          local_authority_code, bulky_equipment_other_desc,
-          application_status
+          local_authority_code, transfer_la_from_code,
+          bulky_equipment_other_desc, application_status
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -34,7 +34,7 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc},
+          #{localAuthorityCode}, #{transferLAFromCode}, #{bulkyEquipmentOtherDesc},
           #{applicationStatus}
         )
     </insert>
@@ -189,6 +189,8 @@
         <id property="id"  column="id"
                 typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
         <result column="local_authority_code" property="localAuthorityCode" />
+        <result column="transfer_la_from_code" property="transferLAFromCode" />
+        <result column="transfer_la_datetime" property="transferLADatetime" />
         <result column="app_type_code" property="appTypeCode" />
         <result column="is_payment_taken" property="isPaymentTaken" />
         <result column="payment_reference" property="paymentReference" />
@@ -248,6 +250,8 @@
         SELECT a.id
         , a.id::VARCHAR string_id
         , a.local_authority_code
+        , a.transfer_la_from_code
+        , a.transfer_la_datetime
         , a.app_type_code
         , a.is_payment_taken
         , a.payment_reference

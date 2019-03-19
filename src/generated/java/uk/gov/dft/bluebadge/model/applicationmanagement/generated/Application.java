@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,12 @@ public class Application {
 
   @JsonProperty("localAuthorityCode")
   private String localAuthorityCode = null;
+
+  @JsonProperty("transferLAFromCode")
+  private String transferLAFromCode = null;
+
+  @JsonProperty("transferLADate")
+  private OffsetDateTime transferLADate = null;
 
   @JsonProperty("paymentTaken")
   private Boolean paymentTaken = null;
@@ -109,6 +116,38 @@ public class Application {
 
   public void setLocalAuthorityCode(String localAuthorityCode) {
     this.localAuthorityCode = localAuthorityCode;
+  }
+
+  /**
+   * The code for the local authority the application is transferred from.
+   *
+   * @return transferLAFromCode
+   */
+  @ApiModelProperty(example = "ABERD", required = false, value = "The code for the local authority the application is transferred from.")
+  public String getTransferLAFromCode() {
+    return transferLAFromCode;
+  }
+
+  public void setTransferLAFromCode(String transferLAFromCode) {
+    this.transferLAFromCode = transferLAFromCode;
+  }
+
+  /**
+   * Local authority transfer date and time.
+   *
+   * @return transferLADate
+   */
+  @ApiModelProperty(
+          example = "2019-03-03T10:30:00Z",
+          value = "Local authority transfer date and time."
+  )
+  @Valid
+  public OffsetDateTime getTransferLADate() {
+    return transferLADate;
+  }
+
+  public void setTransferLADate(OffsetDateTime transferLADate) {
+    this.transferLADate = transferLADate;
   }
 
   public Application paymentTaken(Boolean paymentTaken) {
