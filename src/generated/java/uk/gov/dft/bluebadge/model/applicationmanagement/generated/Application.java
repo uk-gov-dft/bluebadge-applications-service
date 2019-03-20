@@ -2,7 +2,6 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +23,11 @@ public class Application {
   @JsonProperty("localAuthorityCode")
   private String localAuthorityCode = null;
 
-  @JsonProperty("transferLAFromCode")
-  private String transferLAFromCode = null;
+  @JsonProperty("transferLaFromCode")
+  private String transferLaFromCode = null;
 
-  @JsonProperty("transferLADate")
-  private OffsetDateTime transferLADate = null;
+  @JsonProperty("transferLaDate")
+  private OffsetDateTime transferLaDate = null;
 
   @JsonProperty("paymentTaken")
   private Boolean paymentTaken = null;
@@ -121,33 +120,37 @@ public class Application {
   /**
    * The code for the local authority the application is transferred from.
    *
-   * @return transferLAFromCode
+   * @return transferLaFromCode
    */
-  @ApiModelProperty(example = "ABERD", required = false, value = "The code for the local authority the application is transferred from.")
-  public String getTransferLAFromCode() {
-    return transferLAFromCode;
+  @ApiModelProperty(
+    example = "ABERD",
+    required = false,
+    value = "The code for the local authority the application is transferred from."
+  )
+  public String getTransferLaFromCode() {
+    return transferLaFromCode;
   }
 
-  public void setTransferLAFromCode(String transferLAFromCode) {
-    this.transferLAFromCode = transferLAFromCode;
+  public void setTransferLaFromCode(String transferLaFromCode) {
+    this.transferLaFromCode = transferLaFromCode;
   }
 
   /**
    * Local authority transfer date and time.
    *
-   * @return transferLADate
+   * @return transferLaDate
    */
   @ApiModelProperty(
-          example = "2019-03-03T10:30:00Z",
-          value = "Local authority transfer date and time."
+    example = "2019-03-03T10:30:00Z",
+    value = "Local authority transfer date and time."
   )
   @Valid
-  public OffsetDateTime getTransferLADate() {
-    return transferLADate;
+  public OffsetDateTime getTransferLaDate() {
+    return transferLaDate;
   }
 
-  public void setTransferLADate(OffsetDateTime transferLADate) {
-    this.transferLADate = transferLADate;
+  public void setTransferLaDate(OffsetDateTime transferLaDate) {
+    this.transferLaDate = transferLaDate;
   }
 
   public Application paymentTaken(Boolean paymentTaken) {

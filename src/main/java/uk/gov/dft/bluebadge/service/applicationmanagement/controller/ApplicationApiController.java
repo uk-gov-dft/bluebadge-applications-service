@@ -1,9 +1,10 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.controller;
 
 import io.swagger.annotations.ApiParam;
+import java.util.UUID;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,9 +27,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.generated.controller.A
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.ApplicationService;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
-
-import javax.validation.Valid;
-import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -101,11 +99,11 @@ public class ApplicationApiController implements ApplicationsApi {
   }
 
   @PreAuthorize(
-          "hasAuthority('PERM_UPDATE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
+      "hasAuthority('PERM_UPDATE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
   @RequestMapping(value = "/applications/{applicationId}/transfers", method = RequestMethod.POST)
   public ResponseEntity<Void> transferApplication(
-           @PathVariable("applicationId") String applicationId,
-           @Valid @RequestBody ApplicationTransferRequest applicationTransfer) {
+      @PathVariable("applicationId") String applicationId,
+      @Valid @RequestBody ApplicationTransferRequest applicationTransfer) {
     service.transferApplication(applicationId, applicationTransfer);
     return ResponseEntity.ok().build();
   }

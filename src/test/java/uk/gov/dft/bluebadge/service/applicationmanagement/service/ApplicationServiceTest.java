@@ -60,7 +60,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
             applicationAuditLogger,
             artifactService,
             messageService,
-                referenceDataService);
+            referenceDataService);
   }
 
   @Test

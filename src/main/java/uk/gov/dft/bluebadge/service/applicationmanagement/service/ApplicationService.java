@@ -1,5 +1,9 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
+import java.time.Clock;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +34,6 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Tran
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
-import java.time.Clock;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
-
 @Slf4j
 @Service
 @Transactional
@@ -50,13 +49,13 @@ public class ApplicationService {
 
   @Autowired
   ApplicationService(
-          ApplicationRepository repository,
-          ApplicationConverter converter,
-          SecurityUtils securityUtils,
-          ApplicationAuditLogger applicationAuditLogger,
-          ArtifactService artifactService,
-          MessageService messageService,
-          ReferenceDataService referenceDataService) {
+      ApplicationRepository repository,
+      ApplicationConverter converter,
+      SecurityUtils securityUtils,
+      ApplicationAuditLogger applicationAuditLogger,
+      ArtifactService artifactService,
+      MessageService messageService,
+      ReferenceDataService referenceDataService) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
@@ -215,14 +214,17 @@ public class ApplicationService {
     return uuid;
   }
 
-  public void transferApplication(String applicationId, ApplicationTransferRequest applicationTransfer) {
+  public void transferApplication(
+      String applicationId, ApplicationTransferRequest applicationTransfer) {
     validateLocalAuthority(applicationTransfer.getTransferToLaShortCode());
-    int updates = repository.transferApplication(TransferApplicationParams.builder()
-            .applicationId(UUID.fromString(applicationId))
-            .transferToLaShortCode(applicationTransfer.getTransferToLaShortCode())
-            .transferFromLaShortCode(securityUtils.getCurrentLocalAuthorityShortCode())
-            .build());
-    if(updates == 0){
+    int updates =
+        repository.transferApplication(
+            TransferApplicationParams.builder()
+                .applicationId(UUID.fromString(applicationId))
+                .transferToLaShortCode(applicationTransfer.getTransferToLaShortCode())
+                .transferFromLaShortCode(securityUtils.getCurrentLocalAuthorityShortCode())
+                .build());
+    if (updates == 0) {
       // UUID did not match any application
       throw new NotFoundException("Application", NotFoundException.Operation.UPDATE);
     }
@@ -230,8 +232,9 @@ public class ApplicationService {
 
   void validateLocalAuthority(String shortCode) {
     if (null != StringUtils.stripToNull(shortCode)
-            && !referenceDataService.isAuthorityCodeValid(shortCode)) {
-      throw new BadRequestException("transferToLaShortCode", "NotEmpty", "Invalid local authority code.");
+        && !referenceDataService.isAuthorityCodeValid(shortCode)) {
+      throw new BadRequestException(
+          "transferToLaShortCode", "NotEmpty", "Invalid local authority code.");
     }
   }
 }

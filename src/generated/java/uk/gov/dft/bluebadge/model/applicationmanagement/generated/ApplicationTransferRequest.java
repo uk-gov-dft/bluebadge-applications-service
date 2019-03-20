@@ -1,11 +1,9 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotEmpty;
+import lombok.Data;
 
 @Data
 public class ApplicationTransferRequest {
-    @NotEmpty
-    private String transferToLaShortCode;
+  @NotEmpty private String transferToLaShortCode;
 }

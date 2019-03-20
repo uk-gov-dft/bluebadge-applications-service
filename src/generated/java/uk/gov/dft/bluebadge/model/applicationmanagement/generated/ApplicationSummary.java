@@ -7,7 +7,6 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
 import uk.gov.dft.bluebadge.common.util.ValidationPattern;
@@ -193,7 +192,6 @@ public class ApplicationSummary {
     this.applicationStatus = applicationStatus;
   }
 
-
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -209,8 +207,8 @@ public class ApplicationSummary {
         && Objects.equals(this.nino, applicationSummary.nino)
         && Objects.equals(this.name, applicationSummary.name)
         && Objects.equals(this.submissionDate, applicationSummary.submissionDate)
-      && Objects.equals(this.eligibilityCode, applicationSummary.eligibilityCode)
-      && Objects.equals(this.applicationStatus, applicationSummary.applicationStatus);
+        && Objects.equals(this.eligibilityCode, applicationSummary.eligibilityCode)
+        && Objects.equals(this.applicationStatus, applicationSummary.applicationStatus);
   }
 
   @Override
@@ -229,15 +227,14 @@ public class ApplicationSummary {
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-      .append("applicationId", applicationId)
-      .append("partyTypeCode", partyTypeCode)
-      .append("applicationTypeCode", applicationTypeCode)
-      .append("nino", nino)
-      .append("name", name)
-      .append("submissionDate", submissionDate)
-      .append("eligibilityCode", eligibilityCode)
-      .append("applicationStatus", applicationStatus)
-      .toString();
+        .append("applicationId", applicationId)
+        .append("partyTypeCode", partyTypeCode)
+        .append("applicationTypeCode", applicationTypeCode)
+        .append("nino", nino)
+        .append("name", name)
+        .append("submissionDate", submissionDate)
+        .append("eligibilityCode", eligibilityCode)
+        .append("applicationStatus", applicationStatus)
+        .toString();
   }
-
 }

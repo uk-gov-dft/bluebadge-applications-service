@@ -187,8 +187,8 @@
         <id property="id"  column="id"
                 typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
         <result column="local_authority_code" property="localAuthorityCode" />
-        <result column="transfer_la_from_code" property="transferLAFromCode" />
-        <result column="transfer_la_datetime" property="transferLADatetime" />
+        <result column="transfer_la_from_code" property="transferLaFromCode" />
+        <result column="transfer_la_datetime" property="transferLaDatetime" />
         <result column="app_type_code" property="appTypeCode" />
         <result column="is_payment_taken" property="isPaymentTaken" />
         <result column="payment_reference" property="paymentReference" />
