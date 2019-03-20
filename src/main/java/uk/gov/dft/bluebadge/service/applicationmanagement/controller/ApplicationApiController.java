@@ -102,7 +102,7 @@ public class ApplicationApiController implements ApplicationsApi {
 
   @PreAuthorize(
           "hasAuthority('PERM_UPDATE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
-  @RequestMapping(value = "/applications/{applicationId}/transfer", method = RequestMethod.POST)
+  @RequestMapping(value = "/applications/{applicationId}/transfers", method = RequestMethod.POST)
   public ResponseEntity<Void> transferApplication(
            @PathVariable("applicationId") String applicationId,
            @Valid @RequestBody ApplicationTransferRequest applicationTransfer) {

@@ -14,7 +14,7 @@ Feature: Verify transfer
   Scenario: Verify transfer ok
     * def result = callonce read('./oauth2-la-editor-aberd.feature')
     * header Authorization = 'Bearer ' + result.accessToken
-    Given path 'applications/' + createdAppNo + '/transfer'
+    Given path 'applications/' + createdAppNo + '/transfers'
     And request '{"transferToLaShortCode" : "ANGL" }'
     When method POST
     Then status 200
