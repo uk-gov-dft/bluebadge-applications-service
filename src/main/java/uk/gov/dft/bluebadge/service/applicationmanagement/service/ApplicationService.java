@@ -216,7 +216,11 @@ public class ApplicationService {
 
   public void transferApplication(
       String applicationId, ApplicationTransferRequest applicationTransfer) {
+    Assert.notNull(applicationId, "applicationId must not be null");
+    Assert.notNull(applicationTransfer, "applicationTransfer must not be null");
+
     validateLocalAuthority(applicationTransfer.getTransferToLaShortCode());
+
     int updates =
         repository.transferApplication(
             TransferApplicationParams.builder()
