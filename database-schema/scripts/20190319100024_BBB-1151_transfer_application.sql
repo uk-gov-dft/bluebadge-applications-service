@@ -18,7 +18,7 @@
 ALTER TABLE application ADD COLUMN
   transfer_la_from_code VARCHAR(10) DEFAULT null;
 ALTER TABLE application ADD COLUMN
-  transfer_la_datetime TIMESTAMP DEFAULT null;
+  transfer_la_datetime TIMESTAMP without time zone DEFAULT null;
 
 -- //@UNDO
 -- SQL to undo the change goes here.

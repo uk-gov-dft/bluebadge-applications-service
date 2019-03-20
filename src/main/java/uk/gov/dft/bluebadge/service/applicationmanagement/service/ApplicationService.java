@@ -1,9 +1,5 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service;
 
-import java.time.Clock;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +13,7 @@ import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTransferRequest;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
@@ -29,7 +26,14 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TransferApplicationParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
+
+import java.time.Clock;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -42,21 +46,24 @@ public class ApplicationService {
   private ApplicationAuditLogger applicationAuditLogger;
   private final ArtifactService artifactService;
   private final MessageService messageService;
+  private ReferenceDataService referenceDataService;
 
   @Autowired
   ApplicationService(
-      ApplicationRepository repository,
-      ApplicationConverter converter,
-      SecurityUtils securityUtils,
-      ApplicationAuditLogger applicationAuditLogger,
-      ArtifactService artifactService,
-      MessageService messageService) {
+          ApplicationRepository repository,
+          ApplicationConverter converter,
+          SecurityUtils securityUtils,
+          ApplicationAuditLogger applicationAuditLogger,
+          ArtifactService artifactService,
+          MessageService messageService,
+          ReferenceDataService referenceDataService) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
     this.applicationAuditLogger = applicationAuditLogger;
     this.artifactService = artifactService;
     this.messageService = messageService;
+    this.referenceDataService = referenceDataService;
   }
 
   /**
@@ -206,5 +213,25 @@ public class ApplicationService {
     }
 
     return uuid;
+  }
+
+  public void transferApplication(String applicationId, ApplicationTransferRequest applicationTransfer) {
+    validateLocalAuthority(applicationTransfer.getTransferToLaShortCode());
+    int updates = repository.transferApplication(TransferApplicationParams.builder()
+            .applicationId(UUID.fromString(applicationId))
+            .transferToLaShortCode(applicationTransfer.getTransferToLaShortCode())
+            .transferFromLaShortCode(securityUtils.getCurrentLocalAuthorityShortCode())
+            .build());
+    if(updates == 0){
+      // UUID did not match any application
+      throw new NotFoundException("Application", NotFoundException.Operation.UPDATE);
+    }
+  }
+
+  void validateLocalAuthority(String shortCode) {
+    if (null != StringUtils.stripToNull(shortCode)
+            && !referenceDataService.isAuthorityCodeValid(shortCode)) {
+      throw new BadRequestException("transferToLaShortCode", "NotEmpty", "Invalid local authority code.");
+    }
   }
 }

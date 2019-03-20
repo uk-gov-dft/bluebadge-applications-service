@@ -512,6 +512,8 @@ public class ApplicationFixture extends AbstractValidator {
         .artifacts(artifactEntities)
         .isDeleted(ValidValues.IS_DELETED)
         .deletedTimestamp(null)
+            .transferLAFromCode("BIRM")
+            .transferLADatetime(Instant.now())
         .build();
   }
 

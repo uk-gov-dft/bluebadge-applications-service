@@ -18,8 +18,7 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          local_authority_code, transfer_la_from_code,
-          bulky_equipment_other_desc, application_status
+          local_authority_code, bulky_equipment_other_desc, application_status
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -34,8 +33,7 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{localAuthorityCode}, #{transferLAFromCode}, #{bulkyEquipmentOtherDesc},
-          #{applicationStatus}
+          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc}, #{applicationStatus}
         )
     </insert>
 
@@ -495,6 +493,14 @@
     <update id="updateApplication" parameterType="uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate">
         UPDATE application
         SET application_status = #{applicationStatus}
+        WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+    </update>
+
+    <update id="transferApplication" parameterType="TransferApplicationParams">
+        UPDATE application
+        SET transfer_la_from_code = #{transferFromLaShortCode},
+            local_authority_code = #{transferToLaShortCode},
+          	transfer_la_datetime = current_timestamp
         WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
     </update>
 

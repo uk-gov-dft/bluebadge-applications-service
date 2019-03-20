@@ -22,7 +22,8 @@ public enum Statements {
   DELETE_WALKING_DIFFICULTY_TYPES("deleteWalkingDifficultyTypes"),
   DELETE_BULKY_EQUIPMENT_TYPES("deleteBulkyEquipmentTypes"),
   DELETE_ARTIFACTS("deleteArtifacts"),
-  RETRIEVE_ARTIFACTS("retrieveArtifacts");
+  RETRIEVE_ARTIFACTS("retrieveArtifacts"),
+  TRANSFER_APPLICATION("transferApplication");
 
   private final String name;
 

@@ -53,7 +53,7 @@ public class ApplicationConverterTest extends ApplicationFixture {
     assertEquals(ValidValues.LA_CODE, model.getLocalAuthorityCode());
     assertEquals(ValidValues.PAYMENT_TAKEN, model.getPaymentTaken());
     assertEquals(ValidValues.EXISTING_BADGE_NO, model.getExistingBadgeNumber());
-
+    assertEquals("BIRM", model.getTransferLAFromCode());
     verify(partyConverter, times(1)).convertToModel(any(), eq(entity));
     verify(eligibilityConverter, times(1)).convertToModel(any(), eq(entity));
   }
