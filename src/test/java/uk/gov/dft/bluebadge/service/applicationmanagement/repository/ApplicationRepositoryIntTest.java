@@ -440,8 +440,8 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertEquals("Arms Adapted Veh Desc", result.getArmsAdaptedVehDesc());
     assertEquals("BIRM", result.getBlindRegisteredAtLaCode());
     assertEquals("Bulky1", result.getBulkyEquipmentOtherDesc());
-    assertEquals("ABERD", result.getTransferLaFromCode());
-    assertEquals(Instant.parse("2010-12-31T03:15:00Z"), result.getTransferLaDatetime());
+    assertEquals("ABERD", result.getTransferredLaFromCode());
+    assertEquals(Instant.parse("2010-12-31T03:15:00Z"), result.getTransferredFromLaDatetime());
     assertThat(result.getArtifacts()).hasSize(1);
     assertThat(result.getArtifacts())
         .extracting("applicationId", "type", "link")

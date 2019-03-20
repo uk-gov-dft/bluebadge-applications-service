@@ -23,11 +23,11 @@ public class Application {
   @JsonProperty("localAuthorityCode")
   private String localAuthorityCode = null;
 
-  @JsonProperty("transferLaFromCode")
-  private String transferLaFromCode = null;
+  @JsonProperty("transferredLaFromCode")
+  private String transferredLaFromCode = null;
 
-  @JsonProperty("transferLaDate")
-  private OffsetDateTime transferLaDate = null;
+  @JsonProperty("transferredFromLaDate")
+  private OffsetDateTime transferredFromLaDate = null;
 
   @JsonProperty("paymentTaken")
   private Boolean paymentTaken = null;
@@ -107,7 +107,6 @@ public class Application {
    *
    * @return localAuthorityCode
    */
-  @ApiModelProperty(example = "BIRM", required = true, value = "The code for the local authority.")
   @NotNull
   public String getLocalAuthorityCode() {
     return localAuthorityCode;
@@ -117,40 +116,30 @@ public class Application {
     this.localAuthorityCode = localAuthorityCode;
   }
 
-  /**
-   * The code for the local authority the application is transferred from.
-   *
-   * @return transferLaFromCode
-   */
-  @ApiModelProperty(
-    example = "ABERD",
-    required = false,
-    value = "The code for the local authority the application is transferred from."
-  )
-  public String getTransferLaFromCode() {
-    return transferLaFromCode;
+  public String getTransferredLaFromCode() {
+    return transferredLaFromCode;
   }
 
-  public void setTransferLaFromCode(String transferLaFromCode) {
-    this.transferLaFromCode = transferLaFromCode;
+  public void setTransferredLaFromCode(String transferredLaFromCode) {
+    this.transferredLaFromCode = transferredLaFromCode;
   }
 
   /**
    * Local authority transfer date and time.
    *
-   * @return transferLaDate
+   * @return transferredFromLaDate
    */
   @ApiModelProperty(
     example = "2019-03-03T10:30:00Z",
     value = "Local authority transfer date and time."
   )
   @Valid
-  public OffsetDateTime getTransferLaDate() {
-    return transferLaDate;
+  public OffsetDateTime getTransferredFromLaDate() {
+    return transferredFromLaDate;
   }
 
-  public void setTransferLaDate(OffsetDateTime transferLaDate) {
-    this.transferLaDate = transferLaDate;
+  public void setTransferredFromLaDate(OffsetDateTime transferredFromLaDate) {
+    this.transferredFromLaDate = transferredFromLaDate;
   }
 
   public Application paymentTaken(Boolean paymentTaken) {

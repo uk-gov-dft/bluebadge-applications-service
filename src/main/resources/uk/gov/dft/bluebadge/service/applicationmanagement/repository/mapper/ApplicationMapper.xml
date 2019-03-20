@@ -187,8 +187,8 @@
         <id property="id"  column="id"
                 typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
         <result column="local_authority_code" property="localAuthorityCode" />
-        <result column="transfer_la_from_code" property="transferLaFromCode" />
-        <result column="transfer_la_datetime" property="transferLaDatetime" />
+        <result column="transferred_la_from_code" property="transferredLaFromCode" />
+        <result column="transferred_from_la_datetime" property="transferredFromLaDatetime" />
         <result column="app_type_code" property="appTypeCode" />
         <result column="is_payment_taken" property="isPaymentTaken" />
         <result column="payment_reference" property="paymentReference" />
@@ -248,8 +248,8 @@
         SELECT a.id
         , a.id::VARCHAR string_id
         , a.local_authority_code
-        , a.transfer_la_from_code
-        , a.transfer_la_datetime
+        , a.transferred_la_from_code
+        , a.transferred_from_la_datetime
         , a.app_type_code
         , a.is_payment_taken
         , a.payment_reference
@@ -498,9 +498,9 @@
 
     <update id="transferApplication" parameterType="TransferApplicationParams">
         UPDATE application
-        SET transfer_la_from_code = #{transferFromLaShortCode},
+        SET transferred_la_from_code = #{transferFromLaShortCode},
             local_authority_code = #{transferToLaShortCode},
-          	transfer_la_datetime = current_timestamp
+          	transferred_from_la_datetime = current_timestamp
         WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
     </update>
 
