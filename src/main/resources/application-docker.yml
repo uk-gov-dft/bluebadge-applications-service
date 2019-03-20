@@ -12,7 +12,7 @@ spring:
   main:
     banner-mode: "off"
   datasource:
-    url: jdbc:postgresql://postgresql:5432/bb_dev?currentSchema=applicationmanagement
+    url: jdbc:postgresql://postgresql:5432/bb_dev?currentSchema=applicationmanagement&sslmode=require
 
 amazon:
   s3bucket: ${bb_application_artifact_bucket:uk-gov-dft-dev-applications}
