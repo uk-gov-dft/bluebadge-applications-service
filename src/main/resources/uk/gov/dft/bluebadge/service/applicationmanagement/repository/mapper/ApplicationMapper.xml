@@ -18,7 +18,7 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          local_authority_code, bulky_equipment_other_desc, application_status
+          local_authority_code, bulky_equipment_other_desc, application_status, breathlessness_other_desc
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -33,7 +33,7 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc}, #{applicationStatus}
+          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc}, #{applicationStatus}, #{breathlessnessOtherDesc}
         )
     </insert>
 
@@ -115,6 +115,18 @@
         INSERT INTO app_walking_type
         ( application_id
         , walking_type_code
+        )
+        VALUES
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+            , #{element.typeCode}
+        </foreach>
+    </insert>
+
+    <insert id="createBreathlessnessTypes" parameterType="java.util.List">
+        INSERT INTO app_breathlessness_type
+        ( application_id
+        , breathlessness_type_code
         )
         VALUES
         <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
@@ -226,6 +238,7 @@
         <result column="is_deleted" property="isDeleted" />
         <result column="deleted_timestamp" property="deletedTimestamp" />
         <result column="application_status" property="applicationStatus" />
+        <result column="breathlessness_other_desc" property="breathlessnessOtherDesc" />
         <collection property="healthcareProfessionals" ofType="HealthcareProfessionalEntity"
                     select="retrieveHealthcareProfessional" column="string_id"/>
         <collection property="medications" ofType="MedicationEntity"
@@ -238,6 +251,8 @@
                     select="retrieveWalkingAid" column="string_id"/>
         <collection property="walkingDifficultyTypes" ofType="WalkingDifficultyTypeEntity"
                     select="retrieveWalkingDifficultyType" column="string_id"/>
+        <collection property="breathlessnessTypes" ofType="BreathlessnessTypeEntity"
+                    select="retrieveBreathlessnessType" column="string_id"/>
         <collection property="bulkyEquipment" ofType="BulkyEquipmentTypeEntity"
                     select="retrieveBulkyEquipmentType" column="string_id"/>
         <collection property="artifacts" ofType="ArtifactEntity"
@@ -288,6 +303,7 @@
         , a.is_deleted
         , a.deleted_timestamp
         , a.application_status
+        , a.breathlessness_other_desc
         FROM application a
         WHERE a.id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
         AND a.is_deleted = #{deleted}
@@ -319,6 +335,19 @@
         , wt.walking_type_code
         FROM app_walking_type wt
         WHERE wt.application_id::VARCHAR = #{id}
+    </select>
+
+    <resultMap id="retrieveBreathlessnessTypeMap" type="BreathlessnessTypeEntity">
+        <result property="applicationId"  column="application_id"
+                typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
+        <result column="breathlessness_type_code" property="typeCode" />
+    </resultMap>
+    <select id="retrieveBreathlessnessType" resultType="BreathlessnessTypeEntity" resultMap="retrieveBreathlessnessTypeMap">
+        SELECT
+          br.application_id
+        , br.breathlessness_type_code
+        FROM app_breathlessness_type br
+        WHERE br.application_id::VARCHAR = #{id}
     </select>
 
     <resultMap id="walkingAidMap" type="WalkingAidEntity">
@@ -444,10 +473,13 @@
      	DELETE FROM app_walking_type WHERE application_id::VARCHAR=#{uuid}
     </delete>
 
+    <delete id="deleteBreathlessnessTypes" parameterType="String">
+     	DELETE FROM app_breathlessness_type WHERE application_id::VARCHAR=#{uuid}
+    </delete>
+
     <delete id="deleteBulkyEquipmentTypes" parameterType="String">
         DELETE FROM app_bulky_equipment_type WHERE application_id::VARCHAR=#{uuid}
     </delete>
-
 
     <delete id="deleteArtifacts" parameterType="String">
      	DELETE FROM app_artifact WHERE application_id::VARCHAR=#{uuid}
@@ -484,6 +516,7 @@
           	blind_registered_at_la_code = null,
           	bulky_equipment_type_code = null,
             bulky_equipment_other_desc = null,
+            breathlessness_other_desc = null,
           	is_deleted = true,
           	deleted_timestamp = current_timestamp
         WHERE id = #{uuid,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}

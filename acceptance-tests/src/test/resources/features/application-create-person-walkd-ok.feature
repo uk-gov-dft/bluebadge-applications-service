@@ -45,7 +45,7 @@ Feature: Verify Create person walkd ok
     descriptionOfConditions: 'Freetext',
     walkingDifficulty: {
       typeCodes: [
-        'BALANCE', 'SOMELSE'
+        'BALANCE', 'SOMELSE', 'BREATH'
       ],
       otherDescription: 'other description',
       walkingAids: [
@@ -70,7 +70,13 @@ Feature: Verify Create person walkd ok
           frequency: 'medication frequency',
           quantity: 'medication quantity'
         }
-      ]
+      ],
+      breathlessness: {
+        typeCodes: [
+          'OWNPACE', 'OTHER'
+        ],
+        otherDescription: 'other description'
+      }
     },
     healthcareProfessionals: [
       {
