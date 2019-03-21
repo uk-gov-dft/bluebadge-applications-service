@@ -102,10 +102,10 @@ Feature: Verify Create person invalid
     ],
     blind: {
       registeredAtLaId: 'BIRM'
-    },
+      },
     childUnder3: {
       bulkyMedicalEquipmentTypeCode: 'CAST'
-    }
+      }
   },
   artifacts: [
   ]

@@ -22,6 +22,8 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpd
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Benefit;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Blind;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Breathlessness;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BreathlessnessTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BulkyMedicalEquipmentTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ChildUnder3;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
@@ -84,6 +86,15 @@ public class ApplicationFixture extends AbstractValidator {
     WalkingLengthOfTimeCodeField WALKING_LENGTH_OF_TIME_CODE_FIELD =
         WalkingLengthOfTimeCodeField.FEWMIN;
     WalkingSpeedCodeField WALKING_SPEED_CODE_FIELD = WalkingSpeedCodeField.FAST;
+    BreathlessnessTypeCodeField BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL =
+        BreathlessnessTypeCodeField.UPHILL;
+    BreathlessnessTypeCodeField BREATHLESSNESS_TYPE_CODE_FIELD_OTHER =
+        BreathlessnessTypeCodeField.OTHER;
+    List<BreathlessnessTypeCodeField> BREATHLESSNESS_TYPE_CODES =
+        Lists.newArrayList(BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL);
+    List<BreathlessnessTypeCodeField> BREATHLESSNESS_TYPE_CODES_WITH_OTHER =
+        Lists.newArrayList(
+            BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL, BREATHLESSNESS_TYPE_CODE_FIELD_OTHER);
     String ARMS_DRIVE_FREQ = "drive freq";
     Boolean ARMS_IS_ADAPTED = Boolean.TRUE;
     String PHONE_NO = "123456";
@@ -113,6 +124,7 @@ public class ApplicationFixture extends AbstractValidator {
     BulkyMedicalEquipmentTypeCodeField BULKY_MEDICAL_EQUIPMENT_TYPE_CODE_FIELD =
         BulkyMedicalEquipmentTypeCodeField.CAST;
     String WALK_OTHER_DESC = "Walk Other Desc";
+    String BREATHLESSNESS_OTHER_DESC = "Breathlessness Other Desc";
     String DESCRIPTION_OF_CONDITIONS = "Description of Conditions";
   }
 
@@ -280,6 +292,33 @@ public class ApplicationFixture extends AbstractValidator {
     application.setArtifacts(artifacts);
   }
 
+  private static void setBreathOnWalkingEligibility(Application application) {
+    application
+        .getEligibility()
+        .getWalkingDifficulty()
+        .addTypeCodesItem(WalkingDifficultyTypeCodeField.BREATH);
+  }
+
+  private static void addBreathlessness(Application application) {
+    Breathlessness breathlessness = new Breathlessness();
+    breathlessness.setTypeCodes(ValidValues.BREATHLESSNESS_TYPE_CODES);
+    application.getEligibility().getWalkingDifficulty().setBreathlessness(breathlessness);
+  }
+
+  private static void addBreathlessnessOther(Application application) {
+    Breathlessness breathlessness = new Breathlessness();
+    breathlessness.setTypeCodes(ValidValues.BREATHLESSNESS_TYPE_CODES_WITH_OTHER);
+    breathlessness.setOtherDescription(ValidValues.BREATHLESSNESS_OTHER_DESC);
+    application.getEligibility().getWalkingDifficulty().setBreathlessness(breathlessness);
+  }
+
+  private static void addBreathlessnessOtherDescriptionOnly(Application application) {
+    Breathlessness breathlessness = new Breathlessness();
+    breathlessness.setTypeCodes(ValidValues.BREATHLESSNESS_TYPE_CODES);
+    breathlessness.setOtherDescription(ValidValues.BREATHLESSNESS_OTHER_DESC);
+    application.getEligibility().getWalkingDifficulty().setBreathlessness(breathlessness);
+  }
+
   protected void reset(Application application) {
     app = application;
     errors = new BeanPropertyBindingResult(application, "application");
@@ -381,6 +420,26 @@ public class ApplicationFixture extends AbstractValidator {
 
     public ApplicationBuilder setEligibilityAfrfcs() {
       ApplicationFixture.setEligibilityAfrfcs(application);
+      return this;
+    }
+
+    public ApplicationBuilder setBreathOnWalkingEligibility() {
+      ApplicationFixture.setBreathOnWalkingEligibility(application);
+      return this;
+    }
+
+    public ApplicationBuilder addBreathlessness() {
+      ApplicationFixture.addBreathlessness(application);
+      return this;
+    }
+
+    public ApplicationBuilder addBreathlessnessOther() {
+      ApplicationFixture.addBreathlessnessOther(application);
+      return this;
+    }
+
+    public ApplicationBuilder addBreathlessnessOtherDescriptionOnly() {
+      ApplicationFixture.addBreathlessnessOtherDescriptionOnly(application);
       return this;
     }
 

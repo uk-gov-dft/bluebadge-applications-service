@@ -11,6 +11,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpd
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BreathlessnessTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
@@ -110,6 +111,17 @@ public class ApplicationRepository implements ApplicationMapper {
   }
 
   @Override
+  public int createBreathlessnessTypes(List<BreathlessnessTypeEntity> breathlessnessTypes) {
+    int insertCount = 0;
+    if (createRequired(breathlessnessTypes)) {
+      insertCount =
+          sqlSession.insert(Statements.CREATE_BREATHLESSNESS_TYPES.getName(), breathlessnessTypes);
+      log.debug("{} breathlessness types created.", insertCount);
+    }
+    return insertCount;
+  }
+
+  @Override
   public int createBulkyEquipment(List<BulkyEquipmentTypeEntity> equipment) {
     int insertCount = 0;
     if (createRequired(equipment)) {
@@ -192,6 +204,11 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public int deleteWalkingDifficultyTypes(String applicationId) {
     return sqlSession.delete(Statements.DELETE_WALKING_DIFFICULTY_TYPES.getName(), applicationId);
+  }
+
+  @Override
+  public int deleteBreathlessnessTypes(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_BREATHLESSNESS_TYPES.getName(), applicationId);
   }
 
   @Override

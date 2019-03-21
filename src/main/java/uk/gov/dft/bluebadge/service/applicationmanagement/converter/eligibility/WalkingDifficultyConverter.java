@@ -4,11 +4,13 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Breathlessness;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingSpeedCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.EligibilityRules;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.ApplicationBiConverter;
+import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.BreathlessnessTypeConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.MedicationConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.TreatmentConverter;
 import uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection.WalkingAidConverter;
@@ -22,17 +24,20 @@ public class WalkingDifficultyConverter implements ApplicationBiConverter {
   private final WalkingAidConverter walkingAidConverter;
   private final TreatmentConverter treatmentConverter;
   private final MedicationConverter medicationConverter;
+  private final BreathlessnessTypeConverter breathlessnessTypeConverter;
 
   @Autowired
   WalkingDifficultyConverter(
       WalkingDifficultyTypeConverter walkingDifficultyTypeConverter,
       WalkingAidConverter walkingAidConverter,
       TreatmentConverter treatmentConverter,
-      MedicationConverter medicationConverter) {
+      MedicationConverter medicationConverter,
+      BreathlessnessTypeConverter breathlessnessTypeConverter) {
     this.walkingDifficultyTypeConverter = walkingDifficultyTypeConverter;
     this.walkingAidConverter = walkingAidConverter;
     this.treatmentConverter = treatmentConverter;
     this.medicationConverter = medicationConverter;
+    this.breathlessnessTypeConverter = breathlessnessTypeConverter;
   }
 
   @Override
@@ -60,6 +65,11 @@ public class WalkingDifficultyConverter implements ApplicationBiConverter {
           treatmentConverter.convertToModelList(entity.getTreatments()));
       walkingDifficulty.setMedications(
           medicationConverter.convertToModelList(entity.getMedications()));
+      walkingDifficulty.setBreathlessness(
+          new Breathlessness()
+              .otherDescription(entity.getBreathlessnessOtherDesc())
+              .typeCodes(
+                  breathlessnessTypeConverter.convertToModelList(entity.getBreathlessnessTypes())));
     }
   }
 
@@ -91,6 +101,14 @@ public class WalkingDifficultyConverter implements ApplicationBiConverter {
       entity.setMedications(
           medicationConverter.convertToEntityList(
               walkingDifficulty.getMedications(), UUID.fromString(model.getApplicationId())));
+      if (null != walkingDifficulty.getBreathlessness()) {
+        entity.setBreathlessnessOtherDesc(
+            walkingDifficulty.getBreathlessness().getOtherDescription());
+        entity.setBreathlessnessTypes(
+            breathlessnessTypeConverter.convertToEntityList(
+                walkingDifficulty.getBreathlessness().getTypeCodes(),
+                UUID.fromString(model.getApplicationId())));
+      }
     }
   }
 }
