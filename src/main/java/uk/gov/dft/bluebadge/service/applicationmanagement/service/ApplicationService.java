@@ -221,14 +221,25 @@ public class ApplicationService {
     Assert.notNull(applicationId, "applicationId must not be null");
     Assert.notNull(applicationTransfer, "applicationTransfer must not be null");
 
-    validateLocalAuthority(applicationTransfer.getTransferToLaShortCode());
+    String currentLaShortCode = securityUtils.getCurrentLocalAuthorityShortCode();
+    String newLaShortCode = applicationTransfer.getTransferToLaShortCode();
+
+    if (newLaShortCode.equals(currentLaShortCode)) {
+      Error error =
+          new Error()
+              .message("Target local authority code has to differ from current one.")
+              .reason("transferToLaShortCode");
+      throw new BadRequestException(error);
+    }
+
+    validateLocalAuthority(newLaShortCode);
 
     int updates =
         repository.transferApplication(
             TransferApplicationParams.builder()
                 .applicationId(UUID.fromString(applicationId))
                 .transferToLaShortCode(applicationTransfer.getTransferToLaShortCode())
-                .transferFromLaShortCode(securityUtils.getCurrentLocalAuthorityShortCode())
+                .transferFromLaShortCode(currentLaShortCode)
                 .build());
     if (updates == 0) {
       // UUID did not match any application

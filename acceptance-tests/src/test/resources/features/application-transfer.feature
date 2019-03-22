@@ -11,6 +11,22 @@ Feature: Verify transfer
     * def createResult = callonce read('./application-create-org-ok.feature')
     * def createdAppNo = createResult.applicationId
 
+  Scenario: Verify transfer doesn't happen for same LA
+    * def result = callonce read('./oauth2-la-editor-aberd.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
+    Given path 'applications/' + createdAppNo + '/transfers'
+    And request '{"transferToLaShortCode" : "ABERD" }'
+    When method POST
+    Then status 400
+
+  Scenario: Verify transfer only happens for valid LA
+    * def result = callonce read('./oauth2-la-editor-aberd.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
+    Given path 'applications/' + createdAppNo + '/transfers'
+    And request '{"transferToLaShortCode" : "KEN" }'
+    When method POST
+    Then status 400
+
   Scenario: Verify transfer ok
     * def result = callonce read('./oauth2-la-editor-aberd.feature')
     * header Authorization = 'Bearer ' + result.accessToken
