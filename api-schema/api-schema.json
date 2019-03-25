@@ -311,18 +311,13 @@
     "ApplicationTransferRequest" : {
       "type" : "object",
       "properties" : {
-        "applicationId" : {
-          "type" : "string",
-          "description" : "The unique number for this application - a UUID",
-          "example" : "12345678-1234-1234-1234-123456781234"
-        },
         "transferToLaShortCode" : {
           "type" : "string",
           "description" : "The code for the new local authority.",
           "example" : "BIRM"
         }
       },
-      "required" : [ "applicationId", "transferToLaShortCode" ]
+      "required" : [ "transferToLaShortCode" ]
     },
     "ApplicationSummary" : {
       "type" : "object",
