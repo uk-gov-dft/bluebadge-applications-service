@@ -71,6 +71,11 @@ public class ApplicationConverter
     model.setSubmissionDate(entity.getSubmissionDatetime().atOffset(ZoneOffset.UTC));
     model.setExistingBadgeNumber(entity.getExistingBadgeNo());
     model.setApplicationStatus(ApplicationStatusField.fromValue(entity.getApplicationStatus()));
+    model.setTransferredFromLaDate(
+        null != entity.getTransferredFromLaDatetime()
+            ? entity.getTransferredFromLaDatetime().atOffset(ZoneOffset.UTC)
+            : null);
+    model.setTransferredLaFromCode(entity.getTransferredLaFromCode());
     model.setArtifacts(null);
 
     for (ApplicationBiConverter converter : converters) {

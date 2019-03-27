@@ -17,6 +17,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Find
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TransferApplicationParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -224,5 +225,10 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public int updateApplication(ApplicationUpdate applicationUpdate) {
     return sqlSession.update(Statements.UPDATE_APPLICATION.getName(), applicationUpdate);
+  }
+
+  @Override
+  public int transferApplication(TransferApplicationParams params) {
+    return sqlSession.update(Statements.TRANSFER_APPLICATION.getName(), params);
   }
 }

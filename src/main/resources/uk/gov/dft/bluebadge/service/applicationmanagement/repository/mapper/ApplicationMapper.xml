@@ -18,8 +18,7 @@
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
-          local_authority_code, bulky_equipment_other_desc,
-          application_status, breathlessness_other_desc
+          local_authority_code, bulky_equipment_other_desc, application_status, breathlessness_other_desc
         )
         VALUES
         ( #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler},
@@ -34,8 +33,7 @@
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
-          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc},
-          #{applicationStatus}, #{breathlessnessOtherDesc}
+          #{localAuthorityCode}, #{bulkyEquipmentOtherDesc}, #{applicationStatus}, #{breathlessnessOtherDesc}
         )
     </insert>
 
@@ -201,6 +199,8 @@
         <id property="id"  column="id"
                 typeHandler="uk.gov.dft.bluebadge.common.repository.UuidTypeHandler"/>
         <result column="local_authority_code" property="localAuthorityCode" />
+        <result column="transferred_la_from_code" property="transferredLaFromCode" />
+        <result column="transferred_from_la_datetime" property="transferredFromLaDatetime" />
         <result column="app_type_code" property="appTypeCode" />
         <result column="is_payment_taken" property="isPaymentTaken" />
         <result column="payment_reference" property="paymentReference" />
@@ -263,6 +263,8 @@
         SELECT a.id
         , a.id::VARCHAR string_id
         , a.local_authority_code
+        , a.transferred_la_from_code
+        , a.transferred_from_la_datetime
         , a.app_type_code
         , a.is_payment_taken
         , a.payment_reference
@@ -524,6 +526,14 @@
     <update id="updateApplication" parameterType="uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate">
         UPDATE application
         SET application_status = #{applicationStatus}
+        WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
+    </update>
+
+    <update id="transferApplication" parameterType="TransferApplicationParams">
+        UPDATE application
+        SET transferred_la_from_code = #{transferFromLaShortCode},
+            local_authority_code = #{transferToLaShortCode},
+          	transferred_from_la_datetime = current_timestamp
         WHERE id = #{applicationId,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=uk.gov.dft.bluebadge.common.repository.UuidTypeHandler}
     </update>
 

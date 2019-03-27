@@ -23,6 +23,12 @@ public class Application {
   @JsonProperty("localAuthorityCode")
   private String localAuthorityCode = null;
 
+  @JsonProperty("transferredLaFromCode")
+  private String transferredLaFromCode = null;
+
+  @JsonProperty("transferredFromLaDate")
+  private OffsetDateTime transferredFromLaDate = null;
+
   @JsonProperty("paymentTaken")
   private Boolean paymentTaken = null;
 
@@ -101,7 +107,6 @@ public class Application {
    *
    * @return localAuthorityCode
    */
-  @ApiModelProperty(example = "BIRM", required = true, value = "The code for the local authority.")
   @NotNull
   public String getLocalAuthorityCode() {
     return localAuthorityCode;
@@ -109,6 +114,32 @@ public class Application {
 
   public void setLocalAuthorityCode(String localAuthorityCode) {
     this.localAuthorityCode = localAuthorityCode;
+  }
+
+  public String getTransferredLaFromCode() {
+    return transferredLaFromCode;
+  }
+
+  public void setTransferredLaFromCode(String transferredLaFromCode) {
+    this.transferredLaFromCode = transferredLaFromCode;
+  }
+
+  /**
+   * Local authority transfer date and time.
+   *
+   * @return transferredFromLaDate
+   */
+  @ApiModelProperty(
+    example = "2019-03-03T10:30:00Z",
+    value = "Local authority transfer date and time."
+  )
+  @Valid
+  public OffsetDateTime getTransferredFromLaDate() {
+    return transferredFromLaDate;
+  }
+
+  public void setTransferredFromLaDate(OffsetDateTime transferredFromLaDate) {
+    this.transferredFromLaDate = transferredFromLaDate;
   }
 
   public Application paymentTaken(Boolean paymentTaken) {

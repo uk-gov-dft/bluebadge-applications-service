@@ -36,6 +36,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
 public class ApplicationServiceTest extends ApplicationFixture {
 
@@ -45,6 +46,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
   @Mock ApplicationAuditLogger applicationAuditLogger;
   @Mock ArtifactService artifactService;
   @Mock MessageService messageService;
+  @Mock ReferenceDataService referenceDataService;
   private ApplicationService service;
 
   @Before
@@ -57,7 +59,8 @@ public class ApplicationServiceTest extends ApplicationFixture {
             securityUtils,
             applicationAuditLogger,
             artifactService,
-            messageService);
+            messageService,
+            referenceDataService);
   }
 
   @Test

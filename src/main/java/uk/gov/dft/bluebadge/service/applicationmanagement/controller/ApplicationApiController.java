@@ -12,12 +12,15 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.dft.bluebadge.common.api.model.PagedResult;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummaryResponse;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTransferRequest;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.CreateApplicationResponse;
 import uk.gov.dft.bluebadge.service.applicationmanagement.generated.controller.ApplicationsApi;
@@ -92,6 +95,16 @@ public class ApplicationApiController implements ApplicationsApi {
       @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
       @ApiParam() @Valid @RequestBody ApplicationUpdate applicationUpdate) {
     service.update(applicationId, applicationUpdate);
+    return ResponseEntity.ok().build();
+  }
+
+  @PreAuthorize(
+      "hasAuthority('PERM_UPDATE_APPLICATION') and @applicationSecurity.isAuthorised(#applicationId)")
+  @RequestMapping(value = "/applications/{applicationId}/transfers", method = RequestMethod.POST)
+  public ResponseEntity<Void> transferApplication(
+      @PathVariable("applicationId") String applicationId,
+      @Valid @RequestBody ApplicationTransferRequest applicationTransfer) {
+    service.transferApplication(applicationId, applicationTransfer);
     return ResponseEntity.ok().build();
   }
 }

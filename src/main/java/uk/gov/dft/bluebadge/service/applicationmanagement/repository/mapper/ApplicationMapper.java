@@ -12,6 +12,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Find
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TransferApplicationParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -137,4 +138,6 @@ public interface ApplicationMapper {
   int deleteArtifacts(String applicationId);
 
   int updateApplication(ApplicationUpdate applicationUpdate);
+
+  int transferApplication(TransferApplicationParams params);
 }

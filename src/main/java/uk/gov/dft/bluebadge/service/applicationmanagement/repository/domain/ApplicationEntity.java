@@ -18,6 +18,8 @@ public class ApplicationEntity implements Serializable {
 
   private UUID id;
   private String localAuthorityCode;
+  private String transferredLaFromCode;
+  private Instant transferredFromLaDatetime;
   private String appTypeCode;
   private Boolean isPaymentTaken;
   private String paymentReference;

@@ -104,7 +104,9 @@ CREATE TABLE applicationmanagement_unittest.application (
     bulky_equipment_other_desc character varying(100),
     is_deleted boolean DEFAULT false NOT NULL,
     deleted_timestamp date,
-    application_status character varying(11) default 'TODO' NULL
+    application_status character varying(11) default 'TODO' NULL,
+    transferred_la_from_code VARCHAR(10),
+    transferred_from_la_datetime TIMESTAMP without time zone
 );
 
 ALTER TABLE ONLY applicationmanagement_unittest.app_walking_type
@@ -186,7 +188,8 @@ INSERT INTO applicationmanagement_unittest.application(
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, breathlessness_other_desc, walk_length_code
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
- , blind_registered_at_la_code, bulky_equipment_other_desc, application_status
+ , blind_registered_at_la_code, bulky_equipment_other_desc, application_status, transferred_la_from_code
+ , transferred_from_la_datetime
  ) VALUES (
  '1087ac26-491a-46f0-9006-36187dc40764'::uuid, 'ABERD', 'REPLACE', true, 'mypayref', '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
  , 'Contact Name', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
@@ -195,7 +198,8 @@ INSERT INTO applicationmanagement_unittest.application(
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'Breathlessness Other Desc', 'LESSMIN'
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
- , 'BIRM', 'Bulky1', 'TODO'
+ , 'BIRM', 'Bulky1', 'TODO', 'ABERD'
+ , '2010-12-31 03:15:00'::TIMESTAMP
  );
 INSERT INTO applicationmanagement_unittest.app_healthcare_professional(
 application_id, prof_name, prof_location
