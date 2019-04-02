@@ -1,24 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository;
 
-import static java.time.Duration.ofMinutes;
-import static java.time.Period.ofYears;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import com.github.pagehelper.Page;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import org.assertj.core.data.TemporalOffset;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +9,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationContextTests;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
@@ -37,10 +22,34 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Find
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TransferApplicationParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingDifficultyTypeEntity;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static java.time.Duration.ofMinutes;
+import static java.time.Period.ofYears;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.within;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SqlGroup({@Sql(scripts = "classpath:/test-data.sql")})
@@ -565,5 +574,32 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
 
     result = applicationRepository.retrieveApplication(params);
     assertThat(result.getArtifacts()).isEmpty();
+  }
+
+  @Test
+  public void transfer() {
+    TransferApplicationParams transferPerams =
+        TransferApplicationParams.builder()
+            .transferFromLaShortCode("ABERD")
+            .transferToLaShortCode("SHROP")
+            .applicationId(UUID.fromString("2166bd0b-7086-4a79-8c10-5dde52bcee68"))
+            .build();
+    RetrieveApplicationQueryParams retrieveParams =
+        RetrieveApplicationQueryParams.builder()
+            .uuid(UUID.fromString("2166bd0b-7086-4a79-8c10-5dde52bcee68"))
+            .deleted(Boolean.FALSE)
+            .build();
+
+    ApplicationEntity result = applicationRepository.retrieveApplication(retrieveParams);
+    assertThat(result.getApplicationStatus()).isEqualTo(ApplicationStatusField.INPROGRESS.name());
+    assertThat(result.getLocalAuthorityCode()).isEqualTo("ABERD");
+
+    applicationRepository.transferApplication(transferPerams);
+    result = applicationRepository.retrieveApplication(retrieveParams);
+    assertThat(result.getApplicationStatus()).isEqualTo(ApplicationStatusField.TODO.name());
+    assertThat(result.getLocalAuthorityCode()).isEqualTo("SHROP");
+    assertThat(result.getTransferredLaFromCode()).isEqualTo("ABERD");
+    // Making a bit of an assumption that DB time is somewhere near accurate.
+    assertThat(result.getTransferredFromLaDatetime()).isCloseTo(Instant.now(), within(10, ChronoUnit.MINUTES));
   }
 }
