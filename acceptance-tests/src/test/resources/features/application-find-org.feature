@@ -148,3 +148,30 @@ Feature: Verify find org
     When method GET
     Then status 400
     And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"Max.pagingParams.pageSize", location:"#null", locationType:"#null"}
+
+  Scenario: Verify invalid paging params (pageSize = '') results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageSize = ''
+    And param pageNum = 1
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.pagingParams.pageSize", location:"#null", locationType:"#null"}
+
+  Scenario: Verify invalid paging params (pageSize = only spaces string) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageSize = '     '
+    And param pageNum = 1
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.pagingParams.pageSize", location:"#null", locationType:"#null"}
+
+  Scenario: Verify invalid paging params (pageNum = only spaces string) results in 400
+    Given path 'applications'
+    And param name = 'Delete'
+    And param pageSize = 10
+    And param pageNum = '     '
+    When method GET
+    Then status 400
+    And match $.error.errors contains {field:"#notnull", reason:"#notnull", message:"NotNull.pagingParams.pageNum", location:"#null", locationType:"#null"}
