@@ -2,7 +2,7 @@
   "swagger" : "2.0",
   "info" : {
     "description" : "Manage badge applications.\n",
-    "version" : "1.0.2",
+    "version" : "1.0.6",
     "title" : "Applications Service"
   },
   "tags" : [ {
@@ -12,10 +12,7 @@
   "paths" : {
     "/applications/{applicationId}" : {
       "parameters" : [ {
-        "in" : "path",
-        "name" : "applicationId",
-        "type" : "string",
-        "required" : true
+        "$ref" : "#/parameters/ApplicationIdPathParam"
       } ],
       "delete" : {
         "description" : "Delete an application.",
@@ -49,6 +46,47 @@
           },
           "404" : {
             "description" : "Application did not exist"
+          }
+        }
+      },
+      "put" : {
+        "description" : "Update the application",
+        "tags" : [ "applications" ],
+        "summary" : "Update the application specified.",
+        "operationId" : "updateApplication",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "application",
+          "schema" : {
+            "$ref" : "#/definitions/ApplicationUpdate"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Application was updated."
+          }
+        }
+      }
+    },
+    "/applications/{applicationId}/transfers" : {
+      "parameters" : [ {
+        "$ref" : "#/parameters/ApplicationIdPathParam"
+      } ],
+      "post" : {
+        "tags" : [ "applications" ],
+        "summary" : "Request application transfer",
+        "operationId" : "transferApplication",
+        "description" : "Transfer an application to new local authority with immediate effect.",
+        "parameters" : [ {
+          "name" : "applicationTransfer",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/ApplicationTransferRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Application transfer requested."
           }
         }
       }
@@ -134,6 +172,14 @@
           }
         }
       }
+    }
+  },
+  "parameters" : {
+    "ApplicationIdPathParam" : {
+      "in" : "path",
+      "name" : "applicationId",
+      "type" : "string",
+      "required" : true
     }
   },
   "definitions" : {
@@ -262,6 +308,17 @@
         }
       } ]
     },
+    "ApplicationTransferRequest" : {
+      "type" : "object",
+      "properties" : {
+        "transferToLaShortCode" : {
+          "type" : "string",
+          "description" : "The code for the new local authority.",
+          "example" : "BIRM"
+        }
+      },
+      "required" : [ "transferToLaShortCode" ]
+    },
     "ApplicationSummary" : {
       "type" : "object",
       "properties" : {
@@ -296,6 +353,9 @@
         },
         "eligibilityCode" : {
           "$ref" : "#/definitions/EligibilityCodeField"
+        },
+        "applicationStatus" : {
+          "$ref" : "#/definitions/ApplicationStatusField"
         }
       }
     },
@@ -343,9 +403,20 @@
           "items" : {
             "$ref" : "#/definitions/Artifact"
           }
+        },
+        "applicationStatus" : {
+          "$ref" : "#/definitions/ApplicationStatusField"
         }
       },
       "required" : [ "applicationTypeCode", "paymentTaken", "localAuthorityCode", "party" ]
+    },
+    "ApplicationUpdate" : {
+      "type" : "object",
+      "properties" : {
+        "applicationStatus" : {
+          "$ref" : "#/definitions/ApplicationStatusField"
+        }
+      }
     },
     "Party" : {
       "type" : "object",
@@ -473,7 +544,7 @@
         "postCode" : {
           "type" : "string",
           "example" : "SK6 8GH",
-          "pattern" : "^[A-Za-z]{1,2}[0-9][0-9A-Za-z]?\\s?[0-9][A-Za-z]{2}$"
+          "pattern" : "^$|^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[\\s]*[0-9][A-Za-z]{2})$"
         },
         "primaryPhoneNumber" : {
           "type" : "string",
@@ -647,9 +718,30 @@
           "items" : {
             "$ref" : "#/definitions/Medication"
           }
+        },
+        "breathlessness" : {
+          "$ref" : "#/definitions/Breathlessness"
         }
       },
       "required" : [ "walkingLengthOfTimeCode" ]
+    },
+    "Breathlessness" : {
+      "type" : "object",
+      "properties" : {
+        "typeCodes" : {
+          "type" : "array",
+          "description" : "'Short codes from the BREATHLESS group of data. At least 1 required.'\n",
+          "items" : {
+            "$ref" : "#/definitions/BreathlessnessTypeCodeField"
+          }
+        },
+        "otherDescription" : {
+          "description" : "Only entered if something else type selected and even then not required.",
+          "type" : "string",
+          "maxLength" : 255
+        }
+      },
+      "required" : [ "typeCode" ]
     },
     "Medication" : {
       "type" : "object",
@@ -774,6 +866,18 @@
       "type" : "string",
       "enum" : [ "PRESCRIBE", "PRIVATE", "SOCIAL", "PERSON" ],
       "example" : "PRIVATE"
+    },
+    "ApplicationStatusField" : {
+      "type" : "string",
+      "enum" : [ "TODO", "INPROGRESS", "COMPLETED" ],
+      "example" : "TODO",
+      "description" : "The new application status"
+    },
+    "BreathlessnessTypeCodeField" : {
+      "type" : "string",
+      "enum" : [ "UPHILL", "KEEPUP", "OWNPACE", "DRESSED", "OTHER" ],
+      "example" : "UPHILL",
+      "description" : "Further breathlessness information"
     }
   },
   "host" : "virtserver.swaggerhub.com",

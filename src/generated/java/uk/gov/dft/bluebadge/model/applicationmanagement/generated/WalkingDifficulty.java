@@ -38,6 +38,10 @@ public class WalkingDifficulty {
   @Valid
   private List<Medication> medications = null;
 
+  @JsonProperty("breathlessness")
+  @Valid
+  private Breathlessness breathlessness = null;
+
   public WalkingDifficulty typeCodes(List<WalkingDifficultyTypeCodeField> typeCodes) {
     this.typeCodes = typeCodes;
     return this;
@@ -200,6 +204,21 @@ public class WalkingDifficulty {
   }
 
   /**
+   * Get breathlessness
+   *
+   * @return breathlessness
+   */
+  @ApiModelProperty(value = "")
+  @Valid
+  public Breathlessness getBreathlessness() {
+    return breathlessness;
+  }
+
+  public void setBreathlessness(Breathlessness breathlessness) {
+    this.breathlessness = breathlessness;
+  }
+
+  /**
    * Get medications
    *
    * @return medications
@@ -229,6 +248,7 @@ public class WalkingDifficulty {
         && Objects.equals(this.walkingLengthOfTimeCode, walkingDifficulty.walkingLengthOfTimeCode)
         && Objects.equals(this.walkingSpeedCode, walkingDifficulty.walkingSpeedCode)
         && Objects.equals(this.treatments, walkingDifficulty.treatments)
+        && Objects.equals(this.breathlessness, walkingDifficulty.breathlessness)
         && Objects.equals(this.medications, walkingDifficulty.medications);
   }
 
@@ -240,6 +260,7 @@ public class WalkingDifficulty {
         walkingAids,
         walkingLengthOfTimeCode,
         walkingSpeedCode,
+        breathlessness,
         treatments,
         medications);
   }

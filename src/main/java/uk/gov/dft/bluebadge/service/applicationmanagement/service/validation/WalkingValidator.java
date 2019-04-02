@@ -8,6 +8,7 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_SPEED;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_TYPES;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
@@ -16,6 +17,13 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficu
 
 @Component
 class WalkingValidator extends AbstractValidator {
+
+  private BreathlessnessValidator breathlessnessValidator;
+
+  @Autowired
+  public WalkingValidator(BreathlessnessValidator breathlessnessValidator) {
+    this.breathlessnessValidator = breathlessnessValidator;
+  }
 
   void validate(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_ELI_WALKING)) {
@@ -32,6 +40,7 @@ class WalkingValidator extends AbstractValidator {
 
       validateWalkingOtherDescription(app, errors);
       validateWalkingSpeed(app, errors);
+      validateBreathlessness(app, errors);
     }
   }
 
@@ -75,5 +84,16 @@ class WalkingValidator extends AbstractValidator {
           NOT_VALID,
           KEY_ELI_WALK_OTHER_DESC + " can only be present if SOMELSE selected as a type.");
     }
+  }
+
+  /**
+   * Breathlessness must be set if BREATH typeCode is selected; otherDescription must be set if
+   * Breathlessness OTHER typeCode is selected
+   *
+   * @param app Application.
+   * @param errors Errors.
+   */
+  void validateBreathlessness(Application app, Errors errors) {
+    breathlessnessValidator.validate(app, errors);
   }
 }

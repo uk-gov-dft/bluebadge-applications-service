@@ -18,6 +18,8 @@ public class ApplicationEntity implements Serializable {
 
   private UUID id;
   private String localAuthorityCode;
+  private String transferredLaFromCode;
+  private Instant transferredFromLaDatetime;
   private String appTypeCode;
   private Boolean isPaymentTaken;
   private String paymentReference;
@@ -55,6 +57,7 @@ public class ApplicationEntity implements Serializable {
   private List<HealthcareProfessionalEntity> healthcareProfessionals;
   private List<VehicleEntity> vehicles;
   private List<WalkingDifficultyTypeEntity> walkingDifficultyTypes;
+  private List<BreathlessnessTypeEntity> breathlessnessTypes;
   private List<WalkingAidEntity> walkingAids;
   private List<TreatmentEntity> treatments;
   private List<MedicationEntity> medications;
@@ -63,4 +66,5 @@ public class ApplicationEntity implements Serializable {
   private Boolean isDeleted;
   private LocalDate deletedTimestamp;
   private String applicationStatus;
+  private String breathlessnessOtherDesc;
 }

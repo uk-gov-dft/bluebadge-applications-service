@@ -27,7 +27,7 @@ Feature: Verify Create person walkd ok
       buildingStreet: '65 Basil Chambers',
       line2: 'Northern Quarter',
       townCity: 'Manchester',
-      postCode: 'zz11 1zz',
+      postCode: 'SW1P 4DR',
       primaryPhoneNumber: 175154771,
       secondaryPhoneNumber: '07970777111',
       emailAddress: 'nobody@blancmange.com'
@@ -45,7 +45,7 @@ Feature: Verify Create person walkd ok
     descriptionOfConditions: 'Freetext',
     walkingDifficulty: {
       typeCodes: [
-        'BALANCE', 'SOMELSE'
+        'BALANCE', 'SOMELSE', 'BREATH'
       ],
       otherDescription: 'other description',
       walkingAids: [
@@ -70,7 +70,13 @@ Feature: Verify Create person walkd ok
           frequency: 'medication frequency',
           quantity: 'medication quantity'
         }
-      ]
+      ],
+      breathlessness: {
+        typeCodes: [
+          'OWNPACE', 'OTHER'
+        ],
+        otherDescription: 'other description'
+      }
     },
     healthcareProfessionals: [
       {

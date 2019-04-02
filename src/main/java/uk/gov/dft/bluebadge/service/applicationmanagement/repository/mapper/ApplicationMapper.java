@@ -6,11 +6,13 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpd
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BreathlessnessTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TransferApplicationParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -83,6 +85,14 @@ public interface ApplicationMapper {
    */
   int createWalkingDifficultyTypes(List<WalkingDifficultyTypeEntity> walkingDifficultyTypes);
 
+  /**
+   * Create multiple breathlessness types for an application.
+   *
+   * @param breathlessnessTypes List of BreathlessnessTypeEntity to create.
+   * @return Created count.
+   */
+  int createBreathlessnessTypes(List<BreathlessnessTypeEntity> breathlessnessTypes);
+
   int createArtifacts(List<ArtifactEntity> artifactEntities);
 
   /**
@@ -121,9 +131,13 @@ public interface ApplicationMapper {
 
   int deleteWalkingDifficultyTypes(String applicationId);
 
+  int deleteBreathlessnessTypes(String applicationId);
+
   int deleteBulkyEquipmentTypes(String applicationId);
 
   int deleteArtifacts(String applicationId);
 
   int updateApplication(ApplicationUpdate applicationUpdate);
+
+  int transferApplication(TransferApplicationParams params);
 }

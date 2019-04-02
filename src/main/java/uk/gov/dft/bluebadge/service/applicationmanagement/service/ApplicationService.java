@@ -17,6 +17,7 @@ import uk.gov.dft.bluebadge.common.service.exception.BadRequestException;
 import uk.gov.dft.bluebadge.common.service.exception.NotFoundException;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTransferRequest;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpdate;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Artifact;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Party;
@@ -29,7 +30,9 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.Appl
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TransferApplicationParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.audit.ApplicationAuditLogger;
+import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
 
 @Slf4j
 @Service
@@ -42,6 +45,7 @@ public class ApplicationService {
   private ApplicationAuditLogger applicationAuditLogger;
   private final ArtifactService artifactService;
   private final MessageService messageService;
+  private ReferenceDataService referenceDataService;
 
   @Autowired
   ApplicationService(
@@ -50,13 +54,15 @@ public class ApplicationService {
       SecurityUtils securityUtils,
       ApplicationAuditLogger applicationAuditLogger,
       ArtifactService artifactService,
-      MessageService messageService) {
+      MessageService messageService,
+      ReferenceDataService referenceDataService) {
     this.repository = repository;
     this.converter = converter;
     this.securityUtils = securityUtils;
     this.applicationAuditLogger = applicationAuditLogger;
     this.artifactService = artifactService;
     this.messageService = messageService;
+    this.referenceDataService = referenceDataService;
   }
 
   /**
@@ -89,6 +95,7 @@ public class ApplicationService {
       repository.createVehicles(application.getVehicles());
       repository.createWalkingAids(application.getWalkingAids());
       repository.createWalkingDifficultyTypes(application.getWalkingDifficultyTypes());
+      repository.createBreathlessnessTypes(application.getBreathlessnessTypes());
       repository.createBulkyEquipment(application.getBulkyEquipment());
       repository.createArtifacts(artifactEntities);
       applicationAuditLogger.logCreateAuditEvent(applicationModel, log);
@@ -172,6 +179,7 @@ public class ApplicationService {
     repository.deleteVehicles(applicationId);
     repository.deleteWalkingAids(applicationId);
     repository.deleteWalkingDifficultyTypes(applicationId);
+    repository.deleteBreathlessnessTypes(applicationId);
     repository.deleteBulkyEquipmentTypes(applicationId);
     repository.deleteArtifacts(applicationId);
     log.debug("Application: '{}' has been deleted", applicationId);
@@ -206,5 +214,44 @@ public class ApplicationService {
     }
 
     return uuid;
+  }
+
+  public void transferApplication(
+      String applicationId, ApplicationTransferRequest applicationTransfer) {
+    Assert.notNull(applicationId, "applicationId must not be null");
+    Assert.notNull(applicationTransfer, "applicationTransfer must not be null");
+
+    String currentLaShortCode = securityUtils.getCurrentLocalAuthorityShortCode();
+    String newLaShortCode = applicationTransfer.getTransferToLaShortCode();
+
+    if (newLaShortCode.equals(currentLaShortCode)) {
+      Error error =
+          new Error()
+              .message("Target local authority code has to differ from current one.")
+              .reason("transferToLaShortCode");
+      throw new BadRequestException(error);
+    }
+
+    validateLocalAuthority(newLaShortCode);
+
+    int updates =
+        repository.transferApplication(
+            TransferApplicationParams.builder()
+                .applicationId(UUID.fromString(applicationId))
+                .transferToLaShortCode(applicationTransfer.getTransferToLaShortCode())
+                .transferFromLaShortCode(currentLaShortCode)
+                .build());
+    if (updates == 0) {
+      // UUID did not match any application
+      throw new NotFoundException("Application", NotFoundException.Operation.UPDATE);
+    }
+  }
+
+  void validateLocalAuthority(String shortCode) {
+    if (null != StringUtils.stripToNull(shortCode)
+        && !referenceDataService.isAuthorityCodeValid(shortCode)) {
+      throw new BadRequestException(
+          "transferToLaShortCode", "NotEmpty", "Invalid local authority code.");
+    }
   }
 }

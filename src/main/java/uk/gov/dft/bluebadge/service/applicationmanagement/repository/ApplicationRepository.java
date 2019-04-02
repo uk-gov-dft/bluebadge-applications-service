@@ -11,11 +11,13 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationUpd
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ArtifactEntity;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BreathlessnessTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.BulkyEquipmentTypeEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.FindApplicationQueryParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.HealthcareProfessionalEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.MedicationEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.RetrieveApplicationQueryParams;
+import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TransferApplicationParams;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.TreatmentEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.VehicleEntity;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.WalkingAidEntity;
@@ -110,6 +112,17 @@ public class ApplicationRepository implements ApplicationMapper {
   }
 
   @Override
+  public int createBreathlessnessTypes(List<BreathlessnessTypeEntity> breathlessnessTypes) {
+    int insertCount = 0;
+    if (createRequired(breathlessnessTypes)) {
+      insertCount =
+          sqlSession.insert(Statements.CREATE_BREATHLESSNESS_TYPES.getName(), breathlessnessTypes);
+      log.debug("{} breathlessness types created.", insertCount);
+    }
+    return insertCount;
+  }
+
+  @Override
   public int createBulkyEquipment(List<BulkyEquipmentTypeEntity> equipment) {
     int insertCount = 0;
     if (createRequired(equipment)) {
@@ -195,6 +208,11 @@ public class ApplicationRepository implements ApplicationMapper {
   }
 
   @Override
+  public int deleteBreathlessnessTypes(String applicationId) {
+    return sqlSession.delete(Statements.DELETE_BREATHLESSNESS_TYPES.getName(), applicationId);
+  }
+
+  @Override
   public int deleteBulkyEquipmentTypes(String applicationId) {
     return sqlSession.delete(Statements.DELETE_BULKY_EQUIPMENT_TYPES.getName(), applicationId);
   }
@@ -207,5 +225,10 @@ public class ApplicationRepository implements ApplicationMapper {
   @Override
   public int updateApplication(ApplicationUpdate applicationUpdate) {
     return sqlSession.update(Statements.UPDATE_APPLICATION.getName(), applicationUpdate);
+  }
+
+  @Override
+  public int transferApplication(TransferApplicationParams params) {
+    return sqlSession.update(Statements.TRANSFER_APPLICATION.getName(), params);
   }
 }
