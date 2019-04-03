@@ -1,16 +1,18 @@
 blue-badge:
   auth-server: 
-    url: https://authorisation-service.${bb_env}.${url}/bb_auth
+    url: https://api.${bb_env}.${url}/bb_auth
   reference-data-service:
     service-host:
-      host: reference-service.${bb_env}.${url}
+      host: api.${bb_env}.${url}
       port: 443
       scheme: https
+      contextpath: /reference-data1
   message-service:
     service-host:
-      host: messaging-service.${bb_env}.${url}
+      host: api.${bb_env}.${url}
       port: 443
       scheme: https
+      contextpath: /messages1
 
 management:
   server:
