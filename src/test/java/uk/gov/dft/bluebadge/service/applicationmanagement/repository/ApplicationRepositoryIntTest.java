@@ -578,7 +578,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
 
   @Test
   public void transfer() {
-    TransferApplicationParams transferPerams =
+    TransferApplicationParams transferParams =
         TransferApplicationParams.builder()
             .transferFromLaShortCode("ABERD")
             .transferToLaShortCode("SHROP")
@@ -594,7 +594,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertThat(result.getApplicationStatus()).isEqualTo(ApplicationStatusField.INPROGRESS.name());
     assertThat(result.getLocalAuthorityCode()).isEqualTo("ABERD");
 
-    applicationRepository.transferApplication(transferPerams);
+    applicationRepository.transferApplication(transferParams);
     result = applicationRepository.retrieveApplication(retrieveParams);
     assertThat(result.getApplicationStatus()).isEqualTo(ApplicationStatusField.TODO.name());
     assertThat(result.getLocalAuthorityCode()).isEqualTo("SHROP");
