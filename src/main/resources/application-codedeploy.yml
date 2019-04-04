@@ -6,28 +6,28 @@ blue-badge:
       host: api.${bb_env}.${url}
       port: 443
       scheme: https
-      contextpath: /reference-data1
+      contextpath: /
   message-service:
     service-host:
       host: api.${bb_env}.${url}
       port: 443
       scheme: https
-      contextpath: /messages1
+      contextpath: /
 
 management:
   server:
-    port: ${bb_health:-8081}
+    port: ${bb_health:8081}
 
 spring:
   main:
     banner-mode: "off"
   datasource:
      ***REMOVED***
-    username: ${bb_db_username:-developer}
-    url: jdbc:postgresql://${RDS_HOSTNAME}:5432/${bb_database:-bb_dev}?currentSchema=applicationmanagement&sslmode=verify-full
+    username: ${bb_db_username}
+    url: jdbc:postgresql://${RDS_HOSTNAME}:5432/${bb_database}?currentSchema=applicationmanagement&sslmode=verify-full
 
 server:
-  port: ${bb_port:-8080}
+  port: ${bb_port:8080}
 
 amazon:
   s3bucket: ${bb_application_artifact_bucket}
