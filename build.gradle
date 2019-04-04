@@ -74,7 +74,7 @@ sourceSets {
 
 dependencies {
 
-    ext.commonVersion = '0.7.3-SNAPSHOT'
+    ext.commonVersion = '0.7.5-SNAPSHOT'
 
     compile group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: "${commonVersion}", changing: true
     
