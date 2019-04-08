@@ -74,10 +74,11 @@ sourceSets {
 
 dependencies {
 
-    ext.commonVersion = '0.7.5-SNAPSHOT'
+    ext.commonVersion = '0.7.7-feature_BBB-1321-api-version-accept-header-SNAPSHOT'
 
-    compile group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: "${commonVersion}", changing: true
-    
+    compile( group: 'uk.gov.dft.bluebadge', name: 'bluebadge-common', version: "${commonVersion}", changing: true ){
+        exclude group: 'org.mybatis.spring.boot', module: 'mybatis-spring-boot-starter'
+    }
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.5'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2")

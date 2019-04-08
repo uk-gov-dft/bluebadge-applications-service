@@ -7,6 +7,7 @@ Feature: Verify Create org ok noauth
     * def DbUtils = Java.type('uk.gov.service.bluebadge.test.utils.DbUtils')
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
+    * header Accept = jsonVersionHeader
 
 
   Scenario: Verify cannot create without auth

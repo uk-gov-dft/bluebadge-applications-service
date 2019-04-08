@@ -8,6 +8,7 @@ Feature: Verify transfer
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Content-Type = 'application/json'
+    * header Accept = jsonVersionHeader
     * def createResult = callonce read('./application-create-org-ok.feature')
     * def createdAppNo = createResult.applicationId
 
