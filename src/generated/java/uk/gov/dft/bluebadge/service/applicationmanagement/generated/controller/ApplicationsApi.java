@@ -220,7 +220,6 @@ public interface ApplicationsApi {
   )
   @RequestMapping(
     value = "/applications/{applicationId}",
-    produces = {"application/json"},
     method = RequestMethod.PUT
   )
   default ResponseEntity<Void> updateApplication(

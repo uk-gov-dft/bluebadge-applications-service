@@ -10,6 +10,7 @@ Feature: Verify update
     * def result = callonce read('./oauth2-la-editor.feature')
     * header Authorization = 'Bearer ' + result.accessToken
     * header Accept = jsonVersionHeader
+    * header Content-Type = 'application/json'
 
   Scenario: Verify update 400 invalid uuid
     Given path 'applications/' + 'ABC'
