@@ -11,22 +11,6 @@ Feature: Verify update
     * header Authorization = 'Bearer ' + result.accessToken
     * header Accept = jsonVersionHeader
 
-  Scenario: Verify update ok
-    Given path 'applications/11114c39-02d5-4197-b032-1d9ce22c24b5'
-    And request '{"applicationStatus" : "INPROGRESS" }'
-    When method PUT
-    Then status 200
-
-    # Read the updated application
-    * def result = callonce read('./oauth2.feature')
-    * header Authorization = 'Bearer ' + result.accessToken
-    * header Accept = jsonVersionHeader
-    Given path 'applications/11114c39-02d5-4197-b032-1d9ce22c24b5'
-    When method GET
-    Then status 200
-    And match $.data.applicationId contains '11114c39-02d5-4197-b032-1d9ce22c24b5'
-    And match $.data.applicationStatus == 'INPROGRESS'
-
   Scenario: Verify update 400 invalid uuid
     Given path 'applications/' + 'ABC'
     And request '{"applicationStatus" : "INPROGRESS" }'
@@ -44,3 +28,19 @@ Feature: Verify update
     And request '{"applicationStatus" : "INPROGRESS" }'
     When method PUT
     Then status 403
+
+  Scenario: Verify update ok
+    Given path 'applications/11114c39-02d5-4197-b032-1d9ce22c24b5'
+    And request '{"applicationStatus" : "INPROGRESS" }'
+    When method PUT
+    Then status 200
+
+    # Read the updated application
+    * def result = callonce read('./oauth2.feature')
+    * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
+    Given path 'applications/11114c39-02d5-4197-b032-1d9ce22c24b5'
+    When method GET
+    Then status 200
+    And match $.data.applicationId contains '11114c39-02d5-4197-b032-1d9ce22c24b5'
+    And match $.data.applicationStatus == 'INPROGRESS'
