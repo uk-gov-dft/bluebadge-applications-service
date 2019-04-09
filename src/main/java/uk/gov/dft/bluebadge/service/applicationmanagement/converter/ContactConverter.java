@@ -2,6 +2,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import uk.gov.dft.bluebadge.common.converter.ToEntityFormatter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Contact;
@@ -35,7 +36,7 @@ public class ContactConverter implements ApplicationBiConverter {
     entity.setContactTownCity(contact.getTownCity());
     entity.setContactEmailAddress(contact.getEmailAddress());
     entity.setContactPostcode(ToEntityFormatter.postcode(contact.getPostCode()));
-    entity.setPrimaryPhoneNo(contact.getPrimaryPhoneNumber());
-    entity.setSecondaryPhoneNo(contact.getSecondaryPhoneNumber());
+    entity.setPrimaryPhoneNo(StringUtils.trimAllWhitespace(contact.getPrimaryPhoneNumber()));
+    entity.setSecondaryPhoneNo(StringUtils.trimAllWhitespace(contact.getSecondaryPhoneNumber()));
   }
 }

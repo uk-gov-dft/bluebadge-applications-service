@@ -19,6 +19,8 @@ Feature: Verify retrieve
     And match $.data.applicationId contains createdAppNo
     And match $.data.party.organisation.vehicles contains {registrationNumber:"VK61VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
     And match $.data.party.organisation.vehicles contains {registrationNumber:"VK62VZZ", typeCode:"#notnull", usageFrequency:"#notnull"}
+    And match $.data.party.contact contains {secondaryPhoneNumber:"07970777111"}
+    And match $.data.party.contact contains {primaryPhoneNumber:"175154771"}
     And match $.data.paymentReference == 'paymentref'
     And match $.data.applicationStatus == 'TODO'
 
