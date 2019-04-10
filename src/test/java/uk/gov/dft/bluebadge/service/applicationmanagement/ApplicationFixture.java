@@ -84,7 +84,7 @@ public class ApplicationFixture extends AbstractValidator {
     List<WalkingDifficultyTypeCodeField> WALKING_DIFFICULTY_TYPE_CODES =
         Lists.newArrayList(WALKING_DIFFICULTY_TYPE_CODE_FIELD);
     WalkingLengthOfTimeCodeField WALKING_LENGTH_OF_TIME_CODE_FIELD =
-        WalkingLengthOfTimeCodeField.FEWMIN;
+        WalkingLengthOfTimeCodeField.ONEFIVE;
     WalkingSpeedCodeField WALKING_SPEED_CODE_FIELD = WalkingSpeedCodeField.FAST;
     BreathlessnessTypeCodeField BREATHLESSNESS_TYPE_CODE_FIELD_UPHILL =
         BreathlessnessTypeCodeField.UPHILL;
