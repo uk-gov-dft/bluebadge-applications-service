@@ -98,6 +98,7 @@ public class ApplicationFixture extends AbstractValidator {
     String ARMS_DRIVE_FREQ = "drive freq";
     Boolean ARMS_IS_ADAPTED = Boolean.TRUE;
     String PHONE_NO = "123456";
+    String PHONE_NO_WITH_SPACES = "  1 2 3 4 5 6  ";
     String CONTACT_BUILDING = "29 A Street";
     String CONTACT_EMAIL = "a@b.c";
     String CONTACT_NAME = "Mr Contact";
@@ -345,7 +346,7 @@ public class ApplicationFixture extends AbstractValidator {
       contact.setFullName(ValidValues.CONTACT_NAME);
       contact.setLine2(ValidValues.LINE2);
       contact.setPostCode(ValidValues.POSTCODE);
-      contact.setPrimaryPhoneNumber(ValidValues.PHONE_NO);
+      contact.setPrimaryPhoneNumber(ValidValues.PHONE_NO_WITH_SPACES);
       contact.setTownCity(ValidValues.TOWN);
       party.setContact(contact);
       application.setParty(party);
