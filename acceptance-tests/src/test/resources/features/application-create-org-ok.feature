@@ -29,8 +29,8 @@ Feature: Verify Create org ok
       line2: 'Northern Quarter',
       townCity: 'Manchester',
       postCode: 'SW1P 4DR',
-      primaryPhoneNumber: 175154771,
-      secondaryPhoneNumber: '07970777111',
+      primaryPhoneNumber: 1751 54771,
+      secondaryPhoneNumber: ' 0 7 9 707 7 7111 ',
       emailAddress: 'nobody@blancmange.com'
     },
     organisation: {

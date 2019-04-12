@@ -1,7 +1,5 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import static org.junit.Assert.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
