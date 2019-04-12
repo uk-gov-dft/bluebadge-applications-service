@@ -377,11 +377,13 @@
         },
         "paymentTaken" : {
           "type" : "boolean",
-          "example" : true
+          "example" : true,
+          "description" : "Indicates whether or not payment was taken as part of the application. In edge cases this could be set false, but the payment status could not be determined, in which case paymentReference will be set to Unknown"
         },
         "paymentReference" : {
           "type" : "string",
-          "description" : "payment reference"
+          "example" : "PVAUETDW43CM",
+          "description" : "The reference of the payment taken as part of the application. Will be set to Unknown if the status of the payment could not be determined."
         },
         "submissionDate" : {
           "type" : "string",
