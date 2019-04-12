@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.dft.bluebadge.common.api.common.CommonResponseHandler;
 import uk.gov.dft.bluebadge.common.api.model.PagedResult;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationResponse;
@@ -29,6 +30,7 @@ import uk.gov.dft.bluebadge.service.applicationmanagement.service.ApplicationSer
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.ApplicationValidator;
 
 @RestController
+@CommonResponseHandler
 @Slf4j
 public class ApplicationApiController implements ApplicationsApi {
 
