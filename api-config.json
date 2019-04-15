@@ -762,7 +762,7 @@
       },
       "WalkingLengthOfTimeCodeField" : {
         "type" : "string",
-        "enum" : [ "CANTWALK", "LESSMIN", "FEWMIN", "MORETEN" ],
+        "enum" : [ "CANTWALK", "LESSMIN", "FEWMIN", "MORETEN", "ONEFIVE", "FIVETEN"],
         "example" : "CANTWALK"
       },
       "WalkingSpeedCodeField" : {
