@@ -2,14 +2,16 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.OffsetDateTime;
-import java.util.Objects;
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.validation.annotation.Validated;
 import uk.gov.dft.bluebadge.common.util.ValidationPattern;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** ApplicationSummary */
 @Validated
@@ -28,6 +30,9 @@ public class ApplicationSummary {
 
   @JsonProperty("name")
   private String name = null;
+
+  @JsonProperty("dob")
+  private LocalDate dob = null;
 
   @JsonProperty("submissionDate")
   private OffsetDateTime submissionDate = null;
@@ -49,9 +54,8 @@ public class ApplicationSummary {
    * @return applicationId
    */
   @ApiModelProperty(
-    example = "12345678-1234-1234-1234-123412341234",
-    value = "The unique badge number for this application - a UUID"
-  )
+      example = "12345678-1234-1234-1234-123412341234",
+      value = "The unique badge number for this application - a UUID")
   public String getApplicationId() {
     return applicationId;
   }
@@ -131,9 +135,8 @@ public class ApplicationSummary {
    * @return name
    */
   @ApiModelProperty(
-    example = "John Smith",
-    value = "The name of the badge holder Organisation or Person"
-  )
+      example = "John Smith",
+      value = "The name of the badge holder Organisation or Person")
   @Size(max = 100)
   public String getName() {
     return name;
@@ -141,6 +144,26 @@ public class ApplicationSummary {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public ApplicationSummary dob(LocalDate dob) {
+    this.dob = dob;
+    return this;
+  }
+
+  /**
+   * Date of birth YYYY-MM-DD
+   *
+   * @return dob
+   */
+  @ApiModelProperty(example = "1970-05-29", required = true, value = "Date of birth YYYY-MM-DD")
+  @Valid
+  public LocalDate getDob() {
+    return dob;
+  }
+
+  public void setDob(LocalDate dob) {
+    this.dob = dob;
   }
 
   public ApplicationSummary submissionDate(OffsetDateTime submissionDate) {
@@ -206,6 +229,7 @@ public class ApplicationSummary {
         && Objects.equals(this.applicationTypeCode, applicationSummary.applicationTypeCode)
         && Objects.equals(this.nino, applicationSummary.nino)
         && Objects.equals(this.name, applicationSummary.name)
+        && Objects.equals(this.dob, applicationSummary.dob)
         && Objects.equals(this.submissionDate, applicationSummary.submissionDate)
         && Objects.equals(this.eligibilityCode, applicationSummary.eligibilityCode)
         && Objects.equals(this.applicationStatus, applicationSummary.applicationStatus);
@@ -219,6 +243,7 @@ public class ApplicationSummary {
         applicationTypeCode,
         nino,
         name,
+        dob,
         submissionDate,
         eligibilityCode,
         applicationStatus);
@@ -232,6 +257,7 @@ public class ApplicationSummary {
         .append("applicationTypeCode", applicationTypeCode)
         .append("nino", nino)
         .append("name", name)
+        .append("dob", dob)
         .append("submissionDate", submissionDate)
         .append("eligibilityCode", eligibilityCode)
         .append("applicationStatus", applicationStatus)

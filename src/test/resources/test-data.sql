@@ -428,3 +428,24 @@ INSERT INTO applicationmanagement_unittest.application(
  , '2010-12-31 03:15:00'::TIMESTAMP
  );
 
+INSERT INTO applicationmanagement_unittest.application(
+ id, local_authority_code, app_type_code, is_payment_taken, payment_reference, submission_datetime, party_code
+ , contact_name, contact_building_street, contact_town_city, contact_postcode
+ , holder_name, existing_badge_no, contact_line2, primary_phone_no, secondary_phone_no
+ , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
+ , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
+ , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, breathlessness_other_desc, walk_length_code
+ , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
+ , blind_registered_at_la_code, bulky_equipment_other_desc, application_status, transferred_la_from_code
+ , transferred_from_la_datetime
+ ) VALUES (
+ '2166bd0b-7086-4a79-8c10-5dde52bcee73'::uuid, 'ABERD', 'NEW', true, 'mypayref2', '2011-01-01 03:00:00'::TIMESTAMP , 'PERSON'
+ , 'FindOneTest', 'Contact Building Street', 'Contact Town City', 'ZZ111ZZ'
+ , 'FindOneTest', 'AAAAAX', 'Contact Line2', 'PPN', 'SPN'
+ , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino2'
+ , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
+ , true, '2020-01-31'::DATE, 'Walk Other Desc', 'Breathlessness Other Desc', 'LESSMIN'
+ , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
+ , 'BIRM', 'Bulky1', 'INPROGRESS', 'ABERD'
+ , '2010-12-31 03:15:00'::TIMESTAMP
+ );
