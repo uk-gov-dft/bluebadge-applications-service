@@ -2,16 +2,15 @@ package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.springframework.validation.annotation.Validated;
-import uk.gov.dft.bluebadge.common.util.ValidationPattern;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.validation.annotation.Validated;
+import uk.gov.dft.bluebadge.common.util.ValidationPattern;
 
 /** ApplicationSummary */
 @Validated
@@ -54,8 +53,9 @@ public class ApplicationSummary {
    * @return applicationId
    */
   @ApiModelProperty(
-      example = "12345678-1234-1234-1234-123412341234",
-      value = "The unique badge number for this application - a UUID")
+    example = "12345678-1234-1234-1234-123412341234",
+    value = "The unique badge number for this application - a UUID"
+  )
   public String getApplicationId() {
     return applicationId;
   }
@@ -135,8 +135,9 @@ public class ApplicationSummary {
    * @return name
    */
   @ApiModelProperty(
-      example = "John Smith",
-      value = "The name of the badge holder Organisation or Person")
+    example = "John Smith",
+    value = "The name of the badge holder Organisation or Person"
+  )
   @Size(max = 100)
   public String getName() {
     return name;
