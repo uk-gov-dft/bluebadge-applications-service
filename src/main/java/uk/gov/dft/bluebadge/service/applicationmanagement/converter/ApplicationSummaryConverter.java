@@ -1,9 +1,14 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import java.time.ZoneOffset;
 import uk.gov.dft.bluebadge.common.converter.ToModelConverter;
-import uk.gov.dft.bluebadge.model.applicationmanagement.generated.*;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTypeCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+
+import java.time.ZoneOffset;
 
 public class ApplicationSummaryConverter
     implements ToModelConverter<ApplicationSummaryEntity, ApplicationSummary> {
