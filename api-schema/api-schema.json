@@ -2,7 +2,7 @@
   "openapi" : "3.0.0",
   "info" : {
     "description" : "Manage badge applications.\n",
-    "version" : "1.0.7",
+    "version" : "1.0.8",
     "title" : "Applications Service"
   },
   "tags" : [ {
@@ -386,6 +386,12 @@
             "description" : "The badgeholders national insurance number",
             "example" : "NS123458S",
             "pattern" : "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$"
+          },
+          "dob" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "1972-09-13",
+            "description" : "Date of birth YYYY-MM-DD"
           },
           "name" : {
             "type" : "string",

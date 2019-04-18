@@ -1,6 +1,5 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import java.time.ZoneOffset;
 import uk.gov.dft.bluebadge.common.converter.ToModelConverter;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationStatusField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
@@ -8,6 +7,8 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTyp
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+
+import java.time.ZoneOffset;
 
 public class ApplicationSummaryConverter
     implements ToModelConverter<ApplicationSummaryEntity, ApplicationSummary> {
@@ -20,6 +21,7 @@ public class ApplicationSummaryConverter
     model.setEligibilityCode(EligibilityCodeField.fromValue(entity.getEligibilityCode()));
     model.setName(entity.getHolderName());
     model.setNino(entity.getNino());
+    model.setDob(entity.getDob());
     if (null != entity.getSubmissionDate()) {
       model.setSubmissionDate(entity.getSubmissionDate().atOffset(ZoneOffset.UTC));
     }

@@ -1,11 +1,5 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
-import static org.junit.Assert.*;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
@@ -13,6 +7,12 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTyp
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class ApplicationSummaryConverterTest {
 
@@ -29,6 +29,7 @@ public class ApplicationSummaryConverterTest {
             .eligibilityCode("PIP")
             .holderName("Holder")
             .nino("NINO")
+            .dob(LocalDate.of(1990, 3, 20))
             .partyTypeCode("PERSON")
             .postcode("Postcode")
             .submissionDate(submissionDate)
@@ -41,6 +42,7 @@ public class ApplicationSummaryConverterTest {
     Assert.assertEquals(1, modelList.size());
     Assert.assertEquals("Holder", model.getName());
     Assert.assertEquals("NINO", model.getNino());
+    Assert.assertEquals(LocalDate.of(1990, 3, 20), model.getDob());
     Assert.assertEquals(PartyTypeCodeField.PERSON, model.getPartyTypeCode());
     Assert.assertEquals(ApplicationTypeCodeField.NEW, model.getApplicationTypeCode());
     Assert.assertEquals(EligibilityCodeField.PIP, model.getEligibilityCode());

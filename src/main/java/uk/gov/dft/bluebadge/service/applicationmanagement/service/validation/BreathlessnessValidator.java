@@ -1,17 +1,21 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
-import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.*;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.BreathlessnessTypeCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_BREATHLESSNESS_OTHER_DESC;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING_BREATHLESSNESS;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING_BREATHLESSNESS_TYPES;
 
 @Component
 class BreathlessnessValidator extends AbstractValidator {

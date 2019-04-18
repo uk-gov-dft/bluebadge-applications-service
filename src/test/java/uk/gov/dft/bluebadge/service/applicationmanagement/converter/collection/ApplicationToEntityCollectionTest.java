@@ -1,11 +1,12 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter.collection;
 
-import static org.junit.Assert.*;
-
 import com.google.common.collect.Lists;
+import org.junit.Test;
+
 import java.util.List;
 import java.util.UUID;
-import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ApplicationToEntityCollectionTest {
 
