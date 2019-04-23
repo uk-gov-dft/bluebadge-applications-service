@@ -156,6 +156,7 @@
         <result property="applicationTypeCode" column="app_type_code" />
         <result property="nino" column="nino" />
         <result property="holderName" column="holder_name" />
+        <result property="dob" column="dob" />
         <result property="submissionDate" column="submission_datetime" />
         <result property="eligibilityCode" column="eligibility_code" />
         <result property="postcode" column="contact_postcode" />
@@ -166,7 +167,7 @@
     <select id="findApplications" resultMap="applicationSummaryMap" parameterType="FindApplicationQueryParams">
         SELECT
           a.id, a.party_code, a.app_type_code
-          , a.nino, a.holder_name, a.submission_datetime
+          , a.nino, a.holder_name, a.dob, a.submission_datetime
           , a.eligibility_code, a.contact_postcode
           , a.application_status
         FROM application a

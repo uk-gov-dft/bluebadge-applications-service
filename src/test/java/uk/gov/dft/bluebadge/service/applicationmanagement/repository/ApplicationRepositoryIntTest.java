@@ -208,6 +208,26 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
   }
 
   @Test
+  public void find_one() {
+    FindApplicationQueryParams params =
+        FindApplicationQueryParams.builder().authorityCode("ABERD").name("FindOneTest").build();
+    List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
+
+    assertEquals(1, results.size());
+    ApplicationSummaryEntity entity = results.get(0);
+    assertEquals(
+        UUID.fromString("2166bd0b-7086-4a79-8c10-5dde52bcee73"), entity.getApplicationId());
+    assertEquals("INPROGRESS", entity.getApplicationStatus());
+    assertEquals("DLA", entity.getEligibilityCode());
+    assertEquals("FindOneTest", entity.getHolderName());
+    assertEquals("Nino2", entity.getNino());
+    assertEquals("PERSON", entity.getPartyTypeCode());
+    assertEquals("ZZ111ZZ", entity.getPostcode());
+    assertEquals(Instant.parse("2011-01-01T03:00:00.00Z"), entity.getSubmissionDate());
+    assertEquals(LocalDate.of(1970, 5, 29), entity.getDob());
+  }
+
+  @Test
   public void find_dateRange() {
     // Given data contains a single record with date 10 years ago
     Instant from = ZonedDateTime.now().minus(ofYears(10)).toInstant();

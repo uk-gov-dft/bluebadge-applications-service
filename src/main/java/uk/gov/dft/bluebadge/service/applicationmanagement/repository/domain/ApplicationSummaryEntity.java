@@ -1,6 +1,7 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class ApplicationSummaryEntity {
   String applicationTypeCode;
   String nino;
   String holderName;
+  LocalDate dob;
   Instant submissionDate;
   String eligibilityCode;
   String postcode;
