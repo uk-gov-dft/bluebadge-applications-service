@@ -9,6 +9,7 @@ Feature: Verify retrieve childU3
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Verify retrieve ok
     Given path 'applications/89ca4c39-02d5-4197-b032-1d9ce22c24b5'

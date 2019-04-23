@@ -9,6 +9,7 @@ Feature: Verify citizen app client does not have access services other than crea
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * def result = callonce read('./oauth2-citizen-app.feature')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Find application denied
     Given path 'applications'

@@ -9,6 +9,7 @@ Feature: Verify retrieve
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
     * def createResult = callonce read('./application-create-org-ok.feature')
     * def createdAppNo = createResult.applicationId
 

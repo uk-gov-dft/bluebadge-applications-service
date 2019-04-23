@@ -9,6 +9,7 @@ Feature: Verify Create Org Invalid
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Verify invalid create organisation
     * def application =

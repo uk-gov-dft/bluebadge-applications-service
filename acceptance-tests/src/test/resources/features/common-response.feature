@@ -9,6 +9,7 @@ Feature: Verify responses wrap a CommonResponse
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Verify 400 common response when @Valid fails
     * def application =
