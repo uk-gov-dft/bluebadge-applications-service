@@ -1,13 +1,13 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter.eligibility;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Benefit;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationEntity;
-
-import static org.junit.Assert.assertEquals;
 
 public class BenefitConverterTest extends ApplicationFixture {
 
