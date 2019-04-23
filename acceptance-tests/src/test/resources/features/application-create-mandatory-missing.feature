@@ -9,6 +9,7 @@ Feature: Verify Create application validation exceptions for mandatory fields
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Verify invalid create person with blank request body
     * def application =

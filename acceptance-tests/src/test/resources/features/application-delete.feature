@@ -9,6 +9,7 @@ Feature: Verify delete
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
     * def cantDeleteAppNo = '0bd06c01-a193-4255-be0b-0fbee253ee5e'
     * def canDeleteAppNo = '7d93fdb5-56bf-41b3-8af0-147696711410'
     * def System = Java.type('java.lang.System')

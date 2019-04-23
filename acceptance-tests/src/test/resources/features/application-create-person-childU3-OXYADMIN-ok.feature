@@ -9,6 +9,7 @@ Feature: Verify Create person childU3 OXYADMIN ok
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Verify valid create for person with child under 3 with OXYADMIN equipment
     * def application =

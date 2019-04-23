@@ -218,11 +218,7 @@ public interface ApplicationsApi {
       @ApiResponse(code = 400, message = "Invalid request", response = CommonResponse.class),
     }
   )
-  @RequestMapping(
-    value = "/applications/{applicationId}",
-    produces = {"application/json"},
-    method = RequestMethod.PUT
-  )
+  @RequestMapping(value = "/applications/{applicationId}", method = RequestMethod.PUT)
   default ResponseEntity<Void> updateApplication(
       @ApiParam(value = "", required = true) @PathVariable("applicationId") String applicationId,
       @Valid @RequestBody ApplicationUpdate applicationUpdate) {

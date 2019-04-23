@@ -9,6 +9,7 @@ Feature: Verify Create person walkd invalid
     * def db = new DbUtils(dbConfig)
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Verify invalid create application for person with walking difficulty when walking difficulty is not breath but breathlessness type is provided
     * def application =

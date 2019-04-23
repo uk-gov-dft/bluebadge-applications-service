@@ -9,6 +9,7 @@ Feature: Verify API users do not have access to create applications
     * def setup = callonce db.runScript('acceptance-test-data.sql')
     * def result = callonce read('./oauth2.feature')
     * header Authorization = 'Bearer ' + result.accessToken
+    * header Accept = jsonVersionHeader
 
   Scenario: Create application denied
     Given path 'applications'
