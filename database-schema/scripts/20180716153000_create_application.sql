@@ -75,7 +75,7 @@ COMMENT ON COLUMN application.eligibility_conditions IS 'Description of eligibil
 COMMENT ON COLUMN application.benefit_is_indefinite IS 'true if applicant is receiving a benefit indefinitely.';
 COMMENT ON COLUMN application.benefit_expiry_date IS 'Expiry date of benefit if not indefinite.';
 COMMENT ON COLUMN application.walk_other_desc IS 'Description of walking difficulty not covered by walking type codes.';
-COMMENT ON COLUMN application.walk_length_code IS 'From ref data group WALKLEN, e.g. LESSMIN, FEWMIN.';
+COMMENT ON COLUMN application.walk_length_code IS 'From ref data group WALKLEN, e.g. LESSMIN, FIVETEN.';
 COMMENT ON COLUMN application.walk_speed_code IS 'From ref data group WALKSPEED, e.g. FAST, SAME.';
 COMMENT ON COLUMN application.arms_driving_freq IS 'Freetext description of driving frequency.';
 COMMENT ON COLUMN application.arms_is_adapted_vehicle IS 'true if applicants vehicle is adapted for disibility of arms.';

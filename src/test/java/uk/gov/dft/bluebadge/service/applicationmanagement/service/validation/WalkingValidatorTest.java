@@ -38,7 +38,7 @@ public class WalkingValidatorTest extends ApplicationFixture {
     // And valid
     app.getEligibility()
         .getWalkingDifficulty()
-        .setWalkingLengthOfTimeCode(WalkingLengthOfTimeCodeField.FEWMIN);
+        .setWalkingLengthOfTimeCode(WalkingLengthOfTimeCodeField.ONEFIVE);
     reset();
     walkingValidator.validateWalkingSpeed(app, errors);
     assertEquals(0, errors.getErrorCount());
