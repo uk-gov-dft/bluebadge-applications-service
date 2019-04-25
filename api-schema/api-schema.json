@@ -1,8 +1,8 @@
 {
-  "openapi" : "3.0.0",
+  "swagger" : "2.0",
   "info" : {
     "description" : "Manage badge applications.\n",
-    "version" : "1.0.8_BBB-1382",
+    "version" : "1.1.0",
     "title" : "Applications Service"
   },
   "tags" : [ {
@@ -12,7 +12,7 @@
   "paths" : {
     "/applications/{applicationId}" : {
       "parameters" : [ {
-        "$ref" : "#/components/parameters/ApplicationIdPathParam"
+        "$ref" : "#/parameters/ApplicationIdPathParam"
       } ],
       "delete" : {
         "description" : "Delete an application.",
@@ -25,12 +25,8 @@
           },
           "404" : {
             "description" : "Application did not exist.",
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CommonResponse"
-                }
-              }
+            "schema" : {
+              "$ref" : "#/definitions/CommonResponse"
             }
           }
         }
@@ -40,15 +36,12 @@
         "tags" : [ "applications" ],
         "summary" : "Retrieve an application.",
         "operationId" : "retrieveApplication",
+        "produces" : [ "application/json" ],
         "responses" : {
           "200" : {
             "description" : "ok.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ApplicationResponse"
-                }
-              }
+            "schema" : {
+              "$ref" : "#/definitions/ApplicationResponse"
             }
           },
           "404" : {
@@ -61,43 +54,39 @@
         "tags" : [ "applications" ],
         "summary" : "Update the application specified.",
         "operationId" : "updateApplication",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "application",
+          "schema" : {
+            "$ref" : "#/definitions/ApplicationUpdate"
+          }
+        } ],
         "responses" : {
           "200" : {
             "description" : "Application was updated."
-          }
-        },
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ApplicationUpdate"
-              }
-            }
           }
         }
       }
     },
     "/applications/{applicationId}/transfers" : {
       "parameters" : [ {
-        "$ref" : "#/components/parameters/ApplicationIdPathParam"
+        "$ref" : "#/parameters/ApplicationIdPathParam"
       } ],
       "post" : {
         "tags" : [ "applications" ],
         "summary" : "Request application transfer",
         "operationId" : "transferApplication",
         "description" : "Transfer an application to new local authority with immediate effect.",
+        "parameters" : [ {
+          "name" : "applicationTransfer",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/ApplicationTransferRequest"
+          }
+        } ],
         "responses" : {
           "200" : {
             "description" : "Application transfer requested."
-          }
-        },
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ApplicationTransferRequest"
-              }
-            }
           }
         }
       }
@@ -107,34 +96,25 @@
         "tags" : [ "applications" ],
         "summary" : "Create an application.",
         "operationId" : "createApplication",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "application",
+          "schema" : {
+            "$ref" : "#/definitions/Application"
+          }
+        } ],
         "responses" : {
           "200" : {
             "description" : "OK.  Response body contains new application id",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CreateApplicationResponse"
-                }
-              }
+            "schema" : {
+              "$ref" : "#/definitions/CreateApplicationResponse"
             }
           },
           "400" : {
             "description" : "Invalid request",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CommonResponse"
-                }
-              }
-            }
-          }
-        },
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Application"
-              }
+            "schema" : {
+              "$ref" : "#/definitions/CommonResponse"
             }
           }
         }
@@ -144,808 +124,782 @@
         "parameters" : [ {
           "in" : "query",
           "name" : "name",
-          "description" : "'Search by organisation or person name, results contain search param'\n",
-          "schema" : {
-            "type" : "string"
-          }
+          "type" : "string",
+          "description" : "'Search by organisation or person name, results contain search param'\n"
         }, {
           "in" : "query",
           "name" : "postcode",
-          "description" : "'Returns results starting with the parameter.'\n",
-          "schema" : {
-            "type" : "string"
-          }
+          "type" : "string",
+          "description" : "'Returns results starting with the parameter.'\n"
         }, {
           "in" : "query",
           "name" : "from",
-          "description" : "From submission date inclusive. 2018-12-25T12:30:45Z",
-          "schema" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "From submission date inclusive. 2018-12-25T12:30:45Z"
         }, {
           "in" : "query",
           "name" : "to",
-          "description" : "To submission date inclusive. 2018-12-25T12:30:45Z",
-          "schema" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "To submission date inclusive. 2018-12-25T12:30:45Z"
         }, {
           "in" : "query",
           "name" : "applicationTypeCode",
-          "schema" : {
-            "type" : "string",
-            "enum" : [ "NEW", "RENEW", "CANCEL", "REVOKE" ]
-          }
+          "type" : "string",
+          "enum" : [ "NEW", "RENEW", "CANCEL", "REVOKE" ]
         }, {
           "in" : "query",
           "name" : "pageNum",
-          "description" : "The page to return. Must be a positive number. Default is 1.",
-          "schema" : {
-            "type" : "integer"
-          }
+          "type" : "integer",
+          "description" : "The page to return. Must be a positive number. Default is 1."
         }, {
           "in" : "query",
           "name" : "pageSize",
-          "description" : "The number of results. Min 1 max 200. Default 50",
-          "schema" : {
-            "type" : "integer"
-          }
+          "type" : "integer",
+          "description" : "The number of results. Min 1 max 200. Default 50"
         } ],
         "tags" : [ "applications" ],
         "summary" : "Find applications.",
         "operationId" : "findApplications",
+        "produces" : [ "application/json" ],
         "responses" : {
           "200" : {
             "description" : "Response with Zero, One or Many application summaries.\n",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ApplicationSummaryResponse"
-                }
-              }
+            "schema" : {
+              "$ref" : "#/definitions/ApplicationSummaryResponse"
             }
           }
         }
       }
     }
   },
-  "servers" : [ {
-    "url" : "https://virtserver.swaggerhub.com/uk-gov-dft/applications-service/1.0.0"
-  } ],
-  "components" : {
-    "parameters" : {
-      "ApplicationIdPathParam" : {
-        "in" : "path",
-        "name" : "applicationId",
-        "required" : true,
-        "schema" : {
+  "parameters" : {
+    "ApplicationIdPathParam" : {
+      "in" : "path",
+      "name" : "applicationId",
+      "type" : "string",
+      "required" : true
+    }
+  },
+  "definitions" : {
+    "CommonResponse" : {
+      "type" : "object",
+      "properties" : {
+        "apiVersion" : {
           "type" : "string"
+        },
+        "context" : {
+          "type" : "string"
+        },
+        "id" : {
+          "type" : "string"
+        },
+        "method" : {
+          "type" : "string"
+        },
+        "error" : {
+          "$ref" : "#/definitions/Error"
+        },
+        "pagingInfo" : {
+          "$ref" : "#/definitions/PagingInfo"
         }
       }
     },
-    "schemas" : {
-      "CommonResponse" : {
-        "type" : "object",
-        "properties" : {
-          "apiVersion" : {
-            "type" : "string"
-          },
-          "context" : {
-            "type" : "string"
-          },
-          "id" : {
-            "type" : "string"
-          },
-          "method" : {
-            "type" : "string"
-          },
-          "error" : {
-            "$ref" : "#/components/schemas/Error"
-          },
-          "pagingInfo" : {
-            "$ref" : "#/components/schemas/PagingInfo"
-          }
-        }
-      },
-      "Error" : {
-        "type" : "object",
-        "properties" : {
-          "code" : {
-            "type" : "integer"
-          },
-          "message" : {
-            "type" : "string"
-          },
-          "errors" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object",
-              "properties" : {
-                "field" : {
-                  "type" : "string"
-                },
-                "reason" : {
-                  "type" : "string"
-                },
-                "message" : {
-                  "type" : "string"
-                },
-                "location" : {
-                  "type" : "string"
-                },
-                "locationType" : {
-                  "type" : "string"
-                }
+    "Error" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "errors" : {
+          "type" : "array",
+          "items" : {
+            "type" : "object",
+            "properties" : {
+              "field" : {
+                "type" : "string"
+              },
+              "reason" : {
+                "type" : "string"
+              },
+              "message" : {
+                "type" : "string"
+              },
+              "location" : {
+                "type" : "string"
+              },
+              "locationType" : {
+                "type" : "string"
               }
             }
           }
         }
-      },
-      "PagingInfo" : {
-        "type" : "object",
-        "properties" : {
-          "total" : {
-            "type" : "integer",
-            "description" : "The total number of results for the search."
-          },
-          "count" : {
-            "type" : "integer",
-            "description" : "The number of results included within the response"
-          },
-          "pageSize" : {
-            "type" : "integer",
-            "description" : "The number of results per page. Equivalent to the page limit"
-          },
-          "pageNum" : {
-            "type" : "integer",
-            "description" : "The index of the first result included within the response, within the total results"
-          },
-          "pages" : {
-            "type" : "integer",
-            "description" : "Total number of pages for the given page limit"
-          }
-        }
-      },
-      "CreateApplicationResponse" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/CommonResponse"
-        }, {
-          "type" : "object",
-          "properties" : {
-            "data" : {
-              "type" : "string",
-              "example" : "12341234-1234-1234-1234-123412341234"
-            }
-          }
-        } ]
-      },
-      "ApplicationSummaryResponse" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/CommonResponse"
-        }, {
-          "type" : "object",
-          "properties" : {
-            "data" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/components/schemas/ApplicationSummary"
-              }
-            }
-          }
-        } ]
-      },
-      "ApplicationResponse" : {
-        "type" : "object",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/CommonResponse"
-        }, {
-          "type" : "object",
-          "properties" : {
-            "data" : {
-              "$ref" : "#/components/schemas/Application"
-            }
-          }
-        } ]
-      },
-      "ApplicationTransferRequest" : {
-        "type" : "object",
-        "properties" : {
-          "applicationId" : {
-            "type" : "string",
-            "description" : "The unique number for this application - a UUID",
-            "example" : "12345678-1234-1234-1234-123456781234"
-          },
-          "transferToLaShortCode" : {
-            "type" : "string",
-            "description" : "The code for the new local authority.",
-            "example" : "BIRM"
-          }
-        },
-        "required" : [ "applicationId", "transferToLaShortCode" ]
-      },
-      "ApplicationSummary" : {
-        "type" : "object",
-        "properties" : {
-          "applicationId" : {
-            "type" : "string",
-            "description" : "The unique badge number for this application - a UUID",
-            "example" : "12345678-1234-1234-1234-123412341234"
-          },
-          "partyTypeCode" : {
-            "$ref" : "#/components/schemas/PartyTypeCodeField"
-          },
-          "applicationTypeCode" : {
-            "$ref" : "#/components/schemas/ApplicationTypeCodeField"
-          },
-          "nino" : {
-            "type" : "string",
-            "description" : "The badgeholders national insurance number",
-            "example" : "NS123458S",
-            "pattern" : "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$"
-          },
-          "dob" : {
-            "type" : "string",
-            "format" : "date",
-            "example" : "1972-09-13",
-            "description" : "Date of birth YYYY-MM-DD"
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "The name of the badge holder Organisation or Person",
-            "example" : "John Smith",
-            "maxLength" : 100
-          },
-          "submissionDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "Submitted date and time",
-            "example" : "2018-12-25T12:30:45Z"
-          },
-          "eligibilityCode" : {
-            "$ref" : "#/components/schemas/EligibilityCodeField"
-          },
-          "applicationStatus" : {
-            "$ref" : "#/components/schemas/ApplicationStatusField"
-          }
-        }
-      },
-      "Application" : {
-        "type" : "object",
-        "properties" : {
-          "applicationId" : {
-            "type" : "string",
-            "description" : "The unique number for this application - a UUID",
-            "example" : "12345678-1234-1234-1234-123456781234"
-          },
-          "applicationTypeCode" : {
-            "$ref" : "#/components/schemas/ApplicationTypeCodeField"
-          },
-          "localAuthorityCode" : {
-            "type" : "string",
-            "description" : "The code for the local authority.",
-            "example" : "BIRM"
-          },
-          "transferredLaFromCode" : {
-            "type" : "string",
-            "description" : "The code for the local authority transferred from.",
-            "example" : "BIRM"
-          },
-          "transferredFromLaDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "Transferred from LA date",
-            "example" : "2018-12-25T12:30:45Z"
-          },
-          "paymentTaken" : {
-            "type" : "boolean",
-            "example" : true,
-            "description" : "Indicates whether or not payment was taken as part of the application. In edge cases this could be set false, but the payment status could not be determined, in which case paymentReference will be set to Unknown"
-          },
-          "paymentReference" : {
-            "type" : "string",
-            "example" : "PVAUETDW43CM",
-            "description" : "The reference of the payment taken as part of the application. Will be set to Unknown if the status of the payment could not be determined."
-          },
-          "submissionDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "Submitted date and time. Populated automatically on create",
-            "example" : "2018-12-25T12:30:45Z"
-          },
-          "existingBadgeNumber" : {
-            "type" : "string"
-          },
-          "party" : {
-            "$ref" : "#/components/schemas/Party"
-          },
-          "eligibility" : {
-            "$ref" : "#/components/schemas/Eligibility"
-          },
-          "artifacts" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Artifact"
-            }
-          },
-          "applicationStatus" : {
-            "$ref" : "#/components/schemas/ApplicationStatusField"
-          }
-        },
-        "required" : [ "applicationTypeCode", "paymentTaken", "localAuthorityCode", "party" ]
-      },
-      "ApplicationUpdate" : {
-        "type" : "object",
-        "properties" : {
-          "applicationStatus" : {
-            "$ref" : "#/components/schemas/ApplicationStatusField"
-          }
-        }
-      },
-      "Party" : {
-        "type" : "object",
-        "properties" : {
-          "typeCode" : {
-            "$ref" : "#/components/schemas/PartyTypeCodeField"
-          },
-          "contact" : {
-            "$ref" : "#/components/schemas/Contact"
-          },
-          "person" : {
-            "$ref" : "#/components/schemas/Person"
-          },
-          "organisation" : {
-            "$ref" : "#/components/schemas/Organisation"
-          }
-        },
-        "required" : [ "typeCode", "contact" ]
-      },
-      "Person" : {
-        "type" : "object",
-        "properties" : {
-          "badgeHolderName" : {
-            "type" : "string",
-            "example" : "John Smith",
-            "maxLength" : 100
-          },
-          "nino" : {
-            "type" : "string",
-            "description" : "The badgeholders national insurance number",
-            "example" : "NS123456A",
-            "pattern" : "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]?\\s*)$"
-          },
-          "dob" : {
-            "type" : "string",
-            "format" : "date",
-            "description" : "Date of birth YYYY-MM-DD",
-            "example" : "1970-05-29"
-          },
-          "nameAtBirth" : {
-            "type" : "string",
-            "example" : "John Smith",
-            "maxLength" : 100
-          },
-          "genderCode" : {
-            "$ref" : "#/components/schemas/GenderCodeField"
-          }
-        },
-        "required" : [ "badgeHolderName", "dob", "genderCode" ]
-      },
-      "Organisation" : {
-        "type" : "object",
-        "properties" : {
-          "badgeHolderName" : {
-            "type" : "string",
-            "example" : "Trotters Independant Traders",
-            "maxLength" : 100
-          },
-          "isCharity" : {
-            "type" : "boolean",
-            "example" : false
-          },
-          "charityNumber" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "12345"
-          },
-          "vehicles" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Vehicle"
-            }
-          },
-          "numberOfBadges" : {
-            "type" : "integer",
-            "minimum" : 1,
-            "description" : "Must be 1 for a person, can be multiple for an organisation.",
-            "example" : 1
-          }
-        },
-        "required" : [ "badgeHolderName", "isCharity", "numberOfBadges" ]
-      },
-      "Vehicle" : {
-        "type" : "object",
-        "properties" : {
-          "registrationNumber" : {
-            "type" : "string",
-            "maxLength" : 7,
-            "example" : "VK61VZZ"
-          },
-          "typeCode" : {
-            "$ref" : "#/components/schemas/VehicleTypeCodeField"
-          },
-          "usageFrequency" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Daily"
-          }
-        }
-      },
-      "Contact" : {
-        "type" : "object",
-        "properties" : {
-          "fullName" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Mabel Jones",
-            "description" : "Mandatory if Organisation"
-          },
-          "buildingStreet" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "65 Basil Chambers"
-          },
-          "line2" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Northern Quarter"
-          },
-          "townCity" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Manchester"
-          },
-          "postCode" : {
-            "type" : "string",
-            "example" : "SK6 8GH",
-            "pattern" : "^$|^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[\\s]*[0-9][A-Za-z]{2})$"
-          },
-          "primaryPhoneNumber" : {
-            "type" : "string",
-            "example" : "01234123123",
-            "maxLength" : 20
-          },
-          "secondaryPhoneNumber" : {
-            "type" : "string",
-            "example" : 7.970777111E9,
-            "maxLength" : 20
-          },
-          "emailAddress" : {
-            "type" : "string",
-            "pattern" : "^\\S+\\@\\S+",
-            "maxLength" : 100,
-            "example" : "nobody@blancmange.com"
-          }
-        },
-        "required" : [ "buildingStreet", "townCity", "postCode", "primaryPhoneNumber" ]
-      },
-      "Eligibility" : {
-        "type" : "object",
-        "properties" : {
-          "typeCode" : {
-            "$ref" : "#/components/schemas/EligibilityCodeField"
-          },
-          "descriptionOfConditions" : {
-            "type" : "string",
-            "maxLength" : 10000,
-            "example" : "Freetext"
-          },
-          "benefit" : {
-            "$ref" : "#/components/schemas/Benefit"
-          },
-          "walkingDifficulty" : {
-            "$ref" : "#/components/schemas/WalkingDifficulty"
-          },
-          "disabilityArms" : {
-            "$ref" : "#/components/schemas/DisabilityArms"
-          },
-          "healthcareProfessionals" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/HealthcareProfessional"
-            }
-          },
-          "blind" : {
-            "$ref" : "#/components/schemas/Blind"
-          },
-          "childUnder3" : {
-            "$ref" : "#/components/schemas/ChildUnder3"
-          }
-        },
-        "required" : [ "typeCode" ]
-      },
-      "ChildUnder3" : {
-        "type" : "object",
-        "description" : "bulkyMedicalEquipmentTypeCode is DEPRECATED - use the array version.  Until removed One entry will be put in the non array field by citizen application if there are multiple codes entered. All entered values will be in the array version.",
-        "properties" : {
-          "bulkyMedicalEquipmentTypeCode" : {
-            "$ref" : "#/components/schemas/BulkyMedicalEquipmentTypeCodeField"
-          },
-          "bulkyMedicalEquipmentTypeCodes" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/BulkyMedicalEquipmentTypeCodeField"
-            }
-          },
-          "otherMedicalEquipment" : {
-            "type" : "string",
-            "description" : "A short description of the medical equipment.",
-            "maxLength" : 100,
-            "example" : "Oxygen cylinders"
-          }
-        },
-        "required" : [ "bulkyMedicalEquipmentTypeCodes" ]
-      },
-      "Blind" : {
-        "type" : "object",
-        "properties" : {
-          "registeredAtLaId" : {
-            "type" : "string",
-            "description" : "Local Authority registered blind at",
-            "example" : "BIRM"
-          }
-        }
-      },
-      "Benefit" : {
-        "type" : "object",
-        "properties" : {
-          "isIndefinite" : {
-            "type" : "boolean",
-            "example" : true
-          },
-          "expiryDate" : {
-            "type" : "string",
-            "format" : "date",
-            "example" : "2022-03-30"
-          }
-        },
-        "required" : [ "isIndefinite" ]
-      },
-      "HealthcareProfessional" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Freetext"
-          },
-          "location" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Freetext"
-          }
-        }
-      },
-      "DisabilityArms" : {
-        "type" : "object",
-        "properties" : {
-          "drivingFrequency" : {
-            "type" : "string",
-            "maxLength" : 100
-          },
-          "isAdaptedVehicle" : {
-            "type" : "boolean",
-            "example" : true
-          },
-          "adaptedVehicleDescription" : {
-            "type" : "string",
-            "maxLength" : 255
-          }
-        },
-        "required" : [ "isAdaptedVehicle" ]
-      },
-      "WalkingDifficulty" : {
-        "type" : "object",
-        "properties" : {
-          "typeCodes" : {
-            "type" : "array",
-            "description" : "'Short codes from the WALKDIFF group of data.  At least 1 required.'\n",
-            "items" : {
-              "$ref" : "#/components/schemas/WalkingDifficultyTypeCodeField"
-            }
-          },
-          "otherDescription" : {
-            "description" : "Only entered if something else type selected and even then not required.",
-            "type" : "string",
-            "maxLength" : 255
-          },
-          "walkingAids" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/WalkingAid"
-            }
-          },
-          "walkingLengthOfTimeCode" : {
-            "$ref" : "#/components/schemas/WalkingLengthOfTimeCodeField"
-          },
-          "walkingSpeedCode" : {
-            "$ref" : "#/components/schemas/WalkingSpeedCodeField"
-          },
-          "treatments" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Treatment"
-            }
-          },
-          "medications" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Medication"
-            }
-          },
-          "breathlessness" : {
-            "$ref" : "#/components/schemas/Breathlessness"
-          }
-        },
-        "required" : [ "walkingLengthOfTimeCode" ]
-      },
-      "Breathlessness" : {
-        "type" : "object",
-        "properties" : {
-          "typeCodes" : {
-            "type" : "array",
-            "description" : "'Short codes from the BREATHLESS group of data. At least 1 required.'\n",
-            "items" : {
-              "$ref" : "#/components/schemas/BreathlessnessTypeCodeField"
-            }
-          },
-          "otherDescription" : {
-            "description" : "Only entered if something else type selected and even then not required.",
-            "type" : "string",
-            "maxLength" : 255
-          }
-        },
-        "required" : [ "typeCode" ]
-      },
-      "Medication" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Paracetamol"
-          },
-          "isPrescribed" : {
-            "type" : "boolean",
-            "example" : true
-          },
-          "frequency" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "Twice daily."
-          },
-          "quantity" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "1 tablet, 20mg"
-          }
-        }
-      },
-      "Treatment" : {
-        "type" : "object",
-        "properties" : {
-          "description" : {
-            "type" : "string",
-            "maxLength" : 100
-          },
-          "time" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "example" : "6 months"
-          }
-        }
-      },
-      "WalkingAid" : {
-        "type" : "object",
-        "properties" : {
-          "description" : {
-            "type" : "string",
-            "maxLength" : 100
-          },
-          "usage" : {
-            "type" : "string",
-            "maxLength" : 100
-          },
-          "howProvidedCode" : {
-            "$ref" : "#/components/schemas/HowProvidedCodeField"
-          }
-        },
-        "required" : [ "howProvidedCode" ]
-      },
-      "Artifact" : {
-        "description" : "Provided files/evidence",
-        "type" : "object",
-        "properties" : {
-          "type" : {
-            "description" : "The artifact type",
-            "type" : "string",
-            "enum" : [ "PROOF_ELIG", "SUPPORT_DOCS", "PROOF_ADD", "PROOF_ID", "PHOTO" ],
-            "example" : "PROOF_ADD"
-          },
-          "link" : {
-            "description" : "The link to the artifact",
-            "type" : "string"
-          }
-        },
-        "required" : [ "type", "link" ]
-      },
-      "PartyTypeCodeField" : {
-        "type" : "string",
-        "enum" : [ "PERSON", "ORG" ],
-        "example" : "PERSON"
-      },
-      "ApplicationTypeCodeField" : {
-        "type" : "string",
-        "enum" : [ "NEW", "RENEW", "CANCEL", "REPLACE" ],
-        "example" : "NEW"
-      },
-      "EligibilityCodeField" : {
-        "type" : "string",
-        "enum" : [ "PIP", "DLA", "AFRFCS", "WPMS", "BLIND", "WALKD", "ARMS", "CHILDBULK", "CHILDVEHIC" ],
-        "example" : "PIP"
-      },
-      "GenderCodeField" : {
-        "type" : "string",
-        "enum" : [ "FEMALE", "MALE", "UNSPECIFIE" ],
-        "example" : "FEMALE"
-      },
-      "VehicleTypeCodeField" : {
-        "type" : "string",
-        "enum" : [ "CAR", "PEOPLECAR", "MINIBUS", "OTHERVEH" ],
-        "example" : "CAR"
-      },
-      "BulkyMedicalEquipmentTypeCodeField" : {
-        "type" : "string",
-        "enum" : [ "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT", "OTHER", "NONE" ],
-        "example" : "CAST",
-        "description" : "NONE is deprecated"
-      },
-      "WalkingDifficultyTypeCodeField" : {
-        "type" : "string",
-        "enum" : [ "PAIN", "BREATH", "BALANCE", "DANGER", "STRUGGLE", "SOMELSE", "LONGTIME" ],
-        "example" : "PAIN"
-      },
-      "WalkingLengthOfTimeCodeField" : {
-        "type" : "string",
-        "enum" : [ "CANTWALK", "LESSMIN", "FEWMIN", "MORETEN", "ONEFIVE", "FIVETEN" ],
-        "example" : "CANTWALK"
-      },
-      "WalkingSpeedCodeField" : {
-        "description" : "Required if able to walk, i.e. Walking length of time not cannot walk.",
-        "type" : "string",
-        "enum" : [ "MSLOW", "SLOW", "SAME", "FAST" ],
-        "example" : "SLOW"
-      },
-      "HowProvidedCodeField" : {
-        "type" : "string",
-        "enum" : [ "PRESCRIBE", "PRIVATE", "SOCIAL", "PERSON" ],
-        "example" : "PRIVATE"
-      },
-      "ApplicationStatusField" : {
-        "type" : "string",
-        "enum" : [ "TODO", "INPROGRESS", "COMPLETED" ],
-        "example" : "TODO",
-        "description" : "The new application status"
-      },
-      "BreathlessnessTypeCodeField" : {
-        "type" : "string",
-        "enum" : [ "UPHILL", "KEEPUP", "OWNPACE", "DRESSED", "OTHER" ],
-        "example" : "UPHILL",
-        "description" : "Further breathlessness information"
       }
+    },
+    "PagingInfo" : {
+      "type" : "object",
+      "properties" : {
+        "total" : {
+          "type" : "integer",
+          "description" : "The total number of results for the search."
+        },
+        "count" : {
+          "type" : "integer",
+          "description" : "The number of results included within the response"
+        },
+        "pageSize" : {
+          "type" : "integer",
+          "description" : "The number of results per page. Equivalent to the page limit"
+        },
+        "pageNum" : {
+          "type" : "integer",
+          "description" : "The index of the first result included within the response, within the total results"
+        },
+        "pages" : {
+          "type" : "integer",
+          "description" : "Total number of pages for the given page limit"
+        }
+      }
+    },
+    "CreateApplicationResponse" : {
+      "type" : "object",
+      "allOf" : [ {
+        "$ref" : "#/definitions/CommonResponse"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "string",
+            "example" : "12341234-1234-1234-1234-123412341234"
+          }
+        }
+      } ]
+    },
+    "ApplicationSummaryResponse" : {
+      "type" : "object",
+      "allOf" : [ {
+        "$ref" : "#/definitions/CommonResponse"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ApplicationSummary"
+            }
+          }
+        }
+      } ]
+    },
+    "ApplicationResponse" : {
+      "type" : "object",
+      "allOf" : [ {
+        "$ref" : "#/definitions/CommonResponse"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "$ref" : "#/definitions/Application"
+          }
+        }
+      } ]
+    },
+    "ApplicationTransferRequest" : {
+      "type" : "object",
+      "properties" : {
+        "transferToLaShortCode" : {
+          "type" : "string",
+          "description" : "The code for the new local authority.",
+          "example" : "BIRM"
+        }
+      },
+      "required" : [ "transferToLaShortCode" ]
+    },
+    "ApplicationSummary" : {
+      "type" : "object",
+      "properties" : {
+        "applicationId" : {
+          "type" : "string",
+          "description" : "The unique badge number for this application - a UUID",
+          "example" : "12345678-1234-1234-1234-123412341234"
+        },
+        "partyTypeCode" : {
+          "$ref" : "#/definitions/PartyTypeCodeField"
+        },
+        "applicationTypeCode" : {
+          "$ref" : "#/definitions/ApplicationTypeCodeField"
+        },
+        "nino" : {
+          "type" : "string",
+          "description" : "The badgeholders national insurance number",
+          "example" : "NS123458S",
+          "pattern" : "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]|\\s)$"
+        },
+        "dob" : {
+          "type" : "string",
+          "format" : "date",
+          "example" : "1972-09-13",
+          "description" : "Date of birth YYYY-MM-DD"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "The name of the badge holder Organisation or Person",
+          "example" : "John Smith",
+          "maxLength" : 100
+        },
+        "submissionDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Submitted date and time",
+          "example" : "2018-12-25T12:30:45Z"
+        },
+        "eligibilityCode" : {
+          "$ref" : "#/definitions/EligibilityCodeField"
+        },
+        "applicationStatus" : {
+          "$ref" : "#/definitions/ApplicationStatusField"
+        }
+      }
+    },
+    "Application" : {
+      "type" : "object",
+      "properties" : {
+        "applicationId" : {
+          "type" : "string",
+          "description" : "The unique number for this application - a UUID",
+          "example" : "12345678-1234-1234-1234-123456781234"
+        },
+        "applicationTypeCode" : {
+          "$ref" : "#/definitions/ApplicationTypeCodeField"
+        },
+        "localAuthorityCode" : {
+          "type" : "string",
+          "description" : "The code for the local authority.",
+          "example" : "BIRM"
+        },
+        "transferredLaFromCode" : {
+          "type" : "string",
+          "description" : "The code for the local authority transferred from.",
+          "example" : "BIRM"
+        },
+        "transferredFromLaDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Transferred from LA date",
+          "example" : "2018-12-25T12:30:45Z"
+        },
+        "paymentTaken" : {
+          "type" : "boolean",
+          "example" : true,
+          "description" : "Indicates whether or not payment was taken as part of the application. In edge cases this could be set false, but the payment status could not be determined, in which case paymentReference will be set to Unknown"
+        },
+        "paymentReference" : {
+          "type" : "string",
+          "example" : "PVAUETDW43CM",
+          "description" : "The reference of the payment taken as part of the application. Will be set to Unknown if the status of the payment could not be determined."
+        },
+        "submissionDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Submitted date and time. Populated automatically on create",
+          "example" : "2018-12-25T12:30:45Z"
+        },
+        "existingBadgeNumber" : {
+          "type" : "string"
+        },
+        "party" : {
+          "$ref" : "#/definitions/Party"
+        },
+        "eligibility" : {
+          "$ref" : "#/definitions/Eligibility"
+        },
+        "artifacts" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Artifact"
+          }
+        },
+        "applicationStatus" : {
+          "$ref" : "#/definitions/ApplicationStatusField"
+        }
+      },
+      "required" : [ "applicationTypeCode", "paymentTaken", "localAuthorityCode", "party" ]
+    },
+    "ApplicationUpdate" : {
+      "type" : "object",
+      "properties" : {
+        "applicationStatus" : {
+          "$ref" : "#/definitions/ApplicationStatusField"
+        }
+      }
+    },
+    "Party" : {
+      "type" : "object",
+      "properties" : {
+        "typeCode" : {
+          "$ref" : "#/definitions/PartyTypeCodeField"
+        },
+        "contact" : {
+          "$ref" : "#/definitions/Contact"
+        },
+        "person" : {
+          "$ref" : "#/definitions/Person"
+        },
+        "organisation" : {
+          "$ref" : "#/definitions/Organisation"
+        }
+      },
+      "required" : [ "typeCode", "contact" ]
+    },
+    "Person" : {
+      "type" : "object",
+      "properties" : {
+        "badgeHolderName" : {
+          "type" : "string",
+          "example" : "John Smith",
+          "maxLength" : 100
+        },
+        "nino" : {
+          "type" : "string",
+          "description" : "The badgeholders national insurance number",
+          "example" : "NS123456A",
+          "pattern" : "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)(?:[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z])(?:\\s*\\d\\s*){6}([A-D]?\\s*)$"
+        },
+        "dob" : {
+          "type" : "string",
+          "format" : "date",
+          "description" : "Date of birth YYYY-MM-DD",
+          "example" : "1970-05-29"
+        },
+        "nameAtBirth" : {
+          "type" : "string",
+          "example" : "John Smith",
+          "maxLength" : 100
+        },
+        "genderCode" : {
+          "$ref" : "#/definitions/GenderCodeField"
+        }
+      },
+      "required" : [ "badgeHolderName", "dob", "genderCode" ]
+    },
+    "Organisation" : {
+      "type" : "object",
+      "properties" : {
+        "badgeHolderName" : {
+          "type" : "string",
+          "example" : "Trotters Independant Traders",
+          "maxLength" : 100
+        },
+        "isCharity" : {
+          "type" : "boolean",
+          "example" : false
+        },
+        "charityNumber" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "12345"
+        },
+        "vehicles" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Vehicle"
+          }
+        },
+        "numberOfBadges" : {
+          "type" : "integer",
+          "minimum" : 1,
+          "description" : "Must be 1 for a person, can be multiple for an organisation.",
+          "example" : 1
+        }
+      },
+      "required" : [ "badgeHolderName", "isCharity", "numberOfBadges" ]
+    },
+    "Vehicle" : {
+      "type" : "object",
+      "properties" : {
+        "registrationNumber" : {
+          "type" : "string",
+          "maxLength" : 7,
+          "example" : "VK61VZZ"
+        },
+        "typeCode" : {
+          "$ref" : "#/definitions/VehicleTypeCodeField"
+        },
+        "usageFrequency" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Daily"
+        }
+      }
+    },
+    "Contact" : {
+      "type" : "object",
+      "properties" : {
+        "fullName" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Mabel Jones",
+          "description" : "Mandatory if Organisation"
+        },
+        "buildingStreet" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "65 Basil Chambers"
+        },
+        "line2" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Northern Quarter"
+        },
+        "townCity" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Manchester"
+        },
+        "postCode" : {
+          "type" : "string",
+          "example" : "SK6 8GH",
+          "pattern" : "^$|^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[\\s]*[0-9][A-Za-z]{2})$"
+        },
+        "primaryPhoneNumber" : {
+          "type" : "string",
+          "example" : "01234123123",
+          "maxLength" : 20
+        },
+        "secondaryPhoneNumber" : {
+          "type" : "string",
+          "example" : "07970777111",
+          "maxLength" : 20
+        },
+        "emailAddress" : {
+          "type" : "string",
+          "pattern" : "^\\S+\\@\\S+",
+          "maxLength" : 100,
+          "example" : "nobody@blancmange.com"
+        }
+      },
+      "required" : [ "buildingStreet", "townCity", "postCode", "primaryPhoneNumber" ]
+    },
+    "Eligibility" : {
+      "type" : "object",
+      "properties" : {
+        "typeCode" : {
+          "$ref" : "#/definitions/EligibilityCodeField"
+        },
+        "descriptionOfConditions" : {
+          "type" : "string",
+          "maxLength" : 10000,
+          "example" : "Freetext"
+        },
+        "benefit" : {
+          "$ref" : "#/definitions/Benefit"
+        },
+        "walkingDifficulty" : {
+          "$ref" : "#/definitions/WalkingDifficulty"
+        },
+        "disabilityArms" : {
+          "$ref" : "#/definitions/DisabilityArms"
+        },
+        "healthcareProfessionals" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/HealthcareProfessional"
+          }
+        },
+        "blind" : {
+          "$ref" : "#/definitions/Blind"
+        },
+        "childUnder3" : {
+          "$ref" : "#/definitions/ChildUnder3"
+        }
+      },
+      "required" : [ "typeCode" ]
+    },
+    "ChildUnder3" : {
+      "type" : "object",
+      "description" : "bulkyMedicalEquipmentTypeCode is DEPRECATED - use the array version.  Until removed One entry will be put in the non array field by citizen application if there are multiple codes entered. All entered values will be in the array version.",
+      "properties" : {
+        "bulkyMedicalEquipmentTypeCode" : {
+          "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
+        },
+        "bulkyMedicalEquipmentTypeCodes" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/BulkyMedicalEquipmentTypeCodeField"
+          }
+        },
+        "otherMedicalEquipment" : {
+          "type" : "string",
+          "description" : "A short description of the medical equipment.",
+          "maxLength" : 100,
+          "example" : "Oxygen cylinders"
+        }
+      },
+      "required" : [ "bulkyMedicalEquipmentTypeCodes" ]
+    },
+    "Blind" : {
+      "type" : "object",
+      "properties" : {
+        "registeredAtLaId" : {
+          "type" : "string",
+          "description" : "Local Authority registered blind at",
+          "example" : "BIRM"
+        }
+      }
+    },
+    "Benefit" : {
+      "type" : "object",
+      "properties" : {
+        "isIndefinite" : {
+          "type" : "boolean",
+          "example" : true
+        },
+        "expiryDate" : {
+          "type" : "string",
+          "format" : "date",
+          "example" : "2022-03-30"
+        }
+      },
+      "required" : [ "isIndefinite" ]
+    },
+    "HealthcareProfessional" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Freetext"
+        },
+        "location" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Freetext"
+        }
+      }
+    },
+    "DisabilityArms" : {
+      "type" : "object",
+      "properties" : {
+        "drivingFrequency" : {
+          "type" : "string",
+          "maxLength" : 100
+        },
+        "isAdaptedVehicle" : {
+          "type" : "boolean",
+          "example" : true
+        },
+        "adaptedVehicleDescription" : {
+          "type" : "string",
+          "maxLength" : 255
+        }
+      },
+      "required" : [ "isAdaptedVehicle" ]
+    },
+    "WalkingDifficulty" : {
+      "type" : "object",
+      "properties" : {
+        "typeCodes" : {
+          "type" : "array",
+          "description" : "'Short codes from the WALKDIFF group of data.  At least 1 required.'\n",
+          "items" : {
+            "$ref" : "#/definitions/WalkingDifficultyTypeCodeField"
+          }
+        },
+        "otherDescription" : {
+          "description" : "Only entered if something else type selected and even then not required.",
+          "type" : "string",
+          "maxLength" : 255
+        },
+        "walkingAids" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/WalkingAid"
+          }
+        },
+        "walkingLengthOfTimeCode" : {
+          "$ref" : "#/definitions/WalkingLengthOfTimeCodeField"
+        },
+        "walkingSpeedCode" : {
+          "$ref" : "#/definitions/WalkingSpeedCodeField"
+        },
+        "treatments" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Treatment"
+          }
+        },
+        "medications" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Medication"
+          }
+        },
+        "breathlessness" : {
+          "$ref" : "#/definitions/Breathlessness"
+        }
+      },
+      "required" : [ "walkingLengthOfTimeCode" ]
+    },
+    "Breathlessness" : {
+      "type" : "object",
+      "properties" : {
+        "typeCodes" : {
+          "type" : "array",
+          "description" : "'Short codes from the BREATHLESS group of data. At least 1 required.'\n",
+          "items" : {
+            "$ref" : "#/definitions/BreathlessnessTypeCodeField"
+          }
+        },
+        "otherDescription" : {
+          "description" : "Only entered if something else type selected and even then not required.",
+          "type" : "string",
+          "maxLength" : 255
+        }
+      },
+      "required" : [ "typeCode" ]
+    },
+    "Medication" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Paracetamol"
+        },
+        "isPrescribed" : {
+          "type" : "boolean",
+          "example" : true
+        },
+        "frequency" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "Twice daily."
+        },
+        "quantity" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "1 tablet, 20mg"
+        }
+      }
+    },
+    "Treatment" : {
+      "type" : "object",
+      "properties" : {
+        "description" : {
+          "type" : "string",
+          "maxLength" : 100
+        },
+        "time" : {
+          "type" : "string",
+          "maxLength" : 100,
+          "example" : "6 months"
+        }
+      }
+    },
+    "WalkingAid" : {
+      "type" : "object",
+      "properties" : {
+        "description" : {
+          "type" : "string",
+          "maxLength" : 100
+        },
+        "usage" : {
+          "type" : "string",
+          "maxLength" : 100
+        },
+        "howProvidedCode" : {
+          "$ref" : "#/definitions/HowProvidedCodeField"
+        }
+      },
+      "required" : [ "howProvidedCode" ]
+    },
+    "Artifact" : {
+      "description" : "Provided files/evidence",
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "description" : "The artifact type",
+          "type" : "string",
+          "enum" : [ "PROOF_ELIG", "SUPPORT_DOCS", "PROOF_ADD", "PROOF_ID", "PHOTO" ],
+          "example" : "PROOF_ADD"
+        },
+        "link" : {
+          "description" : "The link to the artifact",
+          "type" : "string"
+        }
+      },
+      "required" : [ "type", "link" ]
+    },
+    "PartyTypeCodeField" : {
+      "type" : "string",
+      "enum" : [ "PERSON", "ORG" ],
+      "example" : "PERSON"
+    },
+    "ApplicationTypeCodeField" : {
+      "type" : "string",
+      "enum" : [ "NEW", "RENEW", "CANCEL", "REPLACE" ],
+      "example" : "NEW"
+    },
+    "EligibilityCodeField" : {
+      "type" : "string",
+      "enum" : [ "PIP", "DLA", "AFRFCS", "WPMS", "BLIND", "WALKD", "ARMS", "CHILDBULK", "CHILDVEHIC" ],
+      "example" : "PIP"
+    },
+    "GenderCodeField" : {
+      "type" : "string",
+      "enum" : [ "FEMALE", "MALE", "UNSPECIFIE" ],
+      "example" : "FEMALE"
+    },
+    "VehicleTypeCodeField" : {
+      "type" : "string",
+      "enum" : [ "CAR", "PEOPLECAR", "MINIBUS", "OTHERVEH" ],
+      "example" : "CAR"
+    },
+    "BulkyMedicalEquipmentTypeCodeField" : {
+      "type" : "string",
+      "enum" : [ "CAST", "OXYSAT", "OXYADMIN", "SYRINGE", "PARENT", "PUMP", "SUCTION", "VENT", "OTHER", "NONE" ],
+      "example" : "CAST",
+      "description" : "NONE is deprecated"
+    },
+    "WalkingDifficultyTypeCodeField" : {
+      "type" : "string",
+      "enum" : [ "PAIN", "BREATH", "BALANCE", "DANGER", "STRUGGLE", "SOMELSE", "LONGTIME" ],
+      "example" : "PAIN"
+    },
+    "WalkingLengthOfTimeCodeField" : {
+      "type" : "string",
+      "enum" : [ "CANTWALK", "LESSMIN", "FEWMIN", "MORETEN", "ONEFIVE", "FIVETEN" ],
+      "example" : "CANTWALK"
+    },
+    "WalkingSpeedCodeField" : {
+      "description" : "Required if able to walk, i.e. Walking length of time not cannot walk.",
+      "type" : "string",
+      "enum" : [ "MSLOW", "SLOW", "SAME", "FAST" ],
+      "example" : "SLOW"
+    },
+    "HowProvidedCodeField" : {
+      "type" : "string",
+      "enum" : [ "PRESCRIBE", "PRIVATE", "SOCIAL", "PERSON" ],
+      "example" : "PRIVATE"
+    },
+    "ApplicationStatusField" : {
+      "type" : "string",
+      "enum" : [ "TODO", "INPROGRESS", "COMPLETED" ],
+      "example" : "TODO",
+      "description" : "The new application status"
+    },
+    "BreathlessnessTypeCodeField" : {
+      "type" : "string",
+      "enum" : [ "UPHILL", "KEEPUP", "OWNPACE", "DRESSED", "OTHER" ],
+      "example" : "UPHILL",
+      "description" : "Further breathlessness information"
     }
-  }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "schemes" : [ "https" ],
+  "basePath" : "/uk-gov-dft/applications-service/1.0.0"
 }
