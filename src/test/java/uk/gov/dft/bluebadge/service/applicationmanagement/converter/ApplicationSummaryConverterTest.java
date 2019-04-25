@@ -1,5 +1,10 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationSummary;
@@ -7,12 +12,6 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTyp
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.repository.domain.ApplicationSummaryEntity;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class ApplicationSummaryConverterTest {
 

@@ -1,12 +1,11 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
-import org.junit.Test;
-import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.time.Period;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
 public class BenefitValidatorTest extends ApplicationFixture {
 
