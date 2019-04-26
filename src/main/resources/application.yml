@@ -32,6 +32,9 @@ management:
     port: 8681
     servlet:
       context-path: /manage
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:

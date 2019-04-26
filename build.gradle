@@ -86,6 +86,8 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.2.RELEASE')
+    compile group: 'io.micrometer', name: 'micrometer-core', version: '1.1.4'
+    compile group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.1.4'
 
     compile ('com.github.pagehelper:pagehelper-spring-boot-starter:1.2.10')
     compile('org.postgresql:postgresql:42.2.2')
@@ -123,6 +125,18 @@ test {
 
 jacoco {
     toolVersion = "0.8.1"
+}
+
+def props = new Properties()
+file("src/main/resources/application.properties").withInputStream { props.load(it) }
+springBoot {
+    buildInfo{
+        properties {
+            additional = [
+                'api.version': props.getProperty('api.version')
+            ]
+        }
+    }
 }
 
 archivesBaseName = "applicationmanagement-service"
