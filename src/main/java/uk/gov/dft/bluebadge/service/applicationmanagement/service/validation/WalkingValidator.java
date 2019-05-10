@@ -2,12 +2,19 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.service.validation;
 
 import static uk.gov.dft.bluebadge.common.util.Matchers.collection;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingLengthOfTimeCodeField.CANTWALK;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_NULL;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.AbstractValidator.ErrorTypes.NOT_VALID;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_BALANCE_DESC;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_BALANCE_FALLS;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_DANGER_CONDITIONS;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_DANGER_DESC;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_OTHER_DESC;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_PAIN_DESC;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_SPEED;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_TYPES;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -38,7 +45,7 @@ class WalkingValidator extends AbstractValidator {
         return;
       }
 
-      validateWalkingOtherDescription(app, errors);
+      validateWalkingDifficulties(app, errors);
       validateWalkingSpeed(app, errors);
       validateBreathlessness(app, errors);
     }
@@ -71,14 +78,88 @@ class WalkingValidator extends AbstractValidator {
    * @param app Application.
    * @param errors Errors.
    */
-  void validateWalkingOtherDescription(Application app, Errors errors) {
-    if (!app.getEligibility()
-            .getWalkingDifficulty()
-            .getTypeCodes()
-            .contains(WalkingDifficultyTypeCodeField.SOMELSE)
-        && hasText(app, KEY_ELI_WALK_OTHER_DESC)) {
-      // If walking difficulty does not have something else selected cant have other
-      // description.
+  void validateWalkingDifficulties(Application app, Errors errors) {
+    List<WalkingDifficultyTypeCodeField> typeCodes =
+        app.getEligibility().getWalkingDifficulty().getTypeCodes();
+
+    if (typeCodes.contains(WalkingDifficultyTypeCodeField.PAIN)) {
+      if (!hasText(app, KEY_ELI_WALK_PAIN_DESC)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_PAIN_DESC,
+            NOT_NULL,
+            KEY_ELI_WALK_PAIN_DESC + " must be present if PAIN selected as a type.");
+      }
+    } else if (hasText(app, KEY_ELI_WALK_PAIN_DESC)) {
+      errors.rejectValue(
+          KEY_ELI_WALK_PAIN_DESC,
+          NOT_VALID,
+          KEY_ELI_WALK_PAIN_DESC + " can only be present if PAIN selected as a type.");
+    }
+
+    if (typeCodes.contains(WalkingDifficultyTypeCodeField.BALANCE)) {
+      if (!hasText(app, KEY_ELI_WALK_BALANCE_DESC)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_BALANCE_DESC,
+            NOT_NULL,
+            KEY_ELI_WALK_BALANCE_DESC + " must be present if BALANCE selected as a type.");
+      }
+      if (notExists(app, KEY_ELI_WALK_BALANCE_FALLS)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_BALANCE_FALLS,
+            NOT_NULL,
+            KEY_ELI_WALK_BALANCE_FALLS + " must be present if BALANCE selected as a type.");
+      }
+    } else {
+      if (hasText(app, KEY_ELI_WALK_BALANCE_DESC)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_BALANCE_DESC,
+            NOT_VALID,
+            KEY_ELI_WALK_BALANCE_DESC + " can only be present if BALANCE selected as a type.");
+      }
+      if (exists(app, KEY_ELI_WALK_BALANCE_FALLS)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_BALANCE_FALLS,
+            NOT_VALID,
+            KEY_ELI_WALK_BALANCE_FALLS + " can only be present if BALANCE selected as a type.");
+      }
+    }
+
+    if (typeCodes.contains(WalkingDifficultyTypeCodeField.DANGER)) {
+      if (!hasText(app, KEY_ELI_WALK_DANGER_DESC)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_DANGER_DESC,
+            NOT_NULL,
+            KEY_ELI_WALK_DANGER_DESC + " must be present if DANGER selected as a type.");
+      }
+      if (notExists(app, KEY_ELI_WALK_DANGER_CONDITIONS)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_DANGER_CONDITIONS,
+            NOT_NULL,
+            KEY_ELI_WALK_DANGER_CONDITIONS + " must be present if DANGER selected as a type.");
+      }
+    } else {
+      if (hasText(app, KEY_ELI_WALK_DANGER_DESC)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_DANGER_DESC,
+            NOT_VALID,
+            KEY_ELI_WALK_DANGER_DESC + " can only be present if DANGER selected as a type.");
+      }
+      if (exists(app, KEY_ELI_WALK_DANGER_CONDITIONS)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_DANGER_CONDITIONS,
+            NOT_VALID,
+            KEY_ELI_WALK_DANGER_CONDITIONS + " can only be present if DANGER selected as a type.");
+      }
+    }
+
+    if (typeCodes.contains(WalkingDifficultyTypeCodeField.SOMELSE)) {
+      if (!hasText(app, KEY_ELI_WALK_OTHER_DESC)) {
+        errors.rejectValue(
+            KEY_ELI_WALK_OTHER_DESC,
+            NOT_NULL,
+            KEY_ELI_WALK_OTHER_DESC + " must be present if SOMELSE selected as a type.");
+      }
+    } else if (hasText(app, KEY_ELI_WALK_OTHER_DESC)) {
       errors.rejectValue(
           KEY_ELI_WALK_OTHER_DESC,
           NOT_VALID,

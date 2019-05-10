@@ -1,13 +1,21 @@
 package uk.gov.dft.bluebadge.service.applicationmanagement.converter.eligibility;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField.*;
 
+import com.google.common.collect.Lists;
 import java.util.UUID;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.mockito.Mock;
+
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.EligibilityCodeField;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficulty;
@@ -23,7 +31,7 @@ public class WalkingDifficultyConverterTest extends ApplicationFixture {
 
   private final WalkingDifficultyConverter converter;
 
-  @Mock WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
+  @Spy WalkingDifficultyTypeConverter walkingDifficultyTypeConverter;
   @Mock WalkingAidConverter walkingAidConverter;
   @Mock TreatmentConverter treatmentConverter;
   @Mock MedicationConverter medicationConverter;
@@ -75,6 +83,42 @@ public class WalkingDifficultyConverterTest extends ApplicationFixture {
         entity.getWalkLengthCode());
     assertEquals(
         ApplicationFixture.ValidValues.WALKING_SPEED_CODE_FIELD.name(), entity.getWalkSpeedCode());
+    assertEquals(ApplicationFixture.ValidValues.WALK_OTHER_DESC, entity.getWalkOtherDesc());
+
+    verify(walkingDifficultyTypeConverter, times(1))
+        .convertToEntityList(walkingDifficulty.getTypeCodes(), UUID.fromString(ValidValues.ID));
+    verify(walkingAidConverter, times(1))
+        .convertToEntityList(walkingDifficulty.getWalkingAids(), UUID.fromString(ValidValues.ID));
+    verify(treatmentConverter, times(1))
+        .convertToEntityList(walkingDifficulty.getTreatments(), UUID.fromString(ValidValues.ID));
+    verify(medicationConverter, times(1))
+        .convertToEntityList(walkingDifficulty.getMedications(), UUID.fromString(ValidValues.ID));
+  }
+
+  @Test
+  public void convertToEntity_allTypes() {
+    Application model =
+        getApplicationBuilder().addBaseApplication().setEligibilityWalking().build();
+    WalkingDifficulty walkingDifficulty = model.getEligibility().getWalkingDifficulty();
+    walkingDifficulty.setTypeCodes(Lists.newArrayList(PAIN, BALANCE, DANGER, SOMELSE));
+    walkingDifficulty.setPainDescription("pain desc");
+    walkingDifficulty.setBalanceDescription("balance desc");
+    walkingDifficulty.setHealthProfessionsForFalls(true);
+    walkingDifficulty.setDangerousDescription("danger desc");
+    walkingDifficulty.setChestLungHeartEpilepsy(false);
+
+    ApplicationEntity entity = ApplicationEntity.builder().build();
+    converter.convertToEntity(model, entity);
+
+    Assertions.assertThat(entity.getWalkingDifficultyTypes())
+        .extracting("typeCode")
+        .containsOnly(PAIN.name(), BALANCE.name(), DANGER.name(), SOMELSE.name());
+
+    assertEquals("pain desc", entity.getWalkPainDesc());
+    assertEquals("balance desc", entity.getWalkBalanceDesc());
+    assertTrue(entity.getWalkBalanceHealthProdForFall());
+    assertEquals("danger desc", entity.getWalkDangerDesc());
+    assertFalse(entity.getWalkDangerChestLungHeartEpilepsy());
     assertEquals(ApplicationFixture.ValidValues.WALK_OTHER_DESC, entity.getWalkOtherDesc());
 
     verify(walkingDifficultyTypeConverter, times(1))
