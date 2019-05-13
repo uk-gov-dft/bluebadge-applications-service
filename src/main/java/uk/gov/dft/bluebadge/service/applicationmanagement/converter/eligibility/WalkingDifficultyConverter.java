@@ -86,6 +86,12 @@ public class WalkingDifficultyConverter implements ApplicationBiConverter {
       if (null != walkingDifficulty.getWalkingSpeedCode()) {
         entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().name());
       }
+
+      entity.setWalkPainDesc(walkingDifficulty.getPainDescription());
+      entity.setWalkBalanceDesc(walkingDifficulty.getBalanceDescription());
+      entity.setWalkBalanceHealthProdForFall(walkingDifficulty.getHealthProfessionsForFalls());
+      entity.setWalkDangerDesc(walkingDifficulty.getDangerousDescription());
+      entity.setWalkDangerChestLungHeartEpilepsy(walkingDifficulty.getChestLungHeartEpilepsy());
       entity.setWalkOtherDesc(walkingDifficulty.getOtherDescription());
 
       // Lists

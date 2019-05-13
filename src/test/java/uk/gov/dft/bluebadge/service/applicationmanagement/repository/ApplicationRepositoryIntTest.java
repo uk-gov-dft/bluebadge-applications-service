@@ -80,7 +80,12 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
             .blindRegisteredAtLaCode("ABERD")
             .dob(LocalDate.now().minus(ofYears(30)))
             .eligibilityCode("PIP")
-            .walkOtherDesc("walk desc")
+            .walkPainDesc("walk pain desc")
+            .walkBalanceDesc("walk balance desc")
+            .walkBalanceHealthProdForFall(true)
+            .walkDangerDesc("walk danger desc")
+            .walkDangerChestLungHeartEpilepsy(true)
+            .walkOtherDesc("walk other desc")
             .breathlessnessOtherDesc("breathlessness desc")
             .orgIsCharity(true)
             .orgCharityNo("123456")
@@ -486,6 +491,11 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertEquals("Eligibility Conditions", result.getEligibilityConditions());
     assertTrue(result.getBenefitIsIndefinite());
     assertEquals(LocalDate.parse("2020-01-31"), result.getBenefitExpiryDate());
+    assertEquals("Walk Pain Desc", result.getWalkPainDesc());
+    assertEquals("Walk Balance Desc", result.getWalkBalanceDesc());
+    assertEquals(true, result.getWalkBalanceHealthProdForFall());
+    assertEquals("Walk Danger Desc", result.getWalkDangerDesc());
+    assertEquals(true, result.getWalkDangerChestLungHeartEpilepsy());
     assertEquals("Walk Other Desc", result.getWalkOtherDesc());
     assertEquals("Breathlessness Other Desc", result.getBreathlessnessOtherDesc());
     assertEquals("LESSMIN", result.getWalkLengthCode());
