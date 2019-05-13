@@ -81,7 +81,14 @@ class WalkingValidator extends AbstractValidator {
   void validateWalkingDifficulties(Application app, Errors errors) {
     List<WalkingDifficultyTypeCodeField> typeCodes =
         app.getEligibility().getWalkingDifficulty().getTypeCodes();
+    validateWalkingDifficultiesPain(app, errors, typeCodes);
+    validateWalkingDifficultiesBalance(app, errors, typeCodes);
+    validateWalkingDifficultiesDanger(app, errors, typeCodes);
+    validateWalkingDifficultiesSomethingElse(app, errors, typeCodes);
+  }
 
+  void validateWalkingDifficultiesPain(
+      Application app, Errors errors, List<WalkingDifficultyTypeCodeField> typeCodes) {
     if (typeCodes.contains(WalkingDifficultyTypeCodeField.PAIN)) {
       if (!hasText(app, KEY_ELI_WALK_PAIN_DESC)) {
         errors.rejectValue(
@@ -95,7 +102,10 @@ class WalkingValidator extends AbstractValidator {
           NOT_VALID,
           KEY_ELI_WALK_PAIN_DESC + " can only be present if PAIN selected as a type.");
     }
+  }
 
+  void validateWalkingDifficultiesBalance(
+      Application app, Errors errors, List<WalkingDifficultyTypeCodeField> typeCodes) {
     if (typeCodes.contains(WalkingDifficultyTypeCodeField.BALANCE)) {
       if (!hasText(app, KEY_ELI_WALK_BALANCE_DESC)) {
         errors.rejectValue(
@@ -123,7 +133,10 @@ class WalkingValidator extends AbstractValidator {
             KEY_ELI_WALK_BALANCE_FALLS + " can only be present if BALANCE selected as a type.");
       }
     }
+  }
 
+  void validateWalkingDifficultiesDanger(
+      Application app, Errors errors, List<WalkingDifficultyTypeCodeField> typeCodes) {
     if (typeCodes.contains(WalkingDifficultyTypeCodeField.DANGER)) {
       if (!hasText(app, KEY_ELI_WALK_DANGER_DESC)) {
         errors.rejectValue(
@@ -151,7 +164,10 @@ class WalkingValidator extends AbstractValidator {
             KEY_ELI_WALK_DANGER_CONDITIONS + " can only be present if DANGER selected as a type.");
       }
     }
+  }
 
+  void validateWalkingDifficultiesSomethingElse(
+      Application app, Errors errors, List<WalkingDifficultyTypeCodeField> typeCodes) {
     if (typeCodes.contains(WalkingDifficultyTypeCodeField.SOMELSE)) {
       if (!hasText(app, KEY_ELI_WALK_OTHER_DESC)) {
         errors.rejectValue(
