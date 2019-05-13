@@ -562,6 +562,11 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     assertNull(deleted.getEligibilityConditions());
     assertNull(deleted.getBenefitIsIndefinite());
     assertNull(deleted.getBenefitExpiryDate());
+    assertNull(deleted.getWalkPainDesc());
+    assertNull(deleted.getWalkBalanceDesc());
+    assertNull(deleted.getWalkBalanceHealthProdForFall());
+    assertNull(deleted.getWalkDangerDesc());
+    assertNull(deleted.getWalkDangerChestLungHeartEpilepsy());
     assertNull(deleted.getWalkOtherDesc());
     assertNull(deleted.getBreathlessnessOtherDesc());
     assertNull(deleted.getWalkLengthCode());

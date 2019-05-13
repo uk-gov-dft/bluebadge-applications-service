@@ -16,8 +16,8 @@
           nino, dob, gender_code,
           holder_name_at_birth, eligibility_code, eligibility_conditions,
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
-          pain_desc, balance_desc, balance_health_prof_falls,
-          danger_desc, danger_chest_lung_heart,
+          walk_pain_desc, walk_balance_desc, walk_balance_health_prof_falls,
+          walk_danger_desc, walk_danger_chest_lung_heart,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
           local_authority_code, bulky_equipment_other_desc, application_status, breathlessness_other_desc
@@ -232,6 +232,11 @@
         <result column="eligibility_conditions" property="eligibilityConditions" />
         <result column="benefit_is_indefinite" property="benefitIsIndefinite" />
         <result column="benefit_expiry_date" property="benefitExpiryDate" />
+        <result column="walkPainDesc" property="walkPainDesc" />
+        <result column="walkBalanceDesc" property="walkBalanceDesc" />
+        <result column="walkBalanceHealthProdForFall" property="walkBalanceHealthProdForFall" />
+        <result column="walkDangerDesc" property="walkDangerDesc" />
+        <result column="walkDangerChestLungHeartEpilepsy" property="walkDangerChestLungHeartEpilepsy" />
         <result column="walk_other_desc" property="walkOtherDesc" />
         <result column="walk_length_code" property="walkLengthCode" />
         <result column="walk_speed_code" property="walkSpeedCode" />
@@ -296,6 +301,11 @@
         , a.eligibility_conditions
         , a.benefit_is_indefinite
         , a.benefit_expiry_date
+        , a.walkPainDesc
+        , a.walkBalanceDesc
+        , a.walkBalanceHealthProdForFall
+        , a.walkDangerDesc
+        , a.walkDangerChestLungHeartEpilepsy
         , a.walk_other_desc
         , a.walk_length_code
         , a.walk_speed_code
@@ -512,6 +522,11 @@
           	eligibility_conditions = null,
           	benefit_is_indefinite = null,
           	benefit_expiry_date = null,
+            walkPainDesc = null,
+            walkBalanceDesc = null,
+            walkBalanceHealthProdForFall = null,
+            walkDangerDesc = null,
+            walkDangerChestLungHeartEpilepsy = null,
           	walk_other_desc = null,
           	walk_length_code = null,
           	walk_speed_code = null,
