@@ -3,7 +3,6 @@ package uk.gov.dft.bluebadge.service.applicationmanagement.converter.eligibility
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
-
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField.*;
@@ -13,7 +12,6 @@ import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.mockito.Mock;
-
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
@@ -62,6 +60,35 @@ public class WalkingDifficultyConverterTest extends ApplicationFixture {
         walkingDifficulty.getWalkingLengthOfTimeCode());
     assertEquals(ValidValues.WALKING_SPEED_CODE_FIELD, walkingDifficulty.getWalkingSpeedCode());
     assertEquals(ValidValues.WALK_OTHER_DESC, walkingDifficulty.getOtherDescription());
+
+    verify(walkingDifficultyTypeConverter, times(1))
+        .convertToModelList(entity.getWalkingDifficultyTypes());
+    verify(walkingAidConverter, times(1)).convertToModelList(entity.getWalkingAids());
+    verify(treatmentConverter, times(1)).convertToModelList(entity.getTreatments());
+    verify(medicationConverter, times(1)).convertToModelList(entity.getMedications());
+  }
+
+  @Test
+  public void convertToModel_addtionalQuestions() {
+    ApplicationEntity entity = getFullyPopulatedApplicationEntity();
+    entity.setEligibilityCode(EligibilityCodeField.WALKD.name());
+    entity.setWalkPainDesc("pain desc");
+    entity.setWalkBalanceDesc("balance desc");
+    entity.setWalkBalanceHealthProdForFall(true);
+    entity.setWalkDangerDesc("danger desc");
+    entity.setWalkDangerChestLungHeartEpilepsy(true);
+    entity.setWalkOtherDesc("other desc");
+    Application model = new Application();
+    converter.convertToModel(model, entity);
+
+    WalkingDifficulty walkingDifficulty = model.getEligibility().getWalkingDifficulty();
+
+    assertEquals("pain desc", walkingDifficulty.getPainDescription());
+    assertEquals("balance desc", walkingDifficulty.getBalanceDescription());
+    assertEquals(true, walkingDifficulty.getHealthProfessionsForFalls());
+    assertEquals("danger desc", walkingDifficulty.getDangerousDescription());
+    assertEquals(true, walkingDifficulty.getChestLungHeartEpilepsy());
+    assertEquals("other desc", walkingDifficulty.getOtherDescription());
 
     verify(walkingDifficultyTypeConverter, times(1))
         .convertToModelList(entity.getWalkingDifficultyTypes());
