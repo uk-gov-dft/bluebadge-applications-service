@@ -232,11 +232,11 @@
         <result column="eligibility_conditions" property="eligibilityConditions" />
         <result column="benefit_is_indefinite" property="benefitIsIndefinite" />
         <result column="benefit_expiry_date" property="benefitExpiryDate" />
-        <result column="walkPainDesc" property="walkPainDesc" />
-        <result column="walkBalanceDesc" property="walkBalanceDesc" />
-        <result column="walkBalanceHealthProdForFall" property="walkBalanceHealthProdForFall" />
-        <result column="walkDangerDesc" property="walkDangerDesc" />
-        <result column="walkDangerChestLungHeartEpilepsy" property="walkDangerChestLungHeartEpilepsy" />
+        <result column="walk_pain_desc" property="walkPainDesc" />
+        <result column="walk_balance_desc" property="walkBalanceDesc" />
+        <result column="walk_balance_health_prof_falls" property="walkBalanceHealthProdForFall" />
+        <result column="walk_danger_desc" property="walkDangerDesc" />
+        <result column="walk_danger_chest_lung_heart" property="walkDangerChestLungHeartEpilepsy" />
         <result column="walk_other_desc" property="walkOtherDesc" />
         <result column="walk_length_code" property="walkLengthCode" />
         <result column="walk_speed_code" property="walkSpeedCode" />
@@ -301,11 +301,11 @@
         , a.eligibility_conditions
         , a.benefit_is_indefinite
         , a.benefit_expiry_date
-        , a.walkPainDesc
-        , a.walkBalanceDesc
-        , a.walkBalanceHealthProdForFall
-        , a.walkDangerDesc
-        , a.walkDangerChestLungHeartEpilepsy
+        , a.walk_pain_desc
+        , a.walk_balance_desc
+        , a.walk_balance_health_prof_falls
+        , a.walk_danger_desc
+        , a.walk_danger_chest_lung_heart
         , a.walk_other_desc
         , a.walk_length_code
         , a.walk_speed_code
@@ -522,11 +522,11 @@
           	eligibility_conditions = null,
           	benefit_is_indefinite = null,
           	benefit_expiry_date = null,
-            walkPainDesc = null,
-            walkBalanceDesc = null,
-            walkBalanceHealthProdForFall = null,
-            walkDangerDesc = null,
-            walkDangerChestLungHeartEpilepsy = null,
+            walk_pain_desc = null,
+            walk_balance_desc = null,
+            walk_balance_health_prof_falls = null,
+            walk_danger_desc = null,
+            walk_danger_chest_lung_heart = null,
           	walk_other_desc = null,
           	walk_length_code = null,
           	walk_speed_code = null,

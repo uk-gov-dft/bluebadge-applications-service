@@ -204,8 +204,8 @@ INSERT INTO applicationmanagement_unittest.application(
  , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'Breathlessness Other Desc', 'LESSMIN'
- , "Walk Pain Desc", "Walk Balance Desc", true
- , "Walk Danger Desc", true
+ , 'Walk Pain Desc', 'Walk Balance Desc', true
+ , 'Walk Danger Desc', true
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'BIRM', 'Bulky1', 'TODO', 'ABERD'
  , '2010-12-31 03:15:00'::TIMESTAMP
