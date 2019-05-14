@@ -1,10 +1,8 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -38,7 +36,7 @@ public class WalkingDifficulty {
   private Boolean chestLungHeartEpilepsy = null;
 
   @JsonProperty("otherDescription")
-  @Size(max = 255)
+  @Size(max = 2000)
   private String otherDescription = null;
 
   @JsonProperty("walkingAids")
