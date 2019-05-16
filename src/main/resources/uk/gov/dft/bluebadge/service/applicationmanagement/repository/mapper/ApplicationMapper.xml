@@ -16,6 +16,8 @@
           nino, dob, gender_code,
           holder_name_at_birth, eligibility_code, eligibility_conditions,
           benefit_is_indefinite, benefit_expiry_date, walk_other_desc,
+          walk_pain_desc, walk_balance_desc, walk_balance_health_prof_falls,
+          walk_danger_desc, walk_danger_chest_lung_heart,
           walk_length_code, walk_speed_code, arms_driving_freq,
           arms_is_adapted_vehicle, arms_adapted_veh_desc, blind_registered_at_la_code,
           local_authority_code, bulky_equipment_other_desc, application_status, breathlessness_other_desc
@@ -31,6 +33,8 @@
           #{nino}, #{dob}, #{genderCode},
           #{holderNameAtBirth}, #{eligibilityCode}, #{eligibilityConditions},
           #{benefitIsIndefinite}, #{benefitExpiryDate}, #{walkOtherDesc},
+          #{walkPainDesc}, #{walkBalanceDesc}, #{walkBalanceHealthProdForFall},
+          #{walkDangerDesc}, #{walkDangerChestLungHeartEpilepsy},
           #{walkLengthCode}, #{walkSpeedCode}, #{armsDrivingFreq},
           #{armsIsAdaptedVehicle}, #{armsAdaptedVehDesc}, #{blindRegisteredAtLaCode},
           #{localAuthorityCode}, #{bulkyEquipmentOtherDesc}, #{applicationStatus}, #{breathlessnessOtherDesc}
@@ -228,6 +232,11 @@
         <result column="eligibility_conditions" property="eligibilityConditions" />
         <result column="benefit_is_indefinite" property="benefitIsIndefinite" />
         <result column="benefit_expiry_date" property="benefitExpiryDate" />
+        <result column="walk_pain_desc" property="walkPainDesc" />
+        <result column="walk_balance_desc" property="walkBalanceDesc" />
+        <result column="walk_balance_health_prof_falls" property="walkBalanceHealthProdForFall" />
+        <result column="walk_danger_desc" property="walkDangerDesc" />
+        <result column="walk_danger_chest_lung_heart" property="walkDangerChestLungHeartEpilepsy" />
         <result column="walk_other_desc" property="walkOtherDesc" />
         <result column="walk_length_code" property="walkLengthCode" />
         <result column="walk_speed_code" property="walkSpeedCode" />
@@ -292,6 +301,11 @@
         , a.eligibility_conditions
         , a.benefit_is_indefinite
         , a.benefit_expiry_date
+        , a.walk_pain_desc
+        , a.walk_balance_desc
+        , a.walk_balance_health_prof_falls
+        , a.walk_danger_desc
+        , a.walk_danger_chest_lung_heart
         , a.walk_other_desc
         , a.walk_length_code
         , a.walk_speed_code
@@ -508,6 +522,11 @@
           	eligibility_conditions = null,
           	benefit_is_indefinite = null,
           	benefit_expiry_date = null,
+            walk_pain_desc = null,
+            walk_balance_desc = null,
+            walk_balance_health_prof_falls = null,
+            walk_danger_desc = null,
+            walk_danger_chest_lung_heart = null,
           	walk_other_desc = null,
           	walk_length_code = null,
           	walk_speed_code = null,

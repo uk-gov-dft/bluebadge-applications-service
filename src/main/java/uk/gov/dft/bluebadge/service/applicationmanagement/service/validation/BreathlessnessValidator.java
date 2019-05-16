@@ -35,7 +35,6 @@ class BreathlessnessValidator extends AbstractValidator {
               KEY_ELI_WALKING_BREATHLESSNESS_TYPES,
               NOT_VALID,
               "For BREATHLESSNESS you must select BREATH as on of the Walking difficulty types");
-          return;
         }
       } else {
         if (null == walkingDifficulty.getBreathlessness()
@@ -45,13 +44,10 @@ class BreathlessnessValidator extends AbstractValidator {
               KEY_ELI_WALKING_BREATHLESSNESS_TYPES,
               NOT_VALID,
               "Must have at least 1 BREATHLESSNESS type code if eligibility is WALKDIFF and BREATHLESSNESS is selected.");
-          return;
         } else {
           validateBreathlessnessOtherDescription(app, errors);
         }
       }
-
-      return;
     }
   }
 

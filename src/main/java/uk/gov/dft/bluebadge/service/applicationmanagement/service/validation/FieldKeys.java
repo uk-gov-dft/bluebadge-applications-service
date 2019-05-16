@@ -20,6 +20,11 @@ class FieldKeys {
   static final String KEY_ELI_ARMS_VEH_IS_ADAPTED = KEY_ELI_ARMS + ".isAdaptedVehicle";
   static final String KEY_ELI_WALKING = KEY_ELIGIBILITY + ".walkingDifficulty";
   static final String KEY_ELI_WALK_TYPES = KEY_ELI_WALKING + ".typeCodes";
+  static final String KEY_ELI_WALK_PAIN_DESC = KEY_ELI_WALKING + ".painDescription";
+  static final String KEY_ELI_WALK_BALANCE_DESC = KEY_ELI_WALKING + ".balanceDescription";
+  static final String KEY_ELI_WALK_BALANCE_FALLS = KEY_ELI_WALKING + ".healthProfessionsForFalls";
+  static final String KEY_ELI_WALK_DANGER_DESC = KEY_ELI_WALKING + ".dangerousDescription";
+  static final String KEY_ELI_WALK_DANGER_CONDITIONS = KEY_ELI_WALKING + ".chestLungHeartEpilepsy";
   static final String KEY_ELI_WALK_OTHER_DESC = KEY_ELI_WALKING + ".otherDescription";
   static final String KEY_ELI_WALKING_BREATHLESSNESS = KEY_ELI_WALKING + ".breathlessness";
   static final String KEY_ELI_WALKING_BREATHLESSNESS_TYPES =

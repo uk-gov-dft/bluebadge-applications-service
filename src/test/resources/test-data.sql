@@ -92,6 +92,11 @@ CREATE TABLE applicationmanagement_unittest.application (
     eligibility_conditions character varying(100),
     benefit_is_indefinite boolean,
     benefit_expiry_date date,
+    walk_pain_desc VARCHAR(2000),
+    walk_balance_desc VARCHAR(2000),
+    walk_balance_health_prof_falls BOOLEAN,
+    walk_danger_desc VARCHAR(2000),
+    walk_danger_chest_lung_heart BOOLEAN,
     walk_other_desc character varying(100),
     breathlessness_other_desc character varying(100),
     walk_length_code character varying(10),
@@ -187,6 +192,8 @@ INSERT INTO applicationmanagement_unittest.application(
  , contact_email_address, org_is_charity, org_charity_no, no_of_badges, nino
  , dob, gender_code, holder_name_at_birth, eligibility_code, eligibility_conditions
  , benefit_is_indefinite, benefit_expiry_date, walk_other_desc, breathlessness_other_desc, walk_length_code
+ , walk_pain_desc, walk_balance_desc, walk_balance_health_prof_falls
+ , walk_danger_desc, walk_danger_chest_lung_heart
  , walk_speed_code, arms_driving_freq, arms_is_adapted_vehicle, arms_adapted_veh_desc
  , blind_registered_at_la_code, bulky_equipment_other_desc, application_status, transferred_la_from_code
  , transferred_from_la_datetime
@@ -197,6 +204,8 @@ INSERT INTO applicationmanagement_unittest.application(
  , 'Contact Email Address', true, 'Org Charity No', 1, 'Nino'
  , '1970-05-29'::DATE, 'MALE', 'Holder Name At Birth', 'DLA', 'Eligibility Conditions'
  , true, '2020-01-31'::DATE, 'Walk Other Desc', 'Breathlessness Other Desc', 'LESSMIN'
+ , 'Walk Pain Desc', 'Walk Balance Desc', true
+ , 'Walk Danger Desc', true
  , 'SLOW', 'Arms Driving Freq', true, 'Arms Adapted Veh Desc'
  , 'BIRM', 'Bulky1', 'TODO', 'ABERD'
  , '2010-12-31 03:15:00'::TIMESTAMP

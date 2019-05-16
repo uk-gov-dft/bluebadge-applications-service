@@ -46,6 +46,11 @@ public class ApplicationEntity implements Serializable {
   private String eligibilityConditions;
   private Boolean benefitIsIndefinite;
   private LocalDate benefitExpiryDate;
+  private String walkPainDesc;
+  private String walkBalanceDesc;
+  private Boolean walkBalanceHealthProdForFall;
+  private String walkDangerDesc;
+  private Boolean walkDangerChestLungHeartEpilepsy;
   private String walkOtherDesc;
   private String walkLengthCode;
   private String walkSpeedCode;

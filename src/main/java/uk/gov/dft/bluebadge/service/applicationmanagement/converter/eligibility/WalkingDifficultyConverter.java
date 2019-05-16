@@ -54,6 +54,12 @@ public class WalkingDifficultyConverter implements ApplicationBiConverter {
           WalkingLengthOfTimeCodeField.fromValue(entity.getWalkLengthCode()));
       walkingDifficulty.setWalkingSpeedCode(
           WalkingSpeedCodeField.fromValue(entity.getWalkSpeedCode()));
+
+      walkingDifficulty.setPainDescription(entity.getWalkPainDesc());
+      walkingDifficulty.setBalanceDescription(entity.getWalkBalanceDesc());
+      walkingDifficulty.setHealthProfessionsForFalls(entity.getWalkBalanceHealthProdForFall());
+      walkingDifficulty.setDangerousDescription(entity.getWalkDangerDesc());
+      walkingDifficulty.setChestLungHeartEpilepsy(entity.getWalkDangerChestLungHeartEpilepsy());
       walkingDifficulty.setOtherDescription(entity.getWalkOtherDesc());
 
       // Lists
@@ -86,6 +92,12 @@ public class WalkingDifficultyConverter implements ApplicationBiConverter {
       if (null != walkingDifficulty.getWalkingSpeedCode()) {
         entity.setWalkSpeedCode(walkingDifficulty.getWalkingSpeedCode().name());
       }
+
+      entity.setWalkPainDesc(walkingDifficulty.getPainDescription());
+      entity.setWalkBalanceDesc(walkingDifficulty.getBalanceDescription());
+      entity.setWalkBalanceHealthProdForFall(walkingDifficulty.getHealthProfessionsForFalls());
+      entity.setWalkDangerDesc(walkingDifficulty.getDangerousDescription());
+      entity.setWalkDangerChestLungHeartEpilepsy(walkingDifficulty.getChestLungHeartEpilepsy());
       entity.setWalkOtherDesc(walkingDifficulty.getOtherDescription());
 
       // Lists

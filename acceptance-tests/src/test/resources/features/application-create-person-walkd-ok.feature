@@ -48,6 +48,8 @@ Feature: Verify Create person walkd ok
       typeCodes: [
         'BALANCE', 'SOMELSE', 'BREATH'
       ],
+      balanceDescription: 'balance description',
+      healthProfessionsForFalls: true,
       otherDescription: 'other description',
       walkingAids: [
         {

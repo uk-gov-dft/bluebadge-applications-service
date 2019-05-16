@@ -80,7 +80,7 @@ public class ApplicationFixture extends AbstractValidator {
     String VEH_USAGE = "veh usage";
     VehicleTypeCodeField VEH_TYPE = VehicleTypeCodeField.CAR;
     WalkingDifficultyTypeCodeField WALKING_DIFFICULTY_TYPE_CODE_FIELD =
-        WalkingDifficultyTypeCodeField.BALANCE;
+        WalkingDifficultyTypeCodeField.SOMELSE;
     List<WalkingDifficultyTypeCodeField> WALKING_DIFFICULTY_TYPE_CODES =
         Lists.newArrayList(WALKING_DIFFICULTY_TYPE_CODE_FIELD);
     WalkingLengthOfTimeCodeField WALKING_LENGTH_OF_TIME_CODE_FIELD =
