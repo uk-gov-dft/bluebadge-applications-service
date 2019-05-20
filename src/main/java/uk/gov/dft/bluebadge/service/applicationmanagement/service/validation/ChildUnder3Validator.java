@@ -18,7 +18,6 @@ public class ChildUnder3Validator extends AbstractValidator {
   public void validate(Application app, Errors errors) {
 
     if (!exists(app, KEY_ELI_CHILD3)) {
-      errors.rejectValue(KEY_ELI_CHILD3, NOT_VALID, "Must be specified.");
       return;
     }
 
@@ -26,7 +25,7 @@ public class ChildUnder3Validator extends AbstractValidator {
 
     // Following test is because of deprecated non list version of type code.
     // When deprecation complete, set not null on bean and just check size.
-    if (null == childUnder3.getBulkyMedicalEquipmentTypeCode()
+    if (!app.isRenewal() && null == childUnder3.getBulkyMedicalEquipmentTypeCode()
         && (null == childUnder3.getBulkyMedicalEquipmentTypeCodes()
             || childUnder3.getBulkyMedicalEquipmentTypeCodes().isEmpty())) {
       errors.rejectValue(

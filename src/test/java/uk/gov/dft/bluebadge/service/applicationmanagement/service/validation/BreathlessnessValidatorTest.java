@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALKING_BREATHLESSNESS_TYPES;
 
 import org.junit.Test;
+import org.springframework.validation.BeanPropertyBindingResult;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
 public class BreathlessnessValidatorTest extends ApplicationFixture {
@@ -12,26 +14,28 @@ public class BreathlessnessValidatorTest extends ApplicationFixture {
   @Test
   public void validate() {
     // Invalid first - Not BREATH Walking Difficulty but want to set BREATHLESSNESS
-    reset(
+    Application app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
             .addBreathlessness()
-            .build());
+            .build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     breathlessnessValidator.validate(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(KEY_ELI_WALKING_BREATHLESSNESS_TYPES));
 
     // Valid second
-    reset(
+    app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
             .setBreathOnWalkingEligibility()
             .addBreathlessness()
-            .build());
+            .build();
+    errors = getNewBindingResult(app);
     breathlessnessValidator.validate(app, errors);
     assertEquals(0, errors.getErrorCount());
   }
@@ -39,36 +43,39 @@ public class BreathlessnessValidatorTest extends ApplicationFixture {
   @Test
   public void validateBreathlessnessOtherDescription() {
     // Valid first
-    reset(
+    Application app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
             .addBreathlessnessOther()
-            .build());
+            .build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     breathlessnessValidator.validateBreathlessnessOtherDescription(app, errors);
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BREATHLESSNESS_OTHER_DESC));
 
     // Invalid second
-    reset(
+    app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
             .addBreathlessnessOtherDescriptionOnly()
-            .build());
+            .build();
+    errors = getNewBindingResult(app);
     breathlessnessValidator.validateBreathlessnessOtherDescription(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BREATHLESSNESS_OTHER_DESC));
 
-    reset(
+    app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
             .addBreathlessnessOther()
-            .build());
+            .build();
+    errors = getNewBindingResult(app);
     app.getEligibility().getWalkingDifficulty().getBreathlessness().setOtherDescription("");
     breathlessnessValidator.validateBreathlessnessOtherDescription(app, errors);
     assertEquals(1, errors.getErrorCount());

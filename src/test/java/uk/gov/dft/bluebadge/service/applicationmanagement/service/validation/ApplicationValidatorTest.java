@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.validation.BeanPropertyBindingResult;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.PartyTypeCodeField;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
@@ -31,7 +33,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void checkRequiredObjectsToContinueValid() {
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // Given party type, party, and contact are ok, then ok to validate.
     assertTrue(applicationValidator.hasParty(errors));
@@ -40,8 +43,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void checkRequiredObjectsExistToContinueValidation_missing_party() {
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
-
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     errors.rejectValue(FieldKeys.KEY_PARTY, "");
 
     // Given the check failed ensure main validate method does nothing
@@ -52,7 +55,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void checkRequiredObjectsExistToContinueValidation_invalid_party_type() {
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // Given party type failed bean validation can't validate further
     errors.rejectValue(FieldKeys.KEY_PARTY_TYPE, "Invalid");
@@ -63,7 +67,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateLocalAuthority() {
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // Given KEY_LA valid, no errors.
     applicationValidator.validateLocalAuthority(app, errors);
@@ -77,7 +82,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateDob() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build());
+    Application app =getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // When dob valid, no errors added.
     applicationValidator.validateDob(app, errors);
@@ -91,7 +97,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void validatePerson() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build());
+    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // When person valid, no errors added.
     applicationValidator.validatePerson(app, errors);
@@ -99,7 +106,7 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
     // When Person, organisation must be null
     addOrganisation(app);
-    reset();
+    errors = getNewBindingResult(app);
     applicationValidator.validatePerson(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ORGANISATION));
@@ -109,7 +116,7 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
     // When Person, eligibility required
     app.setEligibility(null);
-    reset();
+    errors = getNewBindingResult(app);
     applicationValidator.validatePerson(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELIGIBILITY));
@@ -119,7 +126,7 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
     // When Person, person required
     app.getParty().setPerson(null);
-    reset();
+    errors = getNewBindingResult(app);
     applicationValidator.validatePerson(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_PERSON));
@@ -127,7 +134,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateOrganisation() {
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // Valid
     applicationValidator.validateOrganisation(app, errors);
@@ -144,7 +152,7 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
     // Cannot have person object
     addPerson(app);
-    reset();
+    errors = getNewBindingResult(app);
     applicationValidator.validateOrganisation(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_PERSON));
@@ -154,7 +162,7 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
     // Cannot have eligibility object
     setEligibilityPip(app);
-    reset();
+    errors = getNewBindingResult(app);
     applicationValidator.validateOrganisation(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELIGIBILITY));
@@ -164,7 +172,7 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
     // Cannot have artifacts
     app.setArtifacts(new ArrayList<>());
-    reset();
+    errors = getNewBindingResult(app);
     applicationValidator.validateOrganisation(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ARTIFACTS));
@@ -172,12 +180,12 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateCharity() {
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // Cannot have charity number if not charity
     app.getParty().getOrganisation().setIsCharity(false);
     app.getParty().getOrganisation().setCharityNumber(ValidValues.CHARITY_NO);
-    reset();
     applicationValidator.validateCharity(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ORG_CHARITY_NO));
@@ -186,13 +194,13 @@ public class ApplicationValidatorTest extends ApplicationFixture {
   @Test
   public void validate() {
     // Couple of runs through the whole validate to check safe for null pointers.
-    reset(getApplicationBuilder().addBaseApplication().build());
-    applicationValidator.validate(app, errors);
+    Application app = getApplicationBuilder().addBaseApplication().build();
+    applicationValidator.validate(app, getNewBindingResult(app));
 
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build());
-    applicationValidator.validate(app, errors);
+    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    applicationValidator.validate(app, getNewBindingResult(app));
 
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
-    applicationValidator.validate(app, errors);
+    app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    applicationValidator.validate(app, getNewBindingResult(app));
   }
 }

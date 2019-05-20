@@ -134,14 +134,6 @@ public class ApplicationService {
     }
     searchParams.setAuthorityCode(userAuthorityCode);
 
-    if (StringUtils.isNotBlank(searchParams.getApplicationTypeCodeStr())
-        && searchParams.getApplicationTypeCode() == null) {
-      Error error = new Error();
-      error.setMessage("Invalid applicationTypeCode: " + searchParams.getApplicationTypeCodeStr());
-      error.setReason("applicationTypeCode");
-      throw new BadRequestException(error);
-    }
-
     return new ApplicationSummaryConverter()
         .convertToModelList(
             repository.findApplications(

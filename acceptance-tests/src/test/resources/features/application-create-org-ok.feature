@@ -15,46 +15,46 @@ Feature: Verify Create org ok
     * def application =
     """
     {
-  applicationId: '',
-  applicationTypeCode: 'NEW',
-  localAuthorityCode: 'ABERD',
-  paymentTaken: true,
-  submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'KKKJJJ',
-  party: {
-    typeCode: 'ORG',
-    contact: {
-      fullName: 'Mabel Jones',
-      buildingStreet: '65 Basil Chambers',
-      line2: 'Northern Quarter',
-      townCity: 'Manchester',
-      postCode: 'SW1P 4DR',
-      primaryPhoneNumber: 1751 54771,
-      secondaryPhoneNumber: ' 0 7 9 707 7 7111 ',
-      emailAddress: 'nobody@blancmange.com'
-    },
-    organisation: {
-      badgeHolderName: 'TestDeleteMe',
-      isCharity: true,
-      charityNumber: '12345',
-      vehicles: [
-        {
-          registrationNumber: 'VK61VZZ',
-          typeCode: 'CAR',
-          usageFrequency: 'Daily'
+      applicationId: '',
+      applicationTypeCode: 'NEW',
+      localAuthorityCode: 'ABERD',
+      paymentTaken: true,
+      submissionDate: '2018-12-25T12:30:45Z',
+      existingBadgeNumber: 'KKKJJJ',
+      party: {
+        typeCode: 'ORG',
+        contact: {
+          fullName: 'Mabel Jones',
+          buildingStreet: '65 Basil Chambers',
+          line2: 'Northern Quarter',
+          townCity: 'Manchester',
+          postCode: 'SW1P 4DR',
+          primaryPhoneNumber: 1751 54771,
+          secondaryPhoneNumber: ' 0 7 9 707 7 7111 ',
+          emailAddress: 'nobody@blancmange.com'
         },
-        {
-          registrationNumber: 'VK62VZZ',
-          typeCode: 'CAR',
-          usageFrequency: 'Daily'
+        organisation: {
+          badgeHolderName: 'TestDeleteMe',
+          isCharity: true,
+          charityNumber: '12345',
+          vehicles: [
+            {
+              registrationNumber: 'VK61VZZ',
+              typeCode: 'CAR',
+              usageFrequency: 'Daily'
+            },
+            {
+              registrationNumber: 'VK62VZZ',
+              typeCode: 'CAR',
+              usageFrequency: 'Daily'
+            }
+          ],
+          numberOfBadges: 1
         }
-      ],
-      numberOfBadges: 1
+      },
+      paymentTaken: true,
+      paymentReference: "paymentref"
     }
-  },
-  paymentTaken: true,
-  paymentReference: "paymentref"
-}
     """
 
     Given path 'applications'

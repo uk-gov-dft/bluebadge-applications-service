@@ -32,7 +32,7 @@ public class BenefitConverter implements ApplicationBiConverter {
     }
     if (null != model.getEligibility().getBenefit()) {
       entity.setBenefitExpiryDate(model.getEligibility().getBenefit().getExpiryDate());
-      entity.setBenefitIsIndefinite(model.getEligibility().getBenefit().isIsIndefinite());
+      entity.setBenefitIsIndefinite(model.getEligibility().getBenefit().getIsIndefinite());
     }
   }
 }

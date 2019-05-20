@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import org.springframework.validation.BeanPropertyBindingResult;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
 public class AbstractValidatorTest extends ApplicationFixture {
@@ -12,8 +14,8 @@ public class AbstractValidatorTest extends ApplicationFixture {
   @Test
   public void rejectIfExistsTest() {
     // Given object person does not exist and organisation does
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
-
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     // When reject person if exists
     rejectIfExists(app, errors, FieldKeys.KEY_PERSON, "");
 
@@ -29,28 +31,28 @@ public class AbstractValidatorTest extends ApplicationFixture {
 
   @Test
   public void rejectIfEmptyOrWhitespaceTest() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().build());
-
+    Application app = getApplicationBuilder().addBaseApplication().setPerson().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     // When not empty, no error
     rejectIfEmptyOrWhitespace(errors, FieldKeys.KEY_PERSON_DOB, "");
 
     // When empty error
     app.getParty().getPerson().setBadgeHolderName("");
-    reset();
+    errors = getNewBindingResult(app);
     rejectIfEmptyOrWhitespace(errors, "party.person.badgeHolderName", "");
     assertEquals(1, errors.getFieldErrorCount("party.person.badgeHolderName"));
 
     // When null error
     app.getParty().getPerson().setBadgeHolderName(null);
-    reset();
+    errors = getNewBindingResult(app);
     rejectIfEmptyOrWhitespace(errors, "party.person.badgeHolderName", "");
     assertEquals(1, errors.getFieldErrorCount("party.person.badgeHolderName"));
   }
 
   @Test
   public void hasNoFieldErrors_Test() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().build());
-
+    Application app = getApplicationBuilder().addBaseApplication().setPerson().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     assertTrue(hasNoFieldErrors(errors, FieldKeys.KEY_PERSON));
 
     errors.rejectValue(FieldKeys.KEY_PERSON, "ABC");
@@ -59,8 +61,8 @@ public class AbstractValidatorTest extends ApplicationFixture {
 
   @Test
   public void hasFieldErrors_Test() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().build());
-
+    Application app = getApplicationBuilder().addBaseApplication().setPerson().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     assertFalse(hasFieldErrors(errors, FieldKeys.KEY_PERSON));
 
     errors.rejectValue(FieldKeys.KEY_PERSON, "ABC");
@@ -69,7 +71,7 @@ public class AbstractValidatorTest extends ApplicationFixture {
 
   @Test
   public void exists_Test() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().build());
+    Application app = getApplicationBuilder().addBaseApplication().setPerson().build();
 
     assertTrue(exists(app, FieldKeys.KEY_PERSON));
     assertFalse(exists(app, FieldKeys.KEY_ORGANISATION));
@@ -77,7 +79,7 @@ public class AbstractValidatorTest extends ApplicationFixture {
 
   @Test
   public void notExists_Test() {
-    reset(getApplicationBuilder().addBaseApplication().setOrganisation().build());
+    Application app = getApplicationBuilder().addBaseApplication().setOrganisation().build();
 
     assertTrue(notExists(app, FieldKeys.KEY_PERSON));
     assertFalse(notExists(app, FieldKeys.KEY_ORGANISATION));
@@ -85,15 +87,13 @@ public class AbstractValidatorTest extends ApplicationFixture {
 
   @Test
   public void hasText_Test() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().build());
+    Application app = getApplicationBuilder().addBaseApplication().setPerson().build();
     assertTrue(hasText(app, "party.person.badgeHolderName"));
 
     app.getParty().getPerson().setBadgeHolderName("");
-    reset();
     assertFalse(hasText(app, "party.person.badgeHolderName"));
 
     app.getParty().getPerson().setBadgeHolderName(null);
-    reset();
     assertFalse(hasText(app, "party.person.badgeHolderName"));
   }
 }

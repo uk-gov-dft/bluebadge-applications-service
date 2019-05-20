@@ -1,7 +1,5 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -13,61 +11,33 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Data
 public class WalkingDifficulty {
-  @JsonProperty("typeCodes")
-  @Valid
-  private List<WalkingDifficultyTypeCodeField> typeCodes = null;
 
-  @JsonProperty("painDescription")
+  @Valid private List<WalkingDifficultyTypeCodeField> typeCodes;
+
   @Size(max = 2000)
-  private String painDescription = null;
+  private String painDescription;
 
-  @JsonProperty("balanceDescription")
   @Size(max = 2000)
-  private String balanceDescription = null;
+  private String balanceDescription;
 
-  @JsonProperty("healthProfessionsForFalls")
-  private Boolean healthProfessionsForFalls = null;
+  private Boolean healthProfessionsForFalls;
 
-  @JsonProperty("dangerousDescription")
   @Size(max = 2000)
-  private String dangerousDescription = null;
+  private String dangerousDescription;
 
-  @JsonProperty("chestLungHeartEpilepsy")
-  private Boolean chestLungHeartEpilepsy = null;
+  private Boolean chestLungHeartEpilepsy;
 
-  @JsonProperty("otherDescription")
   @Size(max = 2000)
-  private String otherDescription = null;
+  private String otherDescription;
 
-  @JsonProperty("walkingAids")
-  @Valid
-  private List<WalkingAid> walkingAids = null;
+  @Valid private List<WalkingAid> walkingAids;
 
-  @JsonProperty("walkingLengthOfTimeCode")
-  @NotNull
-  private WalkingLengthOfTimeCodeField walkingLengthOfTimeCode = null;
+  private WalkingLengthOfTimeCodeField walkingLengthOfTimeCode;
 
-  @JsonProperty("walkingSpeedCode")
-  @Valid
-  private WalkingSpeedCodeField walkingSpeedCode = null;
+  @Valid private WalkingSpeedCodeField walkingSpeedCode;
 
-  @JsonProperty("treatments")
-  @Valid
-  private List<Treatment> treatments = null;
+  @Valid private List<Treatment> treatments;
 
-  @JsonProperty("medications")
-  @Valid
-  private List<Medication> medications = null;
-
-  @JsonProperty("breathlessness")
-  @Valid
-  private Breathlessness breathlessness = null;
-
-  public WalkingDifficulty addTypeCodesItem(WalkingDifficultyTypeCodeField typeCodesItem) {
-    if (this.typeCodes == null) {
-      this.typeCodes = new ArrayList<>();
-    }
-    this.typeCodes.add(typeCodesItem);
-    return this;
-  }
+  @Valid private List<Medication> medications;
+  @Valid private Breathlessness breathlessness;
 }

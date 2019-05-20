@@ -22,7 +22,7 @@ public class BenefitConverterTest extends ApplicationFixture {
 
     Benefit benefit = model.getEligibility().getBenefit();
     assertEquals(ValidValues.BENEFIT_EXPIRY, benefit.getExpiryDate());
-    assertEquals(ValidValues.BENEFIT_IS_INDEFINITE, benefit.isIsIndefinite());
+    assertEquals(ValidValues.BENEFIT_IS_INDEFINITE, benefit.getIsIndefinite());
   }
 
   @Test

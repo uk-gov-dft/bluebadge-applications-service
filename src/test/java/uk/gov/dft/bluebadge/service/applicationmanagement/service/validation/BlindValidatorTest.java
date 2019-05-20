@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.validation.BeanPropertyBindingResult;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 import uk.gov.dft.bluebadge.service.applicationmanagement.client.referencedataservice.ReferenceDataApiClient;
 import uk.gov.dft.bluebadge.service.applicationmanagement.service.referencedata.ReferenceDataService;
@@ -24,12 +26,14 @@ public class BlindValidatorTest extends ApplicationFixture {
 
   @Test
   public void validate() {
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build());
+    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     validator.validate(app, errors);
     assertEquals(0, errors.getErrorCount());
 
     app.getEligibility().getBlind().setRegisteredAtLaId("ABC");
-    reset();
+
+    errors = getNewBindingResult(app);
     validator.validate(app, errors);
     assertEquals(1, errors.getErrorCount());
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_BLIND_REG_AT_LA));
@@ -37,12 +41,13 @@ public class BlindValidatorTest extends ApplicationFixture {
 
   @Test
   public void validate_nulls() {
-    reset(
+    Application app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityChildVehicle()
-            .build());
+            .build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     validator.validate(app, errors);
   }
 }

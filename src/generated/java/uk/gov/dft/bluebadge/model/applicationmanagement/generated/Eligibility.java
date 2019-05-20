@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 
-/** Eligibility */
-@Validated
 public class Eligibility {
   @JsonProperty("typeCode")
   private EligibilityCodeField typeCode = null;
@@ -20,6 +18,7 @@ public class Eligibility {
   private String descriptionOfConditions = null;
 
   @JsonProperty("benefit")
+  @Valid
   private Benefit benefit = null;
 
   @JsonProperty("walkingDifficulty")
@@ -90,7 +89,6 @@ public class Eligibility {
    * @return benefit
    */
   @ApiModelProperty(value = "")
-  @Valid
   public Benefit getBenefit() {
     return benefit;
   }

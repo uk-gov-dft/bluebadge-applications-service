@@ -252,7 +252,7 @@ public class ApplicationRepositoryIntTest extends ApplicationContextTests {
     FindApplicationQueryParams params =
         FindApplicationQueryParams.builder()
             .authorityCode("ABERD")
-            .applicationTypeCode(ApplicationTypeCodeField.CANCEL.name())
+            .applicationTypeCode(ApplicationTypeCodeField.CANCEL)
             .build();
     List<ApplicationSummaryEntity> results = applicationRepository.findApplications(params);
 

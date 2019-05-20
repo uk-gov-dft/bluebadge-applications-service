@@ -160,8 +160,7 @@ Feature: Verify find person
     And param applicationTypeCode = 'NEWWRONG'
     When method GET
     Then status 400
-    And match $.error.message contains 'Invalid applicationTypeCode: NEWWRONG'
-    And match $.error.reason contains 'applicationTypeCode'
+    And match $.error.errors contains {field:"applicationTypeCode",reason:"#notnull",message:"typeMismatch.findApplicationQueryParams.applicationTypeCode",location:null,locationType:null}
 
   Scenario: Verify invalid paging params (pageNum) results in 400
     Given path 'applications'

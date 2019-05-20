@@ -3,6 +3,7 @@ package uk.gov.dft.bluebadge.service.applicationmanagement;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import java.time.Clock;
 import java.time.Instant;
@@ -128,9 +129,6 @@ public class ApplicationFixture extends AbstractValidator {
     String BREATHLESSNESS_OTHER_DESC = "Breathlessness Other Desc";
     String DESCRIPTION_OF_CONDITIONS = "Description of Conditions";
   }
-
-  protected BeanPropertyBindingResult errors;
-  protected Application app;
 
   protected ApplicationBuilder getApplicationBuilder() {
     return new ApplicationBuilder();
@@ -297,7 +295,7 @@ public class ApplicationFixture extends AbstractValidator {
     application
         .getEligibility()
         .getWalkingDifficulty()
-        .addTypeCodesItem(WalkingDifficultyTypeCodeField.BREATH);
+        .setTypeCodes(ImmutableList.of(WalkingDifficultyTypeCodeField.BREATH));
   }
 
   private static void addBreathlessness(Application application) {
@@ -320,13 +318,8 @@ public class ApplicationFixture extends AbstractValidator {
     application.getEligibility().getWalkingDifficulty().setBreathlessness(breathlessness);
   }
 
-  protected void reset(Application application) {
-    app = application;
-    errors = new BeanPropertyBindingResult(application, "application");
-  }
-
-  protected void reset() {
-    reset(app);
+  protected BeanPropertyBindingResult getNewBindingResult(Application app){
+    return new BeanPropertyBindingResult(app, "application");
   }
 
   protected class ApplicationBuilder {

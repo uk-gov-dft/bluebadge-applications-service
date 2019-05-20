@@ -126,22 +126,6 @@ public class ApplicationServiceTest extends ApplicationFixture {
     // Then Bad Request thrown.
   }
 
-  @Test(expected = BadRequestException.class)
-  public void findApplication_givenInvalidApplicationTypeCode() {
-    // Given user with no local authority.
-    when(securityUtils.getCurrentLocalAuthorityShortCode()).thenReturn("ABERD");
-
-    // When find.
-    FindApplicationQueryParams queryParams =
-        FindApplicationQueryParams.builder()
-            .applicationTypeCode("INVALID_APPLICATION_TYPE_CODE")
-            .build();
-    PagingParams pagingParams = new PagingParams();
-    service.find(queryParams, pagingParams);
-
-    // Then Bad Request thrown.
-  }
-
   @Test
   public void findApplication_givenWNullsValid() {
     // Given a search for applications with valid LA and no other criteria.
@@ -172,7 +156,7 @@ public class ApplicationServiceTest extends ApplicationFixture {
             .postcode("postcode")
             .from(from.toInstant())
             .to(to.toInstant())
-            .applicationTypeCode("NEW")
+            .applicationTypeCode(ApplicationTypeCodeField.NEW)
             .build();
     PagingParams pagingParams = new PagingParams();
     PagedResult<ApplicationSummary> results = service.find(queryParams, pagingParams);

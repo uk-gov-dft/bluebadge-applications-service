@@ -15,102 +15,102 @@ Feature: Verify Create person invalid
     * def application =
     """
     {
-  applicationId: '',
-  applicationTypeCode: 'NEW',
-  localAuthorityCode: '',
-  paymentTaken: ,
-  submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: '',
-  party: {
-    typeCode: 'PERSON',
-    contact: {
-      fullName: 'Mabel Jones',
-      buildingStreet: '65 Basil Chambers',
-      line2: 'Northern Quarter',
-      townCity: 'Manchester',
-      postCode: 'zz11 1zz',
-      primaryPhoneNumber: '01234123123somewhattoolong',
-      secondaryPhoneNumber: '07970777111',
-      emailAddress: 'bob bob@invalidemail.com'
-    },
-    person: {
-      badgeHolderName: 'PersonDeleteMe',
-      nino: 'NS123456A-1234',
-      dob: '1970-05-29',
-      nameAtBirth: 'John Smith',
-      genderCode: 'FEMALE'
-    },
-    organisation: {
-      badgeHolderName: 'TestDeleteMe',
-      isCharity: false,
-      charityNumber: '12345',
-      vehicles: [
-        {
-          registrationNumber: 'VK61VZZ',
-          typeCode: 'CAR',
-          usageFrequency: 'Daily'
+      applicationId: '',
+      applicationTypeCode: 'NEW',
+      localAuthorityCode: '',
+      paymentTaken: ,
+      submissionDate: '2018-12-25T12:30:45Z',
+      existingBadgeNumber: '',
+      party: {
+        typeCode: 'PERSON',
+        contact: {
+          fullName: 'Mabel Jones',
+          buildingStreet: '65 Basil Chambers',
+          line2: 'Northern Quarter',
+          townCity: 'Manchester',
+          postCode: 'zz11 1zz',
+          primaryPhoneNumber: '01234123123somewhattoolong',
+          secondaryPhoneNumber: '07970777111',
+          emailAddress: 'bob bob@invalidemail.com'
+        },
+        person: {
+          badgeHolderName: 'PersonDeleteMe',
+          nino: 'NS123456A-1234',
+          dob: '1970-05-29',
+          nameAtBirth: 'John Smith',
+          genderCode: 'FEMALE'
+        },
+        organisation: {
+          badgeHolderName: 'TestDeleteMe',
+          isCharity: false,
+          charityNumber: '12345',
+          vehicles: [
+            {
+              registrationNumber: 'VK61VZZ',
+              typeCode: 'CAR',
+              usageFrequency: 'Daily'
+            }
+          ],
+          numberOfBadges: 1
         }
-      ],
-      numberOfBadges: 1
-    }
-  },
-  eligibility: {
-    typeCode: 'PIP',
-    descriptionOfConditions: 'Freetext',
-    benefit: {
-      isIndefinite: true,
-      expiryDate: '2022-03-30'
-    },
-    walkingDifficulty: {
-      typeCodes: [
-        'PAIN'
-      ],
-      otherDescription: 'string',
-      walkingAids: [
-        {
-          description: 'string',
-          usage: 'string',
-          howProvidedCode: 'PRIVATE'
-        }
-      ],
-      walkingLengthOfTimeCode: 'CANTWALK',
-      walkingSpeedCode: 'SLOW',
-      treatments: [
-        {
-          description: 'string',
-          time: '6 months'
-        }
-      ],
-      medications: [
-        {
-          name: 'Paracetamol',
-          isPrescribed: true,
-          frequency: 'Twice daily.',
-          quantity: '1 tablet, 20mg'
-        }
-      ]
-    },
-    disabilityArms: {
-      drivingFrequency: 'string',
-      isAdaptedVehicle: true,
-      adaptedVehicleDescription: 'string'
-    },
-    healthcareProfessionals: [
-      {
-        name: 'Freetext',
-        location: 'Freetext'
-      }
-    ],
-    blind: {
-      registeredAtLaId: 'BIRM'
       },
-    childUnder3: {
-      bulkyMedicalEquipmentTypeCode: 'CAST'
-      }
-  },
-  artifacts: [
-  ]
-}
+      eligibility: {
+        typeCode: 'PIP',
+        descriptionOfConditions: 'Freetext',
+        benefit: {
+          isIndefinite: true,
+          expiryDate: '2022-03-30'
+        },
+        walkingDifficulty: {
+          typeCodes: [
+            'PAIN'
+          ],
+          otherDescription: 'string',
+          walkingAids: [
+            {
+              description: 'string',
+              usage: 'string',
+              howProvidedCode: 'PRIVATE'
+            }
+          ],
+          walkingLengthOfTimeCode: 'CANTWALK',
+          walkingSpeedCode: 'SLOW',
+          treatments: [
+            {
+              description: 'string',
+              time: '6 months'
+            }
+          ],
+          medications: [
+            {
+              name: 'Paracetamol',
+              isPrescribed: true,
+              frequency: 'Twice daily.',
+              quantity: '1 tablet, 20mg'
+            }
+          ]
+        },
+        disabilityArms: {
+          drivingFrequency: 'string',
+          isAdaptedVehicle: true,
+          adaptedVehicleDescription: 'string'
+        },
+        healthcareProfessionals: [
+          {
+            name: 'Freetext',
+            location: 'Freetext'
+          }
+        ],
+        blind: {
+          registeredAtLaId: 'BIRM'
+          },
+        childUnder3: {
+          bulkyMedicalEquipmentTypeCode: 'CAST'
+          }
+      },
+      artifacts: [
+      ]
+    }
     """
 
     Given path 'applications'

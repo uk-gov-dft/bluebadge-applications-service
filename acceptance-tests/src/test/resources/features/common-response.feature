@@ -15,34 +15,34 @@ Feature: Verify responses wrap a CommonResponse
     * def application =
     """
     {
-  applicationId: '',
-  applicationTypeCode: 'NEW',
-  localAuthorityCode: 'ABERD',
-  paymentTaken: true,
-  submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'KKKJJJ',
-  party: {
-    typeCode: 'ORG',
-    contact: {
-      fullName: 'Mabel Jones',
-      buildingStreet: '65 Basil Chambers',
-      line2: 'Northern Quarter',
-      townCity: 'Manchester',
-      postCode: 'ZZ111ZZ',
-      primaryPhoneNumber: 175154771,
-      secondaryPhoneNumber: '07970777111',
-      emailAddress: 'nobody@blancmange.com'
-    },
-    organisation: {
-      badgeHolderName: 'TestDeleteMe',
-      isCharity: true,
-      charityNumber: '12345',
-      numberOfBadges: -1
+      applicationId: '',
+      applicationTypeCode: 'NEW',
+      localAuthorityCode: 'ABERD',
+      paymentTaken: true,
+      submissionDate: '2018-12-25T12:30:45Z',
+      existingBadgeNumber: 'KKKJJJ',
+      party: {
+        typeCode: 'ORG',
+        contact: {
+          fullName: 'Mabel Jones',
+          buildingStreet: '65 Basil Chambers',
+          line2: 'Northern Quarter',
+          townCity: 'Manchester',
+          postCode: 'ZZ111ZZ',
+          primaryPhoneNumber: 175154771,
+          secondaryPhoneNumber: '07970777111',
+          emailAddress: 'nobody@blancmange.com'
+        },
+        organisation: {
+          badgeHolderName: 'TestDeleteMe',
+          isCharity: true,
+          charityNumber: '12345',
+          numberOfBadges: -1
+        }
+      },
+      paymentTaken: true,
+      paymentReference: "paymentref"
     }
-  },
-  paymentTaken: true,
-  paymentReference: "paymentref"
-}
     """
 
     Given path 'applications'
@@ -55,34 +55,34 @@ Feature: Verify responses wrap a CommonResponse
     * def application =
     """
     {
-  applicationId: '',
-  applicationTypeCode: 'NEW',
-  localAuthorityCode: 'ABERD',
-  paymentTaken: true,
-  submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: 'KKKJJJ',
-  party: {
-    typeCode: 'ORG',
-    contact: {
-      fullName: 'Mabel Jones',
-      buildingStreet: '65 Basil Chambers',
-      line2: 'Northern Quarter',
-      townCity: 'Manchester',
-      postCode: 'ZZ111ZZ',
-      primaryPhoneNumber: 175154771,
-      secondaryPhoneNumber: '07970777111',
-      emailAddress: 'nobody@blancmange.com'
-    },
-    organisation: {
-      badgeHolderName: 'TestDeleteMe',
-      isCharity: true,
-      charityNumber: '12345',
-      numberOfBadges: 'A string'
+      applicationId: '',
+      applicationTypeCode: 'NEW',
+      localAuthorityCode: 'ABERD',
+      paymentTaken: true,
+      submissionDate: '2018-12-25T12:30:45Z',
+      existingBadgeNumber: 'KKKJJJ',
+      party: {
+        typeCode: 'ORG',
+        contact: {
+          fullName: 'Mabel Jones',
+          buildingStreet: '65 Basil Chambers',
+          line2: 'Northern Quarter',
+          townCity: 'Manchester',
+          postCode: 'ZZ111ZZ',
+          primaryPhoneNumber: 175154771,
+          secondaryPhoneNumber: '07970777111',
+          emailAddress: 'nobody@blancmange.com'
+        },
+        organisation: {
+          badgeHolderName: 'TestDeleteMe',
+          isCharity: true,
+          charityNumber: '12345',
+          numberOfBadges: 'A string'
+        }
+      },
+      paymentTaken: true,
+      paymentReference: "paymentref"
     }
-  },
-  paymentTaken: true,
-  paymentReference: "paymentref"
-}
     """
 
     Given path 'applications'

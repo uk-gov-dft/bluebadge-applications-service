@@ -79,6 +79,9 @@ class EligibilityValidator extends AbstractValidator {
 
     String messagePrefix = "For eligibility type " + app.getEligibility().getTypeCode();
     if (EligibilityRules.requiresChildUnder3Object(app.getEligibility().getTypeCode())) {
+      if(!app.isRenewal()){
+        rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3, messagePrefix);
+      }
       childUnder3Validator.validate(app, errors);
     }
 
@@ -87,17 +90,23 @@ class EligibilityValidator extends AbstractValidator {
     }
 
     if (EligibilityRules.requiresDisabilityArms(app.getEligibility().getTypeCode())) {
-      rejectIfEmptyOrWhitespace(errors, KEY_ELI_ARMS, messagePrefix);
+      if (!app.isRenewal()) {
+        rejectIfEmptyOrWhitespace(errors, KEY_ELI_ARMS, messagePrefix);
+      }
       armsValidator.validate(app, errors);
     }
 
     if (EligibilityRules.requiresWalkingDifficulty(app.getEligibility().getTypeCode())) {
-      rejectIfEmptyOrWhitespace(errors, KEY_ELI_WALKING, messagePrefix);
+      if (!app.isRenewal()) {
+        rejectIfEmptyOrWhitespace(errors, KEY_ELI_WALKING, messagePrefix);
+      }
       walkingValidator.validate(app, errors);
     }
 
     if (EligibilityRules.requiresBenefit(app.getEligibility().getTypeCode())) {
-      rejectIfEmptyOrWhitespace(errors, KEY_ELI_BENEFIT, messagePrefix);
+      if (!app.isRenewal()) {
+        rejectIfEmptyOrWhitespace(errors, KEY_ELI_BENEFIT, messagePrefix);
+      }
       benefitValidator.validate(app, errors);
     }
   }
