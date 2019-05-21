@@ -19,7 +19,7 @@ class ArmsValidator extends AbstractValidator {
       return;
     }
 
-    if(!app.isRenewal()){
+    if (!app.isRenewal()) {
       rejectIfEmptyOrWhitespace(errors, KEY_ELI_ARMS_VEH_IS_ADAPTED, NOT_NULL);
     }
 

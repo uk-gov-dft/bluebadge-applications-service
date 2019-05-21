@@ -17,7 +17,8 @@ public class BenefitValidatorTest extends ApplicationFixture {
   @Test
   public void validateBenefit() {
     // Expiry date cannot be in past.
-    Application app =  getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
     app.getEligibility().getBenefit().setIsIndefinite(false);
     app.getEligibility().getBenefit().setExpiryDate(LocalDate.now().minus(Period.ofDays(1)));
     BeanPropertyBindingResult errors = getNewBindingResult(app);
@@ -44,7 +45,8 @@ public class BenefitValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateBenefit_renewal() {
-    Application app =  getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
     app.getEligibility().getBenefit().setIsIndefinite(null);
     app.getEligibility().getBenefit().setExpiryDate(LocalDate.now().minus(Period.ofDays(1)));
     app.setApplicationTypeCode(ApplicationTypeCodeField.RENEW);

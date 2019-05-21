@@ -10,7 +10,6 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import java.time.LocalDate;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 
 @Component
@@ -18,7 +17,7 @@ class BenefitValidator extends AbstractValidator {
 
   void validate(Application app, Errors errors) {
     if (exists(app, KEY_ELI_BENEFIT)) {
-      if(!app.isRenewal()){
+      if (!app.isRenewal()) {
         rejectIfEmptyOrWhitespace(errors, KEY_ELI_BENE_IS_INDEFINITE, NOT_NULL);
       }
       if (exists(app, KEY_ELI_BENE_EXPIRY_DT) && exists(app, KEY_ELI_BENE_IS_INDEFINITE)) {

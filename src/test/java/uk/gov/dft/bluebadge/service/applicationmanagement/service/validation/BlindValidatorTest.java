@@ -26,7 +26,8 @@ public class BlindValidatorTest extends ApplicationFixture {
 
   @Test
   public void validate() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
     BeanPropertyBindingResult errors = getNewBindingResult(app);
     validator.validate(app, errors);
     assertEquals(0, errors.getErrorCount());

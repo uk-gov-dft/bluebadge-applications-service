@@ -28,12 +28,14 @@ public class WalkingValidatorTest extends ApplicationFixture {
     MockitoAnnotations.initMocks(this);
     walkingValidator = new WalkingValidator(breathlessnessValidatorMock);
 
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
   }
 
   @Test
   public void validateWalkingSpeed() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     // Walking speed only present if can walk, from walking length of time.
     // And invalid, but not null
@@ -55,7 +57,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalkingPainDescription_notNull() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(Lists.newArrayList(WalkingDifficultyTypeCodeField.PAIN));
     walkingDifficulty.setPainDescription("ABC");
@@ -77,7 +80,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalkingPainDescription_null() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(Lists.newArrayList(WalkingDifficultyTypeCodeField.PAIN));
     walkingDifficulty.setPainDescription(null);
@@ -99,7 +103,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalking_balance_descriptionAndFalls_notNull() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(Lists.newArrayList(WalkingDifficultyTypeCodeField.BALANCE));
     walkingDifficulty.setBalanceDescription("ABC");
@@ -123,7 +128,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalking_balance_descriptionAndFalls_null() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(Lists.newArrayList(WalkingDifficultyTypeCodeField.BALANCE));
     walkingDifficulty.setPainDescription(null);
@@ -146,7 +152,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalking_danger_descriptionAndHeartLung_notNull() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(Lists.newArrayList(DANGER));
     walkingDifficulty.setDangerousDescription("ABC");
@@ -170,7 +177,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalking_danger_descriptionAndHeartLung_null() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(Lists.newArrayList(DANGER));
     walkingDifficulty.setPainDescription(null);
@@ -192,7 +200,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalkingOtherDescription_notNull() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(ImmutableList.of(WalkingDifficultyTypeCodeField.BALANCE));
     // Cant have other description if type codes does not contain SOMELSE
@@ -210,7 +219,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalkingOtherDescription_null() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     walkingDifficulty.setTypeCodes(ImmutableList.of(DANGER));
     walkingDifficulty.setOtherDescription(null);
@@ -228,7 +238,8 @@ public class WalkingValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateWalking() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     WalkingDifficulty walkingDifficulty = app.getEligibility().getWalkingDifficulty();
     // Valid first
     BeanPropertyBindingResult errors = getNewBindingResult(app);

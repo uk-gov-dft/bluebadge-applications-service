@@ -79,7 +79,7 @@ class EligibilityValidator extends AbstractValidator {
 
     String messagePrefix = "For eligibility type " + app.getEligibility().getTypeCode();
     if (EligibilityRules.requiresChildUnder3Object(app.getEligibility().getTypeCode())) {
-      if(!app.isRenewal()){
+      if (!app.isRenewal()) {
         rejectIfEmptyOrWhitespace(errors, KEY_ELI_CHILD3, messagePrefix);
       }
       childUnder3Validator.validate(app, errors);

@@ -82,7 +82,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void validateDob() {
-    Application app =getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
     BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // When dob valid, no errors added.
@@ -97,7 +98,8 @@ public class ApplicationValidatorTest extends ApplicationFixture {
 
   @Test
   public void validatePerson() {
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
     BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     // When person valid, no errors added.

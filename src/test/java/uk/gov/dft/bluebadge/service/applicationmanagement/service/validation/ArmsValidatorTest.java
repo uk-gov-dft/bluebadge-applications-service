@@ -15,7 +15,8 @@ public class ArmsValidatorTest extends ApplicationFixture {
   @Test
   public void validateArms_new() {
 
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
     BeanPropertyBindingResult errors = getNewBindingResult(app);
     // Valid first
     armsValidator.validate(app, errors);
@@ -34,7 +35,8 @@ public class ArmsValidatorTest extends ApplicationFixture {
   @Test
   public void validateArms__nullArmsObject() {
     // Given an app with no arms data
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
     app.getEligibility().setDisabilityArms(null);
     BeanPropertyBindingResult errors = getNewBindingResult(app);
     // When validate
@@ -46,7 +48,8 @@ public class ArmsValidatorTest extends ApplicationFixture {
   @Test
   public void validateArms__nullArmsMandatoryFields_newApplication() {
     // Given an app with no arms data
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
     app.getEligibility().getDisabilityArms().setIsAdaptedVehicle(null);
     BeanPropertyBindingResult errors = getNewBindingResult(app);
     // When validate
@@ -62,7 +65,8 @@ public class ArmsValidatorTest extends ApplicationFixture {
   @Test
   public void validateArms__nullArmsMandatoryFields_renewApplication() {
     // Given an app with no arms data
-    Application app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
     app.getEligibility().getDisabilityArms().setIsAdaptedVehicle(null);
     app.getEligibility().getDisabilityArms().setAdaptedVehicleDescription(null);
     app.setApplicationTypeCode(ApplicationTypeCodeField.RENEW);

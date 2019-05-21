@@ -1,9 +1,8 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
+import java.time.LocalDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode

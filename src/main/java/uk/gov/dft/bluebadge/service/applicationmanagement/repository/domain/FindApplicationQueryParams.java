@@ -25,5 +25,4 @@ public class FindApplicationQueryParams {
   public Instant getSubmissionTo() {
     return to;
   }
-
 }

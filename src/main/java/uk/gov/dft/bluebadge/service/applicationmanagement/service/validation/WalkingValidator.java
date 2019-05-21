@@ -18,7 +18,6 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
@@ -36,12 +35,12 @@ class WalkingValidator extends AbstractValidator {
   void validate(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_ELI_WALKING)) {
       // If exists then validate values.
-      if(null == app.getEligibility().getWalkingDifficulty()){
+      if (null == app.getEligibility().getWalkingDifficulty()) {
         return;
       }
 
       // If not renewal should have walking length of time code.
-      if(!app.isRenewal()){
+      if (!app.isRenewal()) {
         rejectIfEmptyOrWhitespace(errors, KEY_ELI_WALK_LENGTH_OF_TIME, NOT_NULL);
       }
 
@@ -53,7 +52,7 @@ class WalkingValidator extends AbstractValidator {
               NOT_VALID,
               "Must have at least 1 walking type code if eligibility is WALKDIFF.");
         }
-      }else {
+      } else {
         // Do type code specific validation
         validateWalkingDifficulties(app, errors);
         validateBreathlessness(app, errors);

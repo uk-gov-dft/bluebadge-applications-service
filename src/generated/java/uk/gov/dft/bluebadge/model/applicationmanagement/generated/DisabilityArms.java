@@ -1,9 +1,8 @@
 package uk.gov.dft.bluebadge.model.applicationmanagement.generated;
 
+import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.validation.constraints.Size;
 
 @Data
 @EqualsAndHashCode

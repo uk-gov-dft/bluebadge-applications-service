@@ -181,12 +181,6 @@ public class ApplicationService {
     Assert.notNull(applicationId, "applicationId must not be null");
     Assert.notNull(applicationUpdate, "applicationUpdate must not be null");
 
-    if (applicationUpdate.getApplicationStatusField() == null) {
-      Error error = new Error();
-      error.setReason("applicationStatus must not be null");
-      throw new BadRequestException(error);
-    }
-
     applicationUpdate.setApplicationId(getUuid(applicationId));
     if (repository.updateApplication(applicationUpdate) == 0) {
       Error error = new Error();

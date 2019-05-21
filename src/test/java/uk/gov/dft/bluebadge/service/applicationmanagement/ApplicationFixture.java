@@ -318,7 +318,7 @@ public class ApplicationFixture extends AbstractValidator {
     application.getEligibility().getWalkingDifficulty().setBreathlessness(breathlessness);
   }
 
-  protected BeanPropertyBindingResult getNewBindingResult(Application app){
+  protected BeanPropertyBindingResult getNewBindingResult(Application app) {
     return new BeanPropertyBindingResult(app, "application");
   }
 

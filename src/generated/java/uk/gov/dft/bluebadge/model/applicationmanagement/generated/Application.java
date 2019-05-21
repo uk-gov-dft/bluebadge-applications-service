@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.validation.annotation.Validated;
 
 @ToString
 @Data
@@ -24,8 +23,7 @@ public class Application {
   private String existingBadgeNumber;
   @Valid @NotNull private Party party;
 
-  @Valid
-  private Eligibility eligibility;
+  @Valid private Eligibility eligibility;
 
   private String paymentReference;
   @Valid private List<Artifact> artifacts;
