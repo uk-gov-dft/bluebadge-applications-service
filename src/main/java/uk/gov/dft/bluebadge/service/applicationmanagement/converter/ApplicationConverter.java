@@ -63,7 +63,7 @@ public class ApplicationConverter
   @Override
   public Application convertToModel(ApplicationEntity entity) {
     Application model = new Application();
-    model.setApplicationTypeCode(ApplicationTypeCodeField.fromValue(entity.getAppTypeCode()));
+    model.setApplicationTypeCode(ApplicationTypeCodeField.valueOf(entity.getAppTypeCode()));
     model.setApplicationId(entity.getId().toString());
     model.setLocalAuthorityCode(entity.getLocalAuthorityCode());
     model.setPaymentTaken(entity.getIsPaymentTaken());

@@ -33,7 +33,7 @@ public class DisabilityArmsConverter implements ApplicationBiConverter {
     if (null != model.getEligibility().getDisabilityArms()) {
       DisabilityArms disabilityArms = model.getEligibility().getDisabilityArms();
       entity.setArmsAdaptedVehDesc(disabilityArms.getAdaptedVehicleDescription());
-      entity.setArmsIsAdaptedVehicle(disabilityArms.isIsAdaptedVehicle());
+      entity.setArmsIsAdaptedVehicle(disabilityArms.getIsAdaptedVehicle());
       entity.setArmsDrivingFreq(disabilityArms.getDrivingFrequency());
     }
   }

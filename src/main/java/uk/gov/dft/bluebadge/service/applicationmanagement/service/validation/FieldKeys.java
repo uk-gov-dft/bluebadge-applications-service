@@ -15,10 +15,12 @@ class FieldKeys {
   static final String KEY_ELI_TYPE = KEY_ELIGIBILITY + ".typeCode";
   static final String KEY_ELI_BENEFIT = KEY_ELIGIBILITY + ".benefit";
   static final String KEY_ELI_BENE_EXPIRY_DT = KEY_ELI_BENEFIT + ".expiryDate";
+  static final String KEY_ELI_BENE_IS_INDEFINITE = KEY_ELI_BENEFIT + ".isIndefinite";
   static final String KEY_ELI_ARMS = KEY_ELIGIBILITY + ".disabilityArms";
   static final String KEY_ELI_ARMS_VEH_ADAPTION = KEY_ELI_ARMS + ".adaptedVehicleDescription";
   static final String KEY_ELI_ARMS_VEH_IS_ADAPTED = KEY_ELI_ARMS + ".isAdaptedVehicle";
   static final String KEY_ELI_WALKING = KEY_ELIGIBILITY + ".walkingDifficulty";
+  static final String KEY_ELI_WALK_LENGTH_OF_TIME = KEY_ELI_WALKING + ".walkingLengthOfTimeCode";
   static final String KEY_ELI_WALK_TYPES = KEY_ELI_WALKING + ".typeCodes";
   static final String KEY_ELI_WALK_PAIN_DESC = KEY_ELI_WALKING + ".painDescription";
   static final String KEY_ELI_WALK_BALANCE_DESC = KEY_ELI_WALKING + ".balanceDescription";

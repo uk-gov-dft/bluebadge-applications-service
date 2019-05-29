@@ -12,7 +12,7 @@ import uk.gov.dft.bluebadge.model.applicationmanagement.generated.ApplicationTyp
 public class FindApplicationQueryParams {
   private String name;
   private String postcode;
-  private String applicationTypeCode;
+  private ApplicationTypeCodeField applicationTypeCode;
   private Instant from;
   private Instant to;
   private String authorityCode;
@@ -24,13 +24,5 @@ public class FindApplicationQueryParams {
 
   public Instant getSubmissionTo() {
     return to;
-  }
-
-  public ApplicationTypeCodeField getApplicationTypeCode() {
-    return ApplicationTypeCodeField.fromValue(applicationTypeCode);
-  }
-
-  public String getApplicationTypeCodeStr() {
-    return applicationTypeCode;
   }
 }

@@ -28,7 +28,7 @@ public class ApplicationConverterTest extends ApplicationFixture {
 
   @Test
   public void convertToEntity() {
-    app = getApplicationBuilder().addBaseApplication().build();
+    Application app = getApplicationBuilder().addBaseApplication().build();
 
     ApplicationEntity entity = converter.convertToEntity(app);
 

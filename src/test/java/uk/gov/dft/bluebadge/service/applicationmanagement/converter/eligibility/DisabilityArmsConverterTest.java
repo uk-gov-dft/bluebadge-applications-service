@@ -23,7 +23,7 @@ public class DisabilityArmsConverterTest extends ApplicationFixture {
     DisabilityArms arms = model.getEligibility().getDisabilityArms();
     assertEquals(ValidValues.ARMS_ADAPTED_DESC, arms.getAdaptedVehicleDescription());
     assertEquals(ValidValues.ARMS_DRIVE_FREQ, arms.getDrivingFrequency());
-    assertEquals(ValidValues.ARMS_IS_ADAPTED, arms.isIsAdaptedVehicle());
+    assertEquals(ValidValues.ARMS_IS_ADAPTED, arms.getIsAdaptedVehicle());
   }
 
   @Test

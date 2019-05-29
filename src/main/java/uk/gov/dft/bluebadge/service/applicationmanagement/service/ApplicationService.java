@@ -134,14 +134,6 @@ public class ApplicationService {
     }
     searchParams.setAuthorityCode(userAuthorityCode);
 
-    if (StringUtils.isNotBlank(searchParams.getApplicationTypeCodeStr())
-        && searchParams.getApplicationTypeCode() == null) {
-      Error error = new Error();
-      error.setMessage("Invalid applicationTypeCode: " + searchParams.getApplicationTypeCodeStr());
-      error.setReason("applicationTypeCode");
-      throw new BadRequestException(error);
-    }
-
     return new ApplicationSummaryConverter()
         .convertToModelList(
             repository.findApplications(
@@ -188,12 +180,6 @@ public class ApplicationService {
   public void update(String applicationId, ApplicationUpdate applicationUpdate) {
     Assert.notNull(applicationId, "applicationId must not be null");
     Assert.notNull(applicationUpdate, "applicationUpdate must not be null");
-
-    if (applicationUpdate.getApplicationStatusField() == null) {
-      Error error = new Error();
-      error.setReason("applicationStatus must not be null");
-      throw new BadRequestException(error);
-    }
 
     applicationUpdate.setApplicationId(getUuid(applicationId));
     if (repository.updateApplication(applicationUpdate) == 0) {

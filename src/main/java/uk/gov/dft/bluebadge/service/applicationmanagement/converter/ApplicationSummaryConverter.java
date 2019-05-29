@@ -16,7 +16,9 @@ public class ApplicationSummaryConverter
     ApplicationSummary model = new ApplicationSummary();
     model.setApplicationId(entity.getApplicationId().toString());
     model.setApplicationTypeCode(
-        ApplicationTypeCodeField.fromValue(entity.getApplicationTypeCode()));
+        null == entity.getApplicationTypeCode()
+            ? null
+            : ApplicationTypeCodeField.valueOf(entity.getApplicationTypeCode()));
     model.setEligibilityCode(EligibilityCodeField.fromValue(entity.getEligibilityCode()));
     model.setName(entity.getHolderName());
     model.setNino(entity.getNino());

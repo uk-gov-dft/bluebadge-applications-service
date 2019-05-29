@@ -9,6 +9,7 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_BALANCE_FALLS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_DANGER_CONDITIONS;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_DANGER_DESC;
+import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_LENGTH_OF_TIME;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_OTHER_DESC;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_PAIN_DESC;
 import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validation.FieldKeys.KEY_ELI_WALK_SPEED;
@@ -17,7 +18,6 @@ import static uk.gov.dft.bluebadge.service.applicationmanagement.service.validat
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.model.applicationmanagement.generated.WalkingDifficultyTypeCodeField;
@@ -35,19 +35,30 @@ class WalkingValidator extends AbstractValidator {
   void validate(Application app, Errors errors) {
     if (hasNoFieldErrors(errors, KEY_ELI_WALKING)) {
       // If exists then validate values.
-
-      // Must have at least 1 type code to continue
-      if (collection(app.getEligibility().getWalkingDifficulty().getTypeCodes()).isNullOrEmpty()) {
-        errors.rejectValue(
-            KEY_ELI_WALK_TYPES,
-            NOT_VALID,
-            "Must have at least 1 walking type code if eligibility is WALKDIFF.");
+      if (null == app.getEligibility().getWalkingDifficulty()) {
         return;
       }
 
-      validateWalkingDifficulties(app, errors);
+      // If not renewal should have walking length of time code.
+      if (!app.isRenewal()) {
+        rejectIfEmptyOrWhitespace(errors, KEY_ELI_WALK_LENGTH_OF_TIME, NOT_NULL);
+      }
+
+      // Must have at least 1 type code if not a renewal
+      if (collection(app.getEligibility().getWalkingDifficulty().getTypeCodes()).isNullOrEmpty()) {
+        if (!app.isRenewal()) {
+          errors.rejectValue(
+              KEY_ELI_WALK_TYPES,
+              NOT_VALID,
+              "Must have at least 1 walking type code if eligibility is WALKDIFF.");
+        }
+      } else {
+        // Do type code specific validation
+        validateWalkingDifficulties(app, errors);
+        validateBreathlessness(app, errors);
+      }
+
       validateWalkingSpeed(app, errors);
-      validateBreathlessness(app, errors);
     }
   }
 
@@ -58,11 +69,6 @@ class WalkingValidator extends AbstractValidator {
    * @param errors Errors.
    */
   void validateWalkingSpeed(Application app, Errors errors) {
-    // Walking time code is mandatory for walking
-    Assert.notNull(
-        app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode(),
-        "If WALKD then time code should be not null");
-
     if (CANTWALK.equals(app.getEligibility().getWalkingDifficulty().getWalkingLengthOfTimeCode())
         && exists(app, KEY_ELI_WALK_SPEED)) {
       errors.rejectValue(

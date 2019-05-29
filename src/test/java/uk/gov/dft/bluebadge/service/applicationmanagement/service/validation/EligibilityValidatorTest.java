@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.validation.BeanPropertyBindingResult;
+import uk.gov.dft.bluebadge.model.applicationmanagement.generated.Application;
 import uk.gov.dft.bluebadge.service.applicationmanagement.ApplicationFixture;
 
 public class EligibilityValidatorTest extends ApplicationFixture {
@@ -36,18 +38,19 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Test
   public void validateEligibilityByType_benefit() {
     // Given valid app
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build());
-
-    validateEligibilityType(0, FieldKeys.KEY_ELI_BENEFIT);
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityPip().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_BENEFIT, app, errors);
 
     // specific eligibility validated
     verify(benefitValidator, times(1)).validate(app, errors);
 
     // Given required object was missing
     app.getEligibility().setBenefit(null);
-    reset();
+    errors = getNewBindingResult(app);
     // Get error
-    validateEligibilityType(1, FieldKeys.KEY_ELI_BENEFIT);
+    validateEligibilityType(1, FieldKeys.KEY_ELI_BENEFIT, app, errors);
     // specific eligibility validated
     verify(benefitValidator, times(1)).validate(app, errors);
   }
@@ -55,18 +58,19 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Test
   public void validateEligibilityType_Arms() {
     // Given valid app
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build());
-
-    validateEligibilityType(0, FieldKeys.KEY_ELI_ARMS);
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityArms().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_ARMS, app, errors);
 
     // specific eligibility validated
     verify(armsValidator, times(1)).validate(app, errors);
 
     // Given required object was missing
     app.getEligibility().setDisabilityArms(null);
-    reset();
+    errors = getNewBindingResult(app);
     // Get error
-    validateEligibilityType(1, FieldKeys.KEY_ELI_ARMS);
+    validateEligibilityType(1, FieldKeys.KEY_ELI_ARMS, app, errors);
     // specific eligibility validated
     verify(armsValidator, times(1)).validate(app, errors);
   }
@@ -74,18 +78,19 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Test
   public void validateEligibilityType_Walk() {
     // Given valid app
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build());
-
-    validateEligibilityType(0, FieldKeys.KEY_ELI_WALKING);
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_WALKING, app, errors);
 
     // specific eligibility validated
     verify(walkingValidator, times(1)).validate(app, errors);
 
     // Given required object was missing
     app.getEligibility().setWalkingDifficulty(null);
-    reset();
+    errors = getNewBindingResult(app);
     // Get error
-    validateEligibilityType(1, FieldKeys.KEY_ELI_WALKING);
+    validateEligibilityType(1, FieldKeys.KEY_ELI_WALKING, app, errors);
     // specific eligibility validated
     verify(walkingValidator, times(1)).validate(app, errors);
   }
@@ -93,23 +98,27 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Test
   public void validateEligibilityType_ChildBulk_OK() {
     // Given valid app
-    reset(
-        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build());
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
-    validateEligibilityType(0, FieldKeys.KEY_ELI_CHILD3);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_CHILD3, app, errors);
     verify(childUnder3Validator, times(1)).validate(any(), any());
   }
 
   @Test
   public void validateEligibilityType_Blind() {
     // Given valid app
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build());
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityBlind().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
-    validateEligibilityType(0, FieldKeys.KEY_ELI_BLIND);
+    validateEligibilityType(0, FieldKeys.KEY_ELI_BLIND, app, errors);
     verify(blindValidator, times(1)).validate(any(), any());
   }
 
-  private void validateEligibilityType(int expectedErrors, String field) {
+  private void validateEligibilityType(
+      int expectedErrors, String field, Application app, BeanPropertyBindingResult errors) {
     // When validated
     eligibilityValidator.validateEligibilityByType(app, errors);
 
@@ -120,12 +129,13 @@ public class EligibilityValidatorTest extends ApplicationFixture {
 
   @Test
   public void failUnneededObjects() {
-    reset(
+    Application app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityChildVehicle()
-            .build());
+            .build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     eligibilityValidator.failUnneededObjects(app, errors);
     assertEquals(0, errors.getErrorCount());
@@ -155,9 +165,10 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   public void validateConditionsDescription() {
     // Can only have discretionary conditions if discretionary eligibility
     // Valid
-    app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
     app.getEligibility().setDescriptionOfConditions("www");
-    reset();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
 
     eligibilityValidator.validateConditionsDescription(app, errors);
     assertEquals(0, errors.getErrorCount());
@@ -165,7 +176,7 @@ public class EligibilityValidatorTest extends ApplicationFixture {
     // Invalid
     app = getApplicationBuilder().addBaseApplication().setPerson().setEligibilityAfrfcs().build();
     app.getEligibility().setDescriptionOfConditions("www");
-    reset();
+    errors = getNewBindingResult(app);
 
     eligibilityValidator.validateConditionsDescription(app, errors);
     assertEquals(1, errors.getErrorCount());
@@ -177,24 +188,25 @@ public class EligibilityValidatorTest extends ApplicationFixture {
 
     // Can only have healthcare pros if WALKD, CHILDBULK or CHILDVEHIC
     // Valid
-    reset(
+    Application app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityWalking()
             .addHealthcarePro()
-            .build());
+            .build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     eligibilityValidator.validateHealthcareProfessionals(app, errors);
     assertEquals(0, errors.getErrorCount());
 
     // Invalid
-    reset(
+    app =
         getApplicationBuilder()
             .addBaseApplication()
             .setPerson()
             .setEligibilityArms()
             .addHealthcarePro()
-            .build());
+            .build();
     eligibilityValidator.validateHealthcareProfessionals(app, errors);
     assertEquals(1, errors.getFieldErrorCount(FieldKeys.KEY_ELI_HEALTH_PROS));
   }
@@ -202,18 +214,22 @@ public class EligibilityValidatorTest extends ApplicationFixture {
   @Test
   public void validateEligibility() {
     // Mostly check no null pointers.
-    reset(getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build());
+    Application app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityWalking().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     eligibilityValidator.validate(app, errors);
   }
 
   @Test
   public void hasEligibility() {
-    reset(getApplicationBuilder().addBaseApplication().build());
+    Application app = getApplicationBuilder().addBaseApplication().build();
+    BeanPropertyBindingResult errors = getNewBindingResult(app);
     errors.rejectValue(FieldKeys.KEY_ELIGIBILITY, "FFF");
     assertFalse(eligibilityValidator.hasEligibility(errors));
 
-    reset(
-        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build());
+    app =
+        getApplicationBuilder().addBaseApplication().setPerson().setEligibilityChildBulk().build();
+    errors = getNewBindingResult(app);
     assertTrue(eligibilityValidator.hasEligibility(errors));
   }
 }

@@ -15,39 +15,39 @@ Feature: Verify Create Org Invalid
     * def application =
     """
     {
-  applicationId: '',
-  applicationTypeCode: 'NEW',
-  localAuthorityCode: 'BIRM',
-  paymentTaken: true,
-  submissionDate: '2018-12-25T12:30:45Z',
-  existingBadgeNumber: '',
-  party: {
-    typeCode: 'ORG',
-    contact: {
-      fullName: 'Mabel Jones',
-      buildingStreet: '65 Basil Chambers',
-      line2: 'Northern Quarter',
-      townCity: 'Manchester',
-      postCode: 'ZZ11 1ZZ',
-      primaryPhoneNumber: 175154771,
-      secondaryPhoneNumber: '07970777111',
-      emailAddress: 'nobody@blancmange.com'
-    },
-    organisation: {
-      badgeHolderName: 'TestDeleteMe',
-      isCharity: false,
-      charityNumber: '12345',
-      vehicles: [
-        {
-          registrationNumber: 'VK61VZZ',
-          typeCode: 'CAR',
-          usageFrequency: 'Daily'
+      applicationId: '',
+      applicationTypeCode: 'NEW',
+      localAuthorityCode: 'BIRM',
+      paymentTaken: true,
+      submissionDate: '2018-12-25T12:30:45Z',
+      existingBadgeNumber: '',
+      party: {
+        typeCode: 'ORG',
+        contact: {
+          fullName: 'Mabel Jones',
+          buildingStreet: '65 Basil Chambers',
+          line2: 'Northern Quarter',
+          townCity: 'Manchester',
+          postCode: 'ZZ11 1ZZ',
+          primaryPhoneNumber: 175154771,
+          secondaryPhoneNumber: '07970777111',
+          emailAddress: 'nobody@blancmange.com'
+        },
+        organisation: {
+          badgeHolderName: 'TestDeleteMe',
+          isCharity: false,
+          charityNumber: '12345',
+          vehicles: [
+            {
+              registrationNumber: 'VK61VZZ',
+              typeCode: 'CAR',
+              usageFrequency: 'Daily'
+            }
+          ],
+          numberOfBadges: 1
         }
-      ],
-      numberOfBadges: 1
+      }
     }
-  }
-}
     """
 
     Given path 'applications'
